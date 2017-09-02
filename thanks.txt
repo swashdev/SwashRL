@@ -1,0 +1,17 @@
+Spelunk! is dedicated:
+
+  To Seb, who helped with a bunch of the number-crunching and design for the
+  game as it will eventually exist, and has generally been the best mentor and
+  friend I could have asked for
+
+  To my family, who have been supportive above and beyond the call of duty and
+  kept me in their prayers when I needed them most
+
+Further thanks to the following people who have contributed code or help in
+some way:
+
+  Elronnd, for diligent testing and code criticism, and for contributions
+  related to the operating system detection in sys.h
+
+  Björn Bergström, who designed the recursive shadowcasting algorithm for fog
+  of war, the Doryen implementation of which is used in Spelunk!

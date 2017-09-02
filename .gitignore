@@ -1,0 +1,23 @@
+# git ignore file for Spelunk!
+
+# Ignore all vim/emacs backup files
+*~
+*.swp
+*#*
+
+# Also ignore *my* backup files
+*.bak
+
+# The notes directory is not for the public eye; always ignore this!
+notes/
+
+# Ignore the binary directory entirely
+bin*/
+
+# Files included only for my own use and not meant for the repository
+compwin.bat
+test/
+assets/
+
+# Files which we don't need (yet?)
+include/youflags.h

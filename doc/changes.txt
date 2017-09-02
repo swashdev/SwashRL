@@ -1,0 +1,243 @@
+Spelunk! official changelog
+
+VERSION 0.021
+Finalized 2017-09-02 02:36 EST
+
+Fixed:
+ - Monsters are no longer rendered invisible if USE_FOV is undefined.
+
+Changed:
+ - Tiles are now defined as structs rather than abstract bitmaps.
+ - Improvements to the operating system detection code.
+
+Added:
+ - Player now has an inventory made up of several body slots and can pick up
+   items.
+ - The inventory screen has been implemented, from which the player can move
+   items around.
+ - Some new items have been added to the test map to test inventory slots.
+   These are still buggy.
+
+VERSION 0.020-1
+Finalized 2017-03-05 21:55 EST
+
+Changed:
+ - Field of vision code has been swapped to the libtcod implementation of the
+   recursive shadowcasting algorithm I was trying to implement.  See
+   3rdparty.txt for details.
+
+VERSION 0.020
+Finalized 2017-03-05 17:48 EST
+
+Changed:
+ - Running into a wall no longer counts as a turn
+ - Incredibly rudimentary field-of-vision implemented; needs fine-tuning. See
+   todo.txt.
+
+Code changes:
+ - The code now detects automatically if it is being compiled on Windows (or,
+   begrudgingly, cygwin) (courtesy of Elronnd)
+ - Tiles are now bitmasks rather than integer flags, with each bit determining
+   something about the tile's behavior.  Colission detection has been modified
+   to use these bitmasks.
+ - Whether or not a tile's colors are reversed is now determined by a bit
+   TILE_INVERT rather than whether or not the tile is a wall.
+
+VERSION 0.019
+Finalized 2017-02-22 22:04 EST
+
+Added:
+ - Capability to switch between two sets of movement controls by pressing F12:
+   first one is standard hjklyubn, second one is "alternate" hjkluinm,
+   designed for people who often transition between typing and playing.
+ - Further rewrites to key-handling code to handle a variety of control
+   mechanisms
+
+Changed:
+ - More concise random number generation code; default die is now d6, removed
+   lots of unnecessary functions, changed others.
+
+VERSION 0.018
+Finalized 2017-01-29 22:28 EST
+
+Added:
+ - Rudimentary items.  The current implementation is flimsy because it
+   requires that the game read the object's symbol as '\0' in order to
+   determine that there is no item here.  This is because pointers in C are
+   stupid.
+ - The version command now displays a 'd' if `DEV_RELEASE' is non-zero.
+
+Removed:
+ - Monsters no longer blink.
+
+Fixed:
+ - Message formatting now sort of works.  The fix involves a kludge in which
+   the message is output directly to the screen using `mvprintw' and then
+   scanned into a buffer using `mvinch', which is then passed to the message
+   buffer.  Messages will be truncated if they contain more than three spaces
+   in a row and are limited to 80 characters when using this method.
+
+VERSION 0.017
+2017-01-22 18:02 EST
+
+New version numbering system R.N is now being used, wherein R is the release
+number and N is the three-digit revision number.
+
+I have given up on getting formatted messages to work.  It was between not
+having a message buffer or using "It attacks you" instead of "the %s attacks
+you," and I chose to keep the message buffer.  We can figure this out later.
+
+Added:
+ - Experimental feature in which monsters blink (if USE_BLINK is defined).  In
+   future, the blink effect will be used only for monsters who are actively
+   hostile.
+ - The capability for certain actions, such as displaying help and the version
+   number command, to not count as a move has been implemented, albeit rather
+   messily.
+ - New player commands:
+    Wait ('.' or '5')
+    Clear Messages (' ')
+    Previous Messages ('P')
+
+Fixed:
+ - Ironed out the last issues in the message buffer.  Because it was bumping
+   messages backwards, only odd-numbered messages were being queued properly.
+   The changelog note indicating that the message buffer was fully functional
+   in 0.0.16 was in error.
+ - Re-enabled special effects in text.  The nature of the bug is still unknown
+   to me, but I believe it is because I chose to use a macro named ANY_CURSES,
+   which might have been used by pdcurses or ncurses without my knowledge.
+
+Minor fixes:
+ - Code which had been included in version 0.0.16 for a non-curses version of
+   the game has been fully disabled.  It will be re-enabled later when
+   non-curses display has been implemented.
+
+Known bugs:
+ - The game sometimes skips buffered messages on player death.
+
+VERSION 0.0.16
+Finalized 2017-01-20 23:04 EST
+
+Known bugs:
+ - I somehow managed to disable all text effects.
+
+Fixed:
+ - The message buffer is now fully functional.  At the end of every turn, the
+   game will show you every message that it has generated one at a time.
+
+Minor fixes:
+ - The map is now stored statically in anticipation of code rewrites that will
+   need to happen for non-curses versions of the game in the future.
+
+VERSION 0.0.15
+Finalized 2017-01-20 20:41 EST
+
+The name FORRNIF was changed to Spelunk! on version 0.0.15 as the plan for the
+game changed.  FORRNIF will return later.  If you have access to the source
+code and are wondering why the name FORRNIF pops up in places, it's because
+the name changed at this point during development.
+
+Known bugs:
+ - The message buffer is still broken, still for reasons unknown.  Fixes have
+   been deferred to version 0.0.16 so as not to lose the compliance changes
+   made in this version.
+ - Because of difficulty getting strings to format properly with the new
+   message buffer functions, all messages seen in the game are hard-coded.
+   These fixes have again been deferred to 0.0.16.
+
+Fixes:
+ - All source code comments now use "block comments" rather than line comments
+   in order to be compliant with early versions of C which do not allow line
+   comments.
+ - Source code has been reworked to be fully compliant with C89.  Luckily this
+   took minimal effort.  It has been verified by me that the code works as
+   intended when compiling under C89, C99, or C11.
+
+Minor fixes:
+ - The status bar has been moved to the top of the screen so that it may be
+   manipulated at the same time as the message line on more rudimentary
+   systems.  This is because of road bumps encountered in the process of
+   implementing the message buffer.
+ - Some code has been added to allow use of data types introduced in C99, such
+   as booleans and standardized explicit-size integers, if you compile with
+   the C99 standard.
+ - Additional code has been added to allow the program to recognize if it is
+   being compiled with the C95 or C11 standards, but no code has been
+   implemented as yet which uses these checks and gcc does not recognize C95.
+ - The game will now refuse to compile with ncurses for Windows, as ncurses
+   does not support Windows.
+
+VERSION 0.0.14
+Finalized 2017-01-17 23:07 EST
+
+Added:
+ - The game now has a rudimentary status bar and message line.  The map has
+   changed size to accomodate this change.
+
+Known bugs:
+ - Some of the game's "move" functions have hard-coded values that draw
+   sections of the screen.  Since the map has been resized, these now give
+   inappropriate screen coordinates and will erroneously draw or fail to draw
+   the player in the correct place or reposition the cursor to the wrong spot.
+ - Some of the message lines require an unreasonable amount of key presses to
+   clear the screen, which may result in players accidentally "resting."
+
+VERSION 0.0.13
+Finalized 2017-01-17 15:13 EST
+
+Minor fixes:
+ - Random number generator has been implemented.  Unlike other random number
+   generators out there, this one is specifically designed to emulate the
+   rolling of dice.
+ - Monster hit points are now determined by "hit dice," and they now store
+   their own "attack dice," which determine how hard they hit.
+ - Your hit points are now determined by "hit dice," and you now store your
+   own "attack dice," which determine how hard you hit.
+ - Monster and player attack rolls have now been implemented; starting HP and
+   attack strength are now random.  Crits and botches have not yet been
+   implemented.
+
+VERSION 0.0.12
+Finalized 2016-12-27 17:14 EST
+
+Minor fixes:
+ - Monsters now collide with each other rather than stacking
+ - The version number is now displayed upon a press of the 'v' key
+
+VERSION 0.0.11
+Finalized 2015-10-04 19:59 EST
+
+Bugfixes:
+ - Fixed an attrocious error in the movement code which attempted to gather
+   tile data from monsters rather than the map.  This prevented version 0.0.10
+   from compiling.
+ - Fixed a bug causing monsters not to display because the array size rather
+   than the monster index was being incremented in the display code.  This had
+   previously not been noticed in versions where only one monster was present
+   in the testing arena.
+
+Minor fixes:
+ - Altered monster AI code so that it is handled by the map.  This puts maps
+   in charge of the monsters so that individual monsters do not have to be
+   pulled from the map data in order to be instructed to make their move.
+ - Added the ability to simply remove a monster from map data so that it is no
+   longer present after being slain.
+
+Added:
+ - Added a batch file, compwin.bat, which will automatically compile FORRNIF
+   for Windows and place it in the bin directory.  This was for my own
+   convenience as the gcc command required to compile is curiously specific and
+   I kept forgetting the order of operations.
+
+VERSION 0.0.10 was finalized on 2015-09-04 at 17:13 EST
+VERSION 0.0.9 was finalized on 2015-09-04 at 12:13 EST
+VERSION 0.0.8 was finalized on 2015-09-03 at 21:43 EST
+VERSION 0.0.7 was finalized on 2015-09-02 at 10:23 EST
+VERSION 0.0.6 was finalized on 2015-08-30 at 19:36 EST
+VERSION 0.0.5 was finalized on 2015-08-29 at 17:58 EST
+VERSION 0.0.4 was finalized on 2015-08-30 at 14:44 EST
+VERSION 0.0.3 was finalized on 2015-08-24 at 21:29 EST
+VERSION 0.0.2 was finalized on 2015-08-24 at 20:14 EST
+VERSION 0.0.1 was finalized on 2015-08-24 at 14:10 EST
+VERSION 0.0.0 was finalized on 2015-08-24 at 12:31 EST

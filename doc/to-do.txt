@@ -1,0 +1,31 @@
+Finalize inventory
+ - Items should not be allowed to be equipped in inappropriate item slots
+ - Implement the player's "bag"
+Implement appropriate item stats (attack & defense modifiers, &c)
+Implement stat generator
+Stat up some monsters
+Implement dungeon generator
+Implement dungeon hazards (pits, traps, &c)
+Implement dungeon levels
+Implement saved games
+Implement monster pathfinding
+Implement sleeping and non-hostile monsters
+Implement special dungeon tiles (test tubes, &c)
+Implement ranged combat
+Implement special monster attacks
+Implement & design special levels
+Implement skills
+Code up a wrapper for string formatting and use it to allow formatted messages
+Implement a town level, shops, &c
+Implement quests
+Balance stats(, monsters, difficulty checks, &c)
+Abstract drawing functions into a struct of function pointers so that they can
+be generalized to support multiple drawing systems (like graphical drawing
+systems, &c)
+Implement magic & psionics
+
+TENTATIVE:
+Implement ability for very large monsters to block the player's field of view
+  Possible implementation with new boolean flag for `tile' struct
+  `block_vision_monster' which is set any time a monster this large steps on
+  any `tile'

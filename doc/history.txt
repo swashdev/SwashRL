@@ -1,0 +1,158 @@
+Spelunk! concise version history
+
+ -- Prehistory --------------------------------------------------------------
+
+Spelunk! is actually the modern reimagining of a game I started writing in
+C# way back in 2005, while I was still in high school.  At that time it was
+simply named Crawl, and served as my homage to '90s text adventure games and
+early dungeon crawlers.  At the time I didn't even know that Roguelikes were a
+thing, but it ended up being very similar to rudimentary Roguelikes.  I came
+back to this project many times, porting it to C++ and then Python.  After a
+while writing a Roguelike became the de facto way I learned new programming
+languages.
+
+Crawl (not at all related to Linley's Dungeon Crawl, which was the reason I
+ended up changing the name) randomly generated a dungeon with two walls and
+the player (P) was required to proceed from left to right down 20 levels,
+fighting monsters (O) with randomly generated names and collecting treasure
+(X) which included weapons and armor.  The dungeon also had stalactites (V)
+and test tubes (U) which acted as "obstacles," and would have eventually also
+included vending machines (#) which sold soda, a running gag in a lot of games
+I produced at the time intended to pay homage to a local soda company.
+
+ -- Slumbering Dragon version family ----------------------------------------
+
+These versions of the code were originally named "Slumbering Dragon" and
+largely started out as an experiment to see if I could get ncurses working in
+C.  There were no proper version numbers for most of these early updates;
+They were added after the changelog started with version 0.monster-move-fly.
+
+Version Name         Date/time Finalized   Info
+==================== ==========================
+
+0.map                2015-08-24 12:31 EST  First version of the current source
+                     code.  Displayed a test map.  The test map went largely
+                     unchanged throughout development.
+
+0.move               2015-08-24 14:10 EST  Movement implemented
+
+0.colission          2015-08-24 20:14 EST  Colission detection implemented
+
+0.hazards            2015-08-24 21:29 EST  The first hazard is implemented: If
+                     the player steps in the water, they die.
+
+0.text-effects       2015-08-29 17:58 EST  "Text effects" implemented.
+
+0.monster-display    2015-08-30 14:44 EST  Monsters implemented.  First
+                     appearance of the modern goobling.
+
+0.monster-colission* 2015-08-30 19:56 EST  The player now collides with
+                     monsters, producing the message "You bump into a %s.  It
+                     dosn't look too pleased."
+
+0.monster-fight      2015-09-02 10:23 EST  First version with Windows support.
+                     At the time all this did was import pdcurses instead of
+                     ncurses.  Rudimentary combat implemented.
+
+0.monster-move       2015-09-03 21:43 EST  Monster movement first implemented.
+                     They will wander randomly.
+
+0.monster-move-chase 2015-09-04 12:13 EST  Monsters now move toward the player
+                     and kind of navigate around obstacles.  They can also
+                     attack without the player attacking them first.
+
+0.monster-move-fly   2015-09-04 17:13 EST  First implementation of flying and
+                     swimming monsters.
+
+ ------------------------------------------------------------------------------
+ | * This version doesn't appear in the git repository because it was         |
+ | accidentally skipped over while I was manually copying and pasting all of  |
+ | the past versions into the repo.  That's what I get for wanting to record  |
+ | the history for posterity :-)                                              |
+ ------------------------------------------------------------------------------
+
+ -- FORRNIF version family --------------------------------------------------
+
+After version 0.0.10 I started to take the project very seriously.  I changed
+the name to FORRNIF and started typing up ambitious design documents involving
+a huge fantasy world with a complex history.  Unfortunately 2016 was a very
+bad time for me and development stalled for over a year.
+
+Version Date/time Finalized   Info
+======= ==========================
+0.0.11  2015-10-04 19:59 EST  First update primarily composed of bugfixes.
+        This was also the first update in which slain monsters were removed
+        permanently from the map data.  Change-logging starts for the first
+        time, with proper version numbers retroactively added to the
+        Slumbering Dragon versions.
+
+0.0.12  2016-12-27 17:14 EST  Monsters collide with each other for the first
+        time instead of stacking on the same space.
+
+0.0.13  2017-01-17 15:13 EST  Random number generator, hit dice, and attack
+        rolls implemented.
+
+0.0.14  2017-01-17 23:07 EST  A rudimentary status bar, displaying the
+        player's hit points and attack dice, is implemented, and the map is
+        shrunk slightly to make room for this and a message line.  This is
+        also the first update in which messages were buffered and then
+        displayed after every turn instead of in the middle of the turn, but
+        the message buffer didn't start to work right until version 0.017.
+
+ -- Spelunk! version family -------------------------------------------------
+
+At this time I decided to put the epic fantasy role-playing game I had planned
+on hold in order to focus on finishing the game as it had originally been
+planned way back in 2005 (albeit with significant improvements like a proper
+dungeon with rooms).  To this end, I renamed the game to Spelunk! and cut down
+on a lot of the planned design in favor of a much simpler game.  On version
+0.017, I decided to write up a license agreement for Spelunk!'s eventual
+release, marking it as open-source careware.
+
+Version Date/time Finalized   Info
+======= ==========================
+0.0.15  2017-01-20 20:41 EST  Minor code rewrites to make the code compliant
+        with C89.  This is also the first version which will refuse to compile
+        with ncurses when compiling for Windows, because ncurses does not
+        support Windows.
+
+0.0.16  2017-01-20 23:04 EST  After much futzing around I believed I had
+        solved the problem of messages not buffering properly.  Unfortunately
+        I was wrong and the only thing I managed to do with this update was
+        break text effects.
+
+0.017   2017-01-22 18:02 EST  Message buffer finally works correctly.  Text
+        effects fixed.  Minor optional graphical effects added.  This file
+        started.  New commands added with the ability for some commands to not
+        use a turn (particularly wait, help, and version).  The ability to
+        read the stored message history by pressing 'P' is also implemented.
+        Note the new version numbering system; this made it easier to change
+        and output the version number in C.
+
+0.018   2017-01-29 22:28 EST  Color pairs defined, although color itself is
+        not yet a focus of the project.  Some of the code is edited slightly
+        so that color can not be enabled if text effects are not.
+
+0.019   2017-02-22 22:04 EST  Key handling procedures updated, new control
+        scheme available with press of the F12 key.  git repositories started,
+        with more loose version control being done.
+
+0.020   2017-03-05 17:48 EST  Initial attempts at field-of-vision handling
+        code using a recursive shadowcasting algorithm.  First version of the
+        code to use code contributed by another user (the macro which detects
+        Windows rather than requiring the user to tell the compiler), tiles
+        are now bitmasks.
+
+0.020-1 2017-03-05 21:55 EST  Imported libtcod implementation of the recursive
+        shadowcasting algorithm.
+
+0.021   2017-09-02 02:36 EST  Improvements to the operating system detecting
+        code, courtesy of Elronnd.  Attempts are started and then swiftly
+        abandoned to revamp the string handling code.  Tiles are now defined
+        as structs rather than bitmasks, in order to make them more
+        functional, and map symbols are also now structs so that they can be
+        defined modularly (and in the hopes that a sym struct can store an
+        image sprite for a future graphical version of the game).
+        Additionally, work on the inventory system begins.
+        The git repository was reset at this point in anticipation of major
+        overhauls to the code for version 0.022

@@ -48,22 +48,6 @@ int main()
   /* Enable keypad & other function keys */
   keypad(stdscr, 1);
 
-#if NEW_LICENSE
-  mvprintw( 0, 0,
-    "The license agreement has changed!" );
-  mvprintw( 1, 0,
-    "Be sure to read the new license agreement in ``license.txt\'\'" );
-  mvprintw( 2, 0,
-    "Press 'y' to continue, or 'n' to exit the program now." );
-  char yn_license = getch();
-  while( yn_license != 'y' && yn_license != 'n' )
-  { yn_license = getch();
-  }
-  if( yn_license == 'n' )
-  { return SP_NO_ERRORS;
-  }
-#endif /* NEW_LICENSE */
-
   Current_map = test_map();
 
   player u = init_player( 1, 1 );

@@ -27,11 +27,6 @@
  * development */
 # define DEV_RELEASE 1
 
-/* This flag will activate a message in main which informs the player that the
- * license agreement has changed.  Only activate this if the license agreement
- * has, in fact, changed with THIS PARTICULAR VERSION NUMBER. */
-# define NEW_LICENSE 1
-
 /* Include the config file */
 # include "config.h"
 

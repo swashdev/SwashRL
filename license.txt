@@ -16,7 +16,7 @@ this Notice, please delete your copy or copies of the Software.  Any violation
 of the terms defined below may be met with legal force if you are deemed
 important enough to deserve it.
 
-  I. Warrany Disclaimer:  This Software and its Source Code are released
+  I. Warranty Disclaimer:  This Software and its Source Code are released
      "as-is," and all warranties, including the implied warranties of
      merchantability or fitness to a particular purpose, are hereby
      disclaimed.  In no event will the author, maintainer, or other

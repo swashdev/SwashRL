@@ -9,15 +9,13 @@
 // dice-rolling.
 
 
-# include "global.h"
+import global;
 
-// TODO
-///* for srand & rand */
-//# include <stdlib.h>
-///* for time */
-//# include <time.h>
+import std.random;
 
 // rng maintenance //
+
+static RandomGen Lucky;
 
 // force a seed for the random number generator
 void set_seed( int s );

@@ -4,60 +4,56 @@
  * Spelunk! may be modified and distributed, but comes with NO WARRANTY!
  * See license.txt for details.
  */
-#include "global.h"
+
+import global;
 
 bool upickup( player* u, item i )
 {
   if( i.sym.ch == '\0' )
   {
     message( "There is nothing here to pick up." );
-    return FALSE;
+    return false;
   }
 
-  if( i.type & ITEM_WEAPON )
+  if( i.type & ITEM_WEAPON
+      && u->inventory.items[INVENT_WEAPON].sym.ch == '\0' )
   {
-    mvprintw( 0, 0, "You pick up a %s in your weapon-hand.",
-              i.name );
-    buffer_message();
+    message( "You pick up a " ~ i.name ~ " in your weapon-hand." );
     u->inventory.items[INVENT_WEAPON] = i;
-    return TRUE;
+    return true;
   }
 
   if( u->inventory.items[INVENT_OFFHAND].sym.ch == '\0' )
   {
-    mvprintw( 0, 0, "You pick up a %s in your off-hand.",
-              i.name );
-    buffer_message();
+    message( "You pick up a " ~ i.name ~ " in your off-hand." );
     u->inventory.items[INVENT_OFFHAND] = i;
-    return TRUE;
+    return true;
   }
   else if( u->inventory.items[INVENT_WEAPON].sym.ch == '\0' )
   {
-    mvprintw( 0, 0, "You pick up a %s in your weapon-hand.",
-              i.name );
-    buffer_message();
+    message( "You pick up a " ~ i.name ~ " in your weapon-hand." );
     u->inventory.items[INVENT_WEAPON] = i;
-    return TRUE;
+    return true;
   }
   else
   { message( "You do not have a free grasp." );
   }
 
-  return FALSE;
+  return false;
 }
 
-bool check_equip( item i, uint8 s )
+bool check_equip( item i, ubyte s )
 {
-  /* an empty item can go in any slot (obviously) */
+  // an empty item can go in any slot (obviously)
   if( i.sym.ch == '\0' )
-  { return TRUE;
+  { return true;
   }
-  /* the player can hold any item in their hands */
+  // the player can hold any item in their hands
   if( s == INVENT_WEAPON || s == INVENT_OFFHAND )
-  { return TRUE;
+  { return true;
   }
 
-  /* everything else goes into the switch statement */
+  // everything else goes into the switch statement
   switch( s )
   {
     case INVENT_QUIVER:
@@ -66,15 +62,15 @@ bool check_equip( item i, uint8 s )
     case INVENT_HELMET:
       return i.equip & EQUIP_HELMET;
     case INVENT_CUIRASS:
-      /* the "cuirass" item slot can accept either cuirasses or shields (the
-       * player straps a shield to their back) */
+      // the "cuirass" item slot can accept either cuirasses or shields (the
+      // player straps a shield to their back)
       return (i.equip & EQUIP_CUIRASS) || (i.equip & EQUIP_SHIELD);
     case INVENT_PAULDRONS:
       return i.equip & EQUIP_PAULDRONS;
     case INVENT_BRACERS:
       return i.equip & EQUIP_BRACERS;
     case INVENT_RINGL:
-      /* rings are obviously ambidexterous */
+      // rings are obviously ambidexterous
     case INVENT_RINGR:
       return i.equip & EQUIP_JEWELERY_RING;
     case INVENT_NECKLACE:
@@ -88,31 +84,30 @@ bool check_equip( item i, uint8 s )
     case INVENT_TAIL:
       return i.equip & EQUIP_TAIL;
   }
-  return FALSE;
+  return false;
 }
 
-uint8 uinventory( player* u )
+uint uinventory( player* u )
 {
-  /* the inventory slot letter the player has selected */
+  // the inventory slot letter the player has selected
   char grab = 0;
-  /* `line': the line corresponding to the `grab' slot letter
-   * `grabbedline': the line corresponding to an item that has been grabbed
-   */
-  uint8 line = 255, grabbedline = 255;
-  /* `grabbed': an item that has been grabbed */
+  // `line': the line corresponding to the `grab' slot letter
+  // `grabbedline': the line corresponding to an item that has been grabbed
+  ubyte line = 255, grabbedline = 255;
+  // `grabbed': an item that has been grabbed
   item grabbed = No_item;
 
-  /* whether to refresh the inventory screen */
+  // whether to refresh the inventory screen
   bool refnow = 1;
 
-  /* the number of turns that have passed... */
-  uint8 turns = 0;
+  // the number of turns that have passed...
+  uint turns = 0;
 
   do
   {
-    uint8 count;
-    str  snam; /* "slot name" */
-    char schr; /* "slot character" */
+    ubyte count;
+    string  snam; // "slot name"
+    char schr; // "slot character"
     if( refnow )
     {
       refnow = 0;
@@ -122,8 +117,8 @@ uint8 uinventory( player* u )
 
       for( count = 0; count <= INVENT_LAST_SLOT - 1; count++ )
       {
-        /* This switch statement of doom sets up the name and selection button
-         * for each inventory slot */
+        // This switch statement of doom sets up the name and selection button
+        // for each inventory slot
         switch( count )
         {
           default: snam = "bag"; schr = '\0'; break;
@@ -142,18 +137,21 @@ uint8 uinventory( player* u )
           case INVENT_KILT:      snam = "Kilt/skirt";     schr = 'k'; break;
           case INVENT_FEET:      snam = "Feet"; /* * * */ schr = 'f'; break;
           case INVENT_TAIL:      snam = "Tailsheath";     schr = 't'; break;
-        } /* end switch( count ) */
+        } /* switch( count ) */
 
-        if( schr == '\0' ) break;
+        if( schr == '\0' )
+        { break;
+        }
+
         mvprintw( 1 + count, 1, "%c) %s: %s", schr, snam,
                   u->inventory.items[count].sym.ch == '\0'
                     ? "EMPTY" : u->inventory.items[count].name
                 );
-      } /* end for( count ) */
+      } /* for( count ) */
 
       mvprintw( 16, 1, "i) Bag [NOT IMPLEMENTED]" );
 
-      /* this line is here to clear error messages */
+      // this line is here to clear error messages
       for( count = 1; count < 79; count++ )
       { mvaddch( 21, count, ' ' );
       }
@@ -164,14 +162,14 @@ uint8 uinventory( player* u )
 
       refresh();
 
-    } /* end if( refnow ) */
+    } /* if( refnow ) */
 
-    /* grab an item */
+    // grab an item
     grab = getch();
     if( grab == 'Q' || grab == ' ' )
     { break;
     }
-    grab = lowercase( grab );
+    grab = toLower( grab );
     switch( grab )
     {
       case 't':
@@ -198,35 +196,35 @@ uint8 uinventory( player* u )
       case 'g': line = 10; break;
       case 'k': line = 11; break;
       case 'f': line = 12; break;
-    } /* end switch( grab ) */
+    } /* switch( grab ) */
 
     if( line == 255 )
     { continue;
     }
     else
     {
-      /* if we haven't grabbed an item yet... */
+      // if we haven't grabbed an item yet...
       if( grabbed.sym.ch == '\0' )
       {
-        /* ...confirm the slot is not empty... */
+        // ...confirm the slot is not empty...
         if( u->inventory.items[line].sym.ch == '\0' )
         { mvprintw( 21, 1, "There is no item there." );
         }
         else
         {
-          /* ...grab the item... */
+          // ...grab the item...
           grabbed = u->inventory.items[line];
-          /* ...mark that line... */
+          // ...mark that line...
           mvchgat( 1 + line, 1, 78, A_REVERSE, 0, 0 );
-          /* ...and save that line so we can swap the items later. */
+          // ...and save that line so we can swap the items later.
           grabbedline = line;
         }
-      } /* end if( grabbed.sym.ch == '\0' ) */
-      /* if we have already grabbed an item... */
+      } /* if( grabbed.sym.ch == '\0' ) */
+      // if we have already grabbed an item...
       else
       {
-        bool confirm_swap = FALSE;
-        /* ...check to see if the player can equip the item in this slot */
+        bool confirm_swap = false;
+        // ...check to see if the player can equip the item in this slot
         switch( line )
         {
           case INVENT_HELMET:
@@ -240,7 +238,7 @@ seppuku:
                 u->hp = 0;
                 return 0;
             }
-            /* fall through to next case */
+            // fall through to next case
           case INVENT_CUIRASS:
             if( grabbed.type & ITEM_WEAPON )
             {
@@ -249,25 +247,26 @@ seppuku:
                 grabbed.name );
                 goto seppuku;
             }
-            /* fall through to next case */
+            // fall through to next case
           default:
-            /* confirm the player can swap this item to this slot */
+            // confirm the player can swap this item to this slot
             confirm_swap = check_equip( grabbed, line );
             break;
-        } /* end switch( line ) */
+        } /* switch( line ) */
 
         if( !confirm_swap )
         {
-          /* if we can't equip that item here, discard the swap */
+          // if we can't equip that item here, discard the swap
           mvprintw( 21, 1, "You can not equip a %s there.", grabbed.name );
 discard_swap:
           grabbedline = line = 255;
           grabbed.sym.ch = '\0';
+          refnow = true;
           continue;
         }
         else
         {
-          /* check again in the opposite direction */
+          // check again in the opposite direction
           if( !check_equip( u->inventory.items[line], grabbedline ) )
           {
             mvprintw( 21, 1, "You can not swap the %s and the %s.",
@@ -275,25 +274,24 @@ discard_swap:
             goto discard_swap;
           }
         }
-        /* ...swap the inventory items... */
+        // ...swap the inventory items...
         u->inventory.items[grabbedline] = u->inventory.items[line];
-        /* if the new slot is not empty, the player expends a turn moving
-         * that item
-         */
+        // if the new slot is not empty, the player expends a turn moving
+        // that item
         if( u->inventory.items[line].sym.ch != '\0' )
         { turns += 1;
         }
         u->inventory.items[line] = grabbed;
-        /* ...remove the grabbed item... */
+        // ...remove the grabbed item...
         grabbed.sym.ch = '\0';
         grabbedline = line = 255;
-        /* ...and make a note to refresh the inventory screen. */
-        refnow = 1;
+        // ...and make a note to refresh the inventory screen.
+        refnow = true;
 
-        /* the player expends a turn moving an inventory item */
+        // the player expends a turn moving an inventory item
         turns += 1;
-      } /* end if( grabbed.sym.ch != '\0' ) */
-    } /* end if( line != 255 ) */
+      } /* if( grabbed.sym.ch != '\0' ) */
+    } /* if( line != 255 ) */
   } while( grab != 'Q' && grab != ' ' );
 
   return turns;

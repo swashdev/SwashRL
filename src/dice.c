@@ -4,10 +4,11 @@
  * Spelunk! may be modified and distributed, but comes with NO WARRANTY!
  * See license.txt for details.
  */
-#include "global.h"
 
-dicebag Dice( uint8 d, int16 m, int32 f, int32 c )
+import global;
+
+dicebag Dice( ubyte d, short m, int f, int c )
 { 
-  dicebag r = { d, m, f, c };
+  dicebag r = { dice:d, modifier:m, floor:f, ceiling:c };
   return r;
 }

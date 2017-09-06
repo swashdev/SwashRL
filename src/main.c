@@ -4,7 +4,8 @@
  * Spelunk! may be modified and distributed, but comes with NO WARRANTY!
  * See license.txt for details.
  */
-#include "global.h"
+
+import global;
 
 #include <time.h>
 #include <stdlib.h>
@@ -30,8 +31,8 @@ void help( bool alt_hjkl )
 void version()
 {
   clear_message_line();
-  mvprintw( 0, 0, "%s, version %.3f%c",
-            FORRNIF, VERSION, DEV_RELEASE ? 'd' : ' ' );
+  mvprintw( 0, 0, "%s, version %.3f",
+            "Spelunk!", VERSION );
   getch();
   clear_message_line();
 }
@@ -41,20 +42,20 @@ int main()
   seed();
 
   initscr();
-  /* Control characters are passed directly to the program */
+  // Control characters are passed directly to the program
   raw(); 
-  /* Do not echo user input */
+  // Do not echo user input
   noecho();
-  /* Enable keypad & other function keys */
+  // Enable keypad & other function keys
   keypad(stdscr, 1);
 
   Current_map = test_map();
 
   player u = init_player( 1, 1 );
 
-#ifdef USE_FOV
-  calc_visible( &Current_map, u.x, u.y );
-#endif
+  static if( USE_FOV )
+  { calc_visible( &Current_map, u.x, u.y );
+  }
 
   Buffered_messages = MAX_MESSAGE_BUFFER;
   clear_messages();
@@ -63,57 +64,57 @@ int main()
 
   display_map_and_player( Current_map, u );
 
-  bool alt_hjkl = FALSE;
+  bool alt_hjkl = false;
 
-  uint8 moved = FALSE;
-  uint8 mv = 5;
+  uint moved = 0;
+  ubyte mv = 5;
   while( mv != MOVE_QUIT && u.hp > 0 )
   {
     moved = 0;
     mv = getcommand( alt_hjkl );
     switch( mv )
     {
-      /* display help */
+      // display help
       case MOVE_HELP:
          help( alt_hjkl );
          break;
-      /* quit */
+      // quit
       case MOVE_QUIT:
         goto playerquit;
         break; 
-      /* display version information */
+      // display version information
       case MOVE_GETVERSION:
         version();
         break;
       case MOVE_ALTKEYS:
         alt_hjkl = !alt_hjkl;
         mvprintw( 0, 0, "Alternate movement keys %sabled",
-                  alt_hjkl? "en" : "dis" );
+                  alt_hjkl ? "en" : "dis" );
         buffer_message();
         break;
-      /* print the message buffer */
+      // print the message buffer
       case MOVE_MESS_DISPLAY:
         message_history();
         clear_message_line();
         refresh_status_bar( &u );
         display_map_and_player( Current_map, u );
         break;
-      /* clear the message line */
+      // clear the message line
       case MOVE_MESS_CLEAR:
         clear_message_line();
         break;
-      /* wait */
+      // wait
       case MOVE_WAIT:
         message( "You bide your time." );
         moved = 1;
         break;
-      /* inventory management */
+      // inventory management
       case MOVE_INVENTORY:
         moved = uinventory( &u );
-        /* we must redraw the screen after the inventory window is cleared */
+        // we must redraw the screen after the inventory window is cleared
         display_map_and_player( Current_map, u );
         break;
-      /* all other commands go to umove */
+      // all other commands go to umove
       default:
         clear_message_line();
         moved = umove( &u, &Current_map, mv );
@@ -129,9 +130,9 @@ int main()
         map_move_all_monsters( &Current_map, &u );
         moved--;
       }
-#ifdef USE_FOV
-      calc_visible( &Current_map, u.x, u.y );
-#endif /* def USE_FOV */
+      static if( USE_FOV )
+      { calc_visible( &Current_map, u.x, u.y );
+      }
       refresh_status_bar( &u );
       display_map_and_player( Current_map, u );
     }
@@ -150,14 +151,14 @@ int main()
 playerdied:
 
   mvaddch( u.y + RESERVED_LINES, u.x, SMILEY );
-#ifdef TEXT_EFFECTS
-  mvchgat( u.y + RESERVED_LINES, u.x, 1, A_DIM, 0, NULL );
-#endif /* def TEXT_EFFECTS */
+  static if( TEXT_EFFECTS )
+  { mvchgat( u.y + RESERVED_LINES, u.x, 1, A_DIM, 0, NULL );
+  }
 
 playerquit:
 
   message( "See you later..." );
-  /* view all the messages that you got just before you died */
+  // view all the messages that you got just before you died
   read_messages();
 
   getch();
@@ -172,7 +173,7 @@ panic_error_unknown:
   return SP_UNKNOWN_ERROR;
 }
 
-void panic( int8 error )
+void panic( byte error )
 {
   endwin();
   switch( error )

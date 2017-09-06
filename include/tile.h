@@ -40,8 +40,6 @@ struct tile
   short hazard;
 }
 
-# define tiledata( sym, block_c, block_d, block_v, light, special ) \
-    ((tile) { sym, block_c, block_d, block_v, FALSE, light, special })
 tile tiledata( symbol sym, bool block_c, bool block_d, bool block_v,
                bool light, short special );
 

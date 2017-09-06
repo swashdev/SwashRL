@@ -4,37 +4,37 @@
  * Spelunk! may be modified and distributed, but comes with NO WARRANTY!
  * See license.txt for details.
  */
-#include "global.h"
+
+import global;
 
 map new_map()
 {
   map nu;
-  nu.m_siz = 0;
   return nu;
 }
 
 void add_mon( map* mp, monst mn )
 {
-  unsigned int mndex = mp->m_siz;
+  size_t mndex = mp->m.length;
   if( mndex < NUMTILES )
   {
+    mp->m.length++;
     mp->m[mndex] = mn;
-    mp->m_siz = mndex + 1;
   }
 }
 
-void remove_mon( map* mp, uint16 index )
+void remove_mon( map* mp, ushort index )
 {
-  /* To remove a monster in a map's mon array, move all monsters that are
-   * past it in the array up, thus overwriting it. */
-  if( index < mp->m_siz )
+  // To remove a monster in a map's mon array, move all monsters that are
+  // past it in the array up, thus overwriting it.
+  if( index < mp->m.length )
   {
     int mn, max;
-    for( mn = index + 1, max = mp->m_siz; mn < max; mn++ )
+    for( mn = index + 1, max = mp->m.length; mn < max; mn++ )
     {
       mp->m[mn - 1] = mp->m[mn];
     }
-    mp->m_siz = max - 1;
+    mp->m.length = max - 1;
   }
 }
 
@@ -42,7 +42,7 @@ map test_map()
 {
   map nu = new_map();
 
-  uint8 y, x;
+  ubyte y, x;
   for( y = 0; y < MAP_Y; y++ )
     for( x = 0; x < MAP_X; x++ )
     {
@@ -70,23 +70,27 @@ map test_map()
 
   add_mon( &nu, goobling );
 
-#if 0
-  goobling.x = 50;
-  add_mon( &nu, goobling );
-  goobling.y = 10;
-  add_mon( &nu, goobling );
-#endif
+  static if( false )
+  {
+    goobling.x = 50;
+    add_mon( &nu, goobling );
+    goobling.y = 10;
+    add_mon( &nu, goobling );
+  }
 
-  /* test items */
+  // test items
 
-  /* a test item "old sword" which grants a +2 bonus to the player's
-   * attack roll */
-  item old_sword = { .sym = symdata( '(', A_NORMAL ),
-                     .name = "old sword",
-                     .type = ITEM_WEAPON, .equip = EQUIP_NO_ARMOR,
-                     .addd = 0, .addm = 2 };
+  // a test item "old sword" which grants a +2 bonus to the player's
+  // attack roll
+  item old_sword = { sym:symdata( '(', A_NORMAL ),
+                     name:"old sword",
+                     type:ITEM_WEAPON, equip:EQUIP_NO_ARMOR,
+                     addd:0, addm:2 };
   nu.i[10][5] = old_sword;
 
+// I'm too lazy to do all of this crap right now (TODO)
+static if( false )
+{
   item ring = { .sym = symdata( '=', A_NORMAL ),
                 .name = "tungsten ring",
                 .type = ITEM_JEWELERY, .equip = EQUIP_JEWELERY_RING,
@@ -133,6 +137,7 @@ map test_map()
                       .type = ITEM_ARMOR, .equip = EQUIP_TAIL,
                       .addd = 0, .addm = 1 };
   nu.i[17][3] = tailsheath;
+}
   
   return nu;
 }

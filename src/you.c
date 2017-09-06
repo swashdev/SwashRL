@@ -4,9 +4,10 @@
  * Spelunk! may be modified and distributed, but comes with NO WARRANTY!
  * See license.txt for details.
  */
-#include "global.h"
 
-player init_player( uint8 x, uint8 y )
+import global;
+
+player init_player( ubyte x, ubyte y )
 {
   player u;
   if( x < 80 )
@@ -19,7 +20,7 @@ player init_player( uint8 x, uint8 y )
     u.y = 1;
   u.sym = symdata( SMILEY, A_NORMAL );
   u.hp = roll( 3, 2 );
-  uint8 count;
+  ubyte count;
   for( count = 0; count < 40; count++ )
   { u.inventory.items[count] = No_item;
   }

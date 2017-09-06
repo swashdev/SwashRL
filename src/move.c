@@ -4,17 +4,19 @@
  * Spelunk! may be modified and distributed, but comes with NO WARRANTY!
  * See license.txt for details.
  */
-#include "global.h"
+
+import global;
 
 #include <stdlib.h>
 
 int getcommand( bool alt_hjkl )
 {
-  uint16 c = getch();
-#if 0 /* debug stuff */
-  mvprintw( 0, 0, "Mov: %c alt_hjkl: %u", c, alt_hjkl );
-  getch();
-#endif
+  ushort c = getch();
+  version( debug )
+  {
+    mvprintw( 0, 0, "Mov: %c alt_hjkl: %u", c, alt_hjkl );
+    getch();
+  }
   switch( c )
   {
     case 'y':
@@ -35,7 +37,7 @@ int getcommand( bool alt_hjkl )
       { return MOVE_NW;
       }
     case '9':
-    case KEY_PPAGE: /* pgup */
+    case KEY_PPAGE: // pgup
       return MOVE_NE;
       break;
     case 'l':
@@ -48,12 +50,12 @@ int getcommand( bool alt_hjkl )
       { return MOVE_SW;
       }
     case '3':
-    case KEY_NPAGE: /* pgdn */
+    case KEY_NPAGE: // pgdn
       return MOVE_SE;
       break;
     case 'j':
     case '2':
-    case KEY_DOWN: /* numpad "down" */
+    case KEY_DOWN: // numpad "down"
       return MOVE_SS;
       break;
     case 'b':
@@ -74,27 +76,28 @@ int getcommand( bool alt_hjkl )
       return MOVE_WAIT;
       break;
 
-/* numpad controls (Windows-specific) */
-#ifdef WINDOWS
-    case KEY_A1:
-      return MOVE_NW;
-    case KEY_A2:
-      return MOVE_NN;
-    case KEY_A3:
-      return MOVE_NE;
-    case KEY_B1:
-      return MOVE_WW;
-    case KEY_B2:
-      return MOVE_WAIT;
-    case KEY_B3:
-      return MOVE_EE;
-    case KEY_C1:
-      return MOVE_SW;
-    case KEY_C2:
-      return MOVE_SS;
-    case KEY_C3:
-      return MOVE_SE;
-#endif /* WINDOWS */
+    // numpad controls (Windows-specific)
+    version( Windows )
+    {
+      case KEY_A1:
+        return MOVE_NW;
+      case KEY_A2:
+        return MOVE_NN;
+      case KEY_A3:
+        return MOVE_NE;
+      case KEY_B1:
+        return MOVE_WW;
+      case KEY_B2:
+        return MOVE_WAIT;
+      case KEY_B3:
+        return MOVE_EE;
+      case KEY_C1:
+        return MOVE_SW;
+      case KEY_C2:
+        return MOVE_SS;
+      case KEY_C3:
+        return MOVE_SE;
+    } /* version( Windows ) */
 
     case 'i':
       if( alt_hjkl == TRUE )
@@ -109,7 +112,7 @@ int getcommand( bool alt_hjkl )
       return MOVE_HELP;
       break;
 
-    case KEY_F12: /* F12 key */
+    case KEY_F12: // F12 key
       return MOVE_ALTKEYS;
 
     case KY_GET:
@@ -123,6 +126,7 @@ int getcommand( bool alt_hjkl )
     case KY_QUIT:
       return MOVE_QUIT;
 
+    case 'v':
     case KY_VERSION:
       return MOVE_GETVERSION;
 
@@ -132,7 +136,7 @@ int getcommand( bool alt_hjkl )
   }
 }
 
-void getdydx( short int dir, short int* dy, short int* dx )
+void getdydx( ubyte dir, byte* dy, byte* dx )
 {
   switch( dir )
   {
@@ -182,63 +186,33 @@ void mattacku( monst* m, player* u )
   if( atk > 0 )
   {
     u->hp -= atk;
-    /* TODO: Figure out message formatting--probably have to write your own
-     * version of sprintf since the standard ones aren't working */
-#if 0
-    message( "It attacks you!" );
-#else
-    mvprintw( 0, 0, "The %s attacks you!", m->name );
-    buffer_message();
-#endif
+    message( "The %s attacks you!", m->name );
   }
   else
-  {
-#if 0
-    message( "It barely misses you!" );
-#else
-    mvprintw( 0, 0, "The %s barely misses you!", m->name );
-    buffer_message();
-#endif
+  { message( "The %s barely misses you!", m->name );
   }
 }
 
 void uattackm( player* u, monst* m )
 {
-  int8 mod = u->attack_roll.modifier + u->inventory.items[INVENT_WEAPON].addm;
-  int8 dice = u->attack_roll.dice + u->inventory.items[INVENT_WEAPON].addd;
-  dieroll_t atk = roll_x( dice, mod,
-                          u->attack_roll.floor, u->attack_roll.ceiling );
+  byte mod = u->attack_roll.modifier + u->inventory.items[INVENT_WEAPON].addm;
+  byte dice = u->attack_roll.dice + u->inventory.items[INVENT_WEAPON].addd;
+  int atk = roll_x( dice, mod, u->attack_roll.floor, u->attack_roll.ceiling );
 
   if( atk > 0 )
   {
     m->hp -= atk;
-#if 0
-    message( "You attack it!" );
-#else
-    mvprintw( 0, 0, "You attack the %s!", m->name );
-    buffer_message();
-#endif
+    message( "You attack the %s!", m->name );
   }
   else
-  {
-#if 0
-    message( "You barely miss it!" );
-#else
-    mvprintw( 0, 0, "You barely miss the %s!", m->name );
-    buffer_message();
-#endif
+  { message( "You barely miss the %s!", m->name );
   }
 
   if( m->hp <= 0 )
-  {
-#if 0
-    message( "It is slain!" );
-#else
-    mvprintw( 0, 0, "The %s is slain!", m->name );
-    buffer_message();
-#endif
+  { message( "The %s is slain!", m->name );
   }
-#if 0 /* debug stuff! */
+version( debug )
+{
   else
   {
     getch();
@@ -246,29 +220,28 @@ void uattackm( player* u, monst* m )
     mvprintw( 0, 0, "The %s has %d hit points left.",
               m->name, m->hp );
   }
-#endif
+} /* version( debug ) */
   move( u->y + RESERVED_LINES, u->x );
 }
 
-#define FLOOR_HERE 0
-#define WALL_HERE  1
-#define WATER_HERE 2
-#define MOVEMENT_IMPOSSIBLE 3
+enum FLOOR_HERE = 0;
+enum WALL_HERE  = 1;
+enum WATER_HERE = 2;
+enum MOVEMENT_IMPOSSIBLE = 3;
 
-#define CAN_NOT_FLY 0
-#define CAN_FLY     1
-#define IS_FLYING   2
+enum CAN_NOT_FLY = 0;
+enum CAN_FLY     = 1;
+enum IS_FLYING   = 2;
 
-#define CAN_NOT_SWIM  0
-#define CAN_SWIM      1
-#define CAN_ONLY_SWIM 2
+enum CAN_NOT_SWIM  = 0;
+enum CAN_SWIM      = 1;
+enum CAN_ONLY_SWIM = 2;
 
-void mmove( monst* mn, map* m, short int idy, short int idx, player* u )
+void mmove( monst* mn, map* m, byte idy, byte idx, player* u )
 {
-  short int dy = idy, dx = idx;
+  byte dy = idy, dx = idx;
 
-  unsigned short int pause = 0;
-  unsigned short int terrain = 0, monster = 0;
+  ubyte terrain = 0, monster = 0;
 
   dx = dx + mn->x; dy = dy + mn->y;
   bool cardinal = dx == 0 || dy == 0;
@@ -293,16 +266,16 @@ void mmove( monst* mn, map* m, short int idy, short int idx, player* u )
 
   if( terrain )
   {
-    /* Attempt to have the monster navigate around obstacles */
+    // Attempt to have the monster navigate around obstacles
     if( terrain == WATER_HERE && mn->fly == CAN_FLY )
     {
       mn->fly = IS_FLYING;
     }
     else if( terrain == WALL_HERE || mn->fly == CAN_NOT_FLY )
     {
-      /* TODO: Definitely need better colission checking here.  Maybe a
-       * function should be written to determine if a monster can step in a
-       * certain tile. */
+      // TODO: Definitely need better colission checking here.  Maybe a
+      // function should be written to determine if a monster can step in a
+      // certain tile.
       if( !m->t[dy][mn->x].block_cardinal_movement )
       {
         dx = mn->x;
@@ -338,20 +311,7 @@ void mmove( monst* mn, map* m, short int idy, short int idx, player* u )
   }
 }
 
-#undef CAN_NOT_SWIM
-#undef CAN_SWIM
-#undef CAN_ONLY_SWIM
-
-#undef CAN_NOT_FLY
-#undef CAN_FLY
-#undef IS_FLYING
-
-#undef FLOOR_HERE
-#undef WALL_HERE
-#undef WATER_HERE
-#undef MOVEMENT_IMPOSSIBLE
-
-void monstai( map* m, unsigned int index, player* u )
+void monstai( map* m, uint index, player* u )
 {
   monst* mn = &m->m[index];
   int mnx = mn->x, mny = mn->y, ux = u->x, uy = u->y,
@@ -367,7 +327,7 @@ void monstai( map* m, unsigned int index, player* u )
   mmove( mn, m, dy, dx, u );
 }
 
-uint8 umove( player* u, map* m, unsigned short int dir )
+ubyte umove( player* u, map* m, ubyte dir )
 {
   if( dir == MOVE_GET )
   {
@@ -381,15 +341,15 @@ uint8 umove( player* u, map* m, unsigned short int dir )
   if( dir == MOVE_INVENTORY )
   { return uinventory( u );
   }
-  short int dy, dx;
+  byte dy, dx;
   getdydx( dir, &dy, &dx );
   bool cardinal = dy == 0 || dx == 0;
 
-  unsigned short int terrain = 0, monster = 0;
+  ubyte terrain = 0, monster = 0;
 
   dx = dx + u->x; dy = dy + u->y;
 
-  int c, d = m->m_siz;
+  int c, d = m->m.length;
   monst* mn;
   for( c = 0; c < d; c++ )
   {
@@ -406,7 +366,7 @@ uint8 umove( player* u, map* m, unsigned short int dir )
   || (!cardinal && (m->t[dy][dx].block_diagonal_movement)) )
   {
     message( "Ouch!  You walk straight into a wall!" );
-    /* report "no movement" to the mainloop so we don't expend a turn */
+    // report "no movement" to the mainloop so we don't expend a turn
     return 0;
   }
   else
@@ -419,18 +379,11 @@ message( "You step into the water and are pulled down by your equipment..." );
   }
 
   if( m->i[dy][dx].sym.ch != '\0' )
-  {
-#if 0
-    message( "You see here an old sword." );
-#else
-    mvprintw( 0, 0, "You see here a %s", m->i[dy][dx].name );
-    buffer_message();
-#endif
+  { message( "You see here a %s", m->i[dy][dx].name );
   }
 
   if( monster || terrain )
-  {
-    dx = 0; dy = 0;
+  { dx = 0; dy = 0;
   }
   else
   {
@@ -443,19 +396,18 @@ message( "You step into the water and are pulled down by your equipment..." );
 
 void map_move_all_monsters( map* m, player* u )
 {
-  if( m->m_siz == 0 )
-    return;
+  if( m->m.length == 0 )
+  { return;
+  }
 
   int mn, mndex;
-  for( mn = 0, mndex = m->m_siz; mn < mndex; mn++ )
+  for( mn = 0, mndex = m->m.length; mn < mndex; mn++ )
   {
     if( m->m[mn].hp > 0 )
-    {
-      monstai( m, mn, u );
+    { monstai( m, mn, u );
     }
     else
-    {
-      remove_mon( m, mn );
+    { remove_mon( m, mn );
     }
   }
 }

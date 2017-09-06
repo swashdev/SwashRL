@@ -1,4 +1,7 @@
-﻿/*
+﻿extern( C )
+{
+
+/*
 * libtcod 1.6.3
 * Copyright (c) 2008,2009,2010,2012,2013,2016,2017 Jice & Mingos & rmtew
 * All rights reserved.
@@ -26,94 +29,97 @@
 */
 
 /* This source code has been modified from its original Doryen library
- * implementation to work in Spelunk! - Philip Pavlick */
+ * implementation to work in Spelunk! - Philip Pavlick
+ */
 
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include "global.h"
+  #include <stdlib.h>
+  #include <string.h>
+  #include <math.h>
+  #include "global.h"
 
-static int mult[4][8]= {
-  {1,0,0,-1,-1,0,0,1},
-  {0,1,-1,0,0,-1,1,0},
-  {0,1,1,0,0,-1,-1,0},
-  {1,0,0,1,-1,0,0,-1},
-};
+  static int mult[4][8]= {
+    {1,0,0,-1,-1,0,0,1},
+    {0,1,-1,0,0,-1,1,0},
+    {0,1,1,0,0,-1,-1,0},
+    {1,0,0,1,-1,0,0,-1},
+  };
 
-static void cast_light( map* to_display, int cx, int cy, int row, float start,
-                        float end, int radius, int r2, int xx, int xy, int yx,
-                        int yy, int id, bool light_walls)
-{
-  int j;
-  float new_start=0.0f;
-  if ( start < end ) return;
-  for (j=row; j< radius+1; j++) {
-    int dx=-j-1;
-    int dy=-j;
-    bool blocked=FALSE;
-    while ( dx <= 0 ) {
-      int X,Y;
-      dx++;
-      X=cx+dx*xx+dy*xy;
-      Y=cy+dx*yx+dy*yy;
-      if ((unsigned)X < MAP_X && (unsigned)Y < MAP_Y)
-      {
-        float l_slope,r_slope;
-        l_slope=(dx-0.5f)/(dy+0.5f);
-        r_slope=(dx+0.5f)/(dy-0.5f);
-        if( start < r_slope ) continue;
-        else if( end > l_slope ) break;
-        if ( dx*dx+dy*dy <= r2
-          && (light_walls || !(to_display->t[Y][X].block_vision)))
-        { to_display->v[Y][X] = TRUE;
-        }
-        if ( blocked ) {
-          if (to_display->t[Y][X].block_vision) {
-            new_start=r_slope;
-            continue;
-          } else {
-            blocked=FALSE;
-            start=new_start;
+  static void cast_light( map* to_display, int cx, int cy, int row,
+                          float start, float end, int radius, int r2, int xx,
+                          int xy, int yx, int yy, int id, bool light_walls)
+  {
+    int j;
+    float new_start=0.0f;
+    if ( start < end ) return;
+    for (j=row; j< radius+1; j++) {
+      int dx=-j-1;
+      int dy=-j;
+      bool blocked=FALSE;
+      while ( dx <= 0 ) {
+        int X,Y;
+        dx++;
+        X=cx+dx*xx+dy*xy;
+        Y=cy+dx*yx+dy*yy;
+        if ((unsigned)X < MAP_X && (unsigned)Y < MAP_Y)
+        {
+          float l_slope,r_slope;
+          l_slope=(dx-0.5f)/(dy+0.5f);
+          r_slope=(dx+0.5f)/(dy-0.5f);
+          if( start < r_slope ) continue;
+          else if( end > l_slope ) break;
+          if ( dx*dx+dy*dy <= r2
+            && (light_walls || !(to_display->t[Y][X].block_vision)))
+          { to_display->v[Y][X] = TRUE;
           }
-        } else {
-          if ((to_display->t[Y][X].block_vision) && j < radius ) {
-            blocked=TRUE;
-            cast_light(to_display,cx,cy,j+1,start,l_slope,radius,r2,xx,xy,yx,
-                       yy,id+1,light_walls);
-            new_start=r_slope;
+          if ( blocked ) {
+            if (to_display->t[Y][X].block_vision) {
+              new_start=r_slope;
+              continue;
+            } else {
+              blocked=FALSE;
+              start=new_start;
+            }
+          } else {
+            if ((to_display->t[Y][X].block_vision) && j < radius ) {
+              blocked=TRUE;
+              cast_light(to_display,cx,cy,j+1,start,l_slope,radius,r2,xx,xy,yx,
+                         yy,id+1,light_walls);
+              new_start=r_slope;
+            }
           }
         }
       }
-    }
-    if ( blocked ) break;
-  }
-}
-
-void TCOD_map_compute_fov_recursive_shadowcasting(map* to_display,
-    int player_x, int player_y, int max_radius, bool light_walls)
-{
-  int oct,c,d,r2;
-  /* clean the map */
-  for( c = 0; c < MAP_Y; c++ )
-  { for( d = 0; d < MAP_X; d++ )
-    { to_display->v[c][d] = FALSE;
+      if ( blocked ) break;
     }
   }
-  if ( max_radius == 0 ) {
-    int max_radius_x=MAP_X-player_x;
-    int max_radius_y=MAP_Y-player_y;
-    max_radius_x=max_radius_x > player_x ? max_radius_x : player_x;
-    max_radius_y=max_radius_y > player_y ? max_radius_y : player_y;
-    max_radius = (int)(sqrt((max_radius_x*max_radius_x)
-                           +(max_radius_y*max_radius_y)))
-                      +1;
-  }
-  r2=max_radius*max_radius;
-  /* recursive shadow casting */
-  for (oct=0; oct < 8; oct++)
+  
+  void TCOD_map_compute_fov_recursive_shadowcasting(map* to_display,
+      int player_x, int player_y, int max_radius, bool light_walls)
   {
-    cast_light(to_display,player_x,player_y,1,1.0,0.0,max_radius,r2,
-    mult[0][oct],mult[1][oct],mult[2][oct],mult[3][oct],0,light_walls);
+    int oct,c,d,r2;
+    /* clean the map */
+    for( c = 0; c < MAP_Y; c++ )
+    { for( d = 0; d < MAP_X; d++ )
+      { to_display->v[c][d] = FALSE;
+      }
+    }
+    if ( max_radius == 0 ) {
+      int max_radius_x=MAP_X-player_x;
+      int max_radius_y=MAP_Y-player_y;
+      max_radius_x=max_radius_x > player_x ? max_radius_x : player_x;
+      max_radius_y=max_radius_y > player_y ? max_radius_y : player_y;
+      max_radius = (int)(sqrt((max_radius_x*max_radius_x)
+                             +(max_radius_y*max_radius_y)))
+                        +1;
+    }
+    r2=max_radius*max_radius;
+    /* recursive shadow casting */
+    for (oct=0; oct < 8; oct++)
+    {
+      cast_light(to_display,player_x,player_y,1,1.0,0.0,max_radius,r2,
+      mult[0][oct],mult[1][oct],mult[2][oct],mult[3][oct],0,light_walls);
+    }
+    to_display->v[player_y][player_x] = TRUE;
   }
-  to_display->v[player_y][player_x] = TRUE;
-}
+
+} /* extern( C ) */

@@ -16,7 +16,7 @@ bool upickup( player* u, item i );
 
 // Allows the player to check their inventory.  Returns the number of items
 // moved while on the inventory screen.
-int uinventory( player* u );
+uint uinventory( player* u );
 
 // Checks if the player can equip `i' in item slot `s'
 bool check_equip( item i, ubyte s );

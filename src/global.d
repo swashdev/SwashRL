@@ -83,19 +83,16 @@ import util;
 // notes/include
 
 import dice;
-import random;
 import sym;
 import tsyms;
 import tflags;
 import tile;
-import tiles;
 import iflags;
 import item;
 import inven;
 import monst;
 import you;
 import map;
-import tcfov;
 import fov;
 import display;
 import message;

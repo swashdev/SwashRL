@@ -4,20 +4,16 @@
  * Spelunk! may be modified and distributed, but comes with NO WARRANTY!
  * See license.txt for details.
  */
-#ifndef YOU_H
-# define YOU_H
 
-# include "global.h"
+import global;
 
-typedef struct
+struct player
 {
   symbol sym;
-  uint16 x, y;
-  int32 hp;
+  ushort x, y;
+  int hp;
   inven inventory;
   dicebag attack_roll;
-} player;
+}
 
-player init_player( uint8 x, uint8 y );
-
-#endif /* !def YOU_H */
+player init_player( ubyte x, ubyte y );

@@ -24,14 +24,14 @@ void set_seed( int s );
 // seed the random number generator
 void seed();
 
-/* boolean dice */
+// boolean dice //
 
-/* flip a coin */
+// flip a coin
 bool flip();
 
-/* the standard six-sided die */
+// the standard six-sided die //
 
-/* roll a d6 */
+// roll a d6
 int d();
 
 // "special case" dice--the d10, d100, and d2 //

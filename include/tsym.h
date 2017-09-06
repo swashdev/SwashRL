@@ -4,16 +4,12 @@
  * Spelunk! may be modified and distributed, but comes with NO WARRANTY!
  * See license.txt for details.
  */
-#ifndef TSYM_H
-# define TSYM_H
 
-# include "global.h"
+import global;
 
-/* Hard-coded values for map symbols */
+// Hard-coded values for map symbols
 
-# define SYM_FLOOR  '.'
-# define SYM_WALL   '#'
-# define SYM_WATER  '}'
-# define SYM_SHADOW ' '
-
-#endif /* !def TSYM_H */
+enum SYM_FLOOR  = '.';
+enum SYM_WALL   = '#';
+enum SYM_WATER  = '}';
+enum SYM_SHADOW = ' ';

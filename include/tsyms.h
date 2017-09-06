@@ -1,24 +1,18 @@
-#ifndef TSYMS_H
-# define TSYMS_H
+/*
+ * Copyright (c) 2017 Philip Pavlick.  All rights reserved.
+ *
+ * Spelunk! may be modified and distributed, but comes with NO WARRANTY!
+ * See license.txt for details.
+ */
 
-# include "global.h"
+import global;
 
-/* declare symbols for dungeon tiles--see ``sym.h'' for declaration of the
- * `symbol' struct */
+// declare symbols for dungeon tiles--see ``sym.h'' for declaration of the
+// `symbol' struct
 
-# ifndef SYM_H
-#  include "sym.h"
-# endif /* !def SYM_H */
-
-# define scs static const symbol
-
-scs SYM_FLOOR  = symdata( '.', A_NORMAL  );
-scs SYM_WALL   = symdata( '#', A_REVERSE );
-scs SYM_STALA  = symdata( 'V', A_REVERSE );
-scs SYM_WATER  = symdata( '}', A_NORMAL  );
-scs SYM_DOOR   = symdata( '+', A_REVERSE );
-scs SYM_SHADOW = symdata( ' ', A_NORMAL );
-
-# undef scs
-
-#endif /* !def TSYMS_H */
+static const symbol SYM_FLOOR  = symdata( '.', A_NORMAL  );
+static const symbol SYM_WALL   = symdata( '#', A_REVERSE );
+static const symbol SYM_STALA  = symdata( 'V', A_REVERSE );
+static const symbol SYM_WATER  = symdata( '}', A_NORMAL  );
+static const symbol SYM_DOOR   = symdata( '+', A_REVERSE );
+static const symbol SYM_SHADOW = symdata( ' ', A_NORMAL );

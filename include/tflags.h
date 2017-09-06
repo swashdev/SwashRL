@@ -4,13 +4,9 @@
  * Spelunk! may be modified and distributed, but comes with NO WARRANTY!
  * See license.txt for details.
  */
-#ifndef TILE_FLAGS
-# define TILE_FLAGS
 
-# include "global.h"
+import global
 
-# define SPECIAL_NONE 0x0000
+enum SPECIAL_NONE = 0x0000;
 
-# define HAZARD_WATER 0x0010
-
-#endif /* !TILE_FLAGS */
+enum HAZARD_WATER = 0x0010;

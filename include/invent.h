@@ -21,6 +21,6 @@ int uinventory( player* u );
 // Checks if the player can equip `i' in item slot `s'
 bool check_equip( item i, ubyte s );
 
-/* Checks if the player has a free grasp
- * returns 1 for weapon-hand, 2 for off-hand, and 0 for no free grasp */
+// Checks if the player has a free grasp
+// returns 1 for weapon-hand, 2 for off-hand, and 0 for no free grasp
 ubyte check_grasp( player* u );

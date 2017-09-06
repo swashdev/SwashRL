@@ -8,7 +8,7 @@
 // This is the global file for Spelunk!.  It will import config.h and util.h
 // for you and process the data in both of these files to configure how
 // Spelunk! will compile.  THIS FILE SHOULD BE INCLUDED AT THE TOP OF EVERY
-// FILE.  It will include all of the other files for you. */
+// FILE.  It will include all of the other files for you.
 
 /* SECTION 0: ****************************************************************
  * Spelunk! version control & configuration                                  *
@@ -17,10 +17,10 @@
 // The version number
 // In the current version numbering system, the first number is the release
 // number and the second is the three-digit revision number.
-enum VERSION = 0.021
+enum VERSION = 0.021;
 
 // Include the config file
-import config
+import config;
 
 /* SECTION 1: ****************************************************************
  * Compiler configuration                                                    *
@@ -45,6 +45,7 @@ static if( IMPORT_CURSES )
 { import curses;
 }
 
+// TODO:
 ////Autodetect version of curses (to disambiguate curses.h)
 //# if defined( __NCURSES_H )
 //#  define USE_NCURSES
@@ -63,7 +64,7 @@ static if( IMPORT_CURSES )
 // message buffer and one at the bottom for the status bar.  If MAP_Y is
 // smaller than that, this variable takes effect.  MAP_X will always take
 // effect.  MAP_y and MAP_x are used for zero-counted for loops.  NUMTILES is
-// the number of tiles allowable on a map (1,760 by default) */
+// the number of tiles allowable on a map (1,760 by default)
 enum MAP_Y = 22;
 enum MAP_X = 80;
 

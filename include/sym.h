@@ -34,10 +34,12 @@ static if( TEXT_EFFECTS )
 {
                 , attr_t effects
 }
+else
+{
+                , ushort color
+}
               )
 {
   symbol ret = { ch:character, color:effects };
   return ret;
 }
-# define symdata( character, effects ) ((symbol) { character, effects })
-# define symdat( character ) ((symbol) { character, A_NORMAL })

@@ -22,7 +22,7 @@ enum IMPORT_CURSES   = false; // imports curses.h
  *****************************************************************************/
 
 // What character to use for the player.  '@' is recommended.
-enum SMILEY = '@'
+enum SMILEY = '@';
 
 // Enables special effects like the highlighted player and reversed walls.
 // Only works if your curses standard uses these effects (it probably does).
@@ -63,5 +63,5 @@ enum MAX_MESSAGE_BUFFER = 20;
 // limit, as it is highly improbable that you fill find a monster that hits
 // that hard.
 // Note to self: Are these values really necessary?
-enum MINIMUM_DIE_ROLL = -1000
-enum MAXIMUM_DIE_ROLL = 1000
+enum MINIMUM_DIE_ROLL = -1000;
+enum MAXIMUM_DIE_ROLL = 1000;

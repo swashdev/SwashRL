@@ -13,7 +13,9 @@ import "global.h";
 struct map
 {
   tile[MAP_Y][MAP_X] t; // `t'iles
-  bool[MAP_Y][MAP_X] v; // 'v'isibility
+  static if( USE_FOV )
+  { bool[MAP_Y][MAP_X] v; // 'v'isibility
+  }
   monst[NUMTILES]    m; // 'm'onsters
   item[MAP_Y][MAP_X] i; // 'i'tems
 }

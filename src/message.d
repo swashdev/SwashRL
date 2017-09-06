@@ -9,6 +9,8 @@ import global;
 
 import std.string;
 
+static string[MAX_MESSAGE_BUFFER] Messages;
+
 void clear_messages()
 {
   ushort m;

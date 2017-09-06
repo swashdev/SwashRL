@@ -9,6 +9,9 @@ import global;
 
 import std.random, std.datetime;
 
+// Hi, my name is Lucky, and I'll be your random number generator today.
+static RandomGen Lucky;
+
 // rng maintenance //
 
 void set_seed( int s )

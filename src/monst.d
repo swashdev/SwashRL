@@ -7,6 +7,17 @@
 
 import global;
 
+// `mon' for monster generation data
+struct mon
+{
+  symbol sym;
+  string name;
+  ubyte fly;
+  ubyte swim;
+  dicebag hit_dice;
+  dicebag attack_roll;
+}
+
 mon mondat( char isym, string iname, ubyte ifly, ubyte iswim,
             ubyte hit_dice, short hit_modifier, int hit_min, int hit_max,
             ubyte at_dice, short at_modifier, int at_min, int at_max )
@@ -16,6 +27,18 @@ mon mondat( char isym, string iname, ubyte ifly, ubyte iswim,
              attack_roll:Dice( at_dice, at_modifier, at_min, at_max )
            };
   return mn;
+}
+
+// `monst' for a specific monster
+struct monst;
+{
+  symbol sym;
+  string name;
+  int hp;
+  ubyte fly;
+  ubyte swim;
+  dicebag attack_roll;
+  ubyte x, y;
 }
 
 monst monster_at( mon mn, ubyte x, ubyte y )

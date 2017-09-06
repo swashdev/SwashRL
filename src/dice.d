@@ -7,6 +7,19 @@
 
 import global;
 
+struct dicebag
+{
+  // `dice' is the number of d6es, `modifier' gets added to the result of the
+  // roll
+  ubyte dice;
+  short modifier;
+  // `floor' and `ceiling' represent an absolute maximum and absolute minimum.
+  // these are enforced after the modifier is added.  If `floor' < `ceiling',
+  // use the global limits.  Note that there is absolutely nothing stopping
+  // you from making `ceiling' negative as long as `floor' is lesser or equal.
+  int floor, ceiling;
+}
+
 dicebag Dice( ubyte d, short m, int f, int c )
 { 
   dicebag r = { dice:d, modifier:m, floor:f, ceiling:c };

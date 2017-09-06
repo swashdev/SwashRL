@@ -7,6 +7,15 @@
 
 import global;
 
+struct player
+{
+  symbol sym;
+  ushort x, y;
+  int hp;
+  inven inventory;
+  dicebag attack_roll;
+}
+
 player init_player( ubyte x, ubyte y )
 {
   player u;

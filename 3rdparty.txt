@@ -22,7 +22,7 @@ Again, use discretion.
 
  -- the Doryen library, aka libtcod ------------------------------------------
 
-The source file ``src/fov.c'' uses modified versions of functions taken
+The source file ``src/fov.d'' uses modified versions of functions taken
 directly from the libtcod source code.  In good faith, a comment line has been
 added to indicate very specifically that it has been modified from its
 original version.

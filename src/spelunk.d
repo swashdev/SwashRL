@@ -7,10 +7,6 @@
 
 import global;
 
-#include <time.h>
-#include <stdlib.h>
-#include <stdio.h>
-
 static map Current_map;
 
 void help( bool alt_hjkl )

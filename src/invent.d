@@ -15,23 +15,28 @@ bool upickup( player* u, item i )
     return false;
   }
 
+  // TODO: These three `if' statements can be condensed down to two.  Figure
+  // out how and git 'r' done.
   if( i.type & ITEM_WEAPON
       && u->inventory.items[INVENT_WEAPON].sym.ch == '\0' )
   {
-    message( "You pick up a " ~ i.name ~ " in your weapon-hand." );
+    message( "You pick up a %s in your weapon-hand.",
+             i.name );
     u->inventory.items[INVENT_WEAPON] = i;
     return true;
   }
 
   if( u->inventory.items[INVENT_OFFHAND].sym.ch == '\0' )
   {
-    message( "You pick up a " ~ i.name ~ " in your off-hand." );
+    message( "You pick up a %s in your off-hand.",
+             i.name );
     u->inventory.items[INVENT_OFFHAND] = i;
     return true;
   }
   else if( u->inventory.items[INVENT_WEAPON].sym.ch == '\0' )
   {
-    message( "You pick up a " ~ i.name ~ " in your weapon-hand." );
+    message( "You pick up a %s in your weapon-hand.",
+             i.name );
     u->inventory.items[INVENT_WEAPON] = i;
     return true;
   }

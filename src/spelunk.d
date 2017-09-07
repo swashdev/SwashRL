@@ -24,7 +24,7 @@ void help( bool alt_hjkl )
   clear_message_line();
 }
 
-void version()
+void sp_version()
 {
   clear_message_line();
   mvprintw( 0, 0, "%s, version %.3f",
@@ -80,7 +80,7 @@ int main()
         break; 
       // display version information
       case MOVE_GETVERSION:
-        version();
+        sp_version();
         break;
       case MOVE_ALTKEYS:
         alt_hjkl = !alt_hjkl;

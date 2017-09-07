@@ -18,26 +18,26 @@ bool upickup( player* u, item i )
   // TODO: These three `if' statements can be condensed down to two.  Figure
   // out how and git 'r' done.
   if( i.type & ITEM_WEAPON
-      && u->inventory.items[INVENT_WEAPON].sym.ch == '\0' )
+      && u.inventory.items[INVENT_WEAPON].sym.ch == '\0' )
   {
     message( "You pick up a %s in your weapon-hand.",
              i.name );
-    u->inventory.items[INVENT_WEAPON] = i;
+    u.inventory.items[INVENT_WEAPON] = i;
     return true;
   }
 
-  if( u->inventory.items[INVENT_OFFHAND].sym.ch == '\0' )
+  if( u.inventory.items[INVENT_OFFHAND].sym.ch == '\0' )
   {
     message( "You pick up a %s in your off-hand.",
              i.name );
-    u->inventory.items[INVENT_OFFHAND] = i;
+    u.inventory.items[INVENT_OFFHAND] = i;
     return true;
   }
-  else if( u->inventory.items[INVENT_WEAPON].sym.ch == '\0' )
+  else if( u.inventory.items[INVENT_WEAPON].sym.ch == '\0' )
   {
     message( "You pick up a %s in your weapon-hand.",
              i.name );
-    u->inventory.items[INVENT_WEAPON] = i;
+    u.inventory.items[INVENT_WEAPON] = i;
     return true;
   }
   else
@@ -149,8 +149,8 @@ uint uinventory( player* u )
         }
 
         mvprintw( 1 + count, 1, "%c) %s: %s", schr, snam,
-                  u->inventory.items[count].sym.ch == '\0'
-                    ? "EMPTY" : u->inventory.items[count].name
+                  u.inventory.items[count].sym.ch == '\0'
+                    ? "EMPTY" : u.inventory.items[count].name
                 );
       } /* for( count ) */
 
@@ -212,13 +212,13 @@ uint uinventory( player* u )
       if( grabbed.sym.ch == '\0' )
       {
         // ...confirm the slot is not empty...
-        if( u->inventory.items[line].sym.ch == '\0' )
+        if( u.inventory.items[line].sym.ch == '\0' )
         { mvprintw( 21, 1, "There is no item there." );
         }
         else
         {
           // ...grab the item...
-          grabbed = u->inventory.items[line];
+          grabbed = u.inventory.items[line];
           // ...mark that line...
           mvchgat( 1 + line, 1, 78, A_REVERSE, 0, 0 );
           // ...and save that line so we can swap the items later.
@@ -240,7 +240,7 @@ uint uinventory( player* u )
                 grabbed.name );
 seppuku:
                 getch();
-                u->hp = 0;
+                u.hp = 0;
                 return 0;
             }
             // fall through to next case
@@ -272,21 +272,21 @@ discard_swap:
         else
         {
           // check again in the opposite direction
-          if( !check_equip( u->inventory.items[line], grabbedline ) )
+          if( !check_equip( u.inventory.items[line], grabbedline ) )
           {
             mvprintw( 21, 1, "You can not swap the %s and the %s.",
-                      u->inventory.items[line].name, grabbed.name );
+                      u.inventory.items[line].name, grabbed.name );
             goto discard_swap;
           }
         }
         // ...swap the inventory items...
-        u->inventory.items[grabbedline] = u->inventory.items[line];
+        u.inventory.items[grabbedline] = u.inventory.items[line];
         // if the new slot is not empty, the player expends a turn moving
         // that item
-        if( u->inventory.items[line].sym.ch != '\0' )
+        if( u.inventory.items[line].sym.ch != '\0' )
         { turns += 1;
         }
-        u->inventory.items[line] = grabbed;
+        u.inventory.items[line] = grabbed;
         // ...remove the grabbed item...
         grabbed.sym.ch = '\0';
         grabbedline = line = 255;

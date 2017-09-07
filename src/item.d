@@ -12,10 +12,10 @@ import global;
 struct item
 {
   symbol sym;
-  str name;
-  uint16 type, equip;
+  string name;
+  ushort type, equip;
   /* modifiers to the player's dice rolls */
-  int8 addd, addm;
+  byte addd, addm;
 }
 
 item No_item = { sym:'\0', name:"NO ITEM", addd:0, addm:0 };

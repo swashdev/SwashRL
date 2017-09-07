@@ -28,11 +28,11 @@ map new_map()
 
 void add_mon( map* mp, monst mn )
 {
-  size_t mndex = mp->m.length;
+  size_t mndex = mp.m.length;
   if( mndex < NUMTILES )
   {
-    mp->m.length++;
-    mp->m[mndex] = mn;
+    mp.m.length++;
+    mp.m[mndex] = mn;
   }
 }
 
@@ -40,14 +40,14 @@ void remove_mon( map* mp, ushort index )
 {
   // To remove a monster in a map's mon array, move all monsters that are
   // past it in the array up, thus overwriting it.
-  if( index < mp->m.length )
+  if( index < mp.m.length )
   {
     int mn, max;
-    for( mn = index + 1, max = mp->m.length; mn < max; mn++ )
+    for( mn = index + 1, max = mp.m.length; mn < max; mn++ )
     {
-      mp->m[mn - 1] = mp->m[mn];
+      mp.m[mn - 1] = mp.m[mn];
     }
-    mp->m.length = max - 1;
+    mp.m.length = max - 1;
   }
 }
 

@@ -7,16 +7,9 @@
 
 import global;
 
-#include <stdlib.h>
-
 int getcommand( bool alt_hjkl )
 {
   ushort c = getch();
-  version( debug )
-  {
-    mvprintw( 0, 0, "Mov: %c alt_hjkl: %u", c, alt_hjkl );
-    getch();
-  }
   switch( c )
   {
     case 'y':
@@ -182,46 +175,36 @@ void getdydx( ubyte dir, byte* dy, byte* dx )
 
 void mattacku( monst* m, player* u )
 {
-  dieroll_t atk = rollbag( m->attack_roll );
+  dieroll_t atk = rollbag( m.attack_roll );
   if( atk > 0 )
   {
-    u->hp -= atk;
-    message( "The %s attacks you!", m->name );
+    u.hp -= atk;
+    message( "The %s attacks you!", m.name );
   }
   else
-  { message( "The %s barely misses you!", m->name );
+  { message( "The %s barely misses you!", m.name );
   }
 }
 
 void uattackm( player* u, monst* m )
 {
-  byte mod = u->attack_roll.modifier + u->inventory.items[INVENT_WEAPON].addm;
-  byte dice = u->attack_roll.dice + u->inventory.items[INVENT_WEAPON].addd;
-  int atk = roll_x( dice, mod, u->attack_roll.floor, u->attack_roll.ceiling );
+  byte mod = u.attack_roll.modifier + u.inventory.items[INVENT_WEAPON].addm;
+  byte dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].addd;
+  int atk = roll_x( dice, mod, u.attack_roll.floor, u.attack_roll.ceiling );
 
   if( atk > 0 )
   {
-    m->hp -= atk;
-    message( "You attack the %s!", m->name );
+    m.hp -= atk;
+    message( "You attack the %s!", m.name );
   }
   else
-  { message( "You barely miss the %s!", m->name );
+  { message( "You barely miss the %s!", m.name );
   }
 
-  if( m->hp <= 0 )
-  { message( "The %s is slain!", m->name );
+  if( m.hp <= 0 )
+  { message( "The %s is slain!", m.name );
   }
-version( debug )
-{
-  else
-  {
-    getch();
-    clear_message_line();
-    mvprintw( 0, 0, "The %s has %d hit points left.",
-              m->name, m->hp );
-  }
-} /* version( debug ) */
-  move( u->y + RESERVED_LINES, u->x );
+  move( u.y + RESERVED_LINES, u.x );
 }
 
 enum FLOOR_HERE = 0;
@@ -243,22 +226,22 @@ void mmove( monst* mn, map* m, byte idy, byte idx, player* u )
 
   ubyte terrain = 0, monster = 0;
 
-  dx = dx + mn->x; dy = dy + mn->y;
+  dx = dx + mn.x; dy = dy + mn.y;
   bool cardinal = dx == 0 || dy == 0;
 
-  if( (cardinal && (m->t[dy][dx].block_cardinal_movement))
-  || (!cardinal && (m->t[dy][dx].block_diagonal_movement)) )
+  if( (cardinal && (m.t[dy][dx].block_cardinal_movement))
+  || (!cardinal && (m.t[dy][dx].block_diagonal_movement)) )
   {
     terrain = WALL_HERE;
   }
   else
   {
-    if( (m->t[dy][dx].hazard & HAZARD_WATER) && mn->swim == CAN_NOT_SWIM )
+    if( (m.t[dy][dx].hazard & HAZARD_WATER) && mn.swim == CAN_NOT_SWIM )
     {
       terrain = WATER_HERE;
     }
-    else if( !(m->t[dy][dx].hazard & HAZARD_WATER)
-             && mn->swim == CAN_ONLY_SWIM )
+    else if( !(m.t[dy][dx].hazard & HAZARD_WATER)
+             && mn.swim == CAN_ONLY_SWIM )
     {
       terrain = MOVEMENT_IMPOSSIBLE;
     }
@@ -267,38 +250,38 @@ void mmove( monst* mn, map* m, byte idy, byte idx, player* u )
   if( terrain )
   {
     // Attempt to have the monster navigate around obstacles
-    if( terrain == WATER_HERE && mn->fly == CAN_FLY )
+    if( terrain == WATER_HERE && mn.fly == CAN_FLY )
     {
-      mn->fly = IS_FLYING;
+      mn.fly = IS_FLYING;
     }
-    else if( terrain == WALL_HERE || mn->fly == CAN_NOT_FLY )
+    else if( terrain == WALL_HERE || mn.fly == CAN_NOT_FLY )
     {
       // TODO: Definitely need better colission checking here.  Maybe a
       // function should be written to determine if a monster can step in a
       // certain tile.
-      if( !m->t[dy][mn->x].block_cardinal_movement )
+      if( !m.t[dy][mn.x].block_cardinal_movement )
       {
-        dx = mn->x;
+        dx = mn.x;
       }
-      else if( !m->t[mn->y][dx].block_cardinal_movement )
+      else if( !m.t[mn.y][dx].block_cardinal_movement )
       {
-        dy = mn->y;
+        dy = mn.y;
       }
     }
   }
   
 
-  if( dx == u->x && dy == u->y )
+  if( dx == u.x && dy == u.y )
   {
     mattacku( mn, u );
     monster = 1;
   }
   else
   {
-    int c, d = m->m_siz;
+    int c, d = m.m_siz;
     for( c = 0; c < d; c++ )
     {
-      if( m->m[c].x == dx && m->m[c].y == dy )
+      if( m.m[c].x == dx && m.m[c].y == dy )
       {
         monster = 1;
       }
@@ -307,14 +290,14 @@ void mmove( monst* mn, map* m, byte idy, byte idx, player* u )
 
   if( !monster )
   {
-    mn->x = dx; mn->y = dy;
+    mn.x = dx; mn.y = dy;
   }
 }
 
 void monstai( map* m, uint index, player* u )
 {
-  monst* mn = &m->m[index];
-  int mnx = mn->x, mny = mn->y, ux = u->x, uy = u->y,
+  monst* mn = &m.m[index];
+  int mnx = mn.x, mny = mn.y, ux = u.x, uy = u.y,
     dx = 0, dy = 0;
   if( mnx > ux )
     dx = -1;
@@ -331,9 +314,9 @@ ubyte umove( player* u, map* m, ubyte dir )
 {
   if( dir == MOVE_GET )
   {
-    if( upickup( u, m->i[u->y][u->x] ) )
+    if( upickup( u, m.i[u.y][u.x] ) )
     {
-      m->i[u->y][u->x] = No_item;
+      m.i[u.y][u.x] = No_item;
       return 1;
     }
     return 0;
@@ -347,14 +330,14 @@ ubyte umove( player* u, map* m, ubyte dir )
 
   ubyte terrain = 0, monster = 0;
 
-  dx = dx + u->x; dy = dy + u->y;
+  dx = dx + u.x; dy = dy + u.y;
 
-  int c, d = m->m.length;
+  int c, d = m.m.length;
   monst* mn;
   for( c = 0; c < d; c++ )
   {
-    mn = &m->m[c];
-    if( mn->x == dx && mn->y == dy && mn->hp > 0 )
+    mn = &m.m[c];
+    if( mn.x == dx && mn.y == dy && mn.hp > 0 )
     {
       uattackm( u, mn );
       monster = 1;
@@ -362,8 +345,8 @@ ubyte umove( player* u, map* m, ubyte dir )
     }
   }
 
-  if( (cardinal && (m->t[dy][dx].block_cardinal_movement))
-  || (!cardinal && (m->t[dy][dx].block_diagonal_movement)) )
+  if( (cardinal && (m.t[dy][dx].block_cardinal_movement))
+  || (!cardinal && (m.t[dy][dx].block_diagonal_movement)) )
   {
     message( "Ouch!  You walk straight into a wall!" );
     // report "no movement" to the mainloop so we don't expend a turn
@@ -371,15 +354,15 @@ ubyte umove( player* u, map* m, ubyte dir )
   }
   else
   {
-    if( m->t[dy][dx].hazard & HAZARD_WATER )
+    if( m.t[dy][dx].hazard & HAZARD_WATER )
     {
-      u->hp = 0;
+      u.hp = 0;
 message( "You step into the water and are pulled down by your equipment..." );
     }
   }
 
-  if( m->i[dy][dx].sym.ch != '\0' )
-  { message( "You see here a %s", m->i[dy][dx].name );
+  if( m.i[dy][dx].sym.ch != '\0' )
+  { message( "You see here a %s", m.i[dy][dx].name );
   }
 
   if( monster || terrain )
@@ -387,8 +370,8 @@ message( "You step into the water and are pulled down by your equipment..." );
   }
   else
   {
-    mvaddch( u->y + RESERVED_LINES, u->x, '.' );
-    u->y = dy; u->x = dx;
+    mvaddch( u.y + RESERVED_LINES, u.x, '.' );
+    u.y = dy; u.x = dx;
   }
 
   return 1;
@@ -396,14 +379,14 @@ message( "You step into the water and are pulled down by your equipment..." );
 
 void map_move_all_monsters( map* m, player* u )
 {
-  if( m->m.length == 0 )
+  if( m.m.length == 0 )
   { return;
   }
 
   int mn, mndex;
-  for( mn = 0, mndex = m->m.length; mn < mndex; mn++ )
+  for( mn = 0, mndex = m.m.length; mn < mndex; mn++ )
   {
-    if( m->m[mn].hp > 0 )
+    if( m.m[mn].hp > 0 )
     { monstai( m, mn, u );
     }
     else

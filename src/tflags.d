@@ -5,7 +5,7 @@
  * See license.txt for details.
  */
 
-import global
+import global;
 
 enum SPECIAL_NONE = 0x0000;
 

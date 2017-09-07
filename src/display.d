@@ -61,9 +61,10 @@ void display_map( map to_display )
 static if( USE_FOV )
 {
       if( !to_display.v[y][x] )
-      { output = SYM_SHADOW;
+      {
+        output = SYM_SHADOW;
+        goto dispoutput;
       }
-      else
 } /* static if( USE_FOV ) */
       if( to_display.i[y][x].sym.ch != '\0' )
       { output = to_display.i[y][x].sym;
@@ -100,9 +101,9 @@ void clear_message_line()
 
 void refresh_status_bar( player* u )
 {
-  int hp = u->hp;
-  ubyte dice = u->attack_roll.dice + u->inventory.items[INVENT_WEAPON].addd;
-  short mod = u->attack_roll.modifier + u->inventory.items[INVENT_WEAPON].addm;
+  int hp = u.hp;
+  ubyte dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].addd;
+  short mod = u.attack_roll.modifier + u.inventory.items[INVENT_WEAPON].addm;
   ubyte x;
   for( x = 0; x < MAP_X; x++ )
   { mvaddch( 1 + MAP_Y, x, ' ' );

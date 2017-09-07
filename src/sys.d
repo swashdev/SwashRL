@@ -10,8 +10,19 @@
 // since we're moving to D I'm pretty sure all we need this file for is
 // warning people not to use Apple products
 
-version( !Windows && !linux && !FreeBSD )
+version( Windows )
 {
-  pragma( msg, "Warning: You are compiling Spelunk! for an operating system\
- that is not currently being actively supported.  It may fail or crash." );
+  pragma( msg, "Compiling for Windows" );
+}
+else version( linux )
+{
+  pragma( msg, "Compiling for Linux" );
+}
+else version( FreeBSD )
+{
+  pragma( msg, "Compiling for FreeBSD" );
+}
+else
+{
+  pragma( msg, "Warning: You are compiling Spelunk! for an operating system that is not currently being actively supported.  It may fail or crash." );
 }

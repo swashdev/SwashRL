@@ -5,10 +5,10 @@
  * See license.txt for details.
  */
 
-include global;
+import global;
 
-/* the `symbol' struct, used to store information about symbols in the
- * game. */
+// the `symbol' struct, used to store information about symbols in the
+// game.
 
 struct symbol
 {
@@ -16,8 +16,8 @@ struct symbol
 
   static if( TEXT_EFFECTS )
   {
-    /* attr_t from curses--note that the attribute values also store color,
-     * hence the name */
+    // attr_t from curses--note that the attribute values also store color,
+    // hence the name
     attr_t color;
   }
   else
@@ -25,21 +25,18 @@ struct symbol
     ushort color;
   }
 
-  /* further members of this struct will be used when SDL is implemented for
-   * images (possibly including sprites in the future */
+  // further members of this struct will be used when SDL is implemented for
+  // images (possibly including sprites in the future
 }
 
-symbol symdata( char character
-static if( TEXT_EFFECTS )
+symbol symdata( char character, ushort effects )
 {
-                , attr_t effects
-}
-else
-{
-                , ushort color
-}
-              )
-{
-  symbol ret = { ch:character, color:effects };
+  static if( !TEXT_EFFECTS )
+  { ushort color = effects;
+  }
+  else
+  { attr_t color = cast(attr_t)effects;
+  }
+  symbol ret = { ch:character, color:color };
   return ret;
 }

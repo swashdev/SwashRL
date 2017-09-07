@@ -30,7 +30,7 @@ mon mondat( char isym, string iname, ubyte ifly, ubyte iswim,
 }
 
 // `monst' for a specific monster
-struct monst;
+struct monst
 {
   symbol sym;
   string name;

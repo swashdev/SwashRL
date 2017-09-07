@@ -5,7 +5,7 @@
  * See license.txt for details.
  */
 
-// This is the global file for Spelunk!.  It will import config.h and util.h
+// This is the global file for Spelunk!.  It will public config.h and util.h
 // for you and process the data in both of these files to configure how
 // Spelunk! will compile.  THIS FILE SHOULD BE INCLUDED AT THE TOP OF EVERY
 // FILE.  It will include all of the other files for you.
@@ -20,29 +20,29 @@
 enum VERSION = 0.021;
 
 // Include the config file
-import config;
+public import config;
 
 /* SECTION 1: ****************************************************************
  * Compiler configuration                                                    *
  *****************************************************************************/
 
 // Include the sys file to detect operating system
-import sys;
+public import sys;
 
 /* SECTION 2: ****************************************************************
  * curses configuration                                                      *
  *****************************************************************************/
 
-/* import the necessary version of curses */
+/* public import the necessary version of curses */
 
 static if( IMPORT_NCURSES )
-{ import ncurses;
+{ public import ncurses;
 }
 static if( IMPORT_PDCURSES )
-{ import pdcurses;
+{ public import pdcurses;
 }
 static if( IMPORT_CURSES )
-{ import curses;
+{ public import curses;
 }
 
 // TODO:
@@ -73,7 +73,7 @@ enum MAP_x = MAP_X - 1;
 enum NUMTILES = MAP_Y * MAP_X;
 
 // include the utility file
-import util;
+public import util;
 
 /* SECTION 4: ****************************************************************
  * Global inclusion of all header files not yet included                     *
@@ -82,21 +82,21 @@ import util;
 // include the rest of Spelunk!'s files in the order appointed in
 // notes/include
 
-import dice;
-import sym;
-import tsyms;
-import tflags;
-import tile;
-import iflags;
-import item;
-import inven;
-import monst;
-import you;
-import map;
-import fov;
-import display;
-import message;
-import keys;
-import moves;
-import move;
-import invent;
+public import dice;
+public import sym;
+public import tsyms;
+public import tflags;
+public import tile;
+public import iflags;
+public import item;
+public import inven;
+public import monst;
+public import you;
+public import map;
+public import fov;
+public import display;
+public import message;
+public import keys;
+public import moves;
+public import move;
+public import invent;

@@ -7,6 +7,8 @@
 
 import global;
 
+import core.stdc.time;
+
 struct dicebag
 {
   // `dice' is the number of d6es, `modifier' gets added to the result of the
@@ -29,7 +31,7 @@ dicebag Dice( ubyte d, short m, int f, int c )
 import std.random, std.datetime;
 
 // Hi, my name is Lucky, and I'll be your random number generator today.
-static RandomGen Lucky;
+static Random Lucky;
 
 // rng maintenance //
 

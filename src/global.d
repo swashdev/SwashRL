@@ -35,15 +35,7 @@ public import sys;
 
 /* public import the necessary version of curses */
 
-static if( IMPORT_NCURSES )
-{ public import ncurses;
-}
-static if( IMPORT_PDCURSES )
-{ public import pdcurses;
-}
-static if( IMPORT_CURSES )
-{ public import curses;
-}
+public import deimos.ncurses.curses;
 
 // TODO:
 ////Autodetect version of curses (to disambiguate curses.h)

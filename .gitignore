@@ -2,7 +2,11 @@
 
 # Ignore all vim/emacs backup files
 *~
-*.swp
+.*.swp
+.*.swo
+.*.swn
+.*.swm
+.*.swl
 *#*
 
 # Also ignore *my* backup files

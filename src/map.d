@@ -12,18 +12,12 @@ import global;
 
 struct map
 {
-  tile[MAP_Y][MAP_X]   t; // `t'iles
+  tile[MAP_X][MAP_Y]   t; // `t'iles
   static if( USE_FOV )
-  { bool[MAP_Y][MAP_X] v; // 'v'isibility
+  { bool[MAP_X][MAP_Y] v; // 'v'isibility
   }
   monst[]              m; // 'm'onsters
-  item[MAP_Y][MAP_X]   i; // 'i'tems
-}
-
-map new_map()
-{
-  map nu;
-  return nu;
+  item[MAP_X][MAP_Y]   i; // 'i'tems
 }
 
 void add_mon( map* mp, monst mn )
@@ -53,12 +47,10 @@ void remove_mon( map* mp, ushort index )
 
 map test_map()
 {
-  map nu = new_map();
+  map nu;
 
-  ubyte y, x;
-  for( y = 0; y < MAP_Y; y++ )
-    for( x = 0; x < MAP_X; x++ )
-    {
+  foreach (y; 0 .. MAP_Y) {
+    foreach (x; 0 .. MAP_X) {
       nu.i[y][x] = No_item;
       if( y == 0 || y == MAP_y || x == 0 || x == MAP_x )
       {
@@ -77,6 +69,7 @@ map test_map()
 	}
       }
     }
+  }
 
   monst goobling = new_monst_at( 'g', "goobling", 0, 0, 2, 2, 0, 10, 2, 0, 2,
                                  1000, 60, 20 );

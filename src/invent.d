@@ -113,7 +113,6 @@ uint uinventory( player* u )
 
   do
   {
-    ubyte count;
     string  snam; // "slot name"
     char schr; // "slot character"
     if( refnow )
@@ -123,7 +122,7 @@ uint uinventory( player* u )
       /* clear the screen */
       clear();
 
-      for( count = 0; count <= INVENT_LAST_SLOT - 1; count++ )
+      foreach (count; 0 .. INVENT_LAST_SLOT)
       {
         // This switch statement of doom sets up the name and selection button
         // for each inventory slot
@@ -160,7 +159,7 @@ uint uinventory( player* u )
       mvprintw( 16, 1, "i) Bag [NOT IMPLEMENTED]" );
 
       // this line is here to clear error messages
-      for( count = 1; count < 79; count++ )
+      foreach (count; 1 .. 79)
       { mvaddch( 21, count, ' ' );
       }
 

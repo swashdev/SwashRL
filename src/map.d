@@ -36,12 +36,11 @@ void remove_mon( map* mp, ushort index )
   // past it in the array up, thus overwriting it.
   if( index < mp.m.length )
   {
-    ulong mn, max;
-    for( mn = index + 1, max = mp.m.length; mn < max; mn++ )
+    foreach (mn; index + 1 .. mp.m.length)
     {
       mp.m[mn - 1] = mp.m[mn];
     }
-    mp.m.length = max - 1;
+    mp.m.length--;
   }
 }
 
@@ -54,18 +53,18 @@ map test_map()
       nu.i[y][x] = No_item;
       if( y == 0 || y == MAP_y || x == 0 || x == MAP_x )
       {
-	nu.t[y][x] = T_WALL;
+	nu.t[y][x] = Terrain.wall;
       }
       else
       {
 	if( (y < 13 && y > 9) && ((x > 19 && x < 24) || (x < 61 && x > 56)) )
-	  nu.t[y][x] = T_WALL;
+	  nu.t[y][x] = Terrain.wall;
 	else
 	{
 	  if( (y < 13 && y > 9) && (x > 30 && x < 50) )
-	    nu.t[y][x] = T_WATER;
+	    nu.t[y][x] = Terrain.water;
 	  else
-	    nu.t[y][x] = T_FLOOR;
+	    nu.t[y][x] = Terrain.floor;
 	}
       }
     }

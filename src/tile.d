@@ -25,9 +25,6 @@ struct tile
   // blocks *all* vision going through the tile
   bool block_vision;
 
-  // to be used when we implement map memory
-  bool seen;
-
   // determine if the tile is lit
   bool lit;
 
@@ -38,32 +35,13 @@ struct tile
   // just hazards--the sky's the limit when you're programming your own
   // universe!
   short hazard;
+
+  // to be used when we implement map memory
+  bool seen;
 }
 
-tile tiledata( symbol sym, bool block_c, bool block_d, bool block_v,
-               bool light, short special )
-{
-  tile t = { sym:sym,
-             block_cardinal_movement:block_c, block_diagonal_movement:block_d,
-             block_vision:block_v,
-             seen:false, lit:light,
-             hazard:special
-           };
-  return t;
+enum Terrain {
+	floor = tile( SYM_FLOOR, false, false, false, true, 0 ),
+	wall = tile( SYM_WALL, true, true, true, true, 0 ),
+	water = tile( SYM_WATER, false, false, false, true, HAZARD_WATER ),
 }
-
-tile Floor()
-{ return tiledata( SYM_FLOOR, false, false, false, true, 0 );
-}
-
-tile Wall()
-{ return tiledata( SYM_WALL, true, true, true, true, 0 );
-}
-
-tile Water()
-{ return tiledata( SYM_WATER, false, false, false, true, HAZARD_WATER );
-}
-
-enum T_FLOOR = Floor();
-enum T_WALL = Wall();
-enum T_WATER = Water();

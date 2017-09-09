@@ -120,10 +120,9 @@ uint roll( uint num, int mod )
 	{ return mod;
 	} 
 
-	uint result = d();
+	uint result;
 
-	uint dice;
-	for( dice = num - 1; dice > 0; dice-- )
+	foreach (dice; 0 .. num)
 	{ result += d();
 	} 
 
@@ -137,8 +136,7 @@ uint roll_x( uint num, int mod, uint floor, uint ceiling )
 	} 
 
 	uint result = 0;
-	uint dice;
-	for( dice = num - 1; dice > 0; dice-- )
+	foreach (dice; 0 .. num-1)
 	{
 		result += d();
 	} 
@@ -160,10 +158,6 @@ bool quickcheck( uint num, int mod, uint difficulty )
 bool quickcheck_x( uint num, int mod, uint difficulty,
 		                    uint floor, uint ceiling )
 { return roll_x( num, mod, floor, ceiling ) <= difficulty;
-}
-
-uint rollbag( dicebag dice )
-{ return roll_x( dice.dice, dice.modifier, dice.floor, dice.ceiling );
 }
 
 // a non-traditional d10 numbered from 1 to 10
@@ -190,7 +184,7 @@ int d2()
 }
 
 // roll one s-sided die
-int dn( int8 s )
+int dn( byte s )
 {
   // if sides == 1, just return 1.  if sides == 0, return 0.
   if( s < 2 )
@@ -206,10 +200,9 @@ int roll( ubyte num, byte mod )
   { return mod;
   }
 
-  int result = d();
+  int result;
 
-  ubyte dice;
-  for( dice = num - 1; dice > 0; dice-- )
+  foreach (dice; 0 .. num)
   { result += d();
   }
 
@@ -222,9 +215,8 @@ int roll_x( ubyte num, byte mod, int floor, int ceiling )
   { return mod;
   }
 
-  dieroll_t result = 0;
-  uint8 dice;
-  for( dice = num - 1; dice > 0; dice-- )
+  uint result = 0;
+  foreach (dice; 0 .. num-1)
   { result += d();
   }
 
@@ -247,6 +239,6 @@ bool quickcheck_x( ubyte num, byte mod, int difficulty,
 { return roll_x( num, mod, floor, ceiling ) <= difficulty;
 }
 
-dieroll_t rollbag( dicebag dice )
+uint rollbag( dicebag dice )
 { return roll_x( dice.dice, dice.modifier, dice.floor, dice.ceiling );
 }

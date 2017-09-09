@@ -43,10 +43,9 @@ void cast_light( map* to_display, int cx, int cy, int row, float start,
 		float end, int radius, int r2, int xx, int xy, int yx,
 		int yy, int id, bool light_walls)
 {
-	int j;
 	float new_start=0.0f;
 	if ( start < end ) return;
-	for (j=row; j< radius+1; j++) {
+	foreach (j; row .. radius+1) {
 		int dx=-j-1;
 		int dy=-j;
 		bool blocked=false;
@@ -91,10 +90,10 @@ void cast_light( map* to_display, int cx, int cy, int row, float start,
 void TCOD_map_compute_fov_recursive_shadowcasting(map* to_display,
 		int player_x, int player_y, int max_radius, bool light_walls)
 {
-	int oct,c,d,r2;
+	int r2;
 	/* clean the map */
-	for( c = 0; c < MAP_Y; c++ )
-	{ for( d = 0; d < MAP_X; d++ )
+	foreach (c; 0 .. MAP_Y)
+		{ foreach (d; 0 .. MAP_X)
 		{ to_display.v[c][d] = false;
 		}
 	}
@@ -109,7 +108,7 @@ void TCOD_map_compute_fov_recursive_shadowcasting(map* to_display,
 	}
 	r2=max_radius*max_radius;
 	/* recursive shadow casting */
-	for (oct=0; oct < 8; oct++)
+	foreach (oct; 0 .. 8)
 	{
 		cast_light(to_display,player_x,player_y,1,1.0,0.0,max_radius,r2,
 				mult[0][oct],mult[1][oct],mult[2][oct],mult[3][oct],0,light_walls);

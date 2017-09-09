@@ -29,8 +29,8 @@ player init_player( ubyte x, ubyte y )
     u.y = 1;
   u.sym = symdata( SMILEY, A_NORMAL );
   u.hp = roll( 3, 2 );
-  ubyte count;
-  for( count = 0; count < 40; count++ )
+
+  foreach (count; 0 .. 40)
   { u.inventory.items[count] = No_item;
   }
   u.inventory.quiver_count = 0;

@@ -271,9 +271,7 @@ void mmove( monst* mn, map* m, byte idy, byte idx, player* u )
   }
   else
   {
-    int c;
-    ulong d = m.m.length;
-    for( c = 0; c < d; c++ )
+    foreach (c; 0 .. m.m.length)
     {
       if( m.m[c].x == dx && m.m[c].y == dy )
       {
@@ -326,9 +324,8 @@ ubyte umove( player* u, map* m, ubyte dir )
 
   dx += u.x; dy += u.y;
 
-  ulong c, d = m.m.length;
   monst* mn;
-  for( c = 0; c < d; c++ )
+  foreach (c; 0 .. m.m.length)
   {
     mn = &m.m[c];
     if( mn.x == dx && mn.y == dy && mn.hp > 0 )
@@ -377,8 +374,7 @@ void map_move_all_monsters( map* m, player* u )
   { return;
   }
 
-  ulong mn, mndex;
-  for( mn = 0, mndex = m.m.length; mn < mndex; mn++ )
+  foreach (mn; 0 .. m.m.length)
   {
     if( m.m[mn].hp > 0 )
     { monstai( m, cast(uint)mn, u );

@@ -44,9 +44,8 @@ void message_history()
 {
   import std.string: toStringz;
 
-  ushort m;
   clear();
-  for( m = 0; m < MAX_MESSAGE_BUFFER; m++ )
+  foreach (m; 0 .. MAX_MESSAGE_BUFFER)
   { mvprintw( m, 0, toStringz(Messages[m]) );
   }
   refresh();

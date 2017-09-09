@@ -62,38 +62,41 @@ bool check_equip( item i, ubyte s )
   switch( s )
   {
     case INVENT_QUIVER:
-      return i.type & ITEM_WEAPON_MISSILE;
+      return cast(bool)i.type & ITEM_WEAPON_MISSILE;
 
     case INVENT_HELMET:
-      return i.equip & EQUIP_HELMET;
+      return cast(bool)i.equip & EQUIP_HELMET;
     case INVENT_CUIRASS:
       // the "cuirass" item slot can accept either cuirasses or shields (the
       // player straps a shield to their back)
       return (i.equip & EQUIP_CUIRASS) || (i.equip & EQUIP_SHIELD);
     case INVENT_PAULDRONS:
-      return i.equip & EQUIP_PAULDRONS;
+      return cast(bool)i.equip & EQUIP_PAULDRONS;
     case INVENT_BRACERS:
-      return i.equip & EQUIP_BRACERS;
+      return cast(bool)i.equip & EQUIP_BRACERS;
     case INVENT_RINGL:
       // rings are obviously ambidexterous
     case INVENT_RINGR:
-      return i.equip & EQUIP_JEWELERY_RING;
+      return cast(bool)i.equip & EQUIP_JEWELERY_RING;
     case INVENT_NECKLACE:
-      return i.equip & EQUIP_JEWELERY_NECK;
+      return cast(bool)i.equip & EQUIP_JEWELERY_NECK;
     case INVENT_GREAVES:
-      return i.equip & EQUIP_GREAVES;
+      return cast(bool)i.equip & EQUIP_GREAVES;
     case INVENT_KILT:
-      return i.equip & EQUIP_KILT;
+      return cast(bool)i.equip & EQUIP_KILT;
     case INVENT_FEET:
-      return i.equip & EQUIP_FEET;
+      return cast(bool)i.equip & EQUIP_FEET;
     case INVENT_TAIL:
-      return i.equip & EQUIP_TAIL;
+      return cast(bool)i.equip & EQUIP_TAIL;
+    default: return false;
   }
-  return false;
 }
 
 uint uinventory( player* u )
 {
+  import std.string: toStringz;
+  import std.ascii: toLower;
+
   // the inventory slot letter the player has selected
   char grab = 0;
   // `line': the line corresponding to the `grab' slot letter
@@ -148,10 +151,10 @@ uint uinventory( player* u )
         { break;
         }
 
-        mvprintw( 1 + count, 1, "%c) %s: %s", schr, snam,
-                  u.inventory.items[count].sym.ch == '\0'
+        mvprintw( 1 + count, 1, "%c) %s: %s", schr, toStringz(snam),
+                  toStringz(u.inventory.items[count].sym.ch == '\0'
                     ? "EMPTY" : u.inventory.items[count].name
-                );
+                ));
       } /* for( count ) */
 
       mvprintw( 16, 1, "i) Bag [NOT IMPLEMENTED]" );
@@ -170,7 +173,7 @@ uint uinventory( player* u )
     } /* if( refnow ) */
 
     // grab an item
-    grab = getch();
+    grab = cast(char)getch();
     if( grab == 'Q' || grab == ' ' )
     { break;
     }
@@ -201,6 +204,7 @@ uint uinventory( player* u )
       case 'g': line = 10; break;
       case 'k': line = 11; break;
       case 'f': line = 12; break;
+      default: break;
     } /* switch( grab ) */
 
     if( line == 255 )
@@ -220,7 +224,7 @@ uint uinventory( player* u )
           // ...grab the item...
           grabbed = u.inventory.items[line];
           // ...mark that line...
-          mvchgat( 1 + line, 1, 78, A_REVERSE, 0, 0 );
+          mvchgat( 1 + line, 1, 78, A_REVERSE, cast(short)0, cast(void*)null );
           // ...and save that line so we can swap the items later.
           grabbedline = line;
         }
@@ -237,21 +241,23 @@ uint uinventory( player* u )
             {
               mvprintw( 21, 1,
                 "You stab yourself in the head with a %s and die instantly.",
-                grabbed.name );
+                toStringz(grabbed.name) );
 seppuku:
                 getch();
                 u.hp = 0;
                 return 0;
             }
+	    goto case INVENT_CUIRASS;
             // fall through to next case
           case INVENT_CUIRASS:
             if( grabbed.type & ITEM_WEAPON )
             {
               mvprintw( 21, 1,
                 "You slice into your gut with a %s and commit seppuku.",
-                grabbed.name );
+                toStringz(grabbed.name) );
                 goto seppuku;
             }
+	    goto default;
             // fall through to next case
           default:
             // confirm the player can swap this item to this slot
@@ -262,7 +268,7 @@ seppuku:
         if( !confirm_swap )
         {
           // if we can't equip that item here, discard the swap
-          mvprintw( 21, 1, "You can not equip a %s there.", grabbed.name );
+          mvprintw( 21, 1, "You can not equip a %s there.", toStringz(grabbed.name) );
 discard_swap:
           grabbedline = line = 255;
           grabbed.sym.ch = '\0';
@@ -275,7 +281,7 @@ discard_swap:
           if( !check_equip( u.inventory.items[line], grabbedline ) )
           {
             mvprintw( 21, 1, "You can not swap the %s and the %s.",
-                      u.inventory.items[line].name, grabbed.name );
+                      toStringz(u.inventory.items[line].name), toStringz(grabbed.name) );
             goto discard_swap;
           }
         }

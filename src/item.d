@@ -18,4 +18,4 @@ struct item
   byte addd, addm;
 }
 
-item No_item = { sym:'\0', name:"NO ITEM", addd:0, addm:0 };
+item No_item = { sym:symbol('\0'), name:"NO ITEM", addd:0, addm:0 };

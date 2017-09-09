@@ -26,20 +26,24 @@ void help( bool alt_hjkl )
 
 void sp_version()
 {
+  import std.string: toStringz;
+
   clear_message_line();
   mvprintw( 0, 0, "%s, version %.3f",
-            "Spelunk!", VERSION );
+            toStringz("Spelunk!"), VERSION );
   getch();
   clear_message_line();
 }
 
 int main()
 {
+  import std.string: toStringz;
+
   seed();
 
   initscr();
   // Control characters are passed directly to the program
-  raw(); 
+  raw();
   // Do not echo user input
   noecho();
   // Enable keypad & other function keys
@@ -63,7 +67,7 @@ int main()
   bool alt_hjkl = false;
 
   uint moved = 0;
-  ubyte mv = 5;
+  int mv = 5;
   while( mv != MOVE_QUIT && u.hp > 0 )
   {
     moved = 0;
@@ -77,7 +81,6 @@ int main()
       // quit
       case MOVE_QUIT:
         goto playerquit;
-        break; 
       // display version information
       case MOVE_GETVERSION:
         sp_version();
@@ -85,8 +88,7 @@ int main()
       case MOVE_ALTKEYS:
         alt_hjkl = !alt_hjkl;
         mvprintw( 0, 0, "Alternate movement keys %sabled",
-                  alt_hjkl ? "en" : "dis" );
-        buffer_message();
+                  toStringz(alt_hjkl ? "en" : "dis") );
         break;
       // print the message buffer
       case MOVE_MESS_DISPLAY:
@@ -113,7 +115,7 @@ int main()
       // all other commands go to umove
       default:
         clear_message_line();
-        moved = umove( &u, &Current_map, mv );
+        moved = umove( &u, &Current_map, cast(ubyte)mv );
         if( u.hp <= 0 )
           goto playerdied;
         display_player( u );
@@ -148,7 +150,7 @@ playerdied:
 
   mvaddch( u.y + RESERVED_LINES, u.x, SMILEY );
   static if( TEXT_EFFECTS )
-  { mvchgat( u.y + RESERVED_LINES, u.x, 1, A_DIM, 0, NULL );
+  { mvchgat( u.y + RESERVED_LINES, u.x, 1, A_DIM, cast(short)0, cast(void*)null );
   }
 
 playerquit:
@@ -159,34 +161,5 @@ playerquit:
 
   getch();
   endwin();
-  return SP_NO_ERRORS;
-
-panic_memory_allocation_error:
-  return SP_MEMORY_ALLOCATION_ERROR;
-panic_user_error:
-  return SP_USER_ERROR;
-panic_error_unknown:
-  return SP_UNKNOWN_ERROR;
-}
-
-void panic( byte error )
-{
-  endwin();
-  switch( error )
-  {
-    case SP_UNKNOWN_ERROR:
-      printf( "\aPANIC: %d (Unknown error!)", error );
-      break;
-    case SP_MEMORY_ALLOCATION_ERROR:
-      printf( "\aPANIC %d (Memory allocation error)", error );
-      break;
-    case SP_TERMINATED_EARLY_NO_ERROR:
-    case SP_NO_ERRORS:
-      printf( "\aPANIC %d (No errors--why was panic called?)", error );
-      break;
-    case SP_USER_ERROR:
-      printf( "\aPANIC %d (PEBCAK error)", error );
-      break;
-  }
-  exit( error );
+  return 0;
 }

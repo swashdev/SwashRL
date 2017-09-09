@@ -29,7 +29,7 @@ struct symbol
   // images (possibly including sprites in the future
 }
 
-symbol symdata( char character, ushort effects )
+symbol symdata( char character, ulong effects )
 {
   static if( !TEXT_EFFECTS )
   { ushort color = effects;

@@ -7,12 +7,12 @@
 
 import global;
 
-void display( ubyte y, ubyte x, symbol s, bool center )
+void display( uint y, uint x, symbol s, bool center )
 {
   mvaddch( y, x, s.ch );
 
   static if( TEXT_EFFECTS )
-  { mvchgat( y, x, 1, s.color, 0, NULL );
+  { mvchgat( y, x, 1, s.color, cast(short)0, cast(void*)null );
   }
 
   if( !center )
@@ -32,7 +32,7 @@ void display_mon( monst m )
 
 void display_map_mons( map to_display )
 {
-  uint c, d = to_display.m.length;
+  ulong c, d = to_display.m.length;
   monst mn;
   for( c = 0; c < d; c++ )
   {
@@ -52,7 +52,7 @@ else
 
 void display_map( map to_display )
 {
-  char output; ubyte y, x;
+  ubyte y, x;
   for( y = 0; y < MAP_Y; y++ )
     for( x = 0; x < 80; x++ )
     {
@@ -102,8 +102,8 @@ void clear_message_line()
 void refresh_status_bar( player* u )
 {
   int hp = u.hp;
-  ubyte dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].addd;
-  short mod = u.attack_roll.modifier + u.inventory.items[INVENT_WEAPON].addm;
+  int dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].addd;
+  int mod = u.attack_roll.modifier + u.inventory.items[INVENT_WEAPON].addm;
   ubyte x;
   for( x = 0; x < MAP_X; x++ )
   { mvaddch( 1 + MAP_Y, x, ' ' );

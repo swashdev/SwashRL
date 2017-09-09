@@ -1,13 +1,13 @@
 {
 	"name": "spelunk",
 	"authors": [
-		"Crawldragon"
+		"Philip Pavlick <philip@swash.link>"
 	],
 	"dependencies": {
 		"ncurses": "~master"
 	},
 	"description": "A minimal D application.",
-	"copyright": "Copyright © 2017, Crawldragon",
-	"license": "The Spelunk! license.",
+	"copyright": "Copyright (c) 2017, Philip Pavlick",
+	"license": "The Spelunk! license",
 	"targetType": "executable"
 }

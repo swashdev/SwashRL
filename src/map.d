@@ -42,7 +42,7 @@ void remove_mon( map* mp, ushort index )
   // past it in the array up, thus overwriting it.
   if( index < mp.m.length )
   {
-    int mn, max;
+    ulong mn, max;
     for( mn = index + 1, max = mp.m.length; mn < max; mn++ )
     {
       mp.m[mn - 1] = mp.m[mn];

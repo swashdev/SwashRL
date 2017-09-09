@@ -8,5 +8,6 @@
 	},
 	"description": "A minimal D application.",
 	"copyright": "Copyright © 2017, Crawldragon",
-	"license": "The Spelunk! license."
+	"license": "The Spelunk! license.",
+	"targetType": "executable"
 }

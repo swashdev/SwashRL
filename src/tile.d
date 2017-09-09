@@ -53,13 +53,17 @@ tile tiledata( symbol sym, bool block_c, bool block_d, bool block_v,
 }
 
 tile Floor()
-{ return tiledata( SYM_FLOOR, FALSE, FALSE, FALSE, TRUE, 0 );
+{ return tiledata( SYM_FLOOR, false, false, false, true, 0 );
 }
 
 tile Wall()
-{ return tiledata( SYM_WALL, TRUE, TRUE, TRUE, TRUE, 0 );
+{ return tiledata( SYM_WALL, true, true, true, true, 0 );
 }
 
 tile Water()
-{ return tiledata( SYM_WATER, FALSE, FALSE, FALSE, TRUE, HAZARD_WATER );
+{ return tiledata( SYM_WATER, false, false, false, true, HAZARD_WATER );
 }
+
+enum T_FLOOR = Floor();
+enum T_WALL = Wall();
+enum T_WATER = Water();

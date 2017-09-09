@@ -9,65 +9,60 @@ import global;
 
 int getcommand( bool alt_hjkl )
 {
-  ushort c = getch();
+  char c = cast(char)getch();
   switch( c )
   {
     case 'y':
-      if( alt_hjkl == TRUE )
+      if( alt_hjkl == true )
       { return MOVE_HELP;
       }
+      goto case '7';
     case '7':
     case KEY_HOME:
       return MOVE_NW;
-      break;
     case 'k':
     case '8':
     case KEY_UP:
       return MOVE_NN;
-      break;
     case 'u':
-      if( alt_hjkl == TRUE )
+      if( alt_hjkl == true )
       { return MOVE_NW;
       }
+      goto case '9';
     case '9':
     case KEY_PPAGE: // pgup
       return MOVE_NE;
-      break;
     case 'l':
     case '6':
     case KEY_RIGHT:
       return MOVE_EE;
-      break;
     case 'n':
-      if( alt_hjkl == TRUE )
+      if( alt_hjkl == true )
       { return MOVE_SW;
       }
+      goto case '3';
     case '3':
     case KEY_NPAGE: // pgdn
       return MOVE_SE;
-      break;
     case 'j':
     case '2':
     case KEY_DOWN: // numpad "down"
       return MOVE_SS;
-      break;
     case 'b':
-      if( alt_hjkl == TRUE )
+      if( alt_hjkl == true )
       { return MOVE_INVENTORY;
       }
+      goto case '1';
     case '1':
     case KEY_END:
       return MOVE_SW;
-      break;
     case 'h':
     case '4':
     case KEY_LEFT:
       return MOVE_WW;
-      break;
     case MV_WT:
     case NP_WT:
       return MOVE_WAIT;
-      break;
 
     // numpad controls (Windows-specific)
     version( Windows )
@@ -93,17 +88,15 @@ int getcommand( bool alt_hjkl )
     } /* version( Windows ) */
 
     case 'i':
-      if( alt_hjkl == TRUE )
+      if( alt_hjkl == true )
       { return MOVE_NE;
       }
       return MOVE_INVENTORY;
-      break;
     case 'm':
-      if( alt_hjkl == TRUE )
+      if( alt_hjkl == true )
       { return MOVE_SE;
       }
       return MOVE_HELP;
-      break;
 
     case KEY_F12: // F12 key
       return MOVE_ALTKEYS;
@@ -175,7 +168,7 @@ void getdydx( ubyte dir, byte* dy, byte* dx )
 
 void mattacku( monst* m, player* u )
 {
-  dieroll_t atk = rollbag( m.attack_roll );
+  uint atk = rollbag( m.attack_roll );
   if( atk > 0 )
   {
     u.hp -= atk;
@@ -188,8 +181,8 @@ void mattacku( monst* m, player* u )
 
 void uattackm( player* u, monst* m )
 {
-  byte mod = u.attack_roll.modifier + u.inventory.items[INVENT_WEAPON].addm;
-  byte dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].addd;
+  int mod = u.attack_roll.modifier + u.inventory.items[INVENT_WEAPON].addm;
+  int dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].addd;
   int atk = roll_x( dice, mod, u.attack_roll.floor, u.attack_roll.ceiling );
 
   if( atk > 0 )
@@ -222,7 +215,7 @@ enum CAN_ONLY_SWIM = 2;
 
 void mmove( monst* mn, map* m, byte idy, byte idx, player* u )
 {
-  byte dy = idy, dx = idx;
+  uint dy = idy, dx = idx;
 
   ubyte terrain = 0, monster = 0;
 
@@ -278,7 +271,8 @@ void mmove( monst* mn, map* m, byte idy, byte idx, player* u )
   }
   else
   {
-    int c, d = m.m_siz;
+    int c;
+    ulong d = m.m.length;
     for( c = 0; c < d; c++ )
     {
       if( m.m[c].x == dx && m.m[c].y == dy )
@@ -290,7 +284,7 @@ void mmove( monst* mn, map* m, byte idy, byte idx, player* u )
 
   if( !monster )
   {
-    mn.x = dx; mn.y = dy;
+    mn.x = cast(byte)dx; mn.y = cast(byte)dy;
   }
 }
 
@@ -307,7 +301,7 @@ void monstai( map* m, uint index, player* u )
     dy = -1;
   if( mny < uy )
     dy =  1;
-  mmove( mn, m, dy, dx, u );
+  mmove( mn, m, cast(byte)dy, cast(byte)dx, u );
 }
 
 ubyte umove( player* u, map* m, ubyte dir )
@@ -322,7 +316,7 @@ ubyte umove( player* u, map* m, ubyte dir )
     return 0;
   }
   if( dir == MOVE_INVENTORY )
-  { return uinventory( u );
+  { return cast(ubyte)uinventory( u );
   }
   byte dy, dx;
   getdydx( dir, &dy, &dx );
@@ -330,9 +324,9 @@ ubyte umove( player* u, map* m, ubyte dir )
 
   ubyte terrain = 0, monster = 0;
 
-  dx = dx + u.x; dy = dy + u.y;
+  dx += u.x; dy += u.y;
 
-  int c, d = m.m.length;
+  ulong c, d = m.m.length;
   monst* mn;
   for( c = 0; c < d; c++ )
   {
@@ -383,14 +377,14 @@ void map_move_all_monsters( map* m, player* u )
   { return;
   }
 
-  int mn, mndex;
+  ulong mn, mndex;
   for( mn = 0, mndex = m.m.length; mn < mndex; mn++ )
   {
     if( m.m[mn].hp > 0 )
-    { monstai( m, mn, u );
+    { monstai( m, cast(uint)mn, u );
     }
     else
-    { remove_mon( m, mn );
+    { remove_mon( m, cast(ushort)mn );
     }
   }
 }

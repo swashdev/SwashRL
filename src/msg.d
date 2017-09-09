@@ -9,7 +9,10 @@ import global;
 
 import std.string;
 
+enum MESSAGE_BUFFER_LINES = 1;
+
 static string[MAX_MESSAGE_BUFFER] Messages;
+int Buffered_messages;
 
 void clear_messages()
 {
@@ -39,10 +42,12 @@ void bump_messages()
 
 void message_history()
 {
+  import std.string: toStringz;
+
   ushort m;
   clear();
   for( m = 0; m < MAX_MESSAGE_BUFFER; m++ )
-  { mvprintw( m, 0, Messages[m] );
+  { mvprintw( m, 0, toStringz(Messages[m]) );
   }
   refresh();
   getch();
@@ -54,7 +59,7 @@ void read_messages()
   {
     clear_message_line(); // from display.h
     mvprintw( 0, 0, "%s%s",
-              pop_message(), Buffered_messages > 1 ? "  (More)" : "" );
+              toStringz(pop_message()), toStringz(Buffered_messages > 1 ? "  (More)" : "") );
     refresh();
     if( Buffered_messages > 0 )
     { getch();
@@ -62,8 +67,7 @@ void read_messages()
   }
 }
 
-void message( T... )( string mess, T args )
-{
+void message(T...)(T args) {
   if( Buffered_messages >= MAX_MESSAGE_BUFFER )
   {
     read_messages();
@@ -72,6 +76,6 @@ void message( T... )( string mess, T args )
 
   bump_messages();
 
-  Messages[0] = format( mess, args );
+  Messages[0] = format( args );
   Buffered_messages += 1;
 }

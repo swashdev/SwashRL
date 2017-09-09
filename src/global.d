@@ -64,6 +64,9 @@ enum MAP_y = MAP_Y - 1;
 enum MAP_x = MAP_X - 1;
 enum NUMTILES = MAP_Y * MAP_X;
 
+enum RESERVED_LINES = MESSAGE_BUFFER_LINES;
+enum Y_OFFSET = RESERVED_LINES;
+
 // include the utility file
 public import util;
 
@@ -87,8 +90,8 @@ public import you;
 public import map;
 public import fov;
 public import display;
-public import message;
+public import msg;
 public import keys;
 public import moves;
-public import move;
+public import mov;
 public import invent;

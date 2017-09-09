@@ -47,13 +47,13 @@ void seed()
 
 // flip a coin
 bool flip()
-{ return (d2() == 1);
+{ return cast(bool)uniform(0, 2);
 }
 
 // the standard six-sided die //
 
 // roll a d6
-int d()
+uint d()
 { return uniform( 1, 7, Lucky );
 }
 
@@ -72,7 +72,97 @@ int td10()
   if( result > 9 )
   { result -= 10;
   }
-  return cast(int)result;
+  return result;
 }
 
-// a non-traditional d10 numbered from 1 to 10
+/* a non-traditional d10 numbered from 1 to 10 */
+uint d10()
+{
+	uint result = td10();
+	return result == 0 ? 10 : result;
+} 
+
+/* again, going by tradition, use 2 d10s to determine the result of a d100
+ * roll.  Zocchi, I love you, but the 100-sided die is a little ridiculous */
+uint d100()
+{
+	uint t = td10(), u = td10();
+	if( t == 0 && u == 0 )
+	{ return 100;
+	} 
+	return (t * 10) + u;
+} 
+
+/* roll one 2-sided die */
+uint d2()
+{ return uniform(1, 3);
+} 
+
+/* roll one s-sided die */
+uint dn( int s )
+{
+	/* if sides == 1, just return 1.  if sides == 0, return 0.
+	 * if sides < 0, force that result (e.g. -4 always produces 4) */
+	if( s < 2 )
+	{
+		if( s >= 0 )
+		{ return s;
+		} 
+		return -s;
+	} 
+	return uniform(1, s+1);
+} 
+
+/* the complete roll function */
+uint roll( uint num, int mod )
+{
+	if( num == 0 )
+	{ return mod;
+	} 
+
+	uint result = d();
+
+	uint dice;
+	for( dice = num - 1; dice > 0; dice-- )
+	{ result += d();
+	} 
+
+	return result + mod;
+} 
+
+uint roll_x( uint num, int mod, uint floor, uint ceiling )
+{
+	if( num == 0 )
+	{ return mod;
+	} 
+
+	uint result = 0;
+	uint dice;
+	for( dice = num - 1; dice > 0; dice-- )
+	{
+		result += d();
+	} 
+
+	if( result > MAXIMUM_DIE_ROLL )
+	{ result = MAXIMUM_DIE_ROLL;
+	} 
+
+	if( result < MINIMUM_DIE_ROLL )
+	{ result = MINIMUM_DIE_ROLL;
+	} 
+	return minmax( result, floor, ceiling ) + mod;
+}
+
+bool quickcheck( uint num, int mod, uint difficulty )
+{ return roll( num, mod ) <= difficulty;
+}
+
+bool quickcheck_x( uint num, int mod, uint difficulty,
+		                    uint floor, uint ceiling )
+{ return roll_x( num, mod, floor, ceiling ) <= difficulty;
+}
+
+uint rollbag( dicebag dice )
+{ return roll_x( dice.dice, dice.modifier, dice.floor, dice.ceiling );
+}
+

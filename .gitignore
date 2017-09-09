@@ -12,6 +12,9 @@
 # Also ignore *my* backup files
 *.bak
 
+# Always ignore the binary directory
+bin*/
+
 # The notes directory is not for the public eye; always ignore this!
 notes/
 

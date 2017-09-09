@@ -1,0 +1,3 @@
+[submodule "pdcurses"]
+	path = pdcurses
+	url = https://github.com/Crawldragon/PDCurses-D

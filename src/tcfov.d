@@ -33,85 +33,104 @@ import global;
 import std.math: sqrt;
 
 static int[][] mult = [
-	[1,0,0,-1,-1,0,0,1],
-	[0,1,-1,0,0,-1,1,0],
-	[0,1,1,0,0,-1,-1,0],
-	[1,0,0,1,-1,0,0,-1],
+  [1,0,0,-1,-1,0,0,1],
+  [0,1,-1,0,0,-1,1,0],
+  [0,1,1,0,0,-1,-1,0],
+  [1,0,0,1,-1,0,0,-1]
 ];
 
 void cast_light( map* to_display, int cx, int cy, int row, float start,
-		float end, int radius, int r2, int xx, int xy, int yx,
-		int yy, int id, bool light_walls)
+                 float end, int radius, int r2, int xx, int xy, int yx,
+                 int yy, int id, bool light_walls)
 {
-	float new_start=0.0f;
-	if ( start < end ) return;
-	foreach (j; row .. radius+1) {
-		int dx=-j-1;
-		int dy=-j;
-		bool blocked=false;
-		while ( dx <= 0 ) {
-			int X,Y;
-			dx++;
-			X=cx+dx*xx+dy*xy;
-			Y=cy+dx*yx+dy*yy;
-			if (X < MAP_X && Y < MAP_Y)
-			{
-				float l_slope,r_slope;
-				l_slope=(dx-0.5f)/(dy+0.5f);
-				r_slope=(dx+0.5f)/(dy-0.5f);
-				if( start < r_slope ) continue;
-				else if( end > l_slope ) break;
-				if ( dx*dx+dy*dy <= r2
-						&& (light_walls || !(to_display.t[Y][X].block_vision)))
-				{ to_display.v[Y][X] = true;
-				}
-				if ( blocked ) {
-					if (to_display.t[Y][X].block_vision) {
-						new_start=r_slope;
-						continue;
-					} else {
-						blocked=false;
-						start=new_start;
-					}
-				} else {
-					if ((to_display.t[Y][X].block_vision) && j < radius ) {
-						blocked=true;
-						cast_light(to_display,cx,cy,j+1,start,l_slope,radius,r2,xx,xy,yx,
-								yy,id+1,light_walls);
-						new_start=r_slope;
-					}
-				}
-			}
-		}
-		if ( blocked ) break;
+  float new_start=0.0f;
+  if ( start < end )
+  { return;
+  }
+  foreach (j; row .. radius+1)
+  {
+    int dx=-j-1;
+    int dy=-j;
+    bool blocked=false;
+    while ( dx <= 0 )
+    {
+      int X,Y;
+      dx++;
+      X=cx+dx*xx+dy*xy;
+      Y=cy+dx*yx+dy*yy;
+      if (X < MAP_X && Y < MAP_Y)
+      {
+        float l_slope,r_slope;
+        l_slope=(dx-0.5f)/(dy+0.5f);
+        r_slope=(dx+0.5f)/(dy-0.5f);
+        if( start < r_slope )
+	{ continue;
 	}
+        else if( end > l_slope )
+        { break;
+	}
+        if ( dx*dx+dy*dy <= r2
+             && (light_walls || !(to_display.t[Y][X].block_vision))
+           )
+        { to_display.v[Y][X] = true;
+        }
+        if ( blocked )
+	{
+          if (to_display.t[Y][X].block_vision)
+	  {
+            new_start=r_slope;
+            continue;
+          }
+	  else
+	  {
+            blocked=false;
+            start=new_start;
+          }
+        }
+	else
+	{
+          if ((to_display.t[Y][X].block_vision) && j < radius )
+	  {
+            blocked=true;
+            cast_light(to_display,cx,cy,j+1,start,l_slope,radius,r2,xx,xy,yx,
+                       yy,id+1,light_walls);
+            new_start=r_slope;
+          }
+        }
+      }
+    }
+    if ( blocked )
+    { break;
+    }
+  }
 }
 
-void TCOD_map_compute_fov_recursive_shadowcasting(map* to_display,
-		int player_x, int player_y, int max_radius, bool light_walls)
+void TCOD_map_compute_fov_recursive_shadowcasting(
+		map* to_display, int player_x, int player_y, int max_radius,
+		bool light_walls)
 {
-	int r2;
-	/* clean the map */
-	foreach (c; 0 .. MAP_Y)
-		{ foreach (d; 0 .. MAP_X)
-		{ to_display.v[c][d] = false;
-		}
-	}
-	if ( max_radius == 0 ) {
-		int max_radius_x=MAP_X-player_x;
-		int max_radius_y=MAP_Y-player_y;
-		max_radius_x=max_radius_x > player_x ? max_radius_x : player_x;
-		max_radius_y=max_radius_y > player_y ? max_radius_y : player_y;
-		max_radius = cast(int)(sqrt(cast(float)(max_radius_x*max_radius_x)
-					+(max_radius_y*max_radius_y)))
-			+1;
-	}
-	r2=max_radius*max_radius;
-	/* recursive shadow casting */
-	foreach (oct; 0 .. 8)
-	{
-		cast_light(to_display,player_x,player_y,1,1.0,0.0,max_radius,r2,
-				mult[0][oct],mult[1][oct],mult[2][oct],mult[3][oct],0,light_walls);
-	}
-	to_display.v[player_y][player_x] = true;
+  int r2;
+  /* clean the map */
+  foreach (c; 0 .. MAP_Y)
+  { foreach (d; 0 .. MAP_X)
+    { to_display.v[c][d] = false;
+    }
+  }
+  if ( max_radius == 0 )
+  {
+    int max_radius_x=MAP_X-player_x;
+    int max_radius_y=MAP_Y-player_y;
+    max_radius_x=max_radius_x > player_x ? max_radius_x : player_x;
+    max_radius_y=max_radius_y > player_y ? max_radius_y : player_y;
+    max_radius = cast(int)(sqrt(cast(float)(max_radius_x*max_radius_x)
+               +(max_radius_y*max_radius_y))) +1;
+  }
+  r2=max_radius*max_radius;
+  /* recursive shadow casting */
+  foreach (oct; 0 .. 8)
+  {
+    cast_light(to_display,player_x,player_y,1,1.0,0.0,max_radius,r2,
+    mult[0][oct],mult[1][oct],mult[2][oct],mult[3][oct],0,light_walls);
+  }
+  to_display.v[player_y][player_x] = true;
 }

@@ -10,9 +10,9 @@
 // Spelunk! will compile.  THIS FILE SHOULD BE INCLUDED AT THE TOP OF EVERY
 // FILE.  It will include all of the other files for you.
 
-/* SECTION 0: ****************************************************************
- * Spelunk! version control & configuration                                  *
- *****************************************************************************/
+/* SECTION 0: ***************************************************************
+ * Spelunk! version control & configuration                                 *
+ ****************************************************************************/
 
 // The version number
 // In the current version numbering system, the first number is the release
@@ -22,20 +22,40 @@ enum VERSION = 0.021;
 // Include the config file
 public import config;
 
-/* SECTION 1: ****************************************************************
- * Compiler configuration                                                    *
- *****************************************************************************/
+/* SECTION 1: ***************************************************************
+ * Compiler configuration                                                   *
+ ****************************************************************************/
 
 // Include the sys file to detect operating system
 public import sys;
 
-/* SECTION 2: ****************************************************************
- * curses configuration                                                      *
- *****************************************************************************/
+/* SECTION 2: ***************************************************************
+ * curses configuration                                                     *
+ ****************************************************************************/
 
 /* public import the necessary version of curses */
 
-public import deimos.ncurses.curses;
+version( Posix )
+{
+  // POSIX systems can use ncurses.  Systems running X11 can also use PDCurses
+  // but we'll figure that part out later.
+  // XXX: I wonder if Cygwin and MinGW can be coerced into using ncurses, and
+  // if so whether this POSIX check will catch that.  Probably worth
+  // investigating.
+  pragma( msg, "POSIX system (Linux, FreeBSD, OSX, &c) detected, using ncurses..." )
+  public import deimos.ncurses.curses;
+}
+else version( Windows )
+{
+  // Normally here we would import PDCurses (because that's the version of
+  // curses that works with Windows) but D doesn't have a wrapper for that yet
+  pragma( msg, "WARNING: No curses available for this system!" )
+}
+else version( all )
+{
+  // An additional warning just in case:
+  pragma( msg, "WARNING: No curses known to the developer for this system!" )
+}
 
 // TODO:
 ////Autodetect version of curses (to disambiguate curses.h)
@@ -47,9 +67,9 @@ public import deimos.ncurses.curses;
 //#  warning "Unrecognized curses--Spelunk! supports ncurses and pdcurses."
 //# endif
 
-/* SECTION 3: ****************************************************************
- * Spelunk! final setup                                                      *
- *****************************************************************************/
+/* SECTION 3: ***************************************************************
+ * Spelunk! final setup                                                     *
+ ****************************************************************************/
 
 // The size of the map in the display
 // Spelunk! will always attempt to have one line open at the top for the
@@ -70,9 +90,9 @@ enum Y_OFFSET = RESERVED_LINES;
 // include the utility file
 public import util;
 
-/* SECTION 4: ****************************************************************
- * Global inclusion of all header files not yet included                     *
- *****************************************************************************/
+/* SECTION 4: ***************************************************************
+ * Global inclusion of all header files not yet included                    *
+ ****************************************************************************/
 
 // include the rest of Spelunk!'s files in the order appointed in
 // notes/include

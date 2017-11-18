@@ -47,7 +47,7 @@ enum INVENT_LAST_SLOT = INVENT_TAIL;
 
 void get_inv_slot_name( string* nam, char* ch, ubyte slot );
 
-// see ``invent.h'' for functions related to inventory management (these
+// see ``invent.d'' for functions related to inventory management (these
 // needed to be moved there since these won't compile in the current load
-// order until ``you.h'' has been included--possibly something to fix later
+// order until ``you.d'' has been included--possibly something to fix later
 // [TODO])

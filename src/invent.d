@@ -66,29 +66,40 @@ bool check_equip( item i, ubyte s )
 
     case INVENT_HELMET:
       return cast(bool)i.equip & EQUIP_HELMET;
+
     case INVENT_CUIRASS:
       // the "cuirass" item slot can accept either cuirasses or shields (the
       // player straps a shield to their back)
       return (i.equip & EQUIP_CUIRASS) || (i.equip & EQUIP_SHIELD);
+
     case INVENT_PAULDRONS:
       return cast(bool)i.equip & EQUIP_PAULDRONS;
+
     case INVENT_BRACERS:
       return cast(bool)i.equip & EQUIP_BRACERS;
+
     case INVENT_RINGL:
       // rings are obviously ambidexterous
     case INVENT_RINGR:
       return cast(bool)i.equip & EQUIP_JEWELERY_RING;
+
     case INVENT_NECKLACE:
       return cast(bool)i.equip & EQUIP_JEWELERY_NECK;
+
     case INVENT_GREAVES:
       return cast(bool)i.equip & EQUIP_GREAVES;
+
     case INVENT_KILT:
       return cast(bool)i.equip & EQUIP_KILT;
+
     case INVENT_FEET:
       return cast(bool)i.equip & EQUIP_FEET;
+
     case INVENT_TAIL:
       return cast(bool)i.equip & EQUIP_TAIL;
-    default: return false;
+
+    default:
+      return false;
   }
 }
 
@@ -131,9 +142,9 @@ uint uinventory( player* u )
           default: snam = "bag"; schr = '\0'; break;
 
           case INVENT_WEAPON:    snam = "Weapon-hand";    schr = 'w'; break;
-          case INVENT_OFFHAND:   snam = "Off-hand"; /* */ schr = 'o'; break;
-          case INVENT_QUIVER:    snam = "Quiver"; /* * */ schr = 'q'; break;
-          case INVENT_HELMET:    snam = "Helmet"; /* * */ schr = 'h'; break;
+          case INVENT_OFFHAND:   snam = "Off-hand";       schr = 'o'; break;
+          case INVENT_QUIVER:    snam = "Quiver";         schr = 'q'; break;
+          case INVENT_HELMET:    snam = "Helmet";         schr = 'h'; break;
           case INVENT_CUIRASS:   snam = "Cuirass";        schr = 'c'; break;
           case INVENT_PAULDRONS: snam = "Pauldrons";      schr = 'p'; break;
           case INVENT_BRACERS:   snam = "Bracers/gloves"; schr = 'b'; break;
@@ -142,7 +153,7 @@ uint uinventory( player* u )
           case INVENT_NECKLACE:  snam = "Necklace";       schr = 'n'; break;
           case INVENT_GREAVES:   snam = "Greaves";        schr = 'g'; break;
           case INVENT_KILT:      snam = "Kilt/skirt";     schr = 'k'; break;
-          case INVENT_FEET:      snam = "Feet"; /* * * */ schr = 'f'; break;
+          case INVENT_FEET:      snam = "Feet";           schr = 'f'; break;
           case INVENT_TAIL:      snam = "Tailsheath";     schr = 't'; break;
         } /* switch( count ) */
 
@@ -256,7 +267,7 @@ seppuku:
                 toStringz(grabbed.name) );
                 goto seppuku;
             }
-	    goto default;
+            //goto default;
             // fall through to next case
           default:
             // confirm the player can swap this item to this slot
@@ -280,7 +291,8 @@ discard_swap:
           if( !check_equip( u.inventory.items[line], grabbedline ) )
           {
             mvprintw( 21, 1, "You can not swap the %s and the %s.",
-                      toStringz(u.inventory.items[line].name), toStringz(grabbed.name) );
+                      toStringz(u.inventory.items[line].name),
+                      toStringz(grabbed.name) );
             goto discard_swap;
           }
         }

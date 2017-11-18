@@ -47,7 +47,7 @@ void seed()
 
 // flip a coin
 bool flip()
-{ return cast(bool)uniform(0, 2);
+{ return cast(bool)uniform( 0, 2, Lucky );
 }
 
 // the standard six-sided die //
@@ -78,167 +78,94 @@ int td10()
 /* a non-traditional d10 numbered from 1 to 10 */
 uint d10()
 {
-	uint result = td10();
-	return result == 0 ? 10 : result;
+  uint result = td10();
+  return result == 0 ? 10 : result;
 } 
 
 /* again, going by tradition, use 2 d10s to determine the result of a d100
  * roll.  Zocchi, I love you, but the 100-sided die is a little ridiculous */
 uint d100()
 {
-	uint t = td10(), u = td10();
-	if( t == 0 && u == 0 )
-	{ return 100;
-	} 
-	return (t * 10) + u;
+  uint t = td10(), u = td10();
+  if( t == 0 && u == 0 )
+  { return 100;
+  } 
+  return (t * 10) + u;
 } 
 
 /* roll one 2-sided die */
 uint d2()
-{ return uniform(1, 3);
+{ return uniform( 1, 3 );
 } 
 
 /* roll one s-sided die */
 uint dn( int s )
 {
-	/* if sides == 1, just return 1.  if sides == 0, return 0.
-	 * if sides < 0, force that result (e.g. -4 always produces 4) */
-	if( s < 2 )
-	{
-		if( s >= 0 )
-		{ return s;
-		} 
-		return -s;
-	} 
-	return uniform(1, s+1);
+  /* if sides == 1, just return 1.  if sides == 0, return 0.
+   * if sides < 0, force that result (e.g. -4 always produces 4) */
+  if( s < 2 )
+  {
+    if( s >= 0 )
+    { return s;
+    } 
+    return -s;
+  } 
+  return uniform( 1, s + 1, Lucky );
 } 
 
 /* the complete roll function */
 uint roll( uint num, int mod )
 {
-	if( num == 0 )
-	{ return mod;
-	} 
+  if( num == 0 )
+  { return mod;
+  } 
 
-	uint result;
+  uint result;
 
-	foreach (dice; 0 .. num)
-	{ result += d();
-	} 
+  foreach (dice; 0 .. num)
+  { result += d();
+  } 
 
-	return result + mod;
+  return result + mod;
 } 
 
+/* the complete roll function with floor and ceiling */
 uint roll_x( uint num, int mod, uint floor, uint ceiling )
 {
-	if( num == 0 )
-	{ return mod;
-	} 
+  if( num == 0 )
+  { return mod;
+  } 
 
-	uint result = 0;
-	foreach (dice; 0 .. num-1)
-	{
-		result += d();
-	} 
+  uint result = 0;
+  foreach (dice; 0 .. num-1)
+  {
+    result += d();
+  } 
 
-	if( result > MAXIMUM_DIE_ROLL )
-	{ result = MAXIMUM_DIE_ROLL;
-	} 
+  if( result > MAXIMUM_DIE_ROLL )
+  { result = MAXIMUM_DIE_ROLL;
+  } 
 
-	if( result < MINIMUM_DIE_ROLL )
-	{ result = MINIMUM_DIE_ROLL;
-	} 
-	return minmax( result, floor, ceiling ) + mod;
+  if( result < MINIMUM_DIE_ROLL )
+  { result = MINIMUM_DIE_ROLL;
+  } 
+  return minmax( result, floor, ceiling ) + mod;
 }
 
+/* roll a set of dice determined by a `dicebag' struct */
+uint rollbag( dicebag dice )
+{ return roll_x( dice.dice, dice.modifier, dice.floor, dice.ceiling );
+}
+
+/* the `quickcheck' functions quickly check a difficulty check.  returns
+ * `true' if the roll is LESS THAN OR EQUAL TO the difficultry rating.
+ */
 bool quickcheck( uint num, int mod, uint difficulty )
 { return roll( num, mod ) <= difficulty;
 }
 
+/* `quickcheck' with floor and ceiling */
 bool quickcheck_x( uint num, int mod, uint difficulty,
-		                    uint floor, uint ceiling )
+                   uint floor, uint ceiling )
 { return roll_x( num, mod, floor, ceiling ) <= difficulty;
-}
-
-// a non-traditional d10 numbered from 1 to 10
-int d10()
-{
-  int result = td10();
-  return result == 0 ? 10 : result;
-}
-
-// again, going by tradition, use 2 d10s to determine the result of a d100
-// roll.  Zocchi, I love you, but the 100-sided die is a little ridiculous
-int d100()
-{
-  int t = td10(), u = td10();
-  if( t == 0 && u == 0 )
-  { return 100;
-  }
-  return (t * 10) + u;
-}
-
-// roll one 2-sided die
-int d2()
-{ return uniform( 1, 3, Lucky );
-}
-
-// roll one s-sided die
-int dn( byte s )
-{
-  // if sides == 1, just return 1.  if sides == 0, return 0.
-  if( s < 2 )
-  { return s;
-  }
-  return uniform( 1, s + 1, Lucky );
-}
-
-// the complete roll function
-int roll( ubyte num, byte mod )
-{
-  if( num == 0 )
-  { return mod;
-  }
-
-  int result;
-
-  foreach (dice; 0 .. num)
-  { result += d();
-  }
-
-  return result + mod;
-}
-
-int roll_x( ubyte num, byte mod, int floor, int ceiling )
-{
-  if( num == 0 )
-  { return mod;
-  }
-
-  uint result = 0;
-  foreach (dice; 0 .. num-1)
-  { result += d();
-  }
-
-  if( result > MAXIMUM_DIE_ROLL )
-  { result = MAXIMUM_DIE_ROLL;
-  }
-  if( result < MINIMUM_DIE_ROLL )
-  { result = MINIMUM_DIE_ROLL;
-  }
-
-  return minmax( result, floor, ceiling ) + mod;
-}
-
-bool quickcheck( ubyte num, byte mod, int difficulty )
-{ return roll( num, mod ) <= difficulty;
-}
-
-bool quickcheck_x( ubyte num, byte mod, int difficulty,
-                   int floor, int ceiling )
-{ return roll_x( num, mod, floor, ceiling ) <= difficulty;
-}
-
-uint rollbag( dicebag dice )
-{ return roll_x( dice.dice, dice.modifier, dice.floor, dice.ceiling );
 }

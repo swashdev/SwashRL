@@ -41,7 +41,7 @@ struct tile
 }
 
 enum Terrain {
-	floor = tile( SYM_FLOOR, false, false, false, true, 0 ),
-	wall = tile( SYM_WALL, true, true, true, true, 0 ),
-	water = tile( SYM_WATER, false, false, false, true, HAZARD_WATER ),
+  floor = tile( SYM_FLOOR, false, false, false, true, 0            ),
+  wall  = tile( SYM_WALL,  true,  true,  true,  true, 0            ),
+  water = tile( SYM_WATER, false, false, false, true, HAZARD_WATER ),
 }

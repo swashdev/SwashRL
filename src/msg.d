@@ -66,7 +66,7 @@ void read_messages()
   }
 }
 
-void message(T...)(T args) {
+void message( T... )(T args) {
   if( Buffered_messages >= MAX_MESSAGE_BUFFER )
   {
     read_messages();

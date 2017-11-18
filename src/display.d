@@ -37,6 +37,7 @@ void display_map_mons( map to_display )
   foreach (c; 0 .. d)
   {
     mn = to_display.m[c];
+
 static if( USE_FOV )
 {
     if( to_display.v[mn.y][mn.x] )
@@ -47,6 +48,7 @@ else
 {
     display_mon( mn );
 } /* static if( USE_FOV ) */
+
   }
 }
 
@@ -65,6 +67,7 @@ static if( USE_FOV )
         goto dispoutput;
       }
 } /* static if( USE_FOV ) */
+
       if( to_display.i[y][x].sym.ch != '\0' )
       { output = to_display.i[y][x].sym;
       }

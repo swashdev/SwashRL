@@ -64,28 +64,28 @@ int getcommand( bool alt_hjkl )
     case NP_WT:
       return MOVE_WAIT;
 
+version( Windows )
+{
     // numpad controls (Windows-specific)
-    version( Windows )
-    {
-      case KEY_A1:
-        return MOVE_NW;
-      case KEY_A2:
-        return MOVE_NN;
-      case KEY_A3:
-        return MOVE_NE;
-      case KEY_B1:
-        return MOVE_WW;
-      case KEY_B2:
-        return MOVE_WAIT;
-      case KEY_B3:
-        return MOVE_EE;
-      case KEY_C1:
-        return MOVE_SW;
-      case KEY_C2:
-        return MOVE_SS;
-      case KEY_C3:
-        return MOVE_SE;
-    } /* version( Windows ) */
+    case KEY_A1:
+      return MOVE_NW;
+    case KEY_A2:
+      return MOVE_NN;
+    case KEY_A3:
+      return MOVE_NE;
+    case KEY_B1:
+      return MOVE_WW;
+    case KEY_B2:
+      return MOVE_WAIT;
+    case KEY_B3:
+      return MOVE_EE;
+    case KEY_C1:
+      return MOVE_SW;
+    case KEY_C2:
+      return MOVE_SS;
+    case KEY_C3:
+      return MOVE_SE;
+} /* version( Windows ) */
 
     case 'i':
       if( alt_hjkl == true )

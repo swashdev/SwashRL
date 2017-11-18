@@ -106,8 +106,8 @@ void cast_light( map* to_display, int cx, int cy, int row, float start,
 }
 
 void TCOD_map_compute_fov_recursive_shadowcasting(
-		map* to_display, int player_x, int player_y, int max_radius,
-		bool light_walls)
+    map* to_display, int player_x, int player_y, int max_radius,
+    bool light_walls)
 {
   int r2;
   /* clean the map */

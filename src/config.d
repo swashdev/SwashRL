@@ -51,10 +51,10 @@ enum REVERSED_WALLS = true;
  ****************************************************************************/
 
 // Set USE_FOV to false if you need to be able to see the whole map (say, for
-// debugging, testing, &c
+// debugging, testing, &c)
 enum USE_FOV = true;
 
-// The number of messagse to store in the message buffer
+// The number of messages to store in the message buffer
 enum MAX_MESSAGE_BUFFER = 20;
 
 // These lines will define the lowest and highest possible dice roll,

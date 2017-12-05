@@ -5,8 +5,8 @@
  * See license.txt for details.
  */
 
-// This is the global file for Spelunk!.  It will public config.h and util.h
-// for you and process the data in both of these files to configure how
+// This is the global file for Spelunk!.  It will public import config.h and
+// util.h for you and process the data in both of these files to configure how
 // Spelunk! will compile.  THIS FILE SHOULD BE INCLUDED AT THE TOP OF EVERY
 // FILE.  It will include all of the other files for you.
 

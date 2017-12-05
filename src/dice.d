@@ -122,7 +122,7 @@ uint roll( uint num, int mod )
 
   uint result;
 
-  foreach (dice; 0 .. num)
+  foreach( dice; 0 .. num )
   { result += d();
   } 
 
@@ -137,7 +137,7 @@ uint roll_x( uint num, int mod, uint floor, uint ceiling )
   } 
 
   uint result = 0;
-  foreach (dice; 0 .. num-1)
+  foreach( dice; 0 .. num-1 )
   {
     result += d();
   } 

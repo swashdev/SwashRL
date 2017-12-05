@@ -39,9 +39,8 @@ void remove_mon( map* mp, ushort index )
   // past it in the array up, thus overwriting it.
   if( index < mp.m.length )
   {
-    foreach (mn; index + 1 .. mp.m.length)
-    {
-      mp.m[mn - 1] = mp.m[mn];
+    foreach( mn; index + 1 .. mp.m.length )
+    { mp.m[mn - 1] = mp.m[mn];
     }
     mp.m.length--;
   }
@@ -51,39 +50,46 @@ map test_map()
 {
   map nu;
 
-  foreach (y; 0 .. MAP_Y) {
-    foreach (x; 0 .. MAP_X) {
+  foreach( y; 0 .. MAP_Y )
+  {
+    foreach( x; 0 .. MAP_X )
+    {
       nu.i[y][x] = No_item;
       if( y == 0 || y == MAP_y || x == 0 || x == MAP_x )
       {
-	nu.t[y][x] = Terrain.wall;
+        nu.t[y][x] = Terrain.wall;
       }
       else
       {
-	if( (y < 13 && y > 9) && ((x > 19 && x < 24) || (x < 61 && x > 56)) )
-	  nu.t[y][x] = Terrain.wall;
-	else
-	{
-	  if( (y < 13 && y > 9) && (x > 30 && x < 50) )
-	    nu.t[y][x] = Terrain.water;
-	  else
-	    nu.t[y][x] = Terrain.floor;
-	}
-      }
-    }
-  }
+        if( (y < 13 && y > 9) && ((x > 19 && x < 24) || (x < 61 && x > 56)) )
+        { nu.t[y][x] = Terrain.wall;
+        }
+        else
+        {
+          if( (y < 13 && y > 9) && (x > 30 && x < 50) )
+          { nu.t[y][x] = Terrain.water;
+          }
+          else
+          { nu.t[y][x] = Terrain.floor;
+          }
+        } /* else from if( (y < 13 && y > 9) ... */
+      } /* else from if( y == 0 || y == MAP_y ... */
+    } /* foreach( x; 0 .. MAP_X ) */
+  } /* foreach( y; 0 .. MAP_Y ) */
+
+  // test monsters
 
   monst goobling = new_monst_at( 'g', "goobling", 0, 0, 2, 2, 0, 10, 2, 0, 2,
                                  1000, 60, 20 );
 
   add_mon( &nu, goobling );
 
-static if( false )
+static if( false ) /* never */
 {
-    goobling.x = 50;
-    add_mon( &nu, goobling );
-    goobling.y = 10;
-    add_mon( &nu, goobling );
+  goobling.x = 50;
+  add_mon( &nu, goobling );
+  goobling.y = 10;
+  add_mon( &nu, goobling );
 }
 
   // test items
@@ -97,7 +103,7 @@ static if( false )
   nu.i[10][5] = old_sword;
 
 // I'm too lazy to do all of this crap right now (TODO)
-static if( false )
+static if( false ) /* never */
 {
   item ring = { .sym = symdata( '=', A_NORMAL ),
                 .name = "tungsten ring",
@@ -145,7 +151,7 @@ static if( false )
                       .type = ITEM_ARMOR, .equip = EQUIP_TAIL,
                       .addd = 0, .addm = 1 };
   nu.i[17][3] = tailsheath;
-}
+} /* static if( false ) */
   
   return nu;
 }

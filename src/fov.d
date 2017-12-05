@@ -64,33 +64,33 @@ void cast_light( map* to_display, int cx, int cy, int row, float start,
         l_slope=(dx-0.5f)/(dy+0.5f);
         r_slope=(dx+0.5f)/(dy-0.5f);
         if( start < r_slope )
-	{ continue;
-	}
+        { continue;
+        }
         else if( end > l_slope )
         { break;
-	}
+        }
         if ( dx*dx+dy*dy <= r2
              && (light_walls || !(to_display.t[Y][X].block_vision))
            )
         { to_display.v[Y][X] = true;
         }
         if ( blocked )
-	{
+        {
           if (to_display.t[Y][X].block_vision)
-	  {
+          {
             new_start=r_slope;
             continue;
           }
-	  else
-	  {
+          else
+          {
             blocked=false;
             start=new_start;
           }
         }
-	else
-	{
+        else
+        {
           if ((to_display.t[Y][X].block_vision) && j < radius )
-	  {
+          {
             blocked=true;
             cast_light(to_display,cx,cy,j+1,start,l_slope,radius,r2,xx,xy,yx,
                        yy,id+1,light_walls);

@@ -133,7 +133,7 @@ uint uinventory( player* u )
       /* clear the screen */
       clear();
 
-      foreach (count; 0 .. INVENT_LAST_SLOT)
+      foreach( count; 0 .. INVENT_LAST_SLOT )
       {
         // This switch statement of doom sets up the name and selection button
         // for each inventory slot
@@ -165,12 +165,12 @@ uint uinventory( player* u )
                   toStringz(u.inventory.items[count].sym.ch == '\0'
                     ? "EMPTY" : u.inventory.items[count].name
                 ));
-      } /* for( count ) */
+      } /* foreach( count; 0 .. INVENT_LAST_SLOT ) */
 
       mvprintw( 16, 1, "i) Bag [NOT IMPLEMENTED]" );
 
       // this line is here to clear error messages
-      foreach (count; 1 .. 79)
+      foreach( count; 1 .. 79 )
       { mvaddch( 21, count, ' ' );
       }
 
@@ -278,7 +278,8 @@ seppuku:
         if( !confirm_swap )
         {
           // if we can't equip that item here, discard the swap
-          mvprintw( 21, 1, "You can not equip a %s there.", toStringz(grabbed.name) );
+          mvprintw( 21, 1, "You can not equip a %s there.",
+                    toStringz( grabbed.name ) );
 discard_swap:
           grabbedline = line = 255;
           grabbed.sym.ch = '\0';
@@ -291,8 +292,8 @@ discard_swap:
           if( !check_equip( u.inventory.items[line], grabbedline ) )
           {
             mvprintw( 21, 1, "You can not swap the %s and the %s.",
-                      toStringz(u.inventory.items[line].name),
-                      toStringz(grabbed.name) );
+                      toStringz( u.inventory.items[line].name ),
+                      toStringz( grabbed.name ) );
             goto discard_swap;
           }
         }

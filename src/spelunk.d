@@ -47,7 +47,7 @@ int main()
   // Do not echo user input
   noecho();
   // Enable keypad & other function keys
-  keypad(stdscr, 1);
+  keypad( stdscr, 1 );
 
   Current_map = test_map();
 
@@ -88,7 +88,7 @@ int main()
       case MOVE_ALTKEYS:
         alt_hjkl = !alt_hjkl;
         mvprintw( 0, 0, "Alternate movement keys %sabled",
-                  toStringz(alt_hjkl ? "en" : "dis") );
+                  toStringz( alt_hjkl ? "en" : "dis" ) );
         break;
       // print the message buffer
       case MOVE_MESS_DISPLAY:
@@ -117,7 +117,8 @@ int main()
         clear_message_line();
         moved = umove( &u, &Current_map, cast(ubyte)mv );
         if( u.hp <= 0 )
-          goto playerdied;
+        { goto playerdied;
+        }
         display_player( u );
         break;
     }
@@ -150,7 +151,8 @@ playerdied:
 
   mvaddch( u.y + RESERVED_LINES, u.x, SMILEY );
   static if( TEXT_EFFECTS )
-  { mvchgat( u.y + RESERVED_LINES, u.x, 1, A_DIM, cast(short)0, cast(void*)null );
+  { mvchgat( u.y + RESERVED_LINES, u.x, 1, A_DIM,
+             cast(short)0, cast(void*)null );
   }
 
 playerquit:

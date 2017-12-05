@@ -20,17 +20,21 @@ player init_player( ubyte x, ubyte y )
 {
   player u;
   if( x < 80 )
-    u.x = x;
+  { u.x = x;
+  }
   else
-    u.x = 1;
+  { u.x = 1;
+  }
   if( y < 24 )
-    u.y = y;
+  { u.y = y;
+  }
   else
-    u.y = 1;
+  { u.y = 1;
+  }
   u.sym = symdata( SMILEY, A_NORMAL );
   u.hp = roll( 3, 2 );
 
-  foreach (count; 0 .. 40)
+  foreach( count; 0 .. 40 )
   { u.inventory.items[count] = No_item;
   }
   u.inventory.quiver_count = 0;

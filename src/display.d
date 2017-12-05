@@ -34,7 +34,7 @@ void display_map_mons( map to_display )
 {
   ulong d = to_display.m.length;
   monst mn;
-  foreach (c; 0 .. d)
+  foreach( c; 0 .. d )
   {
     mn = to_display.m[c];
 
@@ -54,27 +54,26 @@ else
 
 void display_map( map to_display )
 {
-  foreach (y; 0 .. MAP_Y)
-    foreach(x; 0 .. MAP_X)
+  foreach( y; 0 .. MAP_Y )
+  {
+    foreach( x; 0 .. MAP_X )
     {
       symbol output = to_display.t[y][x].sym;
-
-static if( USE_FOV )
-{
-      if( !to_display.v[y][x] )
-      {
-        output = SYM_SHADOW;
-        goto dispoutput;
-      }
-} /* static if( USE_FOV ) */
 
       if( to_display.i[y][x].sym.ch != '\0' )
       { output = to_display.i[y][x].sym;
       }
 
-dispoutput:
+static if( USE_FOV )
+{
+      if( !to_display.v[y][x] )
+      { output = SYM_SHADOW;
+      }
+} /* static if( USE_FOV ) */
+
       display( y + 1, x, output, 0 );
-    }
+    } /* foreach( x; 0 .. MAP_X ) */
+  } /* foreach( y; 0 .. MAP_Y ) */
 }
 
 void display_map_all( map to_display )
@@ -91,9 +90,9 @@ void display_map_and_player( map to_display, player u )
 
 void clear_message_line()
 {
-  foreach( y; 0 .. MESSAGE_BUFFER_LINES)
+  foreach( y; 0 .. MESSAGE_BUFFER_LINES )
   {
-    foreach (x; 0 .. MAP_X)
+    foreach( x; 0 .. MAP_X )
     { display( y, x, symdata( ' ', A_NORMAL ), 0 );
     }
   }
@@ -105,7 +104,7 @@ void refresh_status_bar( player* u )
   int dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].addd;
   int mod = u.attack_roll.modifier + u.inventory.items[INVENT_WEAPON].addm;
 
-  foreach (x; 0 .. MAP_X)
+  foreach( x; 0 .. MAP_X )
   { mvaddch( 1 + MAP_Y, x, ' ' );
   }
   mvprintw( 1 + MAP_Y, 0, "HP: %d    Attack: %ud %c %u",

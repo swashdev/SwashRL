@@ -30,7 +30,7 @@ struct tile
 
   // a bitmask to determine if there are any hazards on this tile; use this
   // carefully, as some hazards might conflict (can't have a pit and a pool of
-  // water on the same tile!
+  // water on the same tile!)
   // note: this flag could potentially be used for other special tiles, not
   // just hazards--the sky's the limit when you're programming your own
   // universe!

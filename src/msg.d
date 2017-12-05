@@ -18,7 +18,8 @@ void clear_messages()
 {
   ushort m;
   for( m = 0; m < MAX_MESSAGE_BUFFER; m++ )
-    Messages[m] = "\0";
+  { Messages[m] = "\0";
+  }
   Buffered_messages = 0;
 }
 
@@ -45,7 +46,7 @@ void message_history()
   import std.string: toStringz;
 
   clear();
-  foreach (m; 0 .. MAX_MESSAGE_BUFFER)
+  foreach( m; 0 .. MAX_MESSAGE_BUFFER )
   { mvprintw( m, 0, toStringz(Messages[m]) );
   }
   refresh();
@@ -57,8 +58,8 @@ void read_messages()
   while( Buffered_messages > 0 )
   {
     clear_message_line(); // from display.h
-    mvprintw( 0, 0, "%s%s",
-              toStringz(pop_message()), toStringz(Buffered_messages > 1 ? "  (More)" : "") );
+    mvprintw( 0, 0, "%s%s", toStringz(pop_message()),
+              toStringz(Buffered_messages > 1 ? "  (More)" : "") );
     refresh();
     if( Buffered_messages > 0 )
     { getch();
@@ -66,7 +67,8 @@ void read_messages()
   }
 }
 
-void message( T... )(T args) {
+void message( T... )(T args)
+{
   if( Buffered_messages >= MAX_MESSAGE_BUFFER )
   {
     read_messages();

@@ -26,7 +26,7 @@ else
 }
 
   // further members of this struct will be used when SDL is implemented for
-  // images (possibly including sprites in the future
+  // images (possibly including sprites in the future)
 }
 
 symbol symdata( char character, ulong effects )

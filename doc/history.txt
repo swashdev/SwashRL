@@ -157,7 +157,7 @@ Version Date/time Finalized   Info
         The git repository was reset at this point in anticipation of major
         overhauls to the code for version 0.022
 
-0.022                         The code is fully translated into D, unlocking
+0.022   2017-12-05 21:45 EST  The code is fully translated into D, unlocking
         additional functionality for the source code.  Unfortunately this
         breaks PDCurses and thus renders Windows support impossible.  By
         making use of the new D code, a large amount of the configuration

@@ -1,6 +1,7 @@
 Spelunk! official changelog
 
 VERSION 0.022
+Finalized 2017-12-05 21:45 EST
 
   With version 0.022, the source code was rewritten from C to D in order to
   unlock better functionality.  Unfortunately this broke support for PDCurses,

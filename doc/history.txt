@@ -156,3 +156,11 @@ Version Date/time Finalized   Info
         Additionally, work on the inventory system begins.
         The git repository was reset at this point in anticipation of major
         overhauls to the code for version 0.022
+
+0.022                         The code is fully translated into D, unlocking
+        additional functionality for the source code.  Unfortunately this
+        breaks PDCurses and thus renders Windows support impossible.  By
+        making use of the new D code, a large amount of the configuration
+        settings are now automated and message formatting now works properly
+        again.  Additionally, the source code now uses the dub package manager
+        to handle dependencies.

@@ -1,5 +1,21 @@
 Spelunk! official changelog
 
+VERSION 0.022
+
+  With version 0.022, the source code was rewritten from C to D in order to
+  unlock better functionality.  Unfortunately this broke support for PDCurses,
+  rendering this version of the code unable to run on Windows.  An effort was
+  made to fix this but due to a computer failure the code was lost.  Windows
+  support has been temporarily postponed.
+
+  Fixed:
+   - Messages are now formatted properly and no longer consist of static
+     strings.
+
+  Changed:
+   - The system the code is being compiled on now auto-detects and imports
+     some modules according to what system "version" is being compiled.
+
 VERSION 0.021
 Finalized 2017-09-02 02:36 EST
 

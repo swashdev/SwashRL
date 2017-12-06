@@ -267,7 +267,7 @@ seppuku:
                 toStringz(grabbed.name) );
                 goto seppuku;
             }
-            //goto default;
+            goto default;
             // fall through to next case
           default:
             // confirm the player can swap this item to this slot

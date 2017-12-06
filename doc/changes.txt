@@ -1,5 +1,12 @@
 Spelunk! official changelog
 
+VERSION 0.023
+Finalized 2017-12-05 22:30 EST
+
+  Fixed:
+   - Fixed the missing semicolons that were preventing version 0.022 from
+     compiling.
+
 VERSION 0.022
 Finalized 2017-12-05 21:45 EST
 

@@ -1,4 +1,4 @@
-Spelunk! version 0.022
+Spelunk! version 0.023
 Readme file, last updated 2017-12-05
 Contact the maintainer: philip@swash.link
 

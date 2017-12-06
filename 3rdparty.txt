@@ -1,4 +1,4 @@
-The version of Spelunk! which you have received (0.021) uses the following
+The version of Spelunk! which you have received (0.023) uses the following
 third-party resources to function.
 
  -- ncurses and PDCurses ----------------------------------------------------

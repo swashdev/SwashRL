@@ -17,7 +17,7 @@
 // The version number
 // In the current version numbering system, the first number is the release
 // number and the second is the three-digit revision number.
-enum VERSION = 0.021;
+enum VERSION = 0.022;
 
 // Include the config file
 public import config;

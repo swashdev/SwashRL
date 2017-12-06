@@ -48,27 +48,31 @@ important enough to deserve it.
      the doctrine of fair use if you wish.
 
 III. The Software and/or Source Code may be modified by any user, and these
-     modifications may be distributed as per Section II, including attaching
-     an unmodified copy of this Notice and the "Letter from the Author."  Any
-     user who distributes modifications to the Software and/or Source Code
-     agrees to make their changes available to the author or maintainer of the
-     original Software upon request so that these changes may be incorporated
-     into future releases of the Software.  Apart from this condition, there
-     is no requirement to release the source code for modifications to the
-     Software.
+     modifications may be distributed as per Section II, including retaining
+     this Notice and the "Letter from the Author."  Any user who distributes
+     modifications to the Software and/or Source Code agrees to make their
+     changes available to the author or maintainer of the original Software
+     upon request so that these changes may be incorporated into future
+     releases of the Software.  This condition shall remain in effect for one
+     year after the most recent release of such modifications.  Apart from
+     this condition, there is no requirement to release the source code for
+     modifications to the Software.
 
  IV. Small portions of the Source Code, such as individual functions or
      routines, may be used to create new software.  So long as this new
-     software does not copy the whole Source Code, it shall be considered a
-     "Derivative" for the purposes of this Notice.  Derivatives are exempt
+     software does not copy the unmodified Source Code, it shall be considered
+     a "Derivative" for the purposes of this Notice.  Derivatives are exempt
      from the restrictions defined in Sections II and III, and may be
      exploited for commercial purposes under the following conditions:
 
      1. This Notice and the below "Letter from the Author" must be recreated
-        unaltered in the documentation for the Derivative as an
+        unaltered in the documentation for any Derivative as an
         acknowledgement of the authorship of this Software.
 
-     2. No assets--including, but not limited to, image files, music and
+     2. The name of any Derivative must be changed so as to not be confused
+        with the original Software.
+
+     3. No assets--including, but not limited to, image files, music and
         sound, and/or data files--or other trademarks of the above-named
         copyright holders included with this Software may be used or recreated
         for the purposes of the creation of a commercial Derivative, unless
@@ -83,10 +87,25 @@ distributor.
 
 To my users:
 
-  The software product to which this letter is attached is careware.
-What that means, in this particular case, is that I would like to take this
-opportunity to discuss an issue that affects children growing up in America,
-where this software was developed, and around the world.
+  When one creates something like a software product, the question of
+commercialization inevitably comes up:  Should I charge money or accept
+donations to help support this software?  I thought long and hard about this
+question while developing this software, and I decided instead to release it
+as a kind of careware.
+
+  There are a number of definitions of careware, but the most commonly
+accepted is that careware is software which is generally released for free and
+which advocates donation to a particular cause.  I like this concept because
+it means I can use my software as a platform to help create real change in the
+world.
+
+  Thus, I've appended this letter as a "careware clause" to my software.
+If you like this software, the best possible way you can pay me back is by
+reading this letter and considering the position for which I am advocating
+herein, especially since the position I am advocating for will not only help
+people far away whom you may never meet, but rather the people around you and
+future generations of your family and friends.  Needless to say, this is an
+issue I care very deeply about.  So, here it goes:
 
   In 2017 the House of Representatives in the United States voted to add male
 circumcision to the list of actions which are protected under the
@@ -128,8 +147,13 @@ Amputation is a last resort; not cosmetic, not preventative, and not a
 decision to be made lightly.  That's all I wanted to say.
 
   If you'd like, I give you permission to snip this "Letter from the Author"
-out and send it to other people.  Help spread the word about this issue.
+out and send it to other people (However, if you modify the text, I have to
+insist that you remove my name).  Help spread the word about this issue.
 If you distribute this software, please leave this letter intact.  This is
 careware, after all; if you take the "care" part away, then what's the point?
+If you support the message I'm sending in this letter, feel free to add your
+name underneath mine below.  Otherwise, this letter will not reflect on you or
+any other contributor to the software, as it's purely a representation of my
+thoughts on the matter.
 
  - Philip Pavlick

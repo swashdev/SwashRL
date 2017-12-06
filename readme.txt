@@ -11,7 +11,7 @@ release, it currently has NO DOCUMENTATION, save for that mentioned in this
 file.
 
 Spelunk! currently has git respositories hosted at the following locations:
-  https://github.com/Crawldragon/spelunk
+  https://github.com/swashdev/Spelunk
 
  -- License Agreement -------------------------------------------------------
 

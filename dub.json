@@ -3,11 +3,22 @@
 	"authors": [
 		"Philip Pavlick <philip@swash.link>"
 	],
-	"dependencies": {
-		"ncurses": "~master"
-	},
-	"description": "A minimal D application.",
-	"copyright": "Copyright (c) 2017, Philip Pavlick",
+	"description": "Another open-source Roguelike",
+	"copyright": "Copyright (c) 2016-2018, Philip Pavlick",
 	"license": "The Spelunk! license",
-	"targetType": "executable"
+	"targetType": "executable",
+        "configurations": [
+                {
+                        "name": "ncurses",
+                        "dependencies": {
+                                "ncurses": "master"
+                        }
+                },
+                {
+                        "name": "pdcurses",
+                        "dependencies": {
+                                "pdcurses-d": "~>1.0.0"
+                        }
+                }
+        ]
 }

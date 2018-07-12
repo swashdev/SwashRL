@@ -11,14 +11,16 @@
                 {
                         "name": "ncurses",
                         "dependencies": {
-                                "ncurses": "master"
-                        }
+                                "ncurses": "~master"
+                        },
+                        "versions": ["ncurses"]
                 },
                 {
                         "name": "pdcurses",
                         "dependencies": {
-                                "pdcurses-d": "~>1.0.0"
-                        }
+                                 "pdcurses-d": "~>1.0.0"
+                        },
+                        "versions": ["pdcurses"]
                 }
         ]
 }

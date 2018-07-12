@@ -35,27 +35,11 @@ public import sys;
 
 /* public import the necessary version of curses */
 
-version( Posix )
-{
-  // POSIX systems can use ncurses.  Systems running X11 can also use PDCurses
-  // but we'll figure that part out later.
-  // XXX: I wonder if Cygwin and MinGW can be coerced into using ncurses, and
-  // if so whether this POSIX check will catch that.  Probably worth
-  // investigating.
-  pragma( msg,
-        "POSIX system (Linux, FreeBSD, OSX, &c) detected, using ncurses..." );
-  public import deimos.ncurses.curses;
+version( ncurses )
+{ public import deimos.ncurses.curses;
 }
-else version( Windows )
-{
-  // Normally here we would import PDCurses (because that's the version of
-  // curses that works with Windows) but D doesn't have a wrapper for that yet
-  pragma( msg, "WARNING: No curses available for this system!" );
-}
-else version( all )
-{
-  // An additional warning just in case:
-  pragma( msg, "WARNING: No curses known to the developer for this system!" );
+version( pdcurses )
+{ public import pdcurses;
 }
 
 // TODO:

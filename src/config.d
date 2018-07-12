@@ -14,9 +14,8 @@
 
 // Set one of the following values to true to import a version of curses.
 // (Spelunk! relies on either pdcurses or ncurses)
-enum IMPORT_NCURSES  = false; // imports ncurses.h
-enum IMPORT_PDCURSES = false; // imports pdcurses.h
-enum IMPORT_CURSES   = false; // imports curses.h
+//enum IMPORT_NCURSES  = false; // imports ncurses.h
+//enum IMPORT_PDCURSES = false; // imports pdcurses.h
 
 /* SECTION 2: ***************************************************************
  * Display configuration                                                    *

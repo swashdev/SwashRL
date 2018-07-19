@@ -11,7 +11,7 @@
                 {
                         "name": "ncurses",
                         "dependencies": {
-                                "ncurses": "~master"
+                                "ncurses": "~>6.0"
                         },
                         "versions": ["ncurses"]
                 },

@@ -4,7 +4,7 @@ other open-source software used for Spelunk!, please see the file
 
   ----------------------------------------------------------------------------
 
-Spelunk! is Copyright (c) 2017 Philip Pavlick.  All rights reserved.
+Spelunk! is Copyright (c) 2016-2018 Philip Pavlick.  All rights reserved.
 
 The above-named software product and its documentation (collectively, the
 "Software") as well as the source files used to compile it (the "Source Code")

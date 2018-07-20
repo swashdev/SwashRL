@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Philip Pavlick.  All rights reserved.
+ * Copyright (c) 2016-2018 Philip Pavlick.  All rights reserved.
  *
  * Spelunk! may be modified and distributed, but comes with NO WARRANTY!
  * See license.txt for details.

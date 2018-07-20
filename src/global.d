@@ -18,6 +18,9 @@
 // In the current version numbering system, the first number is the release
 // number and the second is the three-digit revision number.
 enum VERSION = 0.023;
+version( full )
+{ pragma( msg, "Compiling for release number: ", VERSION );
+}
 
 // Include the config file
 public import config;
@@ -39,7 +42,12 @@ version( ncurses )
 { public import deimos.ncurses.curses;
 }
 version( pdcurses )
-{ public import pdcurses;
+{
+  /* Display a warning in pragma for the pdcurses configuration */
+  pragma( msg, "WARNING: PDCurses is not being actively supported for version ", VERSION, " due to difficulties with getting dmd to recognize any version of pdcurses.lib we have compiled.  We are unsure of the problem and are working on a workaround or an alternative.\n",
+"If you manage to get PDCurses working for Spelunk!, we would be delighted to learn how you did it.  Please leave an Issue on our GitHub page:\n",
+"https://github.com/swashdev/spelunk" );
+  public import pdcurses;
 }
 
 // TODO:

@@ -110,12 +110,6 @@ version( curses )
   if( SDL_none() )
   {
     io = new CursesDisplay();
-    io.setup();
-
-    // Control characters are passed directly to the program
-    raw();
-    // Enable keypad & other function keys
-    keypad( stdscr, 1 );
   }
 }
 
@@ -141,7 +135,7 @@ version( curses )
   while( mv != MOVE_QUIT && u.hp > 0 )
   {
     moved = 0;
-    mv = getcommand( alt_hjkl );
+    mv = io.getcommand();
     switch( mv )
     {
       // display help

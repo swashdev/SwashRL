@@ -25,7 +25,7 @@ interface SpelunkIO
   ///////////
 
   // Takes in an input and returns an action.
-  int read();
+  int getcommand();
 
   ////////////
   // Output //

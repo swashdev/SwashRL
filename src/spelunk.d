@@ -182,7 +182,7 @@ version( curses )
       io.refresh_status_bar( &u );
       io.display_map_and_player( Current_map, u );
     }
-    if( Messages.length > 0 )
+    if( !Messages.empty() )
     { io.read_messages();
     }
     if( u.hp > 0 )

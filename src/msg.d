@@ -8,29 +8,28 @@
 import global;
 
 import std.string;
+import std.container : DList;
+import std.range.primitives : popFront;
 
 enum MESSAGE_BUFFER_LINES = 1;
 
-static string[] Messages;
+DList!string Messages;
 
 void clear_messages()
-{
-  Messages.length = 0;
+{ Messages.clear();
 }
 
 string pop_message()
 {
-  string ret = "";
-  if( Messages.length > 0 )
-  {
-    ret = Messages[$-1];
-    Messages.length--;
+  if( Messages.empty() )
+  { return "";
   }
 
+  string ret = Messages.front;
+  Messages.removeFront();
   return ret;
 }
 
 void message( T... )(T args)
-{
-  Messages = format( args ) ~ Messages;
+{ Messages.insertBack( format( args ) );
 }

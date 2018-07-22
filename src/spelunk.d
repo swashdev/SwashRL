@@ -103,14 +103,14 @@ int main( string[] args )
 
   seed();
 
-  Display mainout;
+  SpelunkIO io;
 
 static if( SPELUNK_CURSES )
 {
   if( SDL_none() )
   {
-    mainout = new CursesDisplay();
-    mainout.setup();
+    io = new CursesDisplay();
+    io.setup();
 
     // Control characters are passed directly to the program
     raw();
@@ -130,9 +130,9 @@ static if( SPELUNK_CURSES )
   Buffered_messages = MAX_MESSAGE_BUFFER;
   clear_messages();
 
-  mainout.refresh_status_bar( &u );
+  io.refresh_status_bar( &u );
 
-  mainout.display_map_and_player( Current_map, u );
+  io.display_map_and_player( Current_map, u );
 
   bool alt_hjkl = false;
 
@@ -163,13 +163,13 @@ static if( SPELUNK_CURSES )
       // print the message buffer
       case MOVE_MESS_DISPLAY:
         message_history();
-        mainout.clear_message_line();
-        mainout.refresh_status_bar( &u );
-        mainout.display_map_all( Current_map );
+        io.clear_message_line();
+        io.refresh_status_bar( &u );
+        io.display_map_all( Current_map );
         break;
       // clear the message line
       case MOVE_MESS_CLEAR:
-        mainout.clear_message_line();
+        io.clear_message_line();
         break;
       // wait
       case MOVE_WAIT:
@@ -180,12 +180,12 @@ static if( SPELUNK_CURSES )
       case MOVE_INVENTORY:
         moved = uinventory( &u );
         // we must redraw the screen after the inventory window is cleared
-        mainout.display_map_all( Current_map );
+        io.display_map_all( Current_map );
         break;
       // all other commands go to umove
       default:
-        mainout.clear_message_line();
-        mainout.display( u.y, u.x, Current_map.t[u.y][u.x].sym );
+        io.clear_message_line();
+        io.display( u.y, u.x, Current_map.t[u.y][u.x].sym );
         moved = umove( &u, &Current_map, cast(ubyte)mv );
         if( u.hp <= 0 )
         { goto playerdied;
@@ -202,14 +202,14 @@ static if( SPELUNK_CURSES )
       static if( USE_FOV )
       { calc_visible( &Current_map, u.x, u.y );
       }
-      mainout.refresh_status_bar( &u );
-      mainout.display_map_and_player( Current_map, u );
+      io.refresh_status_bar( &u );
+      io.display_map_and_player( Current_map, u );
     }
     if( Buffered_messages > 0 )
     { read_messages();
     }
     if( u.hp > 0 )
-    { mainout.display_player( u );
+    { io.display_player( u );
     }
     else
     { break;
@@ -227,6 +227,6 @@ playerquit:
   // view all the messages that you got just before you died
   read_messages();
 
-  mainout.cleanup();
+  io.cleanup();
   return 0;
 }

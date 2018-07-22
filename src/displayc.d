@@ -24,15 +24,8 @@ import config;
 // This class contains functions for the curses display
 // These functions should all be cross-compatible between pdcurses and ncurses
 // since they don't do anything fancy or complicated.
-class CursesDisplay : Display
+class CursesIO : SpelunkIO
 {
-
-  void setup()
-  {
-    initscr();
-    // Do not echo user input
-    noecho();
-  }
 
   void cleanup()
   {

@@ -32,7 +32,7 @@ void display_mon( monst m )
 
 void display_map_mons( map to_display )
 {
-  uint d = to_display.m.length;
+  size_t d = to_display.m.length;
   monst mn;
   foreach( c; 0 .. d )
   {

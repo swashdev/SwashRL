@@ -11,13 +11,13 @@ import std.string;
 
 enum MESSAGE_BUFFER_LINES = 1;
 
-static string[MAX_MESSAGE_BUFFER] Messages;
+static string[] Messages;
 int Buffered_messages;
 
 void clear_messages()
 {
   ushort m;
-  for( m = 0; m < MAX_MESSAGE_BUFFER; m++ )
+  for( m = 0; m < Buffered_messages; m++ )
   { Messages[m] = "\0";
   }
   Buffered_messages = 0;
@@ -35,46 +35,18 @@ string pop_message()
 
 void bump_messages()
 {
-  ushort m = MAX_MESSAGE_BUFFER - 1;
+  if( Buffered_messages > Messages.length )
+  { Messages.length++;
+  }
+
+  ushort m = Buffered_messages - 1;
   for( ; m > 0; m-- )
   { Messages[m] = Messages[m - 1];
   }
 }
 
-void message_history()
-{
-  import std.string: toStringz;
-
-  clear();
-  foreach( m; 0 .. MAX_MESSAGE_BUFFER )
-  { mvprintw( m, 0, toStringz(Messages[m]) );
-  }
-  refresh();
-  getch();
-}
-
-void read_messages()
-{
-  while( Buffered_messages > 0 )
-  {
-    clear_message_line(); // from display.h
-    mvprintw( 0, 0, "%s%s", toStringz(pop_message()),
-              toStringz(Buffered_messages > 1 ? "  (More)" : "") );
-    refresh();
-    if( Buffered_messages > 0 )
-    { getch();
-    }
-  }
-}
-
 void message( T... )(T args)
 {
-  if( Buffered_messages >= MAX_MESSAGE_BUFFER )
-  {
-    read_messages();
-    getch();
-  }
-
   bump_messages();
 
   Messages[0] = format( args );

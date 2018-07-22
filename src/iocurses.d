@@ -147,6 +147,49 @@ version( Windows )
     }
   } /* int getcommand */
 
+  void read_messages()
+  {
+    while( Buffered_messages > 0 )
+    {
+      clear_message_line(); // from display.h
+      mvprintw( 0, 0, "%s%s", toStringz(pop_message()),
+                toStringz(Buffered_messages > 1 ? "  (More)" : "") );
+      refresh();
+      if( Buffered_messages > 0 )
+      { getch();
+      }
+    }
+  }
+
+  void read_message_history()
+  {
+    import std.string: toStringz;
+
+    clear();
+    ubyte n = 0;
+    foreach( m; 0 .. Messages.length )
+    {
+      mvprintw( n, 0, toStringz(Messages[m]) );
+      if( m % MAX_MESSAGE_BUFFER == 20 )
+      {
+        refresh();
+        getch();
+        clear();
+        n = 0;
+      }
+      else
+      { n++;
+      }
+    }
+    refresh();
+    getch();
+    clear_message_line();
+  }
+
+  ////////////
+  // Output //
+  ////////////
+
   void display( uint y, uint x, symbol s, bool center = false )
   {
     mvaddch( y, x, s.ch );

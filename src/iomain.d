@@ -27,6 +27,12 @@ interface SpelunkIO
   // Takes in an input and returns an action.
   int getcommand();
 
+  // Reads the player all of their messages one at a time
+  void read_messages();
+
+  // Gives the player a menu containing their message history.
+  void read_message_history();
+
   ////////////
   // Output //
   ////////////

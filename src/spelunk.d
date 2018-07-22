@@ -9,31 +9,19 @@ import global;
 import std.string: toStringz;
 
 static map Current_map;
+static SpelunkIO io;
 
 void help( bool alt_hjkl )
 {
-  clear_message_line();
-  mvprintw( 0, 0, "hjkl" );
-  if( alt_hjkl )
-  { printw( "uinm" );
-  }
-  else
-  { printw( "yubn" );
-  }
-  printw( " or number pad to move.  Q to quit." );
-  getch();
-  clear_message_line();
+  message(
+    "hjklyubn or number pad to move. PERIOD to wait, SPACE to clear." );
 }
 
 void sp_version()
 {
   import std.string: toStringz;
 
-  clear_message_line();
-  mvprintw( 0, 0, "%s, version %.3f",
-            toStringz("Spelunk!"), VERSION );
-  getch();
-  clear_message_line();
+  message( "%s, version %.3f", toStringz("Spelunk!"), VERSION );
 }
 
 // `SDL_Mode' is a static variable used by the display functions to determine
@@ -94,16 +82,14 @@ int main( string[] args )
 
   // Check to make sure the SDL_Mode does not conflict with the way Spelunk!
   // was compiled:
-  if( !CURSES_ENABLED && SDL_Mode == SDL_MODES.none )
+  if( !CURSES_ENABLED && SDL_none() )
   { SDL_Mode = SDL_MODES.terminal;
   }
-  if( !SDL_ENABLED && SDL_Mode != SDL_MODES.none )
+  if( !SDL_ENABLED && !SDL_none() )
   { SDL_Mode = SDL_MODES.none;
   }
 
   seed();
-
-  SpelunkIO io;
 
 version( curses )
 {
@@ -156,8 +142,7 @@ version( curses )
         break;
       // print the message buffer
       case MOVE_MESS_DISPLAY:
-        message_history();
-        io.clear_message_line();
+        io.read_message_history();
         io.refresh_status_bar( &u );
         io.display_map_all( Current_map );
         break;
@@ -200,7 +185,7 @@ version( curses )
       io.display_map_and_player( Current_map, u );
     }
     if( Buffered_messages > 0 )
-    { read_messages();
+    { io.read_messages();
     }
     if( u.hp > 0 )
     { io.display_player( u );
@@ -213,7 +198,7 @@ version( curses )
 
 playerdied:
 
-  display( u.y, u.x, symdata( SMILEY, A_DIM ), true );
+  io.display( u.y, u.x, symdata( SMILEY, A_DIM ), true );
 
 playerquit:
 

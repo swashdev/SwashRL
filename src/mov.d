@@ -195,9 +195,6 @@ ubyte umove( player* u, map* m, ubyte dir )
     }
     return 0;
   }
-  if( dir == MOVE_INVENTORY )
-  { return cast(ubyte) io.control_inventory( u );
-  }
   byte dy, dx;
   getdydx( dir, &dy, &dx );
   bool cardinal = dy == 0 || dx == 0;

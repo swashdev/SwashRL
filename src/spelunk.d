@@ -54,6 +54,7 @@ int main( string[] args )
 {
   import std.string: toStringz;
   import std.getopt;
+  import std.stdio: writeln;
 
   // use getopt to get command-line arguments
   auto clarguments = getopt( args,
@@ -66,7 +67,7 @@ int main( string[] args )
 
   if( clarguments.helpWanted )
   {
-    defaultGetoptPrinter( "Usage: spelunk [options]\n
+    writeln( "Usage: spelunk [options]\n
   options:\n
     -h, --help        Displays this help output and then exits.
     -S, --sdl-mode    Sets the output mode for Spelunk!  Default \"terminal\"\n

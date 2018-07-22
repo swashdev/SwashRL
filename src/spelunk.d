@@ -157,7 +157,7 @@ version( curses )
         break;
       // inventory management
       case MOVE_INVENTORY:
-        moved = uinventory( &u );
+        moved = io.control_inventory( &u );
         // we must redraw the screen after the inventory window is cleared
         io.display_map_all( Current_map );
         break;

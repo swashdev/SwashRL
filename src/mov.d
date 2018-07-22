@@ -82,7 +82,6 @@ void uattackm( player* u, monst* m )
   if( m.hp <= 0 )
   { message( "The %s is slain!", m.name );
   }
-  move( u.y + RESERVED_LINES, u.x );
 }
 
 enum FLOOR_HERE = 0;
@@ -197,7 +196,7 @@ ubyte umove( player* u, map* m, ubyte dir )
     return 0;
   }
   if( dir == MOVE_INVENTORY )
-  { return cast(ubyte)uinventory( u );
+  { return cast(ubyte) io.control_inventory( u );
   }
   byte dy, dx;
   getdydx( dir, &dy, &dx );
@@ -244,7 +243,6 @@ message( "You step into the water and are pulled down by your equipment..." );
   }
   else
   {
-    mvaddch( u.y + RESERVED_LINES, u.x, '.' );
     u.y = dy; u.x = dx;
   }
 

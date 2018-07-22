@@ -33,6 +33,9 @@ interface SpelunkIO
   // Gives the player a menu containing their message history.
   void read_message_history();
 
+  // Displays the `player's inventory and enables them to control it
+  void control_inventory( player* u );
+
   ////////////
   // Output //
   ////////////

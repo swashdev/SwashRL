@@ -24,7 +24,7 @@
       "name": "ncurses",
       "dependencies":
       {
-        "ncurses": "~>6.0",
+        "ncurses": "~master",
         "derelict-sdl2": "~>3.1.0-alpha.4"
       },
       "subConfigurations":

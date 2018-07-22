@@ -20,23 +20,14 @@ void clear_messages()
 
 string pop_message()
 {
+  string ret = "";
   if( Messages.length > 0 )
   {
-    string ret = Messages[$-1];
+    ret = Messages[$-1];
     Messages.length--;
   }
-}
 
-void bump_messages()
-{
-  if( Buffered_messages > Messages.length )
-  { Messages.length++;
-  }
-
-  uint m = Buffered_messages - 1;
-  for( ; m > 0; m-- )
-  { Messages[m] = Messages[m - 1];
-  }
+  return ret;
 }
 
 void message( T... )(T args)

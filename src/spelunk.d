@@ -7,6 +7,8 @@
 
 import global;
 
+import std.string: toStringz;
+
 static map Current_map;
 static SpelunkIO io;
 
@@ -18,8 +20,6 @@ void help( bool alt_hjkl )
 
 void sp_version()
 {
-  import std.string: toStringz;
-
   message( "%s, version %.3f", "Spelunk!", VERSION );
 }
 

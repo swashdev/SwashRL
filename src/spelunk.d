@@ -204,7 +204,7 @@ playerquit:
 
   message( "See you later..." );
   // view all the messages that you got just before you died
-  read_messages();
+  io.read_messages();
 
   io.cleanup();
   return 0;

@@ -12,7 +12,7 @@ import std.string;
 enum MESSAGE_BUFFER_LINES = 1;
 
 static string[] Messages;
-int Buffered_messages;
+uint Buffered_messages;
 
 void clear_messages()
 {
@@ -39,7 +39,7 @@ void bump_messages()
   { Messages.length++;
   }
 
-  ushort m = Buffered_messages - 1;
+  uint m = Buffered_messages - 1;
   for( ; m > 0; m-- )
   { Messages[m] = Messages[m - 1];
   }

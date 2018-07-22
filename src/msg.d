@@ -12,25 +12,19 @@ import std.string;
 enum MESSAGE_BUFFER_LINES = 1;
 
 static string[] Messages;
-uint Buffered_messages;
 
 void clear_messages()
 {
-  ushort m;
-  for( m = 0; m < Buffered_messages; m++ )
-  { Messages[m] = "\0";
-  }
-  Buffered_messages = 0;
+  Messages.length = 0;
 }
 
 string pop_message()
 {
-  if( Buffered_messages > 0 )
+  if( Messages.length > 0 )
   {
-    Buffered_messages -= 1;
-    return Messages[Buffered_messages];
+    string ret = Messages[$-1];
+    Messages.length--;
   }
-  return "\0";
 }
 
 void bump_messages()
@@ -47,8 +41,5 @@ void bump_messages()
 
 void message( T... )(T args)
 {
-  bump_messages();
-
-  Messages[0] = format( args );
-  Buffered_messages += 1;
+  Messages = format( args ) ~ Messages;
 }

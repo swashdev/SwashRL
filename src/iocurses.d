@@ -13,14 +13,15 @@ version( curses )
 
 import global;
 
+import std.string: toStringz;
+
 // This class contains functions for the curses display
 // These functions should all be cross-compatible between pdcurses and ncurses
 // since they don't do anything fancy or complicated.
 class CursesIO : SpelunkIO
 {
 
-  ushort display_x = 80;
-  ushort display_y = 24;
+  ushort display_x, display_y;
 
   //////////////////
   // Constructors //
@@ -56,7 +57,7 @@ class CursesIO : SpelunkIO
   // Input //
   ///////////
 
-  int getcommand( bool alt_hjkl )
+  int getcommand()
   {
     char c = cast(char)getch();
     switch( c )
@@ -146,13 +147,13 @@ version( Windows )
 
   void read_messages()
   {
-    while( Buffered_messages > 0 )
+    while( Messages.length > 0 )
     {
-      clear_message_line(); // from display.h
+      clear_message_line();
       mvprintw( 0, 0, "%s%s", toStringz(pop_message()),
-                toStringz(Buffered_messages > 1 ? "  (More)" : "") );
+                toStringz(Messages.length > 1 ? "  (More)" : "") );
       refresh();
-      if( Buffered_messages > 0 )
+      if( Messages.length > 0 )
       { getch();
       }
     }
@@ -222,7 +223,7 @@ static if( TEXT_EFFECTS )
     int mod = u.attack_roll.modifier + u.inventory.items[INVENT_WEAPON].addm;
 
     foreach( x; 0 .. MAP_X )
-    { mvaddch( 1 + MAP_Y, x, ' ', 0 );
+    { mvaddch( 1 + MAP_Y, x, ' ' );
     }
     mvprintw( 1 + MAP_Y, 0, "HP: %d    Attack: %ud %c %u",
               hp, dice, mod >= 0 ? '+' : '-', mod * ((-1) * mod < 0) );

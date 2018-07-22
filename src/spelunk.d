@@ -106,7 +106,6 @@ version( curses )
   { calc_visible( &Current_map, u.x, u.y );
   }
 
-  Buffered_messages = MAX_MESSAGE_BUFFER;
   clear_messages();
 
   io.refresh_status_bar( &u );
@@ -183,7 +182,7 @@ version( curses )
       io.refresh_status_bar( &u );
       io.display_map_and_player( Current_map, u );
     }
-    if( Buffered_messages > 0 )
+    if( Messages.length > 0 )
     { io.read_messages();
     }
     if( u.hp > 0 )

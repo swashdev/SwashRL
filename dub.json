@@ -50,7 +50,7 @@
       "name": "ncurses-nosdl",
       "dependencies":
       {
-        "ncurses": "~>6.0"
+        "ncurses": "~master"
       },
       "versions": ["ncurses", "nosdl"]
     },

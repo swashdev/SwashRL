@@ -53,7 +53,7 @@ bool SDL_terminal()
 { return SDL_Mode == SDL_MODES.terminal;
 }
 bool SDL_full()
-{ return SDL_terminal()
+{ return SDL_terminal();
 }
 
 // Exit codes for `main':

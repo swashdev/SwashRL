@@ -67,7 +67,7 @@ else
 
 version( sdl )
 {
-  import derelict.sdl2.sdl, derelict.sdl2.ttf;
+  public import derelict.sdl2.sdl, derelict.sdl2.ttf;
   enum SDL_ENABLED = true;
 }
 else
@@ -117,7 +117,9 @@ public import monst;
 public import you;
 public import map;
 public import fov;
-public import display;
+public import iomain;
+public import iocurses;
+public import ioterm;
 public import msg;
 public import keys;
 public import moves;

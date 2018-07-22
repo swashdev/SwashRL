@@ -11,18 +11,7 @@
 version( curses )
 {
 
-// We import the necessary version of curses (this isn't done from
-// ``global.d'' for us because this file is not imported from there)
-version( ncurses )
-{ import deimos.ncurses.curses;
-}
-
-version( pdcurses )
-{ import pdcurses;
-}
-
-// Also import the config file so we can use a few of the flags from there
-import config;
+import global;
 
 // This class contains functions for the curses display
 // These functions should all be cross-compatible between pdcurses and ncurses

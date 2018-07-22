@@ -11,12 +11,7 @@
 version( sdl )
 {
 
-// Import SDL2 from here.  ``global.d'' won't do this for us because this
-// file is only imported from ``display.d''
-import derelict.sdl2.sdl, derelict.sdl2.ttf;
-
-// Import the config file so we can use a few config flags from there
-import config;
+import global;
 
 // There's nothing else here yet.  Go away.
 // ----------------------------------------

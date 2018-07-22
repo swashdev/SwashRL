@@ -123,9 +123,9 @@ static if( USE_FOV )
 // outputs have been compiled:
 
 version( curses )
-{ import displayc; /* display interface for curses */
+{ import iocurses; /* display interface for curses */
 }
 
 version( sdl )
-{ import displayt; /* display interface for sdl terminal */
+{ import ioterm; /* display interface for sdl terminal */
 }

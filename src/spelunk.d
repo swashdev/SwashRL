@@ -35,9 +35,60 @@ void sp_version()
   clear_message_line();
 }
 
-int main()
+// `SDL_Mode' is a static variable used by the display functions to determine
+// whether SDL or curses is being used.  `SDL_MODES' is an enum that stores
+// the possible values of `SDL_Mode'.
+// Depending on how your compile is configured, the default will be either
+// `SDL_MODES.terminal' or `SDL_MODES.none' but can be set in the command
+// line.  If the command line input conflicts with your compile, `SDL_Mode'
+// will be reset in `main'.
+enum SDL_MODES { none, terminal, full };
+static SDL_MODES SDL_Mode = GFX_NONE ? SDL_MODES.none : SDL_MODES.terminal;
+
+// Exit codes for `main':
+//   0 Exit without error
+//   1 Exit due to --help prompt, no errors
+// 100 Catch-all error code
+
+int main( string[] args )
 {
   import std.string: toStringz;
+  import std.getopt;
+
+  // use getopt to get command-line arguments
+  auto clarguments = getopt( args,
+    // the display mode, either an SDL "terminal" or "none" for curses ("full"
+    // is the same as "terminal" until a full graphics version of the game is
+    // finished)
+    "sdl-mode", &SDL_Mode,
+    "S",        &SDL_Mode
+  );
+
+  if( clarguments.helpWanted )
+  {
+    defaultGetoptPrinter( "Usage: spelunk [options]\n
+  options:\n
+    -h, --help        Displays this help output and then exits.
+    -S, --sdl-mode    Sets the output mode for Spelunk!  Default \"terminal\"\n
+                      Can be \"none\" for curses output or \"terminal\" or
+                      \"full\" for an SDL terminal.  If your copy of Spelunk!\n
+                      was compiled without SDL or curses, this option may
+                      have no effect.
+  examples:\n
+    spelunk --sdl-mode none
+    spelunk --sdl-mode terminal"
+    );
+    return 1;
+  }
+
+  // Check to make sure the SDL_Mode does not conflict with the way Spelunk!
+  // was compiled:
+  if( !SPELUNK_CURSES && SDL_Mode == SDL_MODES.none )
+  { SDL_Mode = SDL_MODES.terminal;
+  }
+  if( GFX_NONE && SDL_Mode != SDL_MODES.none )
+  { SDL_Mode = SDL_MODES.none;
+  }
 
   seed();
 

@@ -38,27 +38,42 @@ public import sys;
 
 /* public import the necessary version of curses */
 
+// which version of curses we import is determined by a `version' check as
+// defined in ``dub.json''.  Building with the `pdcurses' configuration will
+// import pdcurses, `ncurses' will import ncurses.  The `version' given by
+// those configurations has the same name as the configuration itself.
+// `SPELUNK_CURSES' evaluates to `true' if either ncurses or pdcurses is being
+// used and `false' otherwise.
+
 version( ncurses )
-{ public import deimos.ncurses.curses;
+{
+  public import deimos.ncurses.curses;
+  enum SPELUNK_CURSES = true;
 }
-version( pdcurses )
+else version( pdcurses )
 {
   /* Display a warning in pragma for the pdcurses configuration */
   pragma( msg, "WARNING: PDCurses is not being actively supported for version ", VERSION, " due to difficulties with getting dmd to recognize any version of pdcurses.lib we have compiled.  We are unsure of the problem and are working on a workaround or an alternative.\n",
 "If you manage to get PDCurses working for Spelunk!, we would be delighted to learn how you did it.  Please leave an Issue on our GitHub page:\n",
 "https://github.com/swashdev/spelunk" );
+
   public import pdcurses;
+  enum SPELUNK_CURSES = true;
+}
+else /* no supported curses */
+{ enum SPELUNK_CURSES = false;
 }
 
-// TODO:
-////Autodetect version of curses (to disambiguate curses.h)
-//# if defined( __NCURSES_H )
-//#  define USE_NCURSES
-//# elif defined( __PDCURSES__ )
-//#  define USE_PDCURSES
-//# else
-//#  warning "Unrecognized curses--Spelunk! supports ncurses and pdcurses."
-//# endif
+version( nosdl )
+{ enum GFX_NONE = true;
+}
+else
+{ enum GFX_NONE = false;
+}
+
+static if( GFX_NONE && !SPELUNK_CURSES )
+{ pragma( msg, "WARNING: All graphics modes have been disabled." );
+}
 
 /* SECTION 3: ***************************************************************
  * Spelunk! final setup                                                     *

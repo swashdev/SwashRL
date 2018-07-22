@@ -1,26 +1,66 @@
 {
-	"name": "spelunk",
-	"authors": [
-		"Philip Pavlick <philip@swash.link>"
-	],
-	"description": "Another open-source Roguelike",
-	"copyright": "Copyright (c) 2016-2018, Philip Pavlick",
-	"license": "The Spelunk! license",
-	"targetType": "executable",
-        "configurations": [
-                {
-                        "name": "ncurses",
-                        "dependencies": {
-                                "ncurses": "~>6.0"
-                        },
-                        "versions": ["ncurses"]
-                },
-                {
-                        "name": "pdcurses",
-                        "dependencies": {
-                                 "pdcurses-d": "~>1.0.0"
-                        },
-                        "versions": ["pdcurses"]
-                }
-        ]
+  "name": "spelunk",
+  "authors": [ "Philip Pavlick <philip@swash.link>" ],
+  "description": "Another open-source Roguelike",
+  "copyright": "Copyright (c) 2016-2018, Philip Pavlick",
+  "license": "The Spelunk! license",
+  "targetType": "executable",
+  "libs": [ "SDL2", "SDL2_ttf" ],
+
+  "configurations":
+  [
+    {
+      "name": "default",
+      "dependencies":
+      {
+        "derelict-sdl2": "~>3.1.0-alpha.4"
+      },
+      "subConfigurations":
+      {
+        "derelict-sdl2": "derelict-sdl2-static"
+      }
+    },
+    {
+      "name": "ncurses",
+      "dependencies":
+      {
+        "ncurses": "~>6.0",
+        "derelict-sdl2": "~>3.1.0-alpha.4"
+      },
+      "subConfigurations":
+      {
+        "derelict-sdl2": "derelict-sdl2-static"
+      },
+      "versions": ["ncurses"]
+    },
+    {
+      "name": "pdcurses",
+      "dependencies":
+      {
+        "pdcurses-d": "~>1.0.0",
+        "derelict-sdl2": "~>3.1.0-alpha.4"
+      },
+      "subConfigurations":
+      {
+        "derelict-sdl2": "derelict-sdl2-static"
+      },
+      "versions": ["pdcurses"]
+    },
+    {
+      "name": "ncurses-nosdl",
+      "dependencies":
+      {
+        "ncurses": "~>6.0"
+      },
+      "versions": ["ncurses", "nosdl"]
+    },
+    {
+      "name": "pdcurses-nosdl",
+      "dependencies":
+      {
+        "pdcurses-d": "~>1.0.0"
+      },
+      "versions": ["pdcurses", "nosdl"]
+    }
+  ]
 }

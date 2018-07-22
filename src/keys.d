@@ -10,18 +10,23 @@ import global;
 // Macros for getting the function keys (we'll only use 12 here since that's
 // the standard)
 
-enum KEY_F1  = (KEY_F0 +  1);
-enum KEY_F2  = (KEY_F0 +  2);
-enum KEY_F3  = (KEY_F0 +  3);
-enum KEY_F4  = (KEY_F0 +  4);
-enum KEY_F5  = (KEY_F0 +  5);
-enum KEY_F6  = (KEY_F0 +  6);
-enum KEY_F7  = (KEY_F0 +  7);
-enum KEY_F8  = (KEY_F0 +  8);
-enum KEY_F9  = (KEY_F0 +  9);
-enum KEY_F10 = (KEY_F0 + 10);
-enum KEY_F11 = (KEY_F0 + 11);
-enum KEY_F12 = (KEY_F0 + 12);
+// Because some configurations no longer rely on curses we can't define keys
+// using existing curses macros anymore, at least not every time
+static if( SPELUNK_CURSES )
+{
+  enum KEY_F1  = (KEY_F0 +  1);
+  enum KEY_F2  = (KEY_F0 +  2);
+  enum KEY_F3  = (KEY_F0 +  3);
+  enum KEY_F4  = (KEY_F0 +  4);
+  enum KEY_F5  = (KEY_F0 +  5);
+  enum KEY_F6  = (KEY_F0 +  6);
+  enum KEY_F7  = (KEY_F0 +  7);
+  enum KEY_F8  = (KEY_F0 +  8);
+  enum KEY_F9  = (KEY_F0 +  9);
+  enum KEY_F10 = (KEY_F0 + 10);
+  enum KEY_F11 = (KEY_F0 + 11);
+  enum KEY_F12 = (KEY_F0 + 12);
+}
 
 // vi-like keys (nethack-like keys?)
 enum MV_NN = 'k';
@@ -72,9 +77,16 @@ enum KY_CLEAR = ' ';
 // display the message buffer
 enum KY_MESS  = 'P';
 
-enum KY_HJKL = KEY_F12;
+static if( SPELUNK_CURSES )
+{
+  enum KY_HJKL = KEY_F12;
+}
 
 // admin keys
 enum KY_QUIT    = 'Q';
-enum KY_HELP    = KEY_F1;
-enum KY_VERSION = KEY_F4;
+
+static if( SPELUNK_CURSES )
+{
+  enum KY_HELP    = KEY_F1;
+  enum KY_VERSION = KEY_F4;
+}

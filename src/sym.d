@@ -14,15 +14,11 @@ struct symbol
 {
   char ch;
 
-static if( TEXT_EFFECTS )
+static if( SPELUNK_CURSES )
 {
   // attr_t from curses--note that the attribute values also store color,
   // hence the name
   attr_t color;
-}
-else
-{
-  ushort color;
 }
 
   // further members of this struct will be used when SDL is implemented for
@@ -32,15 +28,13 @@ else
 symbol symdata( char character, ulong effects )
 {
 
-static if( !TEXT_EFFECTS )
+  symbol ret;
+  ret.ch = character;
+
+static if( SPELUNK_CURSES )
 {
-  ushort color = effects;
-}
-else
-{
-  attr_t color = cast(attr_t)effects;
+  ret.color = cast(attr_t)effects;
 }
 
-  symbol ret = { ch:character, color:color };
   return ret;
 }

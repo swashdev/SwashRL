@@ -6,8 +6,10 @@
  */
 
 // Defines the interface for functions related to program output for the
-// SDL terminal interface.  This file should only be imported from
-// ``display.d''
+// SDL terminal interface.
+
+version( sdl )
+{
 
 // Import SDL2 from here.  ``global.d'' won't do this for us because this
 // file is only imported from ``display.d''
@@ -28,3 +30,5 @@ import config;
 //                        || (,,|| 
 //                        ||    ||
 //                 ~~~    ""    ""    ~~~
+
+} /* version( sdl ) */

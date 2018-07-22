@@ -6,7 +6,10 @@
  */
 
 // Defines the interface for functions related to program output for the
-// curses interface.  This file should only be imported from ``display.d''
+// curses interface.
+
+version( curses )
+{
 
 // We import the necessary version of curses (this isn't done from
 // ``global.d'' for us because this file is not imported from there)
@@ -71,3 +74,5 @@ static if( TEXT_EFFECTS )
   }
 
 } /* class CursesDisplay */
+
+} /* version( curses ) */

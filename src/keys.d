@@ -12,7 +12,7 @@ import global;
 
 // Because some configurations no longer rely on curses we can't define keys
 // using existing curses macros anymore, at least not every time
-static if( SPELUNK_CURSES )
+static if( CURSES_ENABLED )
 {
   enum KEY_F1  = (KEY_F0 +  1);
   enum KEY_F2  = (KEY_F0 +  2);
@@ -77,16 +77,8 @@ enum KY_CLEAR = ' ';
 // display the message buffer
 enum KY_MESS  = 'P';
 
-static if( SPELUNK_CURSES )
-{
-  enum KY_HJKL = KEY_F12;
-}
-
 // admin keys
 enum KY_QUIT    = 'Q';
 
-static if( SPELUNK_CURSES )
-{
-  enum KY_HELP    = KEY_F1;
-  enum KY_VERSION = KEY_F4;
-}
+enum KY_HELP    = '?';
+enum KY_VERSION = 'v';

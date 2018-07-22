@@ -48,7 +48,7 @@ public import sys;
 version( ncurses )
 {
   public import deimos.ncurses.curses;
-  enum SPELUNK_CURSES = true;
+  enum CURSES_ENABLED = true;
 }
 else version( pdcurses )
 {
@@ -58,21 +58,21 @@ else version( pdcurses )
 "https://github.com/swashdev/spelunk" );
 
   public import pdcurses;
-  enum SPELUNK_CURSES = true;
-}
-else /* no supported curses */
-{ enum SPELUNK_CURSES = false;
-}
-
-version( nosdl )
-{ enum GFX_NONE = true;
+  enum CURSES_ENABLED = true;
 }
 else
-{ enum GFX_NONE = false;
+{
+  enum CURSES_ENABLED = false;
 }
 
-static if( GFX_NONE && !SPELUNK_CURSES )
-{ pragma( msg, "WARNING: All graphics modes have been disabled." );
+version( sdl )
+{
+  import derelict.sdl2.sdl, derelict.sdl2.ttf;
+  enum SDL_ENABLED = true;
+}
+else
+{
+  enum SDL_ENABLED = false;
 }
 
 /* SECTION 3: ***************************************************************

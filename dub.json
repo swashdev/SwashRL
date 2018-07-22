@@ -5,33 +5,43 @@
   "copyright": "Copyright (c) 2016-2018, Philip Pavlick",
   "license": "The Spelunk! license",
   "targetType": "executable",
-  "libs": [ "SDL2", "SDL2_ttf" ],
 
   "configurations":
   [
     {
       "name": "default",
+
       "dependencies":
       {
         "derelict-sdl2": "~>3.1.0-alpha.4"
       },
+
+      "libs": [ "SDL2", "SDL2_ttf" ],
+
       "subConfigurations":
       {
         "derelict-sdl2": "derelict-sdl2-static"
-      }
+      },
+
+      "versions": ["sdl"]
     },
     {
       "name": "ncurses",
+
       "dependencies":
       {
         "ncurses": "~master",
         "derelict-sdl2": "~>3.1.0-alpha.4"
       },
+
+      "libs": [ "SDL2", "SDL2_ttf" ],
+
       "subConfigurations":
       {
         "derelict-sdl2": "derelict-sdl2-static"
       },
-      "versions": ["ncurses"]
+
+      "versions": ["ncurses", "curses", "sdl"]
     },
     {
       "name": "pdcurses",
@@ -40,11 +50,15 @@
         "pdcurses-d": "~>1.0.0",
         "derelict-sdl2": "~>3.1.0-alpha.4"
       },
+
+      "libs": [ "SDL2", "SDL2_ttf" ],
+
       "subConfigurations":
       {
         "derelict-sdl2": "derelict-sdl2-static"
       },
-      "versions": ["pdcurses"]
+
+      "versions": ["pdcurses", "curses", "sdl"]
     },
     {
       "name": "ncurses-nosdl",
@@ -52,7 +66,7 @@
       {
         "ncurses": "~master"
       },
-      "versions": ["ncurses", "nosdl"]
+      "versions": ["ncurses", "curses"]
     },
     {
       "name": "pdcurses-nosdl",
@@ -60,7 +74,7 @@
       {
         "pdcurses-d": "~>1.0.0"
       },
-      "versions": ["pdcurses", "nosdl"]
+      "versions": ["pdcurses", "curses"]
     }
   ]
 }

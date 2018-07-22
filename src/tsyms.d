@@ -12,7 +12,7 @@ import global;
 
 // XXX: Find an elegant way to handle the loss of `A_NORMAL' and `A_REVERSE'
 // when curses is gone (maybe define these ourselves for the SDL interface)
-static if( !SPELUNK_CURSES )
+static if( !CURSES_ENABLED )
 {
   enum A_NORMAL = 1, A_REVERSE = 2, A_DIM = 3;
 }

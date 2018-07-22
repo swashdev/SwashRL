@@ -14,7 +14,7 @@ struct symbol
 {
   char ch;
 
-static if( SPELUNK_CURSES )
+static if( CURSES_ENABLED )
 {
   // attr_t from curses--note that the attribute values also store color,
   // hence the name
@@ -31,7 +31,7 @@ symbol symdata( char character, ulong effects )
   symbol ret;
   ret.ch = character;
 
-static if( SPELUNK_CURSES )
+static if( CURSES_ENABLED )
 {
   ret.color = cast(attr_t)effects;
 }

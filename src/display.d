@@ -122,10 +122,10 @@ static if( USE_FOV )
 // Import the classes which expand on this template depending on what display
 // outputs have been compiled:
 
-static if( SPELUNK_CURSES )
+version( curses )
 { import displayc; /* display interface for curses */
 }
 
-static if( !GFX_NONE )
+version( sdl )
 { import displayt; /* display interface for sdl terminal */
 }

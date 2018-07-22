@@ -44,7 +44,7 @@ void sp_version()
 // line.  If the command line input conflicts with your compile, `SDL_Mode'
 // will be reset in `main'.
 enum SDL_MODES { none, terminal, full };
-static SDL_MODES SDL_Mode = GFX_NONE ? SDL_MODES.none : SDL_MODES.terminal;
+static SDL_MODES SDL_Mode = SDL_ENABLED ? SDL_MODES.terminal : SDL_MODES.none;
 
 bool SDL_none()
 { return SDL_Mode == SDL_MODES.none;
@@ -94,10 +94,10 @@ int main( string[] args )
 
   // Check to make sure the SDL_Mode does not conflict with the way Spelunk!
   // was compiled:
-  if( !SPELUNK_CURSES && SDL_Mode == SDL_MODES.none )
+  if( !CURSES_ENABLED && SDL_Mode == SDL_MODES.none )
   { SDL_Mode = SDL_MODES.terminal;
   }
-  if( GFX_NONE && SDL_Mode != SDL_MODES.none )
+  if( !SDL_ENABLED && SDL_Mode != SDL_MODES.none )
   { SDL_Mode = SDL_MODES.none;
   }
 
@@ -105,7 +105,7 @@ int main( string[] args )
 
   SpelunkIO io;
 
-static if( SPELUNK_CURSES )
+version( curses )
 {
   if( SDL_none() )
   {

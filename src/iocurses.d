@@ -26,7 +26,7 @@ class CursesIO : SpelunkIO
   // Constructors //
   //////////////////
 
-  this()
+  this( ushort screen_size_vertical = 24, ushort screen_size_horizontal = 80 )
   {
     // Initializing curses
     initscr();
@@ -36,12 +36,10 @@ class CursesIO : SpelunkIO
     noecho();
     // enable the keypad and function keys
     keypad( stdscr, 1 );
-  }
-  this( uint screen_size_vertical, uint screen_size_horizontal )
-  {
+
+    // Tell CursesIO what the screen size is
     display_x = screen_size_horizontal;
     display_y = screen_size_vertical;
-    super();
   }
 
   /////////////////////
@@ -137,7 +135,6 @@ version( Windows )
       case KY_QUIT:
         return MOVE_QUIT;
 
-      case 'v':
       case KY_VERSION:
         return MOVE_GETVERSION;
 

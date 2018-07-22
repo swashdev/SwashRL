@@ -6,7 +6,6 @@
  */
 
 import global;
-import std.string: toStringz;
 
 static map Current_map;
 static SpelunkIO io;
@@ -21,7 +20,7 @@ void sp_version()
 {
   import std.string: toStringz;
 
-  message( "%s, version %.3f", toStringz("Spelunk!"), VERSION );
+  message( "%s, version %.3f", "Spelunk!", VERSION );
 }
 
 // `SDL_Mode' is a static variable used by the display functions to determine
@@ -95,7 +94,7 @@ version( curses )
 {
   if( SDL_none() )
   {
-    io = new CursesDisplay();
+    io = new CursesIO();
   }
 }
 

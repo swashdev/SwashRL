@@ -6,6 +6,7 @@
  */
 
 import global;
+import std.string: toStringz;
 
 static map Current_map;
 
@@ -45,6 +46,16 @@ void sp_version()
 enum SDL_MODES { none, terminal, full };
 static SDL_MODES SDL_Mode = GFX_NONE ? SDL_MODES.none : SDL_MODES.terminal;
 
+bool SDL_none()
+{ return SDL_Mode == SDL_MODES.none;
+}
+bool SDL_terminal()
+{ return SDL_Mode == SDL_MODES.terminal;
+}
+bool SDL_full()
+{ return SDL_terminal()
+}
+
 // Exit codes for `main':
 //   0 Exit without error
 //   1 Exit due to --help prompt, no errors
@@ -52,7 +63,6 @@ static SDL_MODES SDL_Mode = GFX_NONE ? SDL_MODES.none : SDL_MODES.terminal;
 
 int main( string[] args )
 {
-  import std.string: toStringz;
   import std.getopt;
   import std.stdio: writeln;
 
@@ -93,13 +103,21 @@ int main( string[] args )
 
   seed();
 
-  initscr();
-  // Control characters are passed directly to the program
-  raw();
-  // Do not echo user input
-  noecho();
-  // Enable keypad & other function keys
-  keypad( stdscr, 1 );
+  Display mainout;
+
+static if( SPELUNK_CURSES )
+{
+  if( SDL_none() )
+  {
+    mainout = new CursesDisplay();
+    mainout.setup();
+
+    // Control characters are passed directly to the program
+    raw();
+    // Enable keypad & other function keys
+    keypad( stdscr, 1 );
+  }
+}
 
   Current_map = test_map();
 
@@ -112,9 +130,9 @@ int main( string[] args )
   Buffered_messages = MAX_MESSAGE_BUFFER;
   clear_messages();
 
-  refresh_status_bar( &u );
+  mainout.refresh_status_bar( &u );
 
-  display_map_and_player( Current_map, u );
+  mainout.display_map_and_player( Current_map, u );
 
   bool alt_hjkl = false;
 
@@ -139,19 +157,19 @@ int main( string[] args )
         break;
       case MOVE_ALTKEYS:
         alt_hjkl = !alt_hjkl;
-        mvprintw( 0, 0, "Alternate movement keys %sabled",
-                  toStringz( alt_hjkl ? "en" : "dis" ) );
+        message( "Alternate movement keys %sabled",
+                 toStringz( alt_hjkl ? "en" : "dis" ) );
         break;
       // print the message buffer
       case MOVE_MESS_DISPLAY:
         message_history();
-        clear_message_line();
-        refresh_status_bar( &u );
-        display_map_and_player( Current_map, u );
+        mainout.clear_message_line();
+        mainout.refresh_status_bar( &u );
+        mainout.display_map_all( Current_map );
         break;
       // clear the message line
       case MOVE_MESS_CLEAR:
-        clear_message_line();
+        mainout.clear_message_line();
         break;
       // wait
       case MOVE_WAIT:
@@ -162,21 +180,21 @@ int main( string[] args )
       case MOVE_INVENTORY:
         moved = uinventory( &u );
         // we must redraw the screen after the inventory window is cleared
-        display_map_and_player( Current_map, u );
+        mainout.display_map_all( Current_map );
         break;
       // all other commands go to umove
       default:
-        clear_message_line();
+        mainout.clear_message_line();
+        mainout.display( u.y, u.x, Current_map.t[u.y][u.x].sym );
         moved = umove( &u, &Current_map, cast(ubyte)mv );
         if( u.hp <= 0 )
         { goto playerdied;
         }
-        display_player( u );
         break;
     }
-    if( moved )
+    if( moved > 0 )
     {
-      while( moved )
+      while( moved > 0 )
       {
         map_move_all_monsters( &Current_map, &u );
         moved--;
@@ -184,14 +202,14 @@ int main( string[] args )
       static if( USE_FOV )
       { calc_visible( &Current_map, u.x, u.y );
       }
-      refresh_status_bar( &u );
-      display_map_and_player( Current_map, u );
+      mainout.refresh_status_bar( &u );
+      mainout.display_map_and_player( Current_map, u );
     }
     if( Buffered_messages > 0 )
     { read_messages();
     }
     if( u.hp > 0 )
-    { move( u.y + RESERVED_LINES, u.x );
+    { mainout.display_player( u );
     }
     else
     { break;
@@ -201,11 +219,7 @@ int main( string[] args )
 
 playerdied:
 
-  mvaddch( u.y + RESERVED_LINES, u.x, SMILEY );
-  static if( TEXT_EFFECTS )
-  { mvchgat( u.y + RESERVED_LINES, u.x, 1, A_DIM,
-             cast(short)0, cast(void*)null );
-  }
+  display( u.y, u.x, symdata( SMILEY, A_DIM ), true );
 
 playerquit:
 
@@ -213,7 +227,6 @@ playerquit:
   // view all the messages that you got just before you died
   read_messages();
 
-  getch();
-  endwin();
+  mainout.cleanup();
   return 0;
 }

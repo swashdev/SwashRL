@@ -14,7 +14,7 @@ import global;
 // when curses is gone (maybe define these ourselves for the SDL interface)
 static if( !SPELUNK_CURSES )
 {
-  enum A_NORMAL = 1, A_REVERSE = 2;
+  enum A_NORMAL = 1, A_REVERSE = 2, A_DIM = 3;
 }
 
 static const symbol SYM_FLOOR  = symdata( '.', A_NORMAL  );

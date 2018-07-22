@@ -190,6 +190,10 @@ version( Windows )
   // Output //
   ////////////
 
+  void refresh_screen()
+  { refresh();
+  }
+
   void display( uint y, uint x, symbol s, bool center = false )
   {
     mvaddch( y, x, s.ch );

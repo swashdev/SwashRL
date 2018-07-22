@@ -193,7 +193,7 @@ version( curses )
     else
     { break;
     }
-    refresh();
+    io.refresh_screen();
   }
 
 playerdied:

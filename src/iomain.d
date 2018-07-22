@@ -40,6 +40,10 @@ interface SpelunkIO
   // Output //
   ////////////
 
+  // Refreshes the screen to reflect the changes made by the below output
+  // functions
+  void refresh_screen();
+
   // The central `display' function.  Displays a given `symbol' at given
   // coordinates.  If `center', the cursor will be centered over the symbol
   // after drawing, rather than passing to the right of it as is standard in

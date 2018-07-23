@@ -64,15 +64,15 @@ int main( string[] args )
 
   if( clarguments.helpWanted )
   {
-    writeln( "Usage: spelunk [options]\n
-  options:\n
+    writeln( "Usage: spelunk [options]
+  options:
     -h, --help        Displays this help output and then exits.
-    -S, --sdl-mode    Sets the output mode for Spelunk!  Default \"terminal\"\n
+    -S, --sdl-mode    Sets the output mode for Spelunk!  Default \"terminal\"
                       Can be \"none\" for curses output or \"terminal\" or
-                      \"full\" for an SDL terminal.  If your copy of Spelunk!\n
+                      \"full\" for an SDL terminal.  If your copy of Spelunk!
                       was compiled without SDL or curses, this option may
                       have no effect.
-  examples:\n
+  examples:
     spelunk --sdl-mode none
     spelunk --sdl-mode terminal"
     );

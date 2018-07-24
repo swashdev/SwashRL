@@ -1,7 +1,7 @@
 Spelunk!
 ========
 
-Readme file, last updated 2018-07-24 05:15 EST
+Readme file, last updated 2018-07-24 05:15 EST  
 Contact the maintainer: <philip@swash.link>
 
 ---
@@ -68,16 +68,16 @@ By default, Spelunk! will compile with SDL.  However, you can also compile
 with ncurses by using dub's ``--config`` flag, and even compile with _only_
 ncurses, by using one of the following commands:
 
-> ``dub build --config ncurses``
-> ``dub build --config ncurses-nosdl``
+> ``dub build --config ncurses``  
+> ``dub build --config ncurses-nosdl``  
 
 In theory, you could use PDCurses instead, but this isn't being actively
 supported because frankly noone on the development team can get it to work.
 If you can, we'd love to hear how you did it.  To compile with PDCurses,
 use one of the following commands:
 
-> ``dub build --config pdcurses``
-> ``dub build --config pdcurses-nosdl``
+> ``dub build --config pdcurses``  
+> ``dub build --config pdcurses-nosdl``  
 
 ## Change Logs
 

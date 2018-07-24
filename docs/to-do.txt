@@ -1,10 +1,11 @@
-Abstract drawing functions into a struct of function pointers so that they can
-be generalized to support multiple drawing systems (like graphical drawing
-systems, &c)
 SDL wrapper
  - SDL "virtual terminal" mode
  - SDL graphical mode (with actual pictures!)
 PDCurses wrapper
+Abstract movement keys into a struct or class so that control schemes can be
+easily swapped out
+Turn the map into a class so that relevant functions can be governed by the
+map itself
 Finalize inventory
  - Items should not be allowed to be equipped in inappropriate item slots
  - Implement the player's "bag"

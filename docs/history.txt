@@ -167,3 +167,8 @@ Version Date/time Finalized   Info
 
 0.023   2017-12-05 22:30 EST  An update to 0.022 which actually compiles this
         time.
+
+0.024                         First version with SDL support.
+                              "Community Documentation," such as a Guideline
+        for Contributors and GitHub-specific Issue and Pull Request templates,
+        are added.

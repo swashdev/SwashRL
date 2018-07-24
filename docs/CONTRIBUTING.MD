@@ -1,7 +1,7 @@
 Spelunk! Guidelines for Contributors
 ====================================
 
-Last updated 2018-07-24 04:21 EST
+Last updated 2018-07-24 05:09 EST
 
 ---
 
@@ -9,6 +9,22 @@ Thank you for considering contributing to the Spelunk! project.  In this file
 you will find some brief guidelines for contributing to the project.  Don't
 panic; this is a very small project, so for the most part we don't expect much
 from contributors at this stage.
+
+## Table of Contents
+
+* [Where to Get Started](#where-to-get-started)
+
+* [Before Submitting](#before-submitting)
+
+* [Compiling Your Changes](#compiling-your-changes)
+
+* [Submitting Changes](#submitting-changes)
+
+  * [Attribution](#attribution)
+
+  * [Professionalism](#professionalism)
+
+* [Style Guide](#style-guide)
 
 ## Where to Get Started
 
@@ -35,6 +51,12 @@ carefully consider including anything that might conflict with our license.
 permission to license it to us under the terms of the Spelunk! license, your
 contributions will be scrubbed from the project and you will be permanently
 banned from ever contributing again.**
+
+If anything that you submit is licensed, please be courteous and copy the
+license into the [docs/license](../docs/license) directory with a filename
+like "project.txt" and add a notice to the [third-party licenses
+file](../3rdparty.txt).  You should have one file and one attribution notice
+for each license individually.
 
 If you've written everything in your submission yourself, and you don't place
 it under any particular license, we will take your submission as permission to
@@ -66,6 +88,23 @@ be discarded._
 
 When you commit your changes, be sure to enclose a detailed commit message so
 that third-party users can see what you're doing.
+
+### Attribution
+
+As a professional courtesy, we ask that you acknowledge anyone else that
+helped you with your changes, unless they asked to be anonymous.  As such, if
+your git branch doesn't already attribute other contributors automatically, we
+ask that your commit message do so.  If you don't know how to do this,
+[GitHub offers a helpfulguide](https://help.github.com/articles/creating-a-commit-with-multiple-authors/)
+
+### Professionalism
+
+Some of the people who work on Spelunk! are professionals or are seeking
+employment in a professional field, so please try to keep your submissions,
+including Pull Requests and commit messages, safe for work and politically
+correct.  We do have a sense of humor, but keep in mind that our employers
+might see what you submit, and any contributions that we accept will reflect
+on us, and on you, as a result.
 
 ## Style Guide
 
@@ -135,12 +174,3 @@ make it easier for you to keep track of your own code.
 
 As a rule of thumb, just try to make your code look like our code for the sake
 of consistency and you'll be fine.
-
-## Professionalism
-
-Some of the people who work on Spelunk! are professionals or are seeking
-employment in a professional field, so please try to keep your submissions,
-including Pull Requests and commit messages, safe for work and politically
-correct.  We do have a sense of humor, but keep in mind that our employers
-might see what you submit, and any contributions that we accept will reflect
-on us, and on you, as a result.

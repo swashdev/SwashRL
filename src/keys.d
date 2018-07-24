@@ -7,11 +7,9 @@
 
 import global;
 
-// Macros for getting the function keys (we'll only use 12 here since that's
-// the standard)
-
 // Because some configurations no longer rely on curses we can't define keys
 // using existing curses macros anymore, at least not every time
+// TODO: Implement these keys
 static if( CURSES_ENABLED )
 {
   enum KEY_F1  = (KEY_F0 +  1);

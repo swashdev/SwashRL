@@ -1,7 +1,7 @@
 Spelunk! Guidelines for Contributors
 ====================================
 
-Last updated 2018-07-24 05:09 EST
+Last updated 2018-07-24 05:20 EST
 
 ---
 
@@ -95,7 +95,7 @@ As a professional courtesy, we ask that you acknowledge anyone else that
 helped you with your changes, unless they asked to be anonymous.  As such, if
 your git branch doesn't already attribute other contributors automatically, we
 ask that your commit message do so.  If you don't know how to do this,
-[GitHub offers a helpfulguide](https://help.github.com/articles/creating-a-commit-with-multiple-authors/)
+[GitHub offers a helpful guide](https://help.github.com/articles/creating-a-commit-with-multiple-authors/)
 
 ### Professionalism
 

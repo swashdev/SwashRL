@@ -32,3 +32,12 @@ description of the intended effect of each step.
 2. Step two
 
 3. etc
+
+## Attribution Options
+
+We try to provide attribution for everyone who helps with our projects
+by acknowledging them in thanks.txt.
+Please put your name and any website or contact information you feel
+comfortable sharing.  We will be linking your GitHub account.  If you
+would rather remain anonymous, please let us know and we will respect
+that request.

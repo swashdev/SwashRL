@@ -13,7 +13,7 @@ from contributors at this stage.
 ## Where to Get Started
 
 If you'd like to contribute, but you don't know where to get started, check
-the [Readme](../readme.txt) and [the docs folder](../docs).  In the docs
+the [Readme](../README.MD) and [the docs folder](../docs).  In the docs
 folder you'll find [a to-do list](../docs/to-do.txt)
 which lists all of the things that we're currently working on in order from
 highest priority to lowest priority.
@@ -43,6 +43,11 @@ release your changes under the Spelunk! license in exchange for attribution
 thanks.txt).  _If you don't want to be attributed for your changes in the
 distributed source code or documentation, please let us know in your commit
 message or Pull Request._
+
+## Compiling Your Changes
+
+You can find instructions for compiling Spelunk!
+[in the Readme](../README.MD#Compiling)
 
 ## Submitting Changes
 

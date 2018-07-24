@@ -1,7 +1,7 @@
 Spelunk! Guidelines for Contributors
 ====================================
 
-Last updated 2018-07-24 03:55 EST
+Last updated 2018-07-24 04:21 EST
 
 ---
 
@@ -13,8 +13,8 @@ from contributors at this stage.
 ## Where to Get Started
 
 If you'd like to contribute, but you don't know where to get started, check
-the [Readme](../readme.txt) and [the doc folder](../doc).  In the doc folder
-you'll find [a to-do list](../doc/to-do.txt)
+the [Readme](../readme.txt) and [the docs folder](../docs).  In the docs
+folder you'll find [a to-do list](../docs/to-do.txt)
 which lists all of the things that we're currently working on in order from
 highest priority to lowest priority.
 

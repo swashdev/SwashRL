@@ -15,14 +15,15 @@ release, it currently has NO DOCUMENTATION, save for that mentioned in this
 file.
 
 Spelunk! currently has git respositories hosted at the following locations:
+
   <https://github.com/swashdev/Spelunk>
 
 ## License Agreement
 
 Spelunk! is released as careware.  You can find the license agreement in
-<license.txt>.  However, as it currently exists, it is dependent on some
+[license.txt](license.txt).  However, as it currently exists, it is dependent on some
 software libraries and code that are released under different licenses.
-See <3rdparty.txt> for more information.
+See [3rdparty.txt](3rdparty.txt) for more information.
 
 You are of course free to use Spelunk!, and I wouldn't have given you the
 source code if I didn't want you to mess with it, but be sure to abide by the
@@ -52,9 +53,9 @@ platform including FreeBSD), but if you also get dub, the D package manager,
 it will do a lot of your work for you including downloading dependencies.
 
 You can make some changes to how Spelunk! is configured by editing the file
-<src/config.d>.  This file has a lot of comment blocks which explain how
+[config.d](src/config.d)  This file has a lot of comment blocks which explain how
 to configure Spelunk!  These configuration settings will be interpreted and,
-if necessary, modified, in <src/global.d>
+if necessary, modified, in [global.d](src/global.d)
 
 To compile, navigate to the root folder (the same folder this readme file is
 in) and type:
@@ -81,9 +82,9 @@ use one of the following commands:
 
 ## Change Logs
 
-For all of your change logging needs, see <docs/changes.txt>.  For those
+For all of your change logging needs, see [changes.txt](docs/changes.txt).  For those
 interested, there's also a more in-depth history of the project being recorded
-in <docs/history.txt>
+in [history.txt](docs/history.txt)
 
 ## Contributing
 

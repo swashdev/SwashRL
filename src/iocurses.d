@@ -64,11 +64,11 @@ class CursesIO : SpelunkIO
     char c = cast(char)getch();
 
     // First check if `c' is contained in the player's keymap (see `keymap.d')
-    uint* cmd = (c in Current_keymap);
+    uint* cmd = (c in Keymaps[ Current_keymap ] );
 
     // If so, return the appropriate command:
     if( cmd !is null )
-    { return Current_keymap.get( c, MOVE_HELP );
+    { return Keymaps[ Current_keymap ].get( c, MOVE_HELP );
     }
 
     // If not, check the standard prompts:

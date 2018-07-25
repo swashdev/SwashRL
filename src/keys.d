@@ -35,17 +35,12 @@ static if( CURSES_ENABLED )
 // The global list of labels for keymaps; thise are used in the "Control
 // scheme swapped to %s" message.  The first value will be the name of the
 // default control scheme.  The "Custom" label should always be last.
-string[] Keymap_labels = ["Standard", "Dvorak",
+static string[] Keymap_labels = ["Standard", "Dvorak",
 "Custom"];
 
 // IMPORTANT: Make sure `Keymap_labels' and `Keymaps' are the same length,
-// and the keys in `Keymaps' match up to the strings in `Keymap_labels'
+// and the keymaps in `Keymaps' are in the same order as the labels in
+// `Keymap_labels'.  IE, Keymap_labels[0] should be the label for Keymaps[0]
 
-// The global list of `Keymaps'; this is an associative array, and the index
-// of the keymap is the name of the keymap used in the "Control scheme swapped
-// to %s" message.
-uint[char][string] Keymaps;
-
-// A global keymap used to define the keymap currently being used by the
-// player.
-uint[char] Current_keymap;
+// The global list of `Keymaps'--this is defined in main()
+static uint[char][] Keymaps;

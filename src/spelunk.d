@@ -11,8 +11,9 @@ import std.string: toStringz;
 
 static map Current_map;
 static SpelunkIO io;
+static int Current_keymap;
 
-void help( bool alt_hjkl )
+void help()
 {
   message(
     "hjklyubn or number pad to move. PERIOD to wait, SPACE to clear." );
@@ -98,37 +99,30 @@ version( curses )
   }
 }
 
-  // Initialize keymaps:
-
-  // The "Standard" keymap uses the default layout, so no need to define it
-  // here.
-  Keymaps["Standard"] = keymap();
-
-  // A keymap optimized for Dvorak keyboards
-  Keymaps["Dvorak"] = keymap( "fgtdnxhb. iw,P " ),
-
-  // A keymap used for a custom control scheme defined by the player (by
-  // default, use the standard layout, and we'll redefine it later)
-  Keymaps["Custom"] = keymap();
+  // Initialize keymaps
+  Keymaps = [ keymap(), keymap( "fgtdnxhb. iw,P " ), keymap() ];
 
   // Assign default keymap
-  Current_keymap = Keymaps["Standard"];
+  Current_keymap = 0;
 
+  // Assign initial map
   Current_map = test_map();
 
+  // Initialize the player
   player u = init_player( 1, 1 );
 
+  // Initialize the fog of war
   static if( USE_FOV )
   { calc_visible( &Current_map, u.x, u.y );
   }
 
   clear_messages();
 
+  // Initialize the status bar
   io.refresh_status_bar( &u );
 
+  // Display the map and player
   io.display_map_and_player( Current_map, u );
-
-  bool alt_hjkl = false;
 
   uint moved = 0;
   int mv = 5;
@@ -140,7 +134,7 @@ version( curses )
     {
       // display help
       case MOVE_HELP:
-         help( alt_hjkl );
+         help();
          break;
       // quit
       case MOVE_QUIT:
@@ -150,9 +144,14 @@ version( curses )
         sp_version();
         break;
       case MOVE_ALTKEYS:
-        alt_hjkl = !alt_hjkl;
-        message( "Alternate movement keys %sabled",
-                 toStringz( alt_hjkl ? "en" : "dis" ) );
+        if( Current_keymap >= Keymaps.length )
+        { Current_keymap = 0;
+        }
+        else
+        { Current_keymap++;
+        }
+        message( "Control scheme swapped to %s", Keymap_labels[Current_keymap]
+               );
         break;
       // print the message buffer
       case MOVE_MESS_DISPLAY:

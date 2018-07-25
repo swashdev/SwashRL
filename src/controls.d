@@ -27,44 +27,49 @@ class InvalidKeymapException : Exception
 // THIS ARRAY; THEY ARE STATIC AND DECLARED GLOBALLY IN ``keys.d''
 uint[char] keymap( string keylist = "" )
 {
+  char[] inlist = cast(char[])keylist;
+
   // The standard keymap, which is being overwritten
   char[] kl = cast(char[])"ykuhlbjn. iw,P ";
 
   // Check to make sure that the keylist will not overwrite any reserved
   // commands
-  foreach( c; 0 .. keylist.length )
+  if( inlist.length > 0 )
   {
-    switch( keylist[c] )
+    foreach( c; 0 .. inlist.length - 1 )
     {
-      default:
-        kl[c] = keylist[c];
-        break;
+      switch( inlist[c] )
+      {
+        default:
+          kl[c] = inlist[c];
+          break;
 
-      case 'Q':
-        throw new InvalidKeymapException(
-          "Keymap attempted to overwrite reserved command \'Q\': " ~
-          "reserved for \"quit\""
-        );
+        case 'Q':
+          throw new InvalidKeymapException(
+            "Keymap attempted to overwrite reserved command \'Q\': " ~
+            "reserved for \"quit\""
+          );
 
-      case '?':
-        throw new InvalidKeymapException(
-          "Keymap attempted to overwrite reserved command \'?\': " ~
-          "reserved for \"help\""
-        );
+        case '?':
+          throw new InvalidKeymapException(
+            "Keymap attempted to overwrite reserved command \'?\': " ~
+            "reserved for \"help\""
+          );
 
-      case 'v':
-        throw new InvalidKeymapException(
-          "Keymap attempted to overwrite reserved command \'v\': " ~
-          "reserved for \"version\""
-        );
+        case 'v':
+          throw new InvalidKeymapException(
+            "Keymap attempted to overwrite reserved command \'v\': " ~
+            "reserved for \"version\""
+          );
 
-      case '@':
-        throw new InvalidKeymapException(
-          "Keymap attempted to overwrite reserved command \'@\': " ~
-          "reserved for \"switch control schemes\""
-        );
-    } // switch( keylist )
-  } // foreach( c; 0 .. keylist.length )
+        case '@':
+          throw new InvalidKeymapException(
+            "Keymap attempted to overwrite reserved command \'@\': " ~
+            "reserved for \"switch control schemes\""
+          );
+      } // switch( keylist )
+    } // foreach( c; 0 .. keylist.length )
+  } // if( keylist.length > 0 )
 
   // Now we define the actual keymap:
   uint[char] ret;
@@ -92,13 +97,25 @@ uint[char] keymap( string keylist = "" )
   ret[ kl[13] ] = MOVE_MESS_DISPLAY;
   ret[ kl[14] ] = MOVE_MESS_CLEAR;
 
+version( none )
+{
+  import std.stdio : writeln;
+
+  writeln( "Size of inlist: ", inlist.length,          "." );
+  writeln( "Size of kl:     ", kl.length,              "." );
+  writeln( "Size of ret:    ", ret.length,             "." );
+  writeln( "Keylist input:  ", keylist,                "." );
+  writeln( "kl final value: ", cast(string)kl,         "." );
+  writeln( "final value:    ", cast(string)(ret.keys()), "." );
+}
+
   // Finally, we check the length of the keymap.  If the keymap isn't the same
   // length as `kl', one of the inputs has been defined twice and the control
   // scheme is broken.
-  if( ret.length != kl.length )
+  if( ret.length != kl.length - 1 )
   {
-    throw new InvalidKeymapException( "Invalid keymap defined--" ~
-      "Did you map the same key twice?" );
+    throw new InvalidKeymapException( "Invalid keymap defined " ~
+      cast(string)kl ~ "Did you map the same key twice?" );
   }
 
   // Return the keymap

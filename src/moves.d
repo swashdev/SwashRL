@@ -30,7 +30,11 @@ enum MOVE_GET = 22;
 enum MOVE_MESS_DISPLAY = 30;
 enum MOVE_MESS_CLEAR   = 31;
 
+// Global "admin" keys:
 enum MOVE_HELP = 0;
 enum MOVE_QUIT = 10;
 enum MOVE_GETVERSION = 11;
 enum MOVE_ALTKEYS = 12;
+
+// "Command not recognized" key:
+enum MOVE_UNKNOWN = 255;

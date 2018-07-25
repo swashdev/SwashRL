@@ -136,14 +136,14 @@ version( Windows )
         return MOVE_GETVERSION;
       case '@':
         return MOVE_ALTKEYS;
-
-      // This catch-all will cause the game to display a help screen if the
-      // command was not valid.
       case '?':
-      default:
         return MOVE_HELP;
 
     } // switch( c )
+
+    // If none of the above command prompts match, default to the "command
+    // not recognized" response.
+    return MOVE_UNKNOWN;
 
   } /* int getcommand */
 
@@ -230,6 +230,39 @@ static if( TEXT_EFFECTS )
     mvprintw( 1 + MAP_Y, 0, "HP: %d    Attack: %ud %c %u",
               hp, dice, mod >= 0 ? '+' : '-', mod * ((-1) * mod < 0) );
   }
+
+  // Displays the "help" screen and waits for the player to clear it
+  void help_screen()
+  {
+    clear();
+
+    uint[char] keymap = Keymaps[ Current_keymap ];
+    
+    mvprintw(  1, 1, "To move:   on numpad:   on Dvorak:"    );
+    mvprintw(  2, 1, "   y k u        7 8 9        f t g"    );
+    mvprintw(  3, 1, "    \\|/          \\|/          \\|/"  );
+    mvprintw(  4, 1, "   h-*-l        4-*-6        h-*-l"    );
+    mvprintw(  5, 1, "    /|\\          /|\\          /|\\"  );
+    mvprintw(  6, 1, "   b j n        1 2 3        x h b"    );
+
+    mvprintw(  8, 1, ". to wait"                     );
+    mvprintw(  9, 1, "i for inventory"               );
+    mvprintw( 10, 1, ", to pick up an item"          );
+    mvprintw( 11, 1, "P to read message history"     );
+    mvprintw( 12, 1, "SPACE clears the message line" );
+
+    mvprintw( 14, 1, "? this help screen"         );
+    mvprintw( 15, 1, "Q Quit"                     );
+    mvprintw( 16, 1, "v check the version number" );
+    mvprintw( 17, 1, "@ change keyboard layout"   );
+
+    mvprintw( 20, 1, "Press any key to continue..." );
+
+    refresh_screen();
+
+    // wait for the player to clear the screen
+    getch();
+  } // void help_screen()
 
   ///////////////////////////////////////////////////////////////////////
   // The Inventory Screen                                              //

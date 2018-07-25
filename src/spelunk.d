@@ -132,9 +132,16 @@ version( curses )
     mv = io.getcommand();
     switch( mv )
     {
+      case MOVE_UNKNOWN:
+         message( "Command not recognized.  Press ? for help." );
+         break;
       // display help
       case MOVE_HELP:
-         help();
+         io.help_screen();
+         message( "You are currently using the %s keyboard layout.",
+                  Keymap_labels[ Current_keymap ] );
+         io.refresh_status_bar( &u );
+         io.display_map_and_player( Current_map, u );
          break;
       // quit
       case MOVE_QUIT:

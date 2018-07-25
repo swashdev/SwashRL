@@ -45,6 +45,9 @@ interface SpelunkIO
   // functions
   void refresh_screen();
 
+  // Displays a help screen and then waits for the player to clear it
+  void help_screen();
+
   // The central `display' function.  Displays a given `symbol' at given
   // coordinates.  If `center', the cursor will be centered over the symbol
   // after drawing, rather than passing to the right of it as is standard in

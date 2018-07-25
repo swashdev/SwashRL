@@ -98,6 +98,19 @@ version( curses )
   }
 }
 
+  // Initialize keymaps:
+
+  // The "Standard" keymap uses the default layout, so no need to define it
+  // here.
+  Keymaps["Standard"] = keymap();
+
+  // A keymap optimized for Dvorak keyboards
+  Keymaps["Dvorak"] = keymap( "fgtdnxhb. iw,P " ),
+
+  // A keymap used for a custom control scheme defined by the player (by
+  // default, use the standard layout, and we'll redefine it later)
+  Keymaps["Custom"] = keymap();
+
   Current_map = test_map();
 
   player u = init_player( 1, 1 );

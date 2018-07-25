@@ -5,11 +5,13 @@
  * See license.txt for details.
  */
 
+// Defines control schemes, referred to herein as "Keymaps"
+
 import global;
 
 // Because some configurations no longer rely on curses we can't define keys
 // using existing curses macros anymore, at least not every time
-// TODO: Implement these keys
+// TODO: Implement these keys in SDL
 static if( CURSES_ENABLED )
 {
   enum KEY_F1  = (KEY_F0 +  1);
@@ -26,57 +28,24 @@ static if( CURSES_ENABLED )
   enum KEY_F12 = (KEY_F0 + 12);
 }
 
-// vi-like keys (nethack-like keys?)
-enum MV_NN = 'k';
-enum MV_NE = 'u';
-enum MV_EE = 'l';
-enum MV_SE = 'n';
-enum MV_SS = 'j';
-enum MV_SW = 'b';
-enum MV_WW = 'h';
-enum MV_NW = 'y';
+/////////////
+// Keymaps //
+/////////////
 
-enum KY_INV = 'i';
-enum KY_WIELD = 'w';
+// The global list of labels for keymaps; thise are used in the "Control
+// scheme swapped to %s" message.  The first value will be the name of the
+// default control scheme.  The "Custom" label should always be last.
+string Keymap_labels = ["Standard", "Dvorak",
+"Custom"];
 
-enum MV_WT = '.';
+// IMPORTANT: Make sure `Keymap_labels' and `Keymaps' are the same length,
+// and the keys in `Keymaps' match up to the strings in `Keymap_labels'
 
-// alt vi-like keys; hjkl are the same, but diagonal movement is mapped closer
-// to the right hand.  'i'nventory is moved to 'b' (for bag)
-enum AL_NN = 'k';
-enum AL_NE = 'i';
-enum AL_EE = 'l';
-enum AL_SE = 'm';
-enum AL_SS = 'j';
-enum AL_SW = 'n';
-enum AL_WW = 'h';
-enum AL_NW = 'u';
+// The global list of `Keymaps'; this is an associative array, and the index
+// of the keymap is the name of the keymap used in the "Control scheme swapped
+// to %s" message.
+uint[char][string] Keymaps;
 
-enum AL_INV = 'b';
-
-// numpad keys
-enum NP_NN = '8';
-enum NP_NE = '9';
-enum NP_EE = '6';
-enum NP_SE = '3';
-enum NP_SS = '2';
-enum NP_SW = '1';
-enum NP_WW = '4';
-enum NP_NW = '7';
-
-enum NP_WT = '5';
-
-// other keys
-
-enum KY_GET = ',';
-
-// spacebar to clear the message bar
-enum KY_CLEAR = ' ';
-// display the message buffer
-enum KY_MESS  = 'P';
-
-// admin keys
-enum KY_QUIT    = 'Q';
-
-enum KY_HELP    = '?';
-enum KY_VERSION = 'v';
+// A global keymap used to define the keymap currently being used by the
+// player.
+uint[char] Current_keymap = Keymaps[ Keymap_labels[0] ];

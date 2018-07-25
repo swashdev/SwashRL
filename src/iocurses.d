@@ -57,41 +57,47 @@ class CursesIO : SpelunkIO
   // Input //
   ///////////
 
-  int getcommand()
+  // Calls the input command and returns an integer representing a movement by
+  // the player.
+  uint getcommand()
   {
     char c = cast(char)getch();
+
+    // First check if `c' is contained in the player's keymap (see `keymap.d')
+    uint* cmd = (c in Current_keymap);
+
+    // If so, return the appropriate command:
+    if( cmd !is null )
+    { return Current_keymap.get( c, MOVE_HELP );
+    }
+
+    // If not, check the standard prompts:
     switch( c )
     {
-      case 'y':
+
+      // Number pad keys:
       case '7':
       case KEY_HOME:
         return MOVE_NW;
 
-      case 'k':
       case '8':
       case KEY_UP:
         return MOVE_NN;
-      case 'u':
       case '9':
       case KEY_PPAGE: // pgup
         return MOVE_NE;
-      case 'l':
       case '6':
       case KEY_RIGHT:
         return MOVE_EE;
-      case 'n':
       case '3':
       case KEY_NPAGE: // pgdn
         return MOVE_SE;
-      case 'j':
       case '2':
       case KEY_DOWN: // numpad "down"
         return MOVE_SS;
-      case 'b':
       case '1':
       case KEY_END:
         return MOVE_SW;
-      case 'h':
       case '4':
       case KEY_LEFT:
         return MOVE_WW;
@@ -122,27 +128,23 @@ version( Windows )
         return MOVE_SE;
 } /* version( Windows ) */
 
-      case 'i':
-        return MOVE_INVENTORY;
-
-      case KY_GET:
-        return MOVE_GET;
-
-      case KY_MESS:
-        return MOVE_MESS_DISPLAY;
-      case KY_CLEAR:
-        return MOVE_MESS_CLEAR;
-
-      case KY_QUIT:
+      // If it's not in any of the standard controls or the number pad
+      // controls, check the "admin keys":
+      case 'Q':
         return MOVE_QUIT;
-
-      case KY_VERSION:
+      case 'v':
         return MOVE_GETVERSION;
+      case '@':
+        return MOVE_ALTKEYS;
 
+      // This catch-all will cause the game to display a help screen if the
+      // command was not valid.
+      case '?':
       default:
-      case KY_HELP:
         return MOVE_HELP;
-    }
+
+    } // switch( c )
+
   } /* int getcommand */
 
   void read_messages()

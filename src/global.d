@@ -127,6 +127,6 @@ public import ioterm;
 public import msg;
 public import moves;
 public import controls;
-public import keys;
+public import keymaps;
 public import mov;
 public import invent;

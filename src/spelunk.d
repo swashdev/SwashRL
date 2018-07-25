@@ -10,7 +10,7 @@ import global;
 import std.string: toStringz;
 
 static map Current_map;
-static SpelunkIO io;
+static SpelunkIO IO;
 static int Current_keymap;
 
 void help()
@@ -119,17 +119,17 @@ version( curses )
   clear_messages();
 
   // Initialize the status bar
-  io.refresh_status_bar( &u );
+  IO.refresh_status_bar( &u );
 
   // Display the map and player
-  io.display_map_and_player( Current_map, u );
+  IO.display_map_and_player( Current_map, u );
 
   uint moved = 0;
   int mv = 5;
   while( mv != MOVE_QUIT && u.hp > 0 )
   {
     moved = 0;
-    mv = io.getcommand();
+    mv = IO.getcommand();
     switch( mv )
     {
       case MOVE_UNKNOWN:
@@ -137,11 +137,11 @@ version( curses )
          break;
       // display help
       case MOVE_HELP:
-         io.help_screen();
+         IO.help_screen();
          message( "You are currently using the %s keyboard layout.",
                   Keymap_labels[ Current_keymap ] );
-         io.refresh_status_bar( &u );
-         io.display_map_and_player( Current_map, u );
+         IO.refresh_status_bar( &u );
+         IO.display_map_and_player( Current_map, u );
          break;
       // quit
       case MOVE_QUIT:
@@ -162,13 +162,13 @@ version( curses )
         break;
       // print the message buffer
       case MOVE_MESS_DISPLAY:
-        io.read_message_history();
-        io.refresh_status_bar( &u );
-        io.display_map_all( Current_map );
+        IO.read_message_history();
+        IO.refresh_status_bar( &u );
+        IO.display_map_all( Current_map );
         break;
       // clear the message line
       case MOVE_MESS_CLEAR:
-        io.clear_message_line();
+        IO.clear_message_line();
         break;
       // wait
       case MOVE_WAIT:
@@ -177,14 +177,14 @@ version( curses )
         break;
       // inventory management
       case MOVE_INVENTORY:
-        moved = io.control_inventory( &u );
+        moved = IO.control_inventory( &u );
         // we must redraw the screen after the inventory window is cleared
-        io.display_map_all( Current_map );
+        IO.display_map_and_player( Current_map, u );
         break;
       // all other commands go to umove
       default:
-        io.clear_message_line();
-        io.display( u.y, u.x, Current_map.t[u.y][u.x].sym );
+        IO.clear_message_line();
+        IO.display( u.y, u.x, Current_map.t[u.y][u.x].sym );
         moved = umove( &u, &Current_map, cast(ubyte)mv );
         if( u.hp <= 0 )
         { goto playerdied;
@@ -201,31 +201,31 @@ version( curses )
       static if( USE_FOV )
       { calc_visible( &Current_map, u.x, u.y );
       }
-      io.refresh_status_bar( &u );
-      io.display_map_and_player( Current_map, u );
+      IO.refresh_status_bar( &u );
+      IO.display_map_and_player( Current_map, u );
     }
     if( !Messages.empty() )
-    { io.read_messages();
+    { IO.read_messages();
     }
     if( u.hp > 0 )
-    { io.display_player( u );
+    { IO.display_player( u );
     }
     else
     { break;
     }
-    io.refresh_screen();
+    IO.refresh_screen();
   }
 
 playerdied:
 
-  io.display( u.y, u.x, symdata( SMILEY, A_DIM ), true );
+  IO.display( u.y, u.x, symdata( SMILEY, A_DIM ), true );
 
 playerquit:
 
   message( "See you later..." );
   // view all the messages that you got just before you died
-  io.read_messages();
+  IO.read_messages();
 
-  io.cleanup();
+  IO.cleanup();
   return 0;
 }

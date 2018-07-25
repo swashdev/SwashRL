@@ -1,9 +1,7 @@
-SDL wrapper
+SDL display mode
  - SDL "virtual terminal" mode
  - SDL graphical mode (with actual pictures!)
-PDCurses wrapper
-Abstract movement keys into a struct or class so that control schemes can be
-easily swapped out
+Fix the PDCurses display mode
 Turn the map into a class so that relevant functions can be governed by the
 map itself
 Finalize inventory

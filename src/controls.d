@@ -28,7 +28,7 @@ class InvalidKeymapException : Exception
 uint[char] keymap( string keylist = "" )
 {
   // The standard keymap, which is being overwritten
-  string kl = "ykuhlbjn. iw,P ";
+  char[] kl = cast(char[])"ykuhlbjn. iw,P ";
 
   // Check to make sure that the keylist will not overwrite any reserved
   // commands
@@ -45,28 +45,24 @@ uint[char] keymap( string keylist = "" )
           "Keymap attempted to overwrite reserved command \'Q\': " ~
           "reserved for \"quit\""
         );
-        break;
 
       case '?':
         throw new InvalidKeymapException(
           "Keymap attempted to overwrite reserved command \'?\': " ~
           "reserved for \"help\""
         );
-        break;
 
       case 'v':
         throw new InvalidKeymapException(
           "Keymap attempted to overwrite reserved command \'v\': " ~
           "reserved for \"version\""
         );
-        break;
 
       case '@':
         throw new InvalidKeymapException(
           "Keymap attempted to overwrite reserved command \'@\': " ~
           "reserved for \"switch control schemes\""
         );
-        break;
     } // switch( keylist )
   } // foreach( c; 0 .. keylist.length )
 

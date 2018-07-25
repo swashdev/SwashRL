@@ -111,6 +111,9 @@ version( curses )
   // default, use the standard layout, and we'll redefine it later)
   Keymaps["Custom"] = keymap();
 
+  // Assign default keymap
+  Current_keymap = Keymaps["Standard"];
+
   Current_map = test_map();
 
   player u = init_player( 1, 1 );

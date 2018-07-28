@@ -8,6 +8,7 @@
 import global;
 
 import std.string;
+import std.container : DList;
 public import std.range.primitives : popFront;
 
 enum MESSAGE_BUFFER_LINES = 1;

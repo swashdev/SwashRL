@@ -95,7 +95,7 @@ version( curses )
 {
   if( SDL_none() )
   {
-    io = new CursesIO();
+    IO = new CursesIO();
   }
 }
 
@@ -129,7 +129,7 @@ version( curses )
   while( mv != MOVE_QUIT && u.hp > 0 )
   {
     moved = 0;
-    mv = IO.getcommand();
+    mv = IO.getcommand( Keymaps[ Current_keymap ] );
     switch( mv )
     {
       case MOVE_UNKNOWN:

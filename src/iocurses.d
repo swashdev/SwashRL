@@ -59,16 +59,16 @@ class CursesIO : SpelunkIO
 
   // Calls the input command and returns an integer representing a movement by
   // the player.
-  uint getcommand()
+  uint getcommand( uint[char] keymap )
   {
     char c = cast(char)getch();
 
     // First check if `c' is contained in the player's keymap (see `keymap.d')
-    uint* cmd = (c in Keymaps[ Current_keymap ] );
+    uint* cmd = (c in keymap);
 
     // If so, return the appropriate command:
     if( cmd !is null )
-    { return Keymaps[ Current_keymap ].get( c, MOVE_HELP );
+    { return keymap.get( c, MOVE_UNKNOWN );
     }
 
     // If not, check the standard prompts:
@@ -79,7 +79,6 @@ class CursesIO : SpelunkIO
       case '7':
       case KEY_HOME:
         return MOVE_NW;
-
       case '8':
       case KEY_UP:
         return MOVE_NN;
@@ -101,8 +100,7 @@ class CursesIO : SpelunkIO
       case '4':
       case KEY_LEFT:
         return MOVE_WW;
-      case MV_WT:
-      case NP_WT:
+      case '5':
         return MOVE_WAIT;
 
 version( Windows )
@@ -139,6 +137,10 @@ version( Windows )
       case '?':
         return MOVE_HELP;
 
+      default:
+        // Handle the default case outside this switch statement
+        break;
+
     } // switch( c )
 
     // If none of the above command prompts match, default to the "command
@@ -149,13 +151,14 @@ version( Windows )
 
   void read_messages()
   {
-    while( Messages.length > 0 )
+    while( !Messages.empty() )
     {
       clear_message_line();
-      mvprintw( 0, 0, "%s%s", toStringz(pop_message()),
-                toStringz(Messages.length > 1 ? "  (More)" : "") );
+      mvprintw( 0, 0, "%s%s", toStringz( pop_message() ),
+                toStringz( Messages.empty() == false ? "  (More)" : "" ) );
       refresh();
-      if( Messages.length > 0 )
+
+      if( !Messages.empty() )
       { getch();
       }
     }
@@ -163,27 +166,18 @@ version( Windows )
 
   void read_message_history()
   {
-    import std.string: toStringz;
-
+version( all )
+{
     clear();
-    ubyte n = 0;
-    foreach( m; 0 .. Messages.length )
-    {
-      mvprintw( n, 0, toStringz(Messages[m]) );
-      if( m % MAX_MESSAGE_BUFFER == 20 )
-      {
-        refresh();
-        getch();
-        clear();
-        n = 0;
-      }
-      else
-      { n++;
-      }
+
+    foreach( c; 0 .. Message_history.length )
+    { mvprintw( c, 0, toStringz( Message_history[c] ) );
     }
+
     refresh();
     getch();
     clear_message_line();
+}
   }
 
   ////////////
@@ -236,8 +230,6 @@ static if( TEXT_EFFECTS )
   {
     clear();
 
-    uint[char] keymap = Keymaps[ Current_keymap ];
-    
     mvprintw(  1, 1, "To move:   on numpad:   on Dvorak:"    );
     mvprintw(  2, 1, "   y k u        7 8 9        f t g"    );
     mvprintw(  3, 1, "    \\|/          \\|/          \\|/"  );

@@ -59,16 +59,16 @@ class CursesIO : SpelunkIO
 
   // Calls the input command and returns an integer representing a movement by
   // the player.
-  uint getcommand( uint[char] keymap )
+  uint getcommand()
   {
     char c = cast(char)getch();
 
     // First check if `c' is contained in the player's keymap (see `keymap.d')
-    uint* cmd = (c in keymap);
+    uint* cmd = (c in Keymaps[Current_keymap]);
 
     // If so, return the appropriate command:
     if( cmd !is null )
-    { return keymap.get( c, MOVE_UNKNOWN );
+    { return Keymaps[Current_keymap].get( c, MOVE_UNKNOWN );
     }
 
     // If not, check the standard prompts:

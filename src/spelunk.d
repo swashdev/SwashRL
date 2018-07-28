@@ -11,7 +11,6 @@ import std.string: toStringz;
 
 static map Current_map;
 static SpelunkIO IO;
-static int Current_keymap;
 
 void help()
 {
@@ -129,7 +128,7 @@ version( curses )
   while( mv != MOVE_QUIT && u.hp > 0 )
   {
     moved = 0;
-    mv = IO.getcommand( Keymaps[ Current_keymap ] );
+    mv = IO.getcommand();
     switch( mv )
     {
       case MOVE_UNKNOWN:

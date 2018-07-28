@@ -25,7 +25,7 @@ interface SpelunkIO
   ///////////
 
   // Takes in an input and returns an action.
-  uint getcommand( uint[char] keymap );
+  uint getcommand();
 
   // Reads the player all of their messages one at a time
   void read_messages();

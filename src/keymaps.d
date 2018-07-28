@@ -44,3 +44,4 @@ static string[] Keymap_labels = ["Standard", "Dvorak",
 
 // The global list of `Keymaps'--this is defined in main()
 static uint[char][] Keymaps;
+static uint Current_keymap = 0;

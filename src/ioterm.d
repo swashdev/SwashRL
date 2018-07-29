@@ -20,9 +20,14 @@ import std.format;
 // For catching exceptions when initializing or working with SDL:
 class SDLException : Exception
 {
-  this( string msg, string file = __FILE__, size_t line = __LINE__ )
-  { super( msg, file, line );
-  }
+  import std.exception : basicExceptionCtors;
+  mixin basicExceptionCtors;
+}
+
+void sdl_error( string error = "" )
+{
+  throw new SDLException( format( "Error: %s.  SDL says: ", error,
+                          fromStringz( SDL_GetError() ) ) );
 }
 
 class SDLTerminalIO : SpelunkIO
@@ -39,12 +44,12 @@ class SDLTerminalIO : SpelunkIO
   {
     import std.stdio : writeln;
 
+    // Load SDL:
+    DerelictSDL2.load();
+    DerelictSDL2ttf.load();
+
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
-    {
-      throw new SDLException(
-        cast(string)("SDL could not initialize!  SDL_Error: " ~
-                     fromStringz( SDL_GetError() ) ~ "\n" )
-      );
+    { sdl_error( "Could not initialize SDL" );
     }
     else
     {
@@ -55,11 +60,7 @@ class SDLTerminalIO : SpelunkIO
                                  SDL_WINDOW_SHOWN );
 
       if( window == null )
-      {
-        throw new SDLException(
-          cast(string)("Window could not be created!  SDL_Error: " ~
-                       fromStringz( SDL_GetError() ) ~ "\n" )
-        );
+      { sdl_error( "Could not create window" );
       }
       else
       {
@@ -118,7 +119,9 @@ class SDLTerminalIO : SpelunkIO
   }
 
   // Displays a help screen and then waits for the player to clear it
-  void help_screen();
+  void help_screen()
+  {
+  }
 
   // The central `display' function.  Displays a given `symbol' at given
   // coordinates.  If `center', the cursor will be centered over the symbol

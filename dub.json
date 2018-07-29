@@ -16,8 +16,6 @@
         "derelict-sdl2": "~>3.1.0-alpha.4"
       },
 
-      "libs": [ "SDL2", "SDL2_ttf" ],
-
       "versions": ["sdl"]
     },
     {
@@ -29,8 +27,6 @@
         "derelict-sdl2": "~>3.1.0-alpha.4"
       },
 
-      "libs": [ "SDL2", "SDL2_ttf" ],
-
       "versions": ["ncurses", "curses", "sdl"]
     },
     {
@@ -40,8 +36,6 @@
         "pdcurses-d": "~>1.0.0",
         "derelict-sdl2": "~>3.1.0-alpha.4"
       },
-
-      "libs": [ "SDL2", "SDL2_ttf" ],
 
       "versions": ["pdcurses", "curses", "sdl"]
     },

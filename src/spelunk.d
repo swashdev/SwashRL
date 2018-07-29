@@ -68,10 +68,9 @@ int main( string[] args )
   options:
     -h, --help        Displays this help output and then exits.
     -S, --sdl-mode    Sets the output mode for Spelunk!  Default \"terminal\"
-                      Can be \"none\" for curses output or \"terminal\" or
-                      \"full\" for an SDL terminal.  If your copy of Spelunk!
-                      was compiled without SDL or curses, this option may
-                      have no effect.
+                      Can be \"none\" for curses output or \"terminal\" for an
+                      SDL terminal.  If your copy of Spelunk! was compiled
+                      without SDL or curses, this option may have no effect.
   examples:
     spelunk --sdl-mode none
     spelunk --sdl-mode terminal"
@@ -95,6 +94,13 @@ version( curses )
   if( SDL_none() )
   {
     IO = new CursesIO();
+  }
+}
+version( sdl )
+{
+  if( SDL_terminal() )
+  {
+    IO = new SDLTerminalIO();
   }
 }
 

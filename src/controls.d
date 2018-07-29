@@ -27,21 +27,19 @@ class InvalidKeymapException : Exception
 // THIS ARRAY; THEY ARE STATIC AND DECLARED GLOBALLY IN ``keys.d''
 uint[char] keymap( string keylist = "" )
 {
-  char[] inlist = cast(char[])keylist;
-
   // The standard keymap, which is being overwritten
-  char[] kl = cast(char[])"ykuhlbjn. iw,P ";
+  char[] kl = "ykuhlbjn. iw,P ".dup;
 
   // Check to make sure that the keylist will not overwrite any reserved
   // commands
-  if( inlist.length > 0 )
+  if( keylist.length > 0 )
   {
-    foreach( c; 0 .. inlist.length - 1 )
+    foreach( c; 0 .. keylist.length )
     {
-      switch( inlist[c] )
+      switch( keylist[c] )
       {
         default:
-          kl[c] = inlist[c];
+          kl[c] = keylist[c];
           break;
 
         case 'Q':
@@ -101,12 +99,12 @@ version( none )
 {
   import std.stdio : writeln;
 
-  writeln( "Size of inlist: ", inlist.length,          "." );
-  writeln( "Size of kl:     ", kl.length,              "." );
-  writeln( "Size of ret:    ", ret.length,             "." );
-  writeln( "Keylist input:  ", keylist,                "." );
-  writeln( "kl final value: ", cast(string)kl,         "." );
-  writeln( "final value:    ", cast(string)(ret.keys()), "." );
+  writeln( "Size of keylsit: ", keylist.length,          "." );
+  writeln( "Size of kl:      ", kl.length,              "." );
+  writeln( "Size of ret:     ", ret.length,             "." );
+  writeln( "Keylist input:   ", keylist,                "." );
+  writeln( "kl final value:  ", cast(string)kl,         "." );
+  writeln( "final value:     ", cast(string)(ret.keys()), "." );
 }
 
   // Finally, we check the length of the keymap.  If the keymap isn't the same

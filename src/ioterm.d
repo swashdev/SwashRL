@@ -62,7 +62,7 @@ class SDLTerminalIO : SpelunkIO
       // Create the SDL window:
       window = SDL_CreateWindow( toStringz( format( "Spelunk! v%f", VERSION ) ),
                                  SDL_WINDOWPOS_UNDEFINED,
-                                 SDL_WINDOWPOS_UNDEFINED, 0, 0,
+                                 SDL_WINDOWPOS_UNDEFINED, MAP_X * tile_width, MAP_Y * tile_height,
                                  SDL_WINDOW_SHOWN );
 
       if( window == null )
@@ -73,8 +73,8 @@ class SDLTerminalIO : SpelunkIO
         // This code was cannibalized from Elronnd's SmugglerRL project:
 
         // Get the renderer
-        renderer = SDL_CreateRenderer( sdl_window, -1,
-          SDL_RENDERER_ACCELERATED | SDL_RENDERER_PREVENTVSYNC );
+        renderer = SDL_CreateRenderer( window, -1,
+          SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 
         // Load the default font
         if( !loadfont( "assets/fonts/ProggySquareSZ.ttf", 11, tileset ) )
@@ -138,7 +138,7 @@ class SDLTerminalIO : SpelunkIO
     // convert it into a `SDL_Texture' stored in `target'
     foreach( ushort i; 0 .. 65536 )
     {
-      if( TTF_GlyphIsProvided( font, i )
+      if( TTF_GlyphIsProvided( font, i ) )
       {
         text[0] = i;
         surface = TTF_RenderUNICODE_Blended( font, text.ptr, white );
@@ -197,10 +197,14 @@ class SDLTerminalIO : SpelunkIO
       {
         if( e.type == SDL_TEXTINPUT )
         { c = e.text.text[0];
+          break;
         }
         // gained focus, so we need to redraw.  IDK why
         else if( e.type == SDL_WINDOWEVENT )
         { refresh_screen();
+          if ( e.window.event == SDL_WINDOWEVENT_CLOSE )
+          { return MOVE_QUIT;
+          }
         }
       }
       else

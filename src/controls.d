@@ -30,7 +30,7 @@ uint[char] keymap( string keylist = "" )
   char[] inlist = cast(char[])keylist;
 
   // The standard keymap, which is being overwritten
-  char[] kl = cast(char[])"ykuhlbjn. iw,P ";
+  char[] kl = "ykuhlbjn. iw,P ".dup;
 
   // Check to make sure that the keylist will not overwrite any reserved
   // commands

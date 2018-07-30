@@ -77,6 +77,11 @@ class SDLTerminalIO : SpelunkIO
   // Final clearing of the display before the game is closed
   void cleanup()
   {
+    // Destroy the SDL window
+    SDL_DestroyWindow( window );
+
+    // Quit all SDL subsystems
+    SDL_Quit();
   }
 
   ///////////

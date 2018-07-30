@@ -65,6 +65,7 @@ class SDLTerminalIO : SpelunkIO
                                  SDL_WINDOWPOS_UNDEFINED, MAP_X * tile_width, MAP_Y * tile_height,
                                  SDL_WINDOW_SHOWN );
 
+
       if( window == null )
       { sdl_error( "Could not create window" );
       }
@@ -74,7 +75,7 @@ class SDLTerminalIO : SpelunkIO
 
         // Get the renderer
         renderer = SDL_CreateRenderer( window, -1,
-          SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+          SDL_RENDERER_ACCELERATED );
 
         // Load the default font
         if( !loadfont( "assets/fonts/ProggySquareSZ.ttf", 11, tileset ) )
@@ -90,7 +91,7 @@ class SDLTerminalIO : SpelunkIO
   void cleanup()
   {
     // Destroy all textures in the tileset (cannibalized from SmugglerRL):
-    foreach( ref texture; tileset )
+    foreach( texture; tileset )
     { SDL_DestroyTexture( texture );
     }
 

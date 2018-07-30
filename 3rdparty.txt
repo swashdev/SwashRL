@@ -8,12 +8,12 @@ sub-project called SDL_ttf.  As of version 0.024, this is the default display
 system for Spelunk!  Development binaries for SDL version 2.0.8 and SDL_ttf
 version 2.0.14 are included in the ``lib'' folder and its subdirectories.
 
-The SDL license can be found in ``doc/license/sdl2.txt''
+The SDL license can be found in ``docs/license/sdl2.txt''
 
 SDL_ttf also uses zlib and FreeType, also included in the ``lib'' folder.
 
-The zlib license can be found in ``doc/license/zlib.txt''
-The FreeType license can be found in ``doc/license/freetype.txt''
+The zlib license can be found in ``docs/license/zlib.txt''
+The FreeType license can be found in ``docs/license/freetype.txt''
 
  -- Proggy Fonts -------------------------------------------------------------
 
@@ -21,7 +21,7 @@ ProggySquareSZ, the greatest programmer's font on the planet, is included in
 the ``assets/fonts'' folder as the default font for the SDL interfaces to
 Spelunk!
 
-The Proggy license can be found in ``doc/license/proggy.txt''
+The Proggy license can be found in ``docs/license/proggy.txt''
 
  -- the Doryen library, aka libtcod ------------------------------------------
 
@@ -30,7 +30,7 @@ directly from the libtcod source code.  In good faith, a comment line has been
 added to indicate very specifically that it has been modified from its
 original version.
 
-The libtcod license can be found in ``doc/license/libtcod.txt''
+The libtcod license can be found in ``docs/license/libtcod.txt''
 
  -- ncurses and PDCurses ----------------------------------------------------
 

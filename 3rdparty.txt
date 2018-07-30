@@ -32,6 +32,17 @@ original version.
 
 The libtcod license can be found in ``docs/license/libtcod.txt''
 
+ -- SmugglerRL ---------------------------------------------------------------
+
+Substantial portions of the Input/Output code in ``src/ioterm.d'' were
+cannibalized from Elronnd's SmugglerRL project, which Elronnd graciously
+allowed me to use as the base for my own SDL terminal interface.
+
+The SmugglerRL git repository can be found here at the time of writing:
+  http://repo.or.cz/SmugglerRL.git
+
+The SmugglerRL license can be found in ``docs/license/smuggler.txt''
+
  -- ncurses and PDCurses ----------------------------------------------------
 
 Spelunk! is designed to link to the ncurses and PDCurses libraries.  Neither

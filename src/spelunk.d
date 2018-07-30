@@ -46,6 +46,8 @@ bool SDL_full()
 // Exit codes for `main':
 //   0 Exit without error
 //   1 Exit due to --help prompt, no errors
+//  11 Exit due to KeymapException
+//  21 Exit due to SDLException
 // 100 Catch-all error code
 
 int main( string[] args )
@@ -98,14 +100,30 @@ version( curses )
 }
 version( sdl )
 {
-  if( SDL_terminal() )
+  try
   {
-    IO = new SDLTerminalIO();
+    if( SDL_terminal() )
+    {
+      IO = new SDLTerminalIO();
+    }
+  }
+  catch( SDLException e )
+  {
+    writeln( e.msg );
+    return 21;
   }
 }
 
-  // Initialize keymaps
-  Keymaps = [ keymap(), keymap( "fgtdnxhb. iw,P " ), keymap() ];
+  try
+  {
+    // Initialize keymaps
+    Keymaps = [ keymap(), keymap( "fgtdnxhb. iw,P " ), keymap() ];
+  }
+  catch( InvalidKeymapException e )
+  {
+    writeln( e.msg );
+    return 11;
+  }
 
   // Assign default keymap
   Current_keymap = 0;

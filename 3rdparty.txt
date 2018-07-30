@@ -1,5 +1,36 @@
-The version of Spelunk! which you have received (0.023) uses the following
-third-party resources to function.
+The version of Spelunk! which you have received uses the following third-party
+resources to function.
+
+ -- SDL2 and SDL_ttf ---------------------------------------------------------
+
+Spelunk! is designed to link to Simple DirectMedia Layer (SDL) version 2 and a
+sub-project called SDL_ttf.  As of version 0.024, this is the default display
+system for Spelunk!  Development binaries for SDL version 2.0.8 and SDL_ttf
+version 2.0.14 are included in the ``lib'' folder and its subdirectories.
+
+The SDL license can be found in ``doc/license/sdl2.txt''
+
+SDL_ttf also uses zlib and FreeType, also included in the ``lib'' folder.
+
+The zlib license can be found in ``doc/license/zlib.txt''
+The FreeType license can be found in ``doc/license/freetype.txt''
+
+ -- Proggy Fonts -------------------------------------------------------------
+
+ProggySquareSZ, the greatest programmer's font on the planet, is included in
+the ``assets/fonts'' folder as the default font for the SDL interfaces to
+Spelunk!
+
+The Proggy license can be found in ``doc/license/proggy.txt''
+
+ -- the Doryen library, aka libtcod ------------------------------------------
+
+The source file ``src/fov.d'' uses modified versions of functions taken
+directly from the libtcod source code.  In good faith, a comment line has been
+added to indicate very specifically that it has been modified from its
+original version.
+
+The libtcod license can be found in ``doc/license/libtcod.txt''
 
  -- ncurses and PDCurses ----------------------------------------------------
 
@@ -15,16 +46,7 @@ other license.  However, I can not guarantee that the version you have does
 not use other libraries or other functions under a different license.
 
 PDCurses, or at least the core library, is released into the public domain
-(accurate as of version 3.4) but some parts of it use other licenses.  This
+(accurate as of version 3.6) but some parts of it use other licenses.  This
 complicates the actual terms of distributing PDCurses to the point that again
 I can not say with any certainty with what freedom it may be distributed.
 Again, use discretion.
-
- -- the Doryen library, aka libtcod ------------------------------------------
-
-The source file ``src/fov.d'' uses modified versions of functions taken
-directly from the libtcod source code.  In good faith, a comment line has been
-added to indicate very specifically that it has been modified from its
-original version.
-
-The libtcod license can be found in ``doc/license/libtcod.txt''

@@ -21,7 +21,6 @@ notes/
 # Files included only for my own use and not meant for the repository
 compwin.bat
 test/
-assets/
 
 dub.selections.json
 .dub

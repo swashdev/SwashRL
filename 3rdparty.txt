@@ -16,7 +16,7 @@ SDL_ttf also uses zlib and FreeType, also included in the ``lib'' folder.
 The zlib license can be found in ``docs/license/zlib.txt''
 The FreeType license can be found in ``docs/license/freetype.txt''
 
- -- DevaVu Fonts -------------------------------------------------------------
+ -- DejaVu Fonts -------------------------------------------------------------
 
 DejaVuSansMono, a freeware / open-source font, is included in the
 ``assets/fonts'' folder as the default font for the SDL interfaces to Spelunk!

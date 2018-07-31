@@ -1,6 +1,6 @@
-SDL display mode
- - SDL "virtual terminal" mode
- - SDL graphical mode (with actual pictures!)
+Implement missing functions in SDL
+Genericize functions which are effectively identical between curses and SDL
+terminal modes
 Fix the PDCurses display mode
 Turn the map into a class so that relevant functions can be governed by the
 map itself

@@ -38,8 +38,8 @@ class SDLTerminalIO : SpelunkIO
 
   SDL_Texture*[] tileset;
 
-  enum tile_width = 7;
-  enum tile_height = 11;
+  enum tile_width = 8;
+  enum tile_height = 16;
 
   /////////////////////
   // Setup & Cleanup //
@@ -59,10 +59,14 @@ class SDLTerminalIO : SpelunkIO
     }
     else
     {
+      // Disable antialiasing for the fonts:
+      SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" );
+
       // Create the SDL window:
-      window = SDL_CreateWindow( toStringz( format( "Spelunk! v%f", VERSION ) ),
+      window = SDL_CreateWindow( toStringz( format( "Spelunk! v%.3f", VERSION ) ),
                                  SDL_WINDOWPOS_UNDEFINED,
-                                 SDL_WINDOWPOS_UNDEFINED, MAP_X * tile_width, MAP_Y * tile_height,
+                                 SDL_WINDOWPOS_UNDEFINED,
+                                 MAP_X * tile_width, (MAP_Y + 3) * tile_height,
                                  SDL_WINDOW_SHOWN );
 
 
@@ -78,7 +82,8 @@ class SDLTerminalIO : SpelunkIO
           SDL_RENDERER_ACCELERATED );
 
         // Load the default font
-        if( !loadfont( "assets/fonts/ProggySquareSZ.ttf", 11, tileset ) )
+        if( !loadfont( "assets/fonts/DejaVuSansMono.ttf", tile_height,
+                       tileset ) )
         { sdl_error( "Could not import ProggySquareSZ" );
         }
 
@@ -129,7 +134,7 @@ class SDLTerminalIO : SpelunkIO
 
     // A temporary surface to render the font onto:
     SDL_Surface* surface;
-    SDL_Color white = SDL_Color( 255, 255, 255, 0 );
+    SDL_Color white = SDL_Color( 255, 255, 255, 255 );
 
     ushort[2] text;
 

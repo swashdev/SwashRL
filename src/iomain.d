@@ -56,12 +56,12 @@ interface SpelunkIO
 
   // uses `display' to draw the given `player'
   final void display_player( player u )
-  { display( u.y, u.x, u.sym, true );
+  { display( u.y + 1, u.x, u.sym, true );
   }
 
   // uses `display' to draw the given `monst'er
   final void display_mon( monst m )
-  { display( m.y, m.x, m.sym );
+  { display( m.y + 1, m.x, m.sym );
   }
 
   // uses `display_mon' to draw all the `monst'ers on the given `map'

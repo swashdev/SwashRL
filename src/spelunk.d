@@ -117,7 +117,7 @@ version( sdl )
   try
   {
     // Initialize keymaps
-    Keymaps = [ keymap(), keymap( "fgtdnxhb. iw,P " ), keymap() ];
+    Keymaps = [ keymap(), keymap( "ftgdnxhb.iw,P " ), keymap() ];
   }
   catch( InvalidKeymapException e )
   {
@@ -207,7 +207,7 @@ version( sdl )
       // all other commands go to umove
       default:
         IO.clear_message_line();
-        IO.display( u.y, u.x, Current_map.t[u.y][u.x].sym );
+        IO.display( u.y + 1, u.x, Current_map.t[u.y][u.x].sym );
         moved = umove( &u, &Current_map, cast(ubyte)mv );
         if( u.hp <= 0 )
         { goto playerdied;

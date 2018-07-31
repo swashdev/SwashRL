@@ -16,13 +16,14 @@ SDL_ttf also uses zlib and FreeType, also included in the ``lib'' folder.
 The zlib license can be found in ``docs/license/zlib.txt''
 The FreeType license can be found in ``docs/license/freetype.txt''
 
- -- Proggy Fonts -------------------------------------------------------------
+ -- DevaVu Fonts -------------------------------------------------------------
 
-ProggySquareSZ, the greatest programmer's font on the planet, is included in
-the ``assets/fonts'' folder as the default font for the SDL interfaces to
-Spelunk!
+DejaVuSansMono, a freeware / open-source font, is included in the
+``assets/fonts'' folder as the default font for the SDL interfaces to Spelunk!
+DejaVuSansMono uses a few other fonts as a base, the licenses of which are
+included with the DejaVu license notice.
 
-The Proggy license can be found in ``docs/license/proggy.txt''
+The DejaVu fonts license can be found in ``docs/license/dejavu.txt''
 
  -- the Doryen library, aka libtcod ------------------------------------------
 

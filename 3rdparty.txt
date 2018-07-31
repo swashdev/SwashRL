@@ -9,6 +9,7 @@ system for Spelunk!  Development binaries for SDL version 2.0.8 and SDL_ttf
 version 2.0.14 are included in the ``lib'' folder and its subdirectories.
 
 The SDL license can be found in ``docs/license/sdl2.txt''
+The SDL_ttf license can be found in ``docs/license/sdl_ttf.txt''
 
 SDL_ttf also uses zlib and FreeType, also included in the ``lib'' folder.
 

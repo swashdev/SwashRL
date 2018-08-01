@@ -241,7 +241,7 @@ version( sdl )
 
 playerdied:
 
-  IO.display( u.y, u.x, symdata( SMILEY, A_DIM ), true );
+  IO.display( u.y + 1, u.x, symdata( SMILEY, A_DIM ), true );
 
 playerquit:
 

@@ -178,5 +178,7 @@ Version Date/time Finalized   Info
         curses is being used.  The message buffer is now a linked list,
         simplifying the code required to generate it and allowing for a larger
         number of buffered messages.
+        This is also the first version of the source code to accept
+        command-line arguments.
         "Community Documentation," such as a Guideline for Contributors and
         GitHub-specific Issue and Pull Request templates, are added.

@@ -5,6 +5,10 @@ VERSION 0.024
   Changed:
    - Display functions are now placed in a class which can be swapped out to
      change the display method
+   - Key mappings are now stored in a hashmap, and functions used to generate
+     such hashmaps are added to allow source divers to add their own keymaps.
+   - The message buffer is now a linked list, allowing for a dynamically sized
+     buffer and some better underlying source code.
 
   Added:
    - Command line arguments have been added which allow the user to choose a

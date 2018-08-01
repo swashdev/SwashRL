@@ -168,7 +168,15 @@ Version Date/time Finalized   Info
 0.023   2017-12-05 22:30 EST  An update to 0.022 which actually compiles this
         time.
 
-0.024                         First version with SDL support.
-                              "Community Documentation," such as a Guideline
-        for Contributors and GitHub-specific Issue and Pull Request templates,
-        are added.
+0.024                         First version with SDL support.  The program can
+        be compiled with or without SDL, ncurses, or PDCurses depending on
+        what configuration is requested of dub.  As a result, Windows support
+        is renewed.  However, PDCurses support is still broken.
+        A number of idiosyncratic changes to the code base are made, such as
+        using a hashmap to store key mappings and storing the input and output
+        code in a class so they can be swapped out depending on whether SDL or
+        curses is being used.  The message buffer is now a linked list,
+        simplifying the code required to generate it and allowing for a larger
+        number of buffered messages.
+        "Community Documentation," such as a Guideline for Contributors and
+        GitHub-specific Issue and Pull Request templates, are added.

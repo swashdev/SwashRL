@@ -29,8 +29,8 @@ else
 
 version( pdcurses )
 {
-  pragma( msg, "WARNING: PDCurses is not being actively supported for " ~
-" version ", VERSION, " due to difficulties with getting dmd to recognize " ~
+  pragma( msg, "WARNING: PDCurses is not being actively supported " ~
+"due to difficulties with getting dmd to recognize " ~
 "any version of pdcurses.lib we have compiled.  We are unsure of the " ~
 "problem and are working on a workaround or an alternative.\n" ~
 "If you manage to get PDCurses working for Spelunk!, we would be delighted " ~

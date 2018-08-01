@@ -8,29 +8,18 @@
 // This is the configuration file for Spelunk!.  It defines flags which affect
 // how your copy of Spelunk! will compile.
 
-/* SECTION 1: ***************************************************************
- * Instructions for the compiler                                            *
- ****************************************************************************/
-
-
-/* SECTION 2: ***************************************************************
- * Display configuration                                                    *
- ****************************************************************************/
+// SECTION 1: ////////////////////////////////////////////////////////////////
+// Display configuration                                                    //
+//////////////////////////////////////////////////////////////////////////////
 
 // What character to use for the player.  '@' is recommended.
 enum SMILEY = '@';
 
+// Curses-only options: //
+
 // Enables special effects like the highlighted player and reversed walls.
 // Only works if your curses standard uses these effects (it probably does).
 enum TEXT_EFFECTS = true;
-
-// Spelunk! uses blink very infrequently, normally to mark actively hostile
-// monsters.  However, it does not work on all terminals (that is, it does not
-// in fact blink but instead works as a different kind of highlight) and a lot
-// of people have strong feelings about it.  Thus, it is disabled by default.
-enum USE_BLINK = false;
-
-// Easy configuration of some text effects //
 
 // Whether to highlight the player in the game display--if your terminal uses
 // a block-style cursor, this may be unnecessary.
@@ -41,9 +30,9 @@ enum HILITE_PLAYER = false;
 // of terminals I tested with it)
 enum REVERSED_WALLS = true;
 
-/* SECTION 3: ***************************************************************
- * Spelunk! configuration                                                   *
- ****************************************************************************/
+// SECTION 2: ////////////////////////////////////////////////////////////////
+// Spelunk! configuration                                                   //
+//////////////////////////////////////////////////////////////////////////////
 
 // Set USE_FOV to false if you need to be able to see the whole map (say, for
 // debugging, testing, &c)

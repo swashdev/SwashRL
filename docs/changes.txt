@@ -2,6 +2,8 @@ Spelunk! official changelog
 
 VERSION 0.024
 
+  Windows support is back online.
+
   Changed:
    - Display functions are now placed in a class which can be swapped out to
      change the display method
@@ -9,6 +11,8 @@ VERSION 0.024
      such hashmaps are added to allow source divers to add their own keymaps.
    - The message buffer is now a linked list, allowing for a dynamically sized
      buffer and some better underlying source code.
+   - The USE_BLINK configuration option has been removed due to not having any
+     effect.
 
   Added:
    - Command line arguments have been added which allow the user to choose a

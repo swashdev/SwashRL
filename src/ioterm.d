@@ -66,7 +66,7 @@ class SDLTerminalIO : SpelunkIO
       window = SDL_CreateWindow( toStringz( format( "Spelunk! v%.3f", VERSION ) ),
                                  SDL_WINDOWPOS_UNDEFINED,
                                  SDL_WINDOWPOS_UNDEFINED,
-                                 MAP_X * tile_width, (MAP_Y + 3) * tile_height,
+                                 MAP_X * tile_width, (MAP_Y + 2) * tile_height,
                                  SDL_WINDOW_SHOWN );
 
 

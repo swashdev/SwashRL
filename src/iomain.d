@@ -188,7 +188,7 @@ interface SpelunkIO
     put_line(  1, 1, "To move:   on numpad:   on Dvorak:"    );
     put_line(  2, 1, "   y k u        7 8 9        f t g"    );
     put_line(  3, 1, "    \\|/          \\|/          \\|/"  );
-    put_line(  4, 1, "   h-*-l        4-*-6        h-*-l"    );
+    put_line(  4, 1, "   h-*-l        4-*-6        d-*-l"    );
     put_line(  5, 1, "    /|\\          /|\\          /|\\"  );
     put_line(  6, 1, "   b j n        1 2 3        x h b"    );
 

@@ -18,9 +18,6 @@ enum MOVE_SS = 2;
 enum MOVE_SE = 3;
 enum MOVE_WAIT = 5;
 
-// Menu management
-enum MOVE_MENU_SELECT = 33;
-
 // Inventory management
 enum MOVE_INVENTORY = 20;
 enum MOVE_WIELD = 21;

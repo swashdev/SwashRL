@@ -16,7 +16,7 @@ file.
 
 Spelunk! currently has git respositories hosted at the following locations:
 
-  <https://github.com/swashdev/Spelunk>
+* <https://github.com/swashdev/Spelunk>
 
 ## License Agreement
 
@@ -33,12 +33,7 @@ my child and I will defend it from you if I have to.
 ## Supported Systems
 
 Spelunk! was originally written for Linux, and is confirmed to still work on
-Linux and FreeBSD as of development version 0.022.
-
-Windows support has been temporarily removed because we couldn't find a
-Windows-compatible version of curses with a working D wrapper (hence the lack
-of support for PDCurses) and alternative curses libraries tend to use software
-licenses incompatible with the license I'm using.
+Windows and Linux as of development version 0.024.
 
 I hope to eventually port it to more systems, but I'm limited in my ability to
 officially support systems by their availability to me.  If you'd like to

@@ -41,9 +41,6 @@ interface SpelunkIO
   // Outputs a text character at the given coordinates
   void put_char( uint y, uint x, char c );
 
-  // Outputs a line of text at the given coordinates
-  void put_line( T... )( uint y, uint x, T args );
-
   // The central `display' function.  Displays a given `symbol' at given
   // coordinates.  If `center', the cursor will be centered over the symbol
   // after drawing, rather than passing to the right of it like in a text
@@ -133,6 +130,16 @@ interface SpelunkIO
       }
     }
   }
+  final void put_line( T... )( uint y, uint x, T args )
+  {
+    import std.string: format;
+    string output = format( args );
+
+    foreach( c; 0 .. cast(uint)output.length )
+    { put_char( y, x + c, output[c] );
+    }
+  }
+
 
   // Gives the player a menu containing their message history.
   final void read_message_history()

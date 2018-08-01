@@ -260,15 +260,6 @@ class SDLTerminalIO : SpelunkIO
     // (end cannibalized code)
   }
 
-  void put_line( T... )( uint y, uint x, T args )
-  {
-    string output = format( args );
-
-    foreach( c; 0 .. output.length )
-    { put_char( y, x + c, output[c] );
-    }
-  }
-
   // Refreshes the screen to reflect the changes made by the below output
   // functions (cannibalized from SmugglerRL)
   void refresh_screen()

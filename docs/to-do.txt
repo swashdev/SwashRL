@@ -1,6 +1,3 @@
-SDL display mode
- - SDL "virtual terminal" mode
- - SDL graphical mode (with actual pictures!)
 Fix the PDCurses display mode
 Turn the map into a class so that relevant functions can be governed by the
 map itself

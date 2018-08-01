@@ -1,5 +1,49 @@
-The version of Spelunk! which you have received (0.023) uses the following
-third-party resources to function.
+The version of Spelunk! which you have received uses the following third-party
+resources to function.
+
+ -- SDL2 and SDL_ttf ---------------------------------------------------------
+
+Spelunk! is designed to link to Simple DirectMedia Layer (SDL) version 2 and a
+sub-project called SDL_ttf.  As of version 0.024, this is the default display
+system for Spelunk!  Development binaries for SDL version 2.0.8 and SDL_ttf
+version 2.0.14 are included in the ``lib'' folder and its subdirectories.
+
+The SDL license can be found in ``docs/license/sdl2.txt''
+The SDL_ttf license can be found in ``docs/license/sdl_ttf.txt''
+
+SDL_ttf also uses zlib and FreeType, also included in the ``lib'' folder.
+
+The zlib license can be found in ``docs/license/zlib.txt''
+The FreeType license can be found in ``docs/license/freetype.txt''
+
+ -- DejaVu Fonts -------------------------------------------------------------
+
+DejaVuSansMono, a freeware / open-source font, is included in the
+``assets/fonts'' folder as the default font for the SDL interfaces to Spelunk!
+DejaVuSansMono uses a few other fonts as a base, the licenses of which are
+included with the DejaVu license notice.
+
+The DejaVu fonts license can be found in ``docs/license/dejavu.txt''
+
+ -- the Doryen library, aka libtcod ------------------------------------------
+
+The source file ``src/fov.d'' uses modified versions of functions taken
+directly from the libtcod source code.  In good faith, a comment line has been
+added to indicate very specifically that it has been modified from its
+original version.
+
+The libtcod license can be found in ``docs/license/libtcod.txt''
+
+ -- SmugglerRL ---------------------------------------------------------------
+
+Substantial portions of the Input/Output code in ``src/ioterm.d'' were
+cannibalized from Elronnd's SmugglerRL project, which Elronnd graciously
+allowed me to use as the base for my own SDL terminal interface.
+
+The SmugglerRL git repository can be found here at the time of writing:
+  http://repo.or.cz/SmugglerRL.git
+
+The SmugglerRL license can be found in ``docs/license/smuggler.txt''
 
  -- ncurses and PDCurses ----------------------------------------------------
 
@@ -15,16 +59,7 @@ other license.  However, I can not guarantee that the version you have does
 not use other libraries or other functions under a different license.
 
 PDCurses, or at least the core library, is released into the public domain
-(accurate as of version 3.4) but some parts of it use other licenses.  This
+(accurate as of version 3.6) but some parts of it use other licenses.  This
 complicates the actual terms of distributing PDCurses to the point that again
 I can not say with any certainty with what freedom it may be distributed.
 Again, use discretion.
-
- -- the Doryen library, aka libtcod ------------------------------------------
-
-The source file ``src/fov.d'' uses modified versions of functions taken
-directly from the libtcod source code.  In good faith, a comment line has been
-added to indicate very specifically that it has been modified from its
-original version.
-
-The libtcod license can be found in ``doc/license/libtcod.txt''

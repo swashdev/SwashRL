@@ -46,6 +46,8 @@ bool SDL_full()
 // Exit codes for `main':
 //   0 Exit without error
 //   1 Exit due to --help prompt, no errors
+//  11 Exit due to KeymapException
+//  21 Exit due to SDLException
 // 100 Catch-all error code
 
 int main( string[] args )
@@ -68,10 +70,9 @@ int main( string[] args )
   options:
     -h, --help        Displays this help output and then exits.
     -S, --sdl-mode    Sets the output mode for Spelunk!  Default \"terminal\"
-                      Can be \"none\" for curses output or \"terminal\" or
-                      \"full\" for an SDL terminal.  If your copy of Spelunk!
-                      was compiled without SDL or curses, this option may
-                      have no effect.
+                      Can be \"none\" for curses output or \"terminal\" for an
+                      SDL terminal.  If your copy of Spelunk! was compiled
+                      without SDL or curses, this option may have no effect.
   examples:
     spelunk --sdl-mode none
     spelunk --sdl-mode terminal"
@@ -97,9 +98,32 @@ version( curses )
     IO = new CursesIO();
   }
 }
+version( sdl )
+{
+  try
+  {
+    if( SDL_terminal() )
+    {
+      IO = new SDLTerminalIO();
+    }
+  }
+  catch( SDLException e )
+  {
+    writeln( e.msg );
+    return 21;
+  }
+}
 
-  // Initialize keymaps
-  Keymaps = [ keymap(), keymap( "fgtdnxhb. iw,P " ), keymap() ];
+  try
+  {
+    // Initialize keymaps
+    Keymaps = [ keymap(), keymap( "ftgdnxhb.iw,P " ), keymap() ];
+  }
+  catch( InvalidKeymapException e )
+  {
+    writeln( e.msg );
+    return 11;
+  }
 
   // Assign default keymap
   Current_keymap = 0;
@@ -183,7 +207,7 @@ version( curses )
       // all other commands go to umove
       default:
         IO.clear_message_line();
-        IO.display( u.y, u.x, Current_map.t[u.y][u.x].sym );
+        IO.display( u.y + 1, u.x, Current_map.t[u.y][u.x].sym );
         moved = umove( &u, &Current_map, cast(ubyte)mv );
         if( u.hp <= 0 )
         { goto playerdied;
@@ -225,6 +249,9 @@ playerquit:
   // view all the messages that you got just before you died
   IO.read_messages();
 
+  // Wait for the user to press any key and then close the graphical mode and
+  // quit the program.
+  IO.get_key();
   IO.cleanup();
   return 0;
 }

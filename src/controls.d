@@ -28,7 +28,7 @@ class InvalidKeymapException : Exception
 uint[char] keymap( string keylist = "" )
 {
   // The standard keymap, which is being overwritten
-  char[] kl = "ykuhlbjn. iw,P ".dup;
+  char[] kl = "ykuhlbjn.iw,P ".dup;
 
   // Check to make sure that the keylist will not overwrite any reserved
   // commands
@@ -83,17 +83,14 @@ uint[char] keymap( string keylist = "" )
   ret[ kl[ 7] ] = MOVE_SE;
   ret[ kl[ 8] ] = MOVE_WAIT;
 
-  // Menu management
-  ret[ kl[ 9] ] = MOVE_MENU_SELECT;
-
   // Inventory management
-  ret[ kl[10] ] = MOVE_INVENTORY;
-  ret[ kl[11] ] = MOVE_WIELD;
-  ret[ kl[12] ] = MOVE_GET;
+  ret[ kl[ 9] ] = MOVE_INVENTORY;
+  ret[ kl[10] ] = MOVE_WIELD;
+  ret[ kl[11] ] = MOVE_GET;
 
   // Message management
-  ret[ kl[13] ] = MOVE_MESS_DISPLAY;
-  ret[ kl[14] ] = MOVE_MESS_CLEAR;
+  ret[ kl[12] ] = MOVE_MESS_DISPLAY;
+  ret[ kl[13] ] = MOVE_MESS_CLEAR;
 
 version( none )
 {
@@ -110,7 +107,7 @@ version( none )
   // Finally, we check the length of the keymap.  If the keymap isn't the same
   // length as `kl', one of the inputs has been defined twice and the control
   // scheme is broken.
-  if( ret.length != kl.length - 1 )
+  if( ret.length != kl.length )
   {
     throw new InvalidKeymapException( "Invalid keymap defined " ~
       cast(string)kl ~ "Did you map the same key twice?" );

@@ -249,6 +249,9 @@ playerquit:
   // view all the messages that you got just before you died
   IO.read_messages();
 
+  // Wait for the user to press any key and then close the graphical mode and
+  // quit the program.
+  IO.get_key();
   IO.cleanup();
   return 0;
 }

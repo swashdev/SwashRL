@@ -183,15 +183,8 @@ class SDLTerminalIO : SpelunkIO
   // Input //
   ///////////
 
-  // Takes in an input and returns an action.
-  uint getcommand()
+  char get_key()
   {
-    // You might recognize `c' here from the CursesIO version of this function
-    // Unlike Elronnd's original function, we have to handle command
-    // interpretation in this function (probably something to genericize later
-    // TODO)
-    char c;
-
     // The following code was cannibalized from Elronnd's SmugglerRL project:
 
     SDL_Event e;
@@ -202,8 +195,7 @@ class SDLTerminalIO : SpelunkIO
       if( SDL_WaitEvent( &e ) == 1 )
       {
         if( e.type == SDL_TEXTINPUT )
-        { c = e.text.text[0];
-          break;
+        { return e.text.text[0];
         }
         // gained focus, so we need to redraw.  IDK why
         else if( e.type == SDL_WINDOWEVENT )
@@ -218,118 +210,26 @@ class SDLTerminalIO : SpelunkIO
       }
     }
 
-    // (end cannibalized code--the rest of this function is identical to
-    // `CursesIO.getcommand()', except without curses key definitions)
-
-    // First check if `c' is contained in the player's keymap (see `keymap.d')
-    uint* cmd = (c in Keymaps[Current_keymap]);
-
-    // If so, return the appropriate command:
-    if( cmd !is null )
-    { return Keymaps[Current_keymap].get( c, MOVE_UNKNOWN );
-    }
-
-    // If not, check the standard prompts:
-    switch( c )
-    {
-
-      // Number pad keys:
-      case '7':
-        return MOVE_NW;
-      case '8':
-        return MOVE_NN;
-      case '9':
-        return MOVE_NE;
-      case '6':
-        return MOVE_EE;
-      case '3':
-        return MOVE_SE;
-      case '2':
-        return MOVE_SS;
-      case '1':
-        return MOVE_SW;
-      case '4':
-        return MOVE_WW;
-      case '5':
-        return MOVE_WAIT;
-
-      // If it's not in any of the standard controls or the number pad
-      // controls, check the "admin keys":
-      case 'Q':
-        return MOVE_QUIT;
-      case 'v':
-        return MOVE_GETVERSION;
-      case '@':
-        return MOVE_ALTKEYS;
-      case '?':
-        return MOVE_HELP;
-
-      default:
-        // Handle the default case outside this switch statement
-        break;
-
-    } // switch( c )
-
-    // If none of the above command prompts match, default to the "command
-    // not recognized" response.
-    return MOVE_UNKNOWN;
-
-
-  } // uint getcommand()
-
-  // Reads the player all of their messages one at a time
-  void read_messages()
-  {
-    // XXX
-  }
-
-  // Gives the player a menu containing their message history.
-  void read_message_history()
-  {
-    // XXX
-  }
-
-  // Displays the `player's inventory and enables them to control it.  Returns
-  // the number of turns the player spent on the inventory screen.
-  uint control_inventory( player* u )
-  {
-    // XXX
-    return 0;
+    // (end cannibalized code)
   }
 
   ////////////
   // Output //
   ////////////
 
-  // Refreshes the screen to reflect the changes made by the below output
-  // functions (cannibalized from SmugglerRL)
-  void refresh_screen()
-  { SDL_RenderPresent( renderer );
-  }
-
-  // Displays a help screen and then waits for the player to clear it
-  void help_screen()
+  void put_char( uint y, uint x, char c )
   {
-  }
 
-  // The central `display' function.  Displays a given `symbol' at given
-  // coordinates.  If `center', the cursor will be centered over the symbol
-  // after drawing, rather than passing to the right of it as is standard in
-  // curses.
-  // This function was cannibalized from Elronnd's SmugglerRL project
-  // (although his original function was more detailed)
-  void display( uint y, uint x, symbol s, bool center = true )
-  {
-    char ch = s.ch;
+    // The following code was cannibalized from Elronnd's SwashRL project:
 
     SDL_Texture* renderedchar;
 
     // null means there's no glyph, so fall back on a backup character
-    if( tileset[ch] is null )
+    if( tileset[c] is null )
     { renderedchar = tileset['?'];
     }
     else
-    { renderedchar = tileset[ch];
+    { renderedchar = tileset[c];
     }
 
     // Draw a square with the background color (this will erase any character
@@ -356,16 +256,52 @@ class SDLTerminalIO : SpelunkIO
 
     // And finally, copy everything over to the actual renderer
     SDL_RenderCopy( renderer, renderedchar, null, &tile );
+
+    // (end cannibalized code)
   }
 
-  // uses `display' to clear the current message off the message line
+  void put_line( T... )( uint y, uint x, T args )
+  {
+    string output = format( args );
+
+    foreach( c; 0 .. output.length )
+    { put_char( y, x + c, output[c] );
+    }
+  }
+
+  // Refreshes the screen to reflect the changes made by the below output
+  // functions (cannibalized from SmugglerRL)
+  void refresh_screen()
+  { SDL_RenderPresent( renderer );
+  }
+
+  void clear_screen()
+  {
+    SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+    SDL_RenderClear( renderer );
+  }
+
+  // Cover the message line with a black rectangle
   void clear_message_line()
   {
+    SDL_Rect rect;
+    rect.y = rect.x = 0;
+    rect.w = tile_width * MAP_X;
+    rect.y = tile_height;
+
+    SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+
+    SDL_RenderFillRect( renderer, &rect );
   }
 
-  // refreshes the status bar with the given `player's status
-  void refresh_status_bar( player* u )
-  {
+  // The central `display' function.  Displays a given `symbol' at given
+  // coordinates.  If `center', the cursor will be centered over the symbol
+  // after drawing, rather than passing to the right of it as is standard in
+  // curses.
+  // This function was cannibalized from Elronnd's SmugglerRL project
+  // (although his original function was more detailed)
+  void display( uint y, uint x, symbol s, bool center = true )
+  { put_char( y, x, s.ch );
   }
 } // class SDLTerminalIO
 

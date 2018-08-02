@@ -151,6 +151,7 @@ interface SpelunkIO
     {
       if( actual_c > 23 )
       {
+        refresh_screen();
         get_key();
         clear_screen();
         actual_c = 0;

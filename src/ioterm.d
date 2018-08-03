@@ -301,6 +301,8 @@ class SDLTerminalIO : SpelunkIO
     rect.w = tile_width * MAP_X;
     rect.h = tile_height;
 
+    SDL_SetRenderTarget( renderer, framebuffer );
+
     SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
 
     SDL_RenderFillRect( renderer, &rect );

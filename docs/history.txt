@@ -180,5 +180,7 @@ Version Date/time Finalized   Info
         number of buffered messages.
         This is also the first version of the source code to accept
         command-line arguments.
+        First version of the program to implement a rudimentary level
+        generator.
         "Community Documentation," such as a Guideline for Contributors and
         GitHub-specific Issue and Pull Request templates, are added.

@@ -170,6 +170,9 @@ map generate_new_map()
 {
   import std.random;
 
+  // DEBUG OUTPUT
+  import std.stdio : writefln;
+
   // We're going to use a classic Roguelike room generation system:  Split the
   // map into nine sectors, generate a room in each one, and then connect them
   // with corridors.
@@ -231,9 +234,9 @@ room_gen:
 
     room t;
     t.x1 = uniform( x1, x2 - 2, Lucky );
-    t.x2 = uniform( x2 - t.x1, x2, Lucky );
+    t.x2 = uniform( t.x1 + 2, x2, Lucky );
     t.y1 = uniform( y1, y2 - 2, Lucky );
-    t.y2 = uniform( y2 - t.y1, y2, Lucky );
+    t.y2 = uniform( t.y1 + 2, y2, Lucky );
 
     // This if statement is just a failsafe.  It shouldn't be necessary, but
     // I like to idiot-proof myself.
@@ -246,15 +249,34 @@ room_gen:
   } // foreach( c; 0 .. 9 )
 
   // Randomly get coordinates from each room and connect them
-  foreach( c; 0 .. 7 )
+  foreach( c; 0 .. 8 )
   {
+    writefln( "c is %d, c + 1 is %d", c, c + 1 );
+
     room r1 = r[c];
     room r2 = r[c + 1];
 
+    writefln( "r1 is r[%d]\nr2 is r[%d]", c, c + 1 );
+    writefln( "r1.x1 is %d, r1.x2 is %d", r1.x1, r1.x2 );
+    writefln( "r1.y1 is %d, r1.y2 is %d", r1.y1, r1.y2 );
+    writefln( "r2.x1 is %d, r2.x1 is %d", r2.x1, r2.x2 );
+    writefln( "r2.y1 is %d, r2.y2 is %d", r2.y1, r2.y2 );
+
     uint x1 = uniform( r1.x1, r1.x2 + 1, Lucky );
+
+    writefln( "Generated value for x1: %d", x1 );
+
     uint x2 = uniform( r2.x1, r2.x2 + 1, Lucky );
+
+    writefln( "Generated value for x2: %d", x2 );
+
     uint y1 = uniform( r1.y1, r1.y2 + 1, Lucky );
+
+    writefln( "Generated value for y1: %d", y1 );
+
     uint y2 = uniform( r2.y1, r2.y2 + 1, Lucky );
+
+    writefln( "Generated value for y2: %d", y2 );
 
     // Randomly decide whether to carve horizontally or vertically first.
     if( flip() )
@@ -272,10 +294,22 @@ room_gen:
   // Finally, get random coordinates from a random room and put the player
   // there:
 
-  room sr = r[ uniform( 0, 10, Lucky ) ];
+  uint srindex = uniform( 0, 9, Lucky );
+
+  writefln( "sr is r[%d]", srindex );
+
+  room sr = r[ uniform( 0, 9, Lucky ) ];
+
+  writefln( "sr.x1 is %d, sr.x2 is %d", sr.x1, sr.x2 );
+  writefln( "range for player x is [%d, %d]", sr.x1 + 1, sr.x2 - 1 );
+  writefln( "sr.y1 is %d, sr.y2 is %d", sr.y1, sr.y2 );
+  writefln( "range for player y is [%d, %d]", sr.y1 + 1, sr.y2 - 1 );
 
   ubyte px = cast(ubyte)uniform( sr.x1 + 1, sr.x2, Lucky );
   ubyte py = cast(ubyte)uniform( sr.y1 + 1, sr.y2, Lucky );
+
+  writefln( "Generated player x is %d", px );
+  writefln( "Generated player y is %d", py );
 
   m.player_start = [py, px];
 

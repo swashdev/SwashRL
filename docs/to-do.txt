@@ -1,13 +1,11 @@
-Fix the PDCurses display mode
-Turn the map into a class so that relevant functions can be governed by the
-map itself
+Have seen map tiles appear shaded in the view, rather than being forgotten
 Finalize inventory
- - Items should not be allowed to be equipped in inappropriate item slots
  - Implement the player's "bag"
 Implement appropriate item stats (attack & defense modifiers, &c)
 Implement stat generator
+Implement skills
 Stat up some monsters
-Implement dungeon generator
+Implement improved dungeon generator
 Implement dungeon hazards (pits, traps, &c)
 Implement dungeon levels
 Implement saved games
@@ -17,11 +15,11 @@ Implement special dungeon tiles (test tubes, &c)
 Implement ranged combat
 Implement special monster attacks
 Implement & design special levels
-Implement skills
 Implement a town level, shops, &c
 Implement quests
 Balance stats(, monsters, difficulty checks, &c)
 Implement magic & psionics
+Fix the PDCurses display mode
 
 TENTATIVE:
 Implement ability for very large monsters to block the player's field of view

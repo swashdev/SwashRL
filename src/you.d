@@ -16,7 +16,7 @@ struct player
   dicebag attack_roll;
 }
 
-player init_player( ubyte x, ubyte y )
+player init_player( ubyte y, ubyte x )
 {
   player u;
   if( x < 80 )

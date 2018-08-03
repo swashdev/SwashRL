@@ -15,6 +15,8 @@ VERSION 0.024
      effect.
    - The "change controls" key has been changed from F12 to '@' to keep it
      working in SDL.
+   - The test map now only appears if the program is compiled with version
+     "testmap"
 
   Added:
    - SDL support, with SDL being the default display method
@@ -24,6 +26,7 @@ VERSION 0.024
      without curses or SDL support
    - A detailed help screen now appears when the user types '?'.  The previous
      "help" prompt new tells the user how to reach this screen.
+   - Rudimentary map gen algorithm.
 
 VERSION 0.023
 Finalized 2017-12-05 22:30 EST

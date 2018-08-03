@@ -38,6 +38,11 @@ class SDLTerminalIO : SpelunkIO
 
   SDL_Texture*[] tileset;
 
+  // This texture is used as a backup of the frame buffer, to prevent errors
+  // when SDL's "back" and "front" frame buffers are swapped by the
+  // `refresh_screen' function
+  SDL_Texture* framebuffer;
+
   enum tile_width = 8;
   enum tile_height = 16;
 
@@ -88,6 +93,11 @@ class SDLTerminalIO : SpelunkIO
         }
 
         // (end cannibalized code)
+
+        framebuffer = SDL_CreateTexture( renderer, SDL_PIXELFORMAT_RGB888,
+                                         SDL_TEXTUREACCESS_TARGET,
+                                         MAP_X * tile_width,
+                                         (MAP_Y + 2) * tile_height );
       }
     }
   }
@@ -220,6 +230,10 @@ class SDLTerminalIO : SpelunkIO
   void put_char( uint y, uint x, char c )
   {
 
+    // Tell the renderer to draw to our own `framebuffer' rather than the
+    // screen so we have better control over the contents of the backbuffer
+    SDL_SetRenderTarget( renderer, framebuffer );
+
     // The following code was cannibalized from Elronnd's SwashRL project:
 
     SDL_Texture* renderedchar;
@@ -263,11 +277,18 @@ class SDLTerminalIO : SpelunkIO
   // Refreshes the screen to reflect the changes made by the below output
   // functions (cannibalized from SmugglerRL)
   void refresh_screen()
-  { SDL_RenderPresent( renderer );
+  {
+    // Set the `renderer' back on the screen itself to copy the contents of
+    // `framebuffer' to the buffer before blitting everything
+    SDL_SetRenderTarget( renderer, null );
+    SDL_RenderCopy( renderer, framebuffer, null, null );
+
+    SDL_RenderPresent( renderer );
   }
 
   void clear_screen()
   {
+    SDL_SetRenderTarget( renderer, framebuffer );
     SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
     SDL_RenderClear( renderer );
   }

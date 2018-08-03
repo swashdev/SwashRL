@@ -36,7 +36,13 @@ enum REVERSED_WALLS = true;
 
 // Set USE_FOV to false if you need to be able to see the whole map (say, for
 // debugging, testing, &c)
-enum USE_FOV = true;
+enum USE_FOV = false;
+
+// Sets the maximum number of rooms on a map and the maximum size of each
+// room.
+enum MAX_ROOMS = 10;
+enum MAX_ROOM_HEIGHT = 10;
+enum MAX_ROOM_WIDTH  = 20;
 
 // The number of messages to store in the message buffer
 enum MAX_MESSAGE_BUFFER = 20;

@@ -129,10 +129,18 @@ version( sdl )
   Current_keymap = 0;
 
   // Assign initial map
+version( testmap )
+{
   Current_map = test_map();
+}
+else
+{
+  Current_map = generate_new_map();
+}
 
   // Initialize the player
-  player u = init_player( 1, 1 );
+  player u = init_player( Current_map.player_start[0],
+                          Current_map.player_start[1] );
 
   // Initialize the fog of war
   static if( USE_FOV )

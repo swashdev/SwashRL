@@ -58,8 +58,18 @@ class CursesIO : SpelunkIO
   // Output //
   ////////////
 
-  void put_char( uint y, uint x, char c )
-  { mvaddch( y, x, c );
+  void put_char( uint y, uint x, char c, bool reversed = false )
+  {
+static if( TEXT_EFFECTS )
+{
+    if( reversed )
+    { attron( A_REVERSE );
+    }
+    else
+    { attroff( A_REVERSE );
+    }
+}
+    mvaddch( y, x, c );
   }
 
   void put_line( T... )( uint y, uint x, T args )
@@ -89,11 +99,13 @@ class CursesIO : SpelunkIO
 
   void display( uint y, uint x, symbol s, bool center = false )
   {
-    put_char( y, x, s.ch );
-
-static if( TEXT_EFFECTS )
+static if( !TEXT_EFFECTS )
 {
-    mvchgat( y, x, 1, s.color, cast(short)0, cast(void*)null );
+    put_char( y, x, s.ch );
+}
+else
+{
+    put_char( y, x, s.ch, s.color & A_REVERSE );
 }
 
     if( !center )

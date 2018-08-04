@@ -38,8 +38,9 @@ interface SpelunkIO
   // functions
   void refresh_screen();
 
-  // Outputs a text character at the given coordinates
-  void put_char( uint y, uint x, char c );
+  // Outputs a text character at the given coordinates.  If `reversed', the
+  // foreground and background colors will be swapped.
+  void put_char( uint y, uint x, char c, bool reversed = false );
 
   // The central `display' function.  Displays a given `symbol' at given
   // coordinates.  If `center', the cursor will be centered over the symbol

@@ -227,7 +227,7 @@ class SDLTerminalIO : SpelunkIO
   // Output //
   ////////////
 
-  void put_char( uint y, uint x, char c )
+  void put_char( uint y, uint x, char c, bool reversed = false )
   {
 
     // Tell the renderer to draw to our own `framebuffer' rather than the
@@ -258,15 +258,38 @@ class SDLTerminalIO : SpelunkIO
 
     // TODO: Implement color (when we eventually get around to implementing
     // color for the game)
-    // TODO: Implement reverse
+static if( !TEXT_EFFECTS )
+{
     SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+}
+else
+{
+    if( reversed )
+    { SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );
+    }
+    else
+    { SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+    }
+}
 
     // Draw the rectangle:
     SDL_RenderFillRect( renderer, &tile );
 
     // Colorize the letter.  The parts that aren't the letter will also get
     // colorized, but that doesn't matter because they have alpha 256
+static if( !TEXT_EFFECTS )
+{
     SDL_SetTextureColorMod( renderedchar, 255, 255, 255 );
+}
+else
+{
+    if( reversed )
+    { SDL_SetTextureColorMod( renderedchar, 0, 0, 0 );
+    }
+    else
+    { SDL_SetTextureColorMod( renderedchar, 255, 255, 255 );
+    }
+}
 
     // And finally, copy everything over to the actual renderer
     SDL_RenderCopy( renderer, renderedchar, null, &tile );
@@ -312,10 +335,16 @@ class SDLTerminalIO : SpelunkIO
   // coordinates.  If `center', the cursor will be centered over the symbol
   // after drawing, rather than passing to the right of it as is standard in
   // curses.
-  // This function was cannibalized from Elronnd's SmugglerRL project
-  // (although his original function was more detailed)
   void display( uint y, uint x, symbol s, bool center = true )
-  { put_char( y, x, s.ch );
+  {
+static if( !TEXT_EFFECTS )
+{
+    put_char( y, x, s.ch );
+}
+else
+{
+    put_char( y, x, s.ch, (s.color & A_REVERSE) ? true : false );
+}
   }
 } // class SDLTerminalIO
 

@@ -251,6 +251,11 @@ room_gen:
         
   } // foreach( c; 0 .. 9 )
 
+  // Shuffle the rooms so that we can generate corridors randomly rather than
+  // in a predictable line while still ensuring that all of the rooms are
+  // connected.
+  room[9] rr = r.dup.randomShuffle( Lucky );
+
   // Randomly get coordinates from each room and connect them
   foreach( c; 0 .. 8 )
   {
@@ -259,12 +264,12 @@ debug
     writefln( "c is %d, c + 1 is %d", c, c + 1 );
 }
 
-    room r1 = r[c];
-    room r2 = r[c + 1];
+    room r1 = rr[c];
+    room r2 = rr[c + 1];
 
 debug
 {
-    writefln( "r1 is r[%d]\nr2 is r[%d]", c, c + 1 );
+    writefln( "r1 is rr[%d]\nr2 is rr[%d]", c, c + 1 );
     writefln( "r1.x1 is %d, r1.x2 is %d", r1.x1, r1.x2 );
     writefln( "r1.y1 is %d, r1.y2 is %d", r1.y1, r1.y2 );
     writefln( "r2.x1 is %d, r2.x1 is %d", r2.x1, r2.x2 );
@@ -304,6 +309,37 @@ debug
     }
   } // foreach( c; 0 .. 7 )
 
+version( none )
+{
+  // Now we'll do the same thing with a random sample of 1d6 of the rooms, so
+  // that some rooms have multiple corridors leading to or from them.
+  room[] rr2 = r.dup.partialShuffle( d(), Lucky );
+
+  // Randomly get coordinates from each room and connect them
+  foreach( c; 0 .. rr2.length - 1 )
+  {
+    room r1 = rr2[c];
+    room r2 = rr2[c + 1];
+
+    uint x1 = uniform( r1.x1, r1.x2 + 1, Lucky );
+    uint x2 = uniform( r2.x1, r2.x2 + 1, Lucky );
+    uint y1 = uniform( r1.y1, r1.y2 + 1, Lucky );
+    uint y2 = uniform( r2.y1, r2.y2 + 1, Lucky );
+
+    // Randomly decide whether to carve horizontally or vertically first.
+    if( flip() )
+    {
+      add_corridor_x( y1, x1, x2, &m );
+      add_corridor_y( x2, y1, y2, &m );
+    }
+    else
+    {
+      add_corridor_y( x1, y1, y2, &m );
+      add_corridor_x( y2, x1, x2, &m );
+    }
+  } // foreach( c; 0 .. rr2.length - 1 )
+} // version( none )
+
   // Finally, get random coordinates from a random room and put the player
   // there:
 
@@ -332,6 +368,9 @@ debug
 }
 
   m.player_start = [py, px];
+
+  // Pass the generated rooms to the map for record-keeping
+  m.r = r;
 
   return m;
 } // map generate_new_map()

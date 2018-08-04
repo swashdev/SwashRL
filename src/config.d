@@ -21,14 +21,17 @@ enum SMILEY = '@';
 // Only works if your curses standard uses these effects (it probably does).
 enum TEXT_EFFECTS = true;
 
-// Whether to highlight the player in the game display--if your terminal uses
-// a block-style cursor, this may be unnecessary.
-enum HILITE_PLAYER = false;
-
 // Whether to use reversed graphics to make walls look more solid and
 // connected (this makes the game much more pleasing to the eye on a number
 // of terminals I tested with it)
 enum REVERSED_WALLS = true;
+
+// SDL-only options //
+
+// Whether to highlight the player in the game display.  This only has an
+// effect on the SDL virtual terminal display, as the curses terminal
+// highlights the player using the cursor.
+enum HILITE_PLAYER = true;
 
 // SECTION 2: ////////////////////////////////////////////////////////////////
 // Spelunk! configuration                                                   //

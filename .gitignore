@@ -25,4 +25,10 @@ test/
 dub.selections.json
 .dub
 
+# Unix executables:
 spelunk
+gdb
+
+# Windows executables:
+spelunk.exe
+gdb.exe

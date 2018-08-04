@@ -31,19 +31,7 @@ player init_player( ubyte y, ubyte x )
   else
   { u.y = 1;
   }
-static if( HILITE_PLAYER )
-{
-  if( SDL_Terminal() )
-  { u.sym = symdata( SMILEY, A_REVERSE );
-  }
-  else
-  { u.sym = symdata( SMILEY, A_NORMAL );
-  }
-}
-else
-{
   u.sym = symdata( SMILEY, A_NORMAL );
-}
   u.hp = roll( 3, 2 );
 
   foreach( count; 0 .. 40 )

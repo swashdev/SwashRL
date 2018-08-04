@@ -142,6 +142,15 @@ else
   player u = init_player( Current_map.player_start[0],
                           Current_map.player_start[1] );
 
+  // if the game is configured to highlight the player, and the SDL terminal
+  // is being used, highlight the player.
+static if( HILITE_PLAYER )
+{
+  if( SDL_terminal() )
+  { u.sym = symdata( SMILEY, A_REVERSE );
+  }
+}
+
   // Initialize the fog of war
   static if( USE_FOV )
   { calc_visible( &Current_map, u.x, u.y );

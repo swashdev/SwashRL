@@ -105,11 +105,11 @@ static if( !TEXT_EFFECTS )
 }
 else
 {
-    put_char( y, x, s.ch, s.color & A_REVERSE );
+    put_char( y, x, s.ch, cast(bool)(s.color & A_REVERSE) );
 }
 
-    if( !center )
-    { move( y, x + 1 );
+    if( center )
+    { move( y, x );
     }
   }
 

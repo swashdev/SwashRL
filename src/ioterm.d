@@ -343,7 +343,7 @@ static if( !TEXT_EFFECTS )
 }
 else
 {
-    put_char( y, x, s.ch, (s.color & A_REVERSE) ? true : false );
+    put_char( y, x, s.ch, cast(bool)(s.color & A_REVERSE) );
 }
   }
 } // class SDLTerminalIO

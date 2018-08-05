@@ -170,7 +170,17 @@ Version Date/time Finalized   Info
 
   -- SwashRL version family --------------------------------------------------
 
-0.024                         First version with SDL support.  The program can
+On July 9th, I had a major panic attack that left me crippled by depression
+and anxiety for weeks.  It was the worst panic attack I'd ever had in my life.
+As I came down, though, I realized that I had not been pursuing my passions
+properly.  As a result, I decided to renew my game projects, which included
+this game.  I changed the name to SwashRL, to finally silence those who kept
+getting it confused with Spelunky, and re-licensed it under the Apache License
+2.0 to make it easier for people to create derivative software.  I decided to
+pursue my programming not just as a hobby, but as a passion, so that I could
+focus on exercising my skills hopefully for the betterment of humanity.
+
+0.024   2018-08-05 02:23 EST  First version with SDL support.  The program can
         be compiled with or without SDL, ncurses, or PDCurses depending on
         what configuration is requested of dub.  As a result, Windows support
         is renewed.  However, PDCurses support is still broken.

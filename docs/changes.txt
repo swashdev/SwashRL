@@ -1,9 +1,13 @@
 SwashRL official changelog
 
 VERSION 0.024
+Finalized 2018-08-05 02:23 EST
 
   The name of the game has been changed from Spelunk! to SwashRL to avoid
   confusion with the popular indie platformer Spelunky.
+
+  The game is now licensed under the Apache License 2.0.  See README.MD for
+  details.
 
   Windows support is back online.
 

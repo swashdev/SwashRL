@@ -20,7 +20,7 @@ import global;
 import std.string: toStringz;
 
 static map Current_map;
-static SpelunkIO IO;
+static SwashIO IO;
 
 void help()
 {
@@ -30,7 +30,7 @@ void help()
 
 void sp_version()
 {
-  message( "%s, version %.3f", "Spelunk!", VERSION );
+  message( "%s, version %.3f", "SwashRL", VERSION );
 }
 
 // `SDL_Mode' is a static variable used by the display functions to determine
@@ -76,12 +76,12 @@ int main( string[] args )
 
   if( clarguments.helpWanted )
   {
-    writeln( "Usage: spelunk [options]
+    writeln( "Usage: swashrl [options]
   options:
     -h, --help        Displays this help output and then exits.
-    -S, --sdl-mode    Sets the output mode for Spelunk!  Default \"terminal\"
+    -S, --sdl-mode    Sets the output mode for SwashRL.  Default \"terminal\"
                       Can be \"none\" for curses output or \"terminal\" for an
-                      SDL terminal.  If your copy of Spelunk! was compiled
+                      SDL terminal.  If your copy of SwashRL was compiled
                       without SDL or curses, this option may have no effect.
   examples:
     spelunk --sdl-mode none
@@ -90,7 +90,7 @@ int main( string[] args )
     return 1;
   }
 
-  // Check to make sure the SDL_Mode does not conflict with the way Spelunk!
+  // Check to make sure the SDL_Mode does not conflict with the way SwashRL
   // was compiled:
   if( !CURSES_ENABLED && SDL_none() )
   { SDL_Mode = SDL_MODES.terminal;

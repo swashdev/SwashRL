@@ -26,9 +26,9 @@ dub.selections.json
 .dub
 
 # Unix executables:
-spelunk
+swashrl
 gdb
 
 # Windows executables:
-spelunk.exe
+swashrl.exe
 gdb.exe

@@ -1,11 +1,11 @@
-Spelunk! Guidelines for Contributors
-====================================
+SwashRL Guidelines for Contributors
+===================================
 
-Last updated 2018-08-05 01:52 EST
+Last updated 2018-08-05 02:07 EST
 
 ---
 
-Thank you for considering contributing to the Spelunk! project.  In this file
+Thank you for considering contributing to the SwashRL project.  In this file
 you will find some brief guidelines for contributing to the project.  Don't
 panic; this is a very small project, so for the most part we don't expect much
 from contributors at this stage.
@@ -35,20 +35,20 @@ which lists all of the things that we're currently working on in order from
 highest priority to lowest priority.
 
 You should also check the
-[Issues page](https://github.com/swashdev/Spelunk/issues) on
-[our GitHub](https://github.com/swashdev/Spelunk), where you will find open
+[Issues page](https://github.com/swashdev/SwashRL/issues) on
+[our GitHub](https://github.com/swashdev/SwashRL), where you will find open
 Issues that you can take a stab at fixing yourself.
 
 ## Before Submitting
 
-**Be aware of [the license for the Spelunk! project](../LICENSE)
+**Be aware of [the license for the SwashRL project](../LICENSE)
 before submitting anything that's been licensed**.  If you're submitting
 anything that contains content you haven't written yourself, triple-check that
 it hasn't been released under a license that is incompatible with our license.
 We take licenses for third-party content very seriously and carefully consider
 including anything that might conflict with our license.  **If you submit
 something to us, and we learn later that you do not have permission to license
-it to us under the terms of the Spelunk! license, your contributions will be
+it to us under the terms of the SwashRL license, your contributions will be
 scrubbed from the project and you will be permanently banned from ever
 contributing again.**
 
@@ -60,7 +60,7 @@ each license individually.
 
 If you've written everything in your submission yourself, and you don't place
 it under any particular license, we will take your submission as permission to
-release your changes under the Spelunk! license in exchange for attribution
+release your changes under the SwashRL license in exchange for attribution
 (usually in the form of a comment line in the source code and a mention in
 thanks.txt).  _If you don't want to be attributed for your changes in the
 distributed source code or documentation, please let us know in your commit
@@ -68,13 +68,13 @@ message or Pull Request._
 
 ## Compiling Your Changes
 
-You can find instructions for compiling Spelunk!
+You can find instructions for compiling SwashRL
 [in the Readme](../README.MD#Compiling)
 
 ## Submitting Changes
 
-The best way to contribute to the Spelunk! project is to submit a Pull Request
-on our [GitHub page](https://github.com/swashdev/Spelunk/).  We have a Pull
+The best way to contribute to the SwashRL project is to submit a Pull Request
+on our [GitHub page](https://github.com/swashdev/SwashRL/).  We have a Pull
 Request Template available that you can use to let us know what you've
 changed and why, to make things extra convenient.
 
@@ -99,7 +99,7 @@ ask that your commit message do so.  If you don't know how to do this,
 
 ### Professionalism
 
-Some of the people who work on Spelunk! are professionals or are seeking
+Some of the people who work on SwashRL are professionals or are seeking
 employment in a professional field, so please try to keep your submissions,
 including Pull Requests and commit messages, safe for work and politically
 correct.  We do have a sense of humor, but keep in mind that our employers
@@ -108,8 +108,8 @@ on us, and on you, as a result.
 
 ## Style Guide
 
-Spelunk!'s code is written to be readable by the average user.  Because
-Spelunk! is written in D, a relatively new language, this is particularly
+SwashRL's code is written to be readable by the average user.  Because
+SwashRL is written in D, a relatively new language, this is particularly
 important.  As such, we have a few perhaps unconventional rules about the
 aesthetics of the source code that you should keep in mind while writing your
 changes:

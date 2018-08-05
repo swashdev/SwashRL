@@ -1,6 +1,9 @@
-Spelunk! official changelog
+SwashRL official changelog
 
 VERSION 0.024
+
+  The name of the game has been changed from Spelunk! to SwashRL to avoid
+  confusion with the popular indie platformer Spelunky.
 
   Windows support is back online.
 

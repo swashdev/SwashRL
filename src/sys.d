@@ -34,7 +34,7 @@ else version( FreeBSD )
 }
 else
 {
-  pragma( msg, "WARNING: You are compiling Spelunk! for an operating system that is not currently being actively supported.  While it is highly likely that it will \"just work,\" especially on a Linux distribution or one of the BSDs, it may fail or crash." );
+  pragma( msg, "WARNING: You are compiling SwashRL for an operating system that is not currently being actively supported.  While it is highly likely that it will \"just work,\" especially on a Linux distribution or one of the BSDs, it may fail or crash." );
 }
 
 version( pdcurses )
@@ -45,5 +45,5 @@ version( pdcurses )
 "problem and are working on a workaround or an alternative.\n" ~
 "If you manage to get PDCurses working for Spelunk!, we would be delighted " ~
 "to learn how you did it.  Please leave an Issue on our GitHub page:\n" ~
-"https://github.com/swashdev/spelunk" );
+"https://github.com/swashdev/SwashRL" );
 }

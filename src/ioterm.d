@@ -40,7 +40,7 @@ void sdl_error( string error = "" )
                           fromStringz( SDL_GetError() ) ) );
 }
 
-class SDLTerminalIO : SpelunkIO
+class SDLTerminalIO : SwashIO
 {
 
   SDL_Window* window;

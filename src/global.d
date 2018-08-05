@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-// This is the global file for Spelunk!.  It will public import config.h and
-// util.h for you and process the data in both of these files to configure how
-// Spelunk! will compile.  THIS FILE SHOULD BE INCLUDED AT THE TOP OF EVERY
+// This is the global file for SwashRL.  It will public import config.d and
+// util.d for you and process the data in both of these files to configure how
+// SwashRL will compile.  THIS FILE SHOULD BE INCLUDED AT THE TOP OF EVERY
 // FILE.  It will include all of the other files for you.
 
 /* SECTION 0: ***************************************************************
- * Spelunk! version control & configuration                                 *
+ * SwashRL version control & configuration                                  *
  ****************************************************************************/
 
 // The version number

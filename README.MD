@@ -1,12 +1,12 @@
-Spelunk!
-========
+SwashRL
+=======
 
-Readme file, last updated 2018-08-05 01:39 EST  
+Readme file, last updated 2018-08-05 02:00 EST  
 Contact the maintainer: <philip@swash.link>
 
 ---
 
-Spelunk! is a Roguelike game currently in the early development phases.  The
+SwashRL is a Roguelike game currently in the early development phases.  The
 actual "game" part is not yet functional, as it's still in need of a few
 important pieces.
 
@@ -14,40 +14,40 @@ As the software is still under development and has not seen an official
 release, it currently has NO DOCUMENTATION, save for that mentioned in this
 file.
 
-Spelunk! currently has git respositories hosted at the following locations:
+SwashRL currently has git respositories hosted at the following locations:
 
-* <https://github.com/swashdev/Spelunk>
+* <https://github.com/swashdev/SwashRL>
 
 ## License Agreement
 
-Spelunk! is released under the Apache License 2.0, excepting that Derivative
+SwashRL is released under the Apache License 2.0, excepting that Derivative
 Works are not required ta carry prominent notices in changed files as
 required by the normal Apache License 2.0 in Section 4b.  The license can be
 found [here](LICENSE).
 
-Spelunk! uses some third-party resources to function.  For details, see the
+SwashRL uses some third-party resources to function.  For details, see the
 [NOTICE file](NOTICE) and the third-party licenses referenced therein.
 
 ## Supported Systems
 
-Spelunk! was originally written for Linux, and is confirmed to still work on
+SwashRL was originally written for Linux, and is confirmed to still work on
 Windows and Linux as of development version 0.024.
 
 I hope to eventually port it to more systems, but I'm limited in my ability to
 officially support systems by their availability to me.  If you'd like to
-become a volunteer maintainer for Spelunk! on your system, [contact me on
+become a volunteer maintainer for SwashRL on your system, [contact me on
 GitHub](https://github.com/swashdev) and we can work something out.
 
 ## Compiling
 
-Starting with version 0.022, Spelunk! has been programmed in D.  This means
+Starting with version 0.022, SwashRL has been programmed in D.  This means
 you'll need DmD to compile it (there are versions available for every major
 platform including FreeBSD), but if you also get dub, the D package manager,
 it will do a lot of your work for you including downloading dependencies.
 
-You can make some changes to how Spelunk! is configured by editing the file
+You can make some changes to how SwashRL is configured by editing the file
 [config.d](src/config.d)  This file has a lot of comment blocks which explain
-how to configure Spelunk!  These configuration settings will be interpreted
+how to configure SwashRL  These configuration settings will be interpreted
 in [global.d](src/global.d)
 
 To compile, navigate to the root folder (the same folder this readme file is
@@ -62,7 +62,7 @@ for debug builds, type:
 You'll need to be connected to the Internet so that dub can download the
 packages that it needs.
 
-By default, Spelunk! will compile with SDL.  However, you can also compile
+By default, SwashRL will compile with SDL.  However, you can also compile
 with ncurses by using dub's `--config` flag, and even compile with _only_
 ncurses, by using one of the following commands:
 
@@ -85,17 +85,17 @@ being recorded in [history.txt](docs/history.txt)
 
 ## Contributing
 
-If you're thinking of making a contribution to the Spelunk! project, first of
+If you're thinking of making a contribution to the SwashRL project, first of
 all thank you very much!  We now have
 [contribution guidelines](docs/CONTRIBUTING.MD) to help you get started.
 
-The best way to contribute to Spelunk! is via
+The best way to contribute to SwashRL is via
 [our GitHub page](https://github.com/swashdev/Spelunk), where you can follow
 the conversation and see where we need help.
 
 ## Have fun!
 
-Spelunk! is the reinvigoration of a game project I've been fiddling with and
+SwashRL is the reinvigoration of a game project I've been fiddling with and
 rebooting ever since I was in high school, so do try not to take it too
 seriously and have fun with it.  Do take the license agreement seriously,
 though, because we do.

@@ -1,4 +1,4 @@
-Spelunk! is dedicated:
+SwashRL is dedicated:
 
   To Seb, who helped with a bunch of the number-crunching and design for the
   game as it will eventually exist, and has generally been the best mentor and
@@ -8,13 +8,13 @@ Spelunk! is dedicated:
   kept me in their prayers when I needed them most
 
 Special thanks to the following "Honorary Dev Team Members," who contributed
-significant help to the Spelunk! source code:
+significant help to the SwashRL source code:
 
-  Elronnd, who has always been willing to provide help with Spelunk! in
+  Elronnd, who has always been willing to provide help with SwashRL in
   general and with the translation into D in particular.
 
 Further thanks to the following people who have contributed code or help in
 some way:
 
   Björn Bergström, who designed the recursive shadowcasting algorithm for fog
-  of war, the Doryen implementation of which is used in Spelunk!
+  of war, the Doryen implementation of which is used in SwashRL.

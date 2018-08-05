@@ -28,7 +28,7 @@ import std.string: toStringz;
 // This class contains functions for the curses display
 // These functions should all be cross-compatible between pdcurses and ncurses
 // since they don't do anything fancy or complicated.
-class CursesIO : SpelunkIO
+class CursesIO : SwashIO
 {
 
   //////////////////

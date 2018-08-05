@@ -20,7 +20,7 @@
 import global;
 
 // This interface is the skeleton for all of the different display modes.
-interface SpelunkIO
+interface SwashIO
 {
 
   /////////////////////

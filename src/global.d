@@ -17,7 +17,7 @@
 // The version number
 // In the current version numbering system, the first number is the release
 // number and the second is the three-digit revision number.
-enum VERSION = 0.023;
+enum VERSION = 0.024;
 version( full )
 { pragma( msg, "Compiling for release number: ", VERSION );
 }

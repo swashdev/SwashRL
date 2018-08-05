@@ -1,12 +1,30 @@
-The version of Spelunk! which you have received uses the following third-party
-resources to function.
+SwashRL is copyright 2016-2018 Philip Pavlick
 
- -- SDL2 and SDL_ttf ---------------------------------------------------------
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use SwashRL except in compliance with the License.  You may obtain a copy of
+the License at
 
-Spelunk! is designed to link to Simple DirectMedia Layer (SDL) version 2 and a
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+License for the specific language governing permissions and limitations under
+the License.
+
+The version of SwashRL which you have received uses the following third-party
+resources to function:
+
+  -- SDL2 and SDL_ttf --------------------------------------------------------
+
+SwashRL is designed to link to Simple DirectMedia Layer (SDL) version 2 and a
 sub-project called SDL_ttf.  As of version 0.024, this is the default display
-system for Spelunk!  Development binaries for SDL version 2.0.8 and SDL_ttf
+system for SwashRL.  Development binaries for SDL version 2.0.8 and SDL_ttf
 version 2.0.14 are included in the ``lib'' folder and its subdirectories.
+
+SDL2 and SDL_ttf are not critical for SwashRL to function, and either may be
+excluded from your copy by compiling with ncurses or PDCurses instead (see
+below)
 
 The SDL license can be found in ``docs/license/sdl2.txt''
 The SDL_ttf license can be found in ``docs/license/sdl_ttf.txt''
@@ -16,16 +34,16 @@ SDL_ttf also uses zlib and FreeType, also included in the ``lib'' folder.
 The zlib license can be found in ``docs/license/zlib.txt''
 The FreeType license can be found in ``docs/license/freetype.txt''
 
- -- DejaVu Fonts -------------------------------------------------------------
+  -- DejaVu Fonts ------------------------------------------------------------
 
 DejaVuSansMono, a freeware / open-source font, is included in the
-``assets/fonts'' folder as the default font for the SDL interfaces to Spelunk!
+``assets/fonts'' folder as the default font for the SDL interfaces to SwashRL.
 DejaVuSansMono uses a few other fonts as a base, the licenses of which are
 included with the DejaVu license notice.
 
 The DejaVu fonts license can be found in ``docs/license/dejavu.txt''
 
- -- the Doryen library, aka libtcod ------------------------------------------
+  -- the Doryen library, aka libtcod -----------------------------------------
 
 The source file ``src/fov.d'' uses modified versions of functions taken
 directly from the libtcod source code.  In good faith, a comment line has been
@@ -34,7 +52,7 @@ original version.
 
 The libtcod license can be found in ``docs/license/libtcod.txt''
 
- -- SmugglerRL ---------------------------------------------------------------
+  -- SmugglerRL --------------------------------------------------------------
 
 Substantial portions of the Input/Output code in ``src/ioterm.d'' were
 cannibalized from Elronnd's SmugglerRL project, which Elronnd graciously
@@ -45,13 +63,16 @@ The SmugglerRL git repository can be found here at the time of writing:
 
 The SmugglerRL license can be found in ``docs/license/smuggler.txt''
 
- -- ncurses and PDCurses ----------------------------------------------------
+  -- ncurses and PDCurses ----------------------------------------------------
 
-Spelunk! is designed to link to the ncurses and PDCurses libraries.  Neither
+SwashRL is designed to link to the ncurses and PDCurses libraries.  Neither
 of these are included with the software; you are expected to install (at least
 one of) them yourself before compiling.  Because of this, I can't say with any
 certainty what licenses the versions you are using will be released under.
 You are expected to use your own discretion.
+
+ncurses and PDCurses are not critical for SwashRL to function, and either may
+be excluded from your copy by compiling with SDL2 instead (see above).
 
 ncurses is released under the X11 license (as of version 6.0), and the Free
 Software Foundation has pledged that it will not release ncurses under any

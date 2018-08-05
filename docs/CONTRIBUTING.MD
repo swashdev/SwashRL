@@ -1,7 +1,7 @@
 Spelunk! Guidelines for Contributors
 ====================================
 
-Last updated 2018-07-24 05:20 EST
+Last updated 2018-08-05 01:52 EST
 
 ---
 
@@ -41,22 +41,22 @@ Issues that you can take a stab at fixing yourself.
 
 ## Before Submitting
 
-**Be aware of [the license for the Spelunk! project](../license.txt)
-(license.txt) before submitting anything that's been licensed**.  If you're
-submitting anything that contains content you haven't written yourself,
-triple-check that it hasn't been released under a license that is incompatible
-with our license.  We take licenses for third-party content very seriously and
-carefully consider including anything that might conflict with our license.
-**If you submit something to us, and we learn later that you do not have
-permission to license it to us under the terms of the Spelunk! license, your
-contributions will be scrubbed from the project and you will be permanently
-banned from ever contributing again.**
+**Be aware of [the license for the Spelunk! project](../LICENSE)
+before submitting anything that's been licensed**.  If you're submitting
+anything that contains content you haven't written yourself, triple-check that
+it hasn't been released under a license that is incompatible with our license.
+We take licenses for third-party content very seriously and carefully consider
+including anything that might conflict with our license.  **If you submit
+something to us, and we learn later that you do not have permission to license
+it to us under the terms of the Spelunk! license, your contributions will be
+scrubbed from the project and you will be permanently banned from ever
+contributing again.**
 
 If anything that you submit is licensed, please be courteous and copy the
 license into the [docs/license](../docs/license) directory with a filename
 like "project.txt" and add a notice to the [third-party licenses
-file](../3rdparty.txt).  You should have one file and one attribution notice
-for each license individually.
+file](../NOTICE).  You should have one file and one attribution notice for
+each license individually.
 
 If you've written everything in your submission yourself, and you don't place
 it under any particular license, we will take your submission as permission to

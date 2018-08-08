@@ -201,7 +201,7 @@ static if( HILITE_PLAYER )
         sp_version();
         break;
       case MOVE_ALTKEYS:
-        if( Current_keymap >= Keymaps.length )
+        if( Current_keymap >= Keymaps.length - 1 )
         { Current_keymap = 0;
         }
         else

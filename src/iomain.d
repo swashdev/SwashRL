@@ -272,7 +272,8 @@ else
 static if( USE_FOV )
 {
         if( !to_display.v[y][x] )
-        { output = SYM_SHADOW;
+        {
+          continue;
         }
 } /* static if( USE_FOV ) */
 

@@ -21,7 +21,7 @@ SwashRL currently has git respositories hosted at the following locations:
 ## License Agreement
 
 SwashRL is released under the Apache License 2.0, excepting that Derivative
-Works are not required ta carry prominent notices in changed files as
+Works are not required to carry prominent notices in changed files as
 required by the normal Apache License 2.0 in Section 4b.  The license can be
 found [here](LICENSE).
 
@@ -53,11 +53,7 @@ in [global.d](src/global.d)
 To compile, navigate to the root folder (the same folder this readme file is
 in) and type:
 
-> `dub build --build=release`
-
-for debug builds, type:
-
-> `dub build --build=debug`
+> `dub build`
 
 You'll need to be connected to the Internet so that dub can download the
 packages that it needs.

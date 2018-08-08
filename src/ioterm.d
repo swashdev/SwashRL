@@ -78,7 +78,8 @@ class SDLTerminalIO : SwashIO
       SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" );
 
       // Create the SDL window:
-      window = SDL_CreateWindow( toStringz( format( "Spelunk! v%.3f", VERSION ) ),
+      window = SDL_CreateWindow(
+                               toStringz( format( "SwashRL v%.3f", VERSION ) ),
                                  SDL_WINDOWPOS_UNDEFINED,
                                  SDL_WINDOWPOS_UNDEFINED,
                                  MAP_X * tile_width, (MAP_Y + 2) * tile_height,
@@ -99,7 +100,7 @@ class SDLTerminalIO : SwashIO
         // Load the default font
         if( !loadfont( "assets/fonts/DejaVuSansMono.ttf", tile_height,
                        tileset ) )
-        { sdl_error( "Could not import ProggySquareSZ" );
+        { sdl_error( "Could not import DejaVu Sans Mono" );
         }
 
         // (end cannibalized code)

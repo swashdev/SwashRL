@@ -48,9 +48,12 @@ interface SwashIO
   // functions
   void refresh_screen();
 
-  // Outputs a text character at the given coordinates.  If `reversed', the
-  // foreground and background colors will be swapped.
-  void put_char( uint y, uint x, char c, bool reversed = false );
+  // Outputs a text character at the given coordinates with color `color'.
+  // The default `color' value of `CLR_NONE' will cause the function to use
+  // the "default color."  If `reversed', the foreground and background colors
+  // will be swapped.
+  void put_char( uint y, uint x, char c, ulong color = CLR_NONE,
+                 bool reversed = false );
 
   // The central `display' function.  Displays a given `symbol' at given
   // coordinates.  If `center', the cursor will be centered over the symbol
@@ -285,9 +288,23 @@ static if( USE_FOV )
           // otherwise we'll get ghost monsters in the spot we were looking
           // at before)
           if( to_display.t[y][x].seen )
-          { output = to_display.t[y][x].sym;
-          }
-        }
+          {
+            output = to_display.t[y][x].sym;
+
+  static if( COLOR )
+  {
+            // Set the remembered map tile's color to dark gray to distinguish
+            // it from the current line-of-sight
+            if( cast(bool)(output.color & A_REVERSE) )
+            { output.color = CLR_DARKGRAY | A_REVERSE;
+            }
+            else
+            { output.color = CLR_DARKGRAY;
+            }
+  }
+
+          } // if( to_display.t[y][x].seen )
+        } // else from if( to_display.v[y][x] )
 } // static if( USE_FOV )
 else
 {

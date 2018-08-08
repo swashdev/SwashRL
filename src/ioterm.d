@@ -154,7 +154,7 @@ class SDLTerminalIO : SwashIO
 
     // A temporary surface to render the font onto:
     SDL_Surface* surface;
-    SDL_Color white = SDL_Color( 255, 255, 255, 255 );
+    SDL_Color white = SDL_Color( 255, 255, 255, 0 );
 
     ushort[2] text;
 
@@ -199,6 +199,72 @@ class SDLTerminalIO : SwashIO
 
   // (end cannibalized code)
 
+  // Takes in a curses-style color and converts it to an SDL color
+  SDL_Color to_SDL_Color( ulong curses_color )
+  {
+    // If curses_color contains a "text effect" like A_REVERSE, we have to
+    // remove it before we can use this color.
+    ulong actual_color = curses_color;
+
+    if( cast(bool)(actual_color & A_REVERSE) )
+    { actual_color |= A_REVERSE;
+    }
+
+    // Unfortunately this is one of those cases where we just have to use a
+    // Switch Statement From Hell.
+    switch( actual_color )
+    {
+      case CLR_DARKGRAY:
+        return SDL_DARKGRAY;
+
+      case CLR_RED:
+        return SDL_RED;
+
+      case CLR_GREEN:
+        return SDL_GREEN;
+
+      case CLR_BROWN:
+        return SDL_BROWN;
+
+      case CLR_MAGENTA:
+        return SDL_MAGENTA;
+
+      case CLR_CYAN:
+        return SDL_CYAN;
+
+      case CLR_GRAY:
+        return SDL_GRAY;
+
+      case CLR_BLACK:
+        return SDL_BLACK;
+
+      case CLR_LITERED:
+        return SDL_LITERED;
+
+      case CLR_LITEGREEN:
+        return SDL_LITEGREEN;
+
+      case CLR_YELLOW:
+        return SDL_YELLOW;
+
+      case CLR_BLUE:
+        return SDL_BLUE;
+
+      case CLR_LITEMAGENTA:
+        return SDL_LITEMAGENTA;
+
+      case CLR_LITECYAN:
+        return SDL_LITECYAN;
+ 
+      case CLR_WHITE:
+        return SDL_WHITE;
+
+      // If we don't get a valid color, default to the "standard color"
+      default:
+        goto case CLR_GRAY;
+    } // switch( actual_color )
+  } // SDL_Color to_SDL_Color( ulong )
+
   ///////////
   // Input //
   ///////////
@@ -237,7 +303,8 @@ class SDLTerminalIO : SwashIO
   // Output //
   ////////////
 
-  void put_char( uint y, uint x, char c, bool reversed = false )
+  void put_char( uint y, uint x, char c, ulong color = CLR_NONE,
+                 bool reversed = false )
   {
 
     // Tell the renderer to draw to our own `framebuffer' rather than the
@@ -266,40 +333,30 @@ class SDLTerminalIO : SwashIO
     tile.w = tile_width;
     tile.h = tile_height;
 
-    // TODO: Implement color (when we eventually get around to implementing
-    // color for the game)
-static if( !TEXT_EFFECTS )
-{
-    SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
-}
-else
-{
+    // The color of the foreground and background, respectively
+    SDL_Color fg, bg;
+
+    // Assign `fg' and `bg' appropriately
     if( reversed )
-    { SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );
+    {
+      fg = SDL_BLACK;
+      bg = to_SDL_Color( color );
     }
     else
-    { SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+    {
+      fg = to_SDL_Color( color );
+      bg = SDL_BLACK;
     }
-}
+
+    // Fill in the background first:
+    SDL_SetRenderDrawColor( renderer, bg.r, bg.g, bg.b, 255 );
 
     // Draw the rectangle:
     SDL_RenderFillRect( renderer, &tile );
 
     // Colorize the letter.  The parts that aren't the letter will also get
     // colorized, but that doesn't matter because they have alpha 256
-static if( !TEXT_EFFECTS )
-{
-    SDL_SetTextureColorMod( renderedchar, 255, 255, 255 );
-}
-else
-{
-    if( reversed )
-    { SDL_SetTextureColorMod( renderedchar, 0, 0, 0 );
-    }
-    else
-    { SDL_SetTextureColorMod( renderedchar, 255, 255, 255 );
-    }
-}
+    SDL_SetTextureColorMod( renderedchar, fg.r, fg.g, fg.b );
 
     // And finally, copy everything over to the actual renderer
     SDL_RenderCopy( renderer, renderedchar, null, &tile );
@@ -353,7 +410,14 @@ static if( !TEXT_EFFECTS )
 }
 else
 {
-    put_char( y, x, s.ch, cast(bool)(s.color & A_REVERSE) );
+  static if( COLOR )
+  {
+    put_char( y, x, s.ch, s.color, cast(bool)(s.color & A_REVERSE) );
+  }
+  else
+  {
+    put_char( y, x, s.ch, CLR_NONE, cast(bool)(s.color & A_REVERSE) );
+  }
 }
   }
 } // class SDLTerminalIO

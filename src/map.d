@@ -443,6 +443,7 @@ map test_map()
 
   monst goobling = new_monst_at( 'g', "goobling", 0, 0, 2, 2, 0, 10, 2, 0, 2,
                                  1000, 60, 20 );
+  goobling.sym.color = CLR_DARKGRAY;
 
   add_mon( &nu, goobling );
 

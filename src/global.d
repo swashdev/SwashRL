@@ -20,9 +20,9 @@
 // SwashRL will compile.  THIS FILE SHOULD BE INCLUDED AT THE TOP OF EVERY
 // FILE.  It will include all of the other files for you.
 
-/* SECTION 0: ***************************************************************
- * SwashRL version control & configuration                                  *
- ****************************************************************************/
+// SECTION 0: ////////////////////////////////////////////////////////////////
+// SwashRL version control & configuration                                  //
+//////////////////////////////////////////////////////////////////////////////
 
 // The version number
 // In the current version numbering system, the first number is the release
@@ -35,18 +35,18 @@ version( full )
 // Include the config file
 public import config;
 
-/* SECTION 1: ***************************************************************
- * Compiler configuration                                                   *
- ****************************************************************************/
+// SECTION 1: ////////////////////////////////////////////////////////////////
+// Compiler configuration                                                   //
+//////////////////////////////////////////////////////////////////////////////
 
 // Include the sys file to detect operating system
 public import sys;
 
-/* SECTION 2: ***************************************************************
- * curses configuration                                                     *
- ****************************************************************************/
+// SECTION 2: ////////////////////////////////////////////////////////////////
+// curses configuration                                                     //
+//////////////////////////////////////////////////////////////////////////////
 
-/* public import the necessary version of curses */
+// public import the necessary version of curses
 
 // which version of curses we import is determined by a `version' check as
 // defined in ``dub.json''.  Building with the `pdcurses' configuration will
@@ -80,12 +80,12 @@ else
   enum SDL_ENABLED = false;
 }
 
-/* SECTION 3: ***************************************************************
- * Spelunk! final setup                                                     *
- ****************************************************************************/
+// SECTION 3: ////////////////////////////////////////////////////////////////
+// SwashRL final setup                                                      //
+//////////////////////////////////////////////////////////////////////////////
 
 // The size of the map in the display
-// Spelunk! will always attempt to have one line open at the top for the
+// SwashRL will always attempt to have one line open at the top for the
 // message buffer and one at the bottom for the status bar.  If MAP_Y is
 // smaller than that, this variable takes effect.  MAP_X will always take
 // effect.  MAP_y and MAP_x are used for zero-counted for loops.  NUMTILES is
@@ -103,14 +103,15 @@ enum Y_OFFSET = RESERVED_LINES;
 // include the utility file
 public import util;
 
-/* SECTION 4: ***************************************************************
- * Global inclusion of all header files not yet included                    *
- ****************************************************************************/
+// SECTION 4: ////////////////////////////////////////////////////////////////
+// Global inclusion of all header files not yet included                    //
+//////////////////////////////////////////////////////////////////////////////
 
-// include the rest of Spelunk!'s files in the order appointed in
+// include the rest of SwashRL's files in the order appointed in
 // notes/include
 
 public import dice;
+public import color;
 public import sym;
 public import tsyms;
 public import tflags;

@@ -45,6 +45,12 @@ class CursesIO : SwashIO
     noecho();
     // enable the keypad and function keys
     keypad( stdscr, 1 );
+
+    // enable color:
+static if( COLOR )
+{
+    start_color();
+}
   }
 
   /////////////////////
@@ -68,7 +74,8 @@ class CursesIO : SwashIO
   // Output //
   ////////////
 
-  void put_char( uint y, uint x, char c, bool reversed = false )
+  void put_char( uint y, uint x, char c, ulong color = CLR_NONE,
+                 bool reversed = false )
   {
 static if( TEXT_EFFECTS )
 {
@@ -79,7 +86,19 @@ static if( TEXT_EFFECTS )
     { attroff( A_REVERSE );
     }
 }
+static if( COLOR )
+{
+    if( color != CLR_NONE )
+    { attron( color );
+    }
+}
     mvaddch( y, x, c );
+static if( COLOR )
+{
+    if( color != CLR_NONE )
+    { attroff( color );
+    }
+}
   }
 
   void put_line( T... )( uint y, uint x, T args )
@@ -115,7 +134,14 @@ static if( !TEXT_EFFECTS )
 }
 else
 {
-    put_char( y, x, s.ch, cast(bool)(s.color & A_REVERSE) );
+  static if( COLOR )
+  {
+    put_char( y, x, s.ch, s.color, cast(bool)(s.color & A_REVERSE) );
+  }
+  else
+  {
+    put_char( y, x, s.ch, CLR_NONE, cast(bool)(s.color & A_REVERSE) );
+  }
 }
 
     if( center )

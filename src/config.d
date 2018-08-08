@@ -30,6 +30,17 @@ enum SMILEY = '@';
 // of terminals I tested with it)
 enum REVERSED_WALLS = true;
 
+// Enables color.
+enum COLOR = true;
+
+// Enables foliage.  Foliage grows randomly in dungeons and has no practical
+// effect on gameplay other than turning tiles green.
+enum FOLIAGE = false;  // NOT YET IMPLEMENTED
+
+// Enables blood.  Blood splatter will appear on map tiles when a creature is
+// hit.  This has no practical effect other than turning map tiles red.
+enum BLOOD = false;  // NOT YET IMPLEMENTED
+
 // Curses-only options: //
 
 // Enables special effects like the highlighted player and reversed walls.

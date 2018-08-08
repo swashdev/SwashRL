@@ -263,19 +263,39 @@ else
     {
       foreach( x; 0 .. MAP_X )
       {
-        symbol output = to_display.t[y][x].sym;
+static if( USE_FOV )
+{
+        symbol output = SYM_SHADOW;
 
+        // If the player can currently see this map tile, display it.
+        if( to_display.v[y][x] )
+        {
+          output = to_display.t[y][x].sym;
+
+          // If the player can see this tile, and there is an item on it,
+          // display that item instead of the map tile.
+          if( to_display.i[y][x].sym.ch != '\0' )
+          { output = to_display.i[y][x].sym;
+          }
+        }
+        else
+        {
+          // If the player can't currently see this tile, but they have seen
+          // it before, display it anyway (we need to do this explicitly,
+          // otherwise we'll get ghost monsters in the spot we were looking
+          // at before)
+          if( to_display.t[y][x].seen )
+          { output = to_display.t[y][x].sym;
+          }
+        }
+} // static if( USE_FOV )
+else
+{
+        symbol output = to_display.t[y][x].sym;
         if( to_display.i[y][x].sym.ch != '\0' )
         { output = to_display.i[y][x].sym;
         }
-
-static if( USE_FOV )
-{
-        if( !to_display.v[y][x] )
-        {
-          continue;
-        }
-} /* static if( USE_FOV ) */
+}
 
         display( y + 1, x, output );
       } /* foreach( x; 0 .. MAP_X ) */

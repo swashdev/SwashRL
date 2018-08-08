@@ -76,7 +76,9 @@ void cast_light( map* to_display, int cx, int cy, int row, float start,
         if ( dx*dx+dy*dy <= r2
              && (light_walls || !(to_display.t[Y][X].block_vision))
            )
-        { to_display.v[Y][X] = true;
+        {
+          to_display.v[Y][X] = true;
+          to_display.t[Y][X].seen = true;
         }
         if ( blocked )
         {

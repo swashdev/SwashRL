@@ -10,6 +10,9 @@ VERSION 0.025
 
   Added:
    - Color support.  Color is supported by both the curses and SDL interfaces.
+   - Configuration options to determine the font and tile size in the SDL
+     interface.
+   - Bold version of the DejaVu Sans Mono font, as on option for the user.
 
 VERSION 0.024
 Finalized 2018-08-05 02:23 EST

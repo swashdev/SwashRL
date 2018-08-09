@@ -53,8 +53,8 @@ class SDLTerminalIO : SwashIO
   // `refresh_screen' function
   SDL_Texture* framebuffer;
 
-  enum tile_width = 8;
-  enum tile_height = 16;
+  enum tile_width = TILE_WIDTH;
+  enum tile_height = TILE_HEIGHT;
 
   /////////////////////
   // Setup & Cleanup //
@@ -98,9 +98,9 @@ class SDLTerminalIO : SwashIO
           SDL_RENDERER_ACCELERATED );
 
         // Load the default font
-        if( !loadfont( "assets/fonts/DejaVuSansMono.ttf", tile_height,
+        if( !loadfont( FONT, tile_height,
                        tileset ) )
-        { sdl_error( "Could not import DejaVu Sans Mono" );
+        { sdl_error( "Could not import " ~ FONT );
         }
 
         // (end cannibalized code)

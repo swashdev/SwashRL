@@ -49,6 +49,15 @@ enum TEXT_EFFECTS = true;
 
 // SDL-only options //
 
+// Font information for the SDL terminal interface.  `FONT' should point to
+// an existing font file.  SwashRL comes with two.  `TILE_HEIGHT' and
+// `TILE_WIDTH' will determine the font size, which also determines the window
+// size.
+enum FONT = "assets/fonts/DejaVuSansMono.ttf";
+//enum FONT = "assets/fonts/DejaVuSansMono-Bold.ttf";
+enum TILE_HEIGHT = 16;
+enum TILE_WIDTH = 8;
+
 // Whether to highlight the player in the game display.  This only has an
 // effect on the SDL virtual terminal display, as the curses terminal
 // highlights the player using the cursor.

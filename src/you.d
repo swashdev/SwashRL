@@ -41,7 +41,7 @@ player init_player( ubyte y, ubyte x )
   else
   { u.y = 1;
   }
-  u.sym = symdata( SMILEY, Color( CLR_WHITE, true ) );
+  u.sym = symdata( SMILEY, Color( CLR_WHITE, false ) );
   u.hp = roll( 3, 2 );
 
   foreach( count; 0 .. 40 )

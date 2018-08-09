@@ -209,7 +209,8 @@ static if( COLOR )
 
   void display( uint y, uint x, symbol s, bool center = false )
   {
-    put_char( y, x, s.ch, s.color );
+    put_char( y, x, s.ch,
+              COLOR ? s.color : Color( CLR_DEFAULT, s.color.reverse ) );
 
     if( center )
     { move( y, x );

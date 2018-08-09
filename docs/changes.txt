@@ -2,11 +2,6 @@ SwashRL official changelog
 
 VERSION 0.025
 
-  Known bugs:
-   - The SDL interface only displays the correct color in a space if that
-     space has not been reversed; reversing the colors causes SDL to draw the
-     default color for reasons unknown.
-
   Changed:
    - The map is now displayed in such a way that map tiles which have already
      been seen are drawn in the normal display functions.  This allows the
@@ -14,9 +9,7 @@ VERSION 0.025
      displayed if they are currently in the player's line-of-sight.
 
   Added:
-   - Color support.  Color is supported by both the curses and SDL interfaces,
-     and mechanisms have been put in place to convert between curses and SDL
-     colors.
+   - Color support.  Color is supported by both the curses and SDL interfaces.
 
 VERSION 0.024
 Finalized 2018-08-05 02:23 EST

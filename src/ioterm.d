@@ -407,7 +407,8 @@ class SDLTerminalIO : SwashIO
   // curses.
   void display( uint y, uint x, symbol s, bool center = true )
   {
-    put_char( y, x, s.ch, s.color );
+    put_char( y, x, s.ch,
+              COLOR ? s.color : Color( CLR_GRAY, s.color.reverse ) );
   }
 } // class SDLTerminalIO
 

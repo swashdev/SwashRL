@@ -154,12 +154,9 @@ else
 
   // if the game is configured to highlight the player, and the SDL terminal
   // is being used, highlight the player.
-static if( HILITE_PLAYER )
-{
   if( SDL_terminal() )
   { u.sym = symdata( SMILEY, Color( CLR_WHITE, HILITE_PLAYER ) );
   }
-}
 
   // Initialize the fog of war
   static if( USE_FOV )

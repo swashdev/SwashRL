@@ -84,8 +84,8 @@ int main( string[] args )
                       SDL terminal.  If your copy of SwashRL was compiled
                       without SDL or curses, this option may have no effect.
   examples:
-    spelunk --sdl-mode none
-    spelunk --sdl-mode terminal"
+    swashrl -S none
+    swashrl -S terminal"
     );
     return 1;
   }

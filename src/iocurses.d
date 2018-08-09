@@ -54,21 +54,14 @@ static if( COLOR )
     short black = COLOR_BLACK;
 
     // Initialize color pairs:
-    init_pair( CURSES_BLACK      , COLOR_BLACK           , black );
-    init_pair( CURSES_RED        , COLOR_RED             , black );
-    init_pair( CURSES_GREEN      , COLOR_GREEN           , black );
-    init_pair( CURSES_BROWN      , COLOR_YELLOW          , black );
-    init_pair( CURSES_MAGENTA    , COLOR_MAGENTA         , black );
-    init_pair( CURSES_CYAN       , COLOR_CYAN            , black );
-    init_pair( CURSES_GRAY       , COLOR_WHITE           , black );
-    init_pair( CURSES_DARKGRAY   , COLOR_BLACK   | A_BOLD, black );
-    init_pair( CURSES_LITERED    , COLOR_RED     | A_BOLD, black );
-    init_pair( CURSES_LITEGREEN  , COLOR_GREEN   | A_BOLD, black );
-    init_pair( CURSES_YELLOW     , COLOR_YELLOW  | A_BOLD, black );
-    init_pair( CURSES_LITEBLUE   , COLOR_BLUE    | A_BOLD, black );
-    init_pair( CURSES_LITEMAGENTA, COLOR_MAGENTA | A_BOLD, black );
-    init_pair( CURSES_LITECYAN   , COLOR_CYAN    | A_BOLD, black );
-    init_pair( CURSES_WHITE      , COLOR_WHITE   | A_BOLD, black );
+    init_pair( cast(short)CURSES_BLACK  , cast(short)COLOR_BLACK  , black );
+    init_pair( cast(short)CURSES_RED    , cast(short)COLOR_RED    , black );
+    init_pair( cast(short)CURSES_GREEN  , cast(short)COLOR_GREEN  , black );
+    init_pair( cast(short)CURSES_BROWN  , cast(short)COLOR_YELLOW , black );
+    init_pair( cast(short)CURSES_BLUE   , cast(short)COLOR_BLUE   , black );
+    init_pair( cast(short)CURSES_MAGENTA, cast(short)COLOR_MAGENTA, black );
+    init_pair( cast(short)CURSES_CYAN   , cast(short)COLOR_CYAN   , black );
+    init_pair( cast(short)CURSES_GRAY   , cast(short)COLOR_WHITE  , black );
 }
   }
 
@@ -109,7 +102,7 @@ static if( COLOR )
         return COLOR_PAIR( CURSES_GREEN );
 
       case CLR_BROWN:
-        return COLOR_PAIR( COLOR_BROWN );
+        return COLOR_PAIR( CURSES_BROWN );
 
       case CLR_BLUE:
         // We don't use dark blue because it blends in with the black
@@ -126,28 +119,28 @@ static if( COLOR )
         return COLOR_PAIR( CURSES_GRAY );
 
       case CLR_DARKGRAY:
-        return COLOR_PAIR( CURSES_DARKGRAY );
+        return COLOR_PAIR( CURSES_BLACK ) | A_BOLD;
 
       case CLR_LITERED:
-        return COLOR_PAIR( CURSES_LITERED );
+        return COLOR_PAIR( CURSES_RED ) | A_BOLD;
 
       case CLR_LITEGREEN:
-        return COLOR_PAIR( CURSES_LITEGREEN );
+        return COLOR_PAIR( CURSES_GREEN ) | A_BOLD;
 
       case CLR_YELLOW:
-        return COLOR_PAIR( CURSES_YELLOW );
+        return COLOR_PAIR( CURSES_BROWN ) | A_BOLD;
 
       case CLR_LITEBLUE:
-        return COLOR_PAIR( CURSES_LITEBLUE );
+        return COLOR_PAIR( CURSES_BLUE ) | A_BOLD;
 
       case CLR_LITEMAGENTA:
-        return COLOR_PAIR( CURSES_LITEMAGENTA );
+        return COLOR_PAIR( CURSES_MAGENTA ) | A_BOLD;
 
       case CLR_LITECYAN:
-        return COLOR_PAIR( CURSES_LITECYAN );
+        return COLOR_PAIR( CURSES_CYAN ) | A_BOLD;
 
       case CLR_WHITE:
-        return COLOR_PAIR( CURSES_WHITE );
+        return COLOR_PAIR( CURSES_GRAY ) | A_BOLD;
 
       // If we don't get a valid color, default to the "standard color"
       default:
@@ -202,7 +195,7 @@ static if( COLOR )
     foreach( y; 0 .. MESSAGE_BUFFER_LINES )
     {
       foreach( x; 0 .. MAP_X )
-      { display( y, x, symdata( ' ', A_NORMAL ) );
+      { putch( y, x, ' ' );
       }
     }
   }
@@ -210,7 +203,7 @@ static if( COLOR )
   void display( uint y, uint x, symbol s, bool center = false )
   {
     put_char( y, x, s.ch,
-              COLOR ? s.color : Color( CLR_DEFAULT, s.color.reverse ) );
+              COLOR ? s.color : Color( CLR_GRAY, s.color.reverse ) );
 
     if( center )
     { move( y, x );

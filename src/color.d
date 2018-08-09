@@ -79,20 +79,10 @@ enum CURSES_BLACK       =  0;
 enum CURSES_RED         =  1;
 enum CURSES_GREEN       =  2;
 enum CURSES_BROWN       =  3;
-
 enum CURSES_MAGENTA     =  4;
-enum CURSES_CYAN        =  5;
-enum CURSES_GRAY        =  6;
-enum CURSES_DARKGRAY    =  7;
-enum CURSES_LITERED     =  8;
-enum CURSES_LITEGREEN   =  9;
-enum CURSES_YELLOW      = 10;
-enum CURSES_LITEBLUE    = 11;
-enum CURSES_LITEMAGENTA = 12;
-enum CURSES_LITECYAN    = 13;
-enum CURSES_WHITE       = 14;
-
-enum CURSES_BLUE = CURSES_LITEBLUE;
+enum CURSES_BLUE        =  5;
+enum CURSES_CYAN        =  6;
+enum CURSES_GRAY        =  7;
 
 } // version( curses )
 

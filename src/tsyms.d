@@ -26,6 +26,5 @@ static const symbol SYM_WALL   = symdata( '#',
 static const symbol SYM_STALA  = symdata( 'V',
                                           Color( CLR_GRAY, REVERSED_WALLS ) );
 static const symbol SYM_DOOR   = symdata( '+', Color( CLR_BROWN, false ) );
-static const symbol SYM_WATER  = symdata( '}',
-                                          Color( CLR_BLUE, REVERSED_WALLS ) );
+static const symbol SYM_WATER  = symdata( '}', Color( CLR_BLUE, false ) );
 static const symbol SYM_SHADOW = symdata( ' ', Color( CLR_BLACK, false ) );

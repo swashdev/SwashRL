@@ -20,17 +20,12 @@ import global;
 // declare symbols for dungeon tiles--see ``sym.d'' for declaration of the
 // `symbol' struct and `symdata' function.
 
-static const symbol SYM_FLOOR  = symdata( '.', CLR_GRAY  | A_NORMAL  );
-static if( REVERSED_WALLS )
-{
-static const symbol SYM_WALL   = symdata( '#', CLR_GRAY  | A_REVERSE );
-static const symbol SYM_STALA  = symdata( 'V', CLR_GRAY  | A_REVERSE );
-}
-else
-{
-static const symbol SYM_WALL   = symdata( '#', CLR_GRAY  | A_NORMAL  );
-static const symbol SYM_STALA  = symdata( 'V', CLR_GRAY  | A_NORMAL  );
-}
-static const symbol SYM_DOOR   = symdata( '+', CLR_BROWN | A_NORMAL  );
-static const symbol SYM_WATER  = symdata( '}', CLR_GRAY  | A_NORMAL  );
-static const symbol SYM_SHADOW = symdata( ' ', CLR_GRAY  | A_NORMAL  );
+static const symbol SYM_FLOOR  = symdata( '.', Color( CLR_GRAY, false ) );
+static const symbol SYM_WALL   = symdata( '#',
+                                          Color( CLR_GRAY, REVERSED_WALLS ) );
+static const symbol SYM_STALA  = symdata( 'V',
+                                          Color( CLR_GRAY, REVERSED_WALLS ) );
+static const symbol SYM_DOOR   = symdata( '+', Color( CLR_BROWN, false ) );
+static const symbol SYM_WATER  = symdata( '}',
+                                          Color( CLR_BLUE, REVERSED_WALLS ) );
+static const symbol SYM_SHADOW = symdata( ' ', Color( CLR_BLACK, false ) );

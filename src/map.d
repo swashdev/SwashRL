@@ -443,7 +443,7 @@ map test_map()
 
   monst goobling = new_monst_at( 'g', "goobling", 0, 0, 2, 2, 0, 10, 2, 0, 2,
                                  1000, 60, 20 );
-  goobling.sym.color = CLR_DARKGRAY;
+  goobling.sym.color = Color( CLR_DARKGRAY, false );
 
   add_mon( &nu, goobling );
 
@@ -459,7 +459,7 @@ static if( false ) /* never */
 
   // a test item "old sword" which grants a +2 bonus to the player's
   // attack roll
-  item old_sword = { sym:symdata( '(', A_NORMAL ),
+  item old_sword = { sym:symdata( '(', CLR_DEFAULT ),
                      name:"old sword",
                      type:ITEM_WEAPON, equip:EQUIP_NO_ARMOR,
                      addd:0, addm:2 };

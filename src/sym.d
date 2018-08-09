@@ -24,35 +24,18 @@ struct symbol
 {
   char ch;
 
-static if( CURSES_ENABLED )
-{
-  // attr_t from curses--note that the attribute values also store color,
-  // hence the name
-  attr_t color;
-}
-else
-{
-  ulong color;
-}
+  Color color;
 
   // further members of this struct will be used when SDL is implemented for
   // images (possibly including sprites in the future)
 }
 
-symbol symdata( char character, ulong effects )
+symbol symdata( char character, Color color )
 {
 
   symbol ret;
   ret.ch = character;
-
-static if( CURSES_ENABLED )
-{
-  ret.color = cast(attr_t)effects;
-}
-else
-{
-  ret.color = effects;
-}
+  ret.color = color;
 
   return ret;
 }

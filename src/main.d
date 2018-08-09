@@ -157,7 +157,7 @@ else
 static if( HILITE_PLAYER )
 {
   if( SDL_terminal() )
-  { u.sym = symdata( SMILEY, CLR_WHITE | A_REVERSE );
+  { u.sym = symdata( SMILEY, Color( CLR_WHITE, HILITE_PLAYER ) );
   }
 }
 
@@ -268,7 +268,8 @@ static if( HILITE_PLAYER )
 
 playerdied:
 
-  IO.display( u.y + 1, u.x, symdata( SMILEY, CLR_DARKGRAY ), true );
+  IO.display( u.y + 1, u.x, symdata( SMILEY, Color( CLR_DARKGRAY, false ) ),
+              true );
 
 playerquit:
 

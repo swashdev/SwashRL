@@ -200,20 +200,13 @@ class SDLTerminalIO : SwashIO
 
   // (end cannibalized code)
 
-  // Takes in a curses-style color and converts it to an SDL color
-  SDL_Color to_SDL_Color( ulong curses_color )
+  // Takes in a color index and returns an SDL color
+  SDL_Color to_SDL_Color( ubyte color )
   {
-    // If curses_color contains a "text effect" like A_REVERSE, we have to
-    // remove it before we can use this color.
-    ulong actual_color = curses_color;
-
-    if( cast(bool)(actual_color & A_REVERSE) )
-    { actual_color |= A_REVERSE;
-    }
 
     // Unfortunately this is one of those cases where we just have to use a
     // Switch Statement From Hell.
-    switch( actual_color )
+    switch( color )
     {
       case CLR_DARKGRAY:
         return SDL_DARKGRAY;
@@ -226,6 +219,11 @@ class SDLTerminalIO : SwashIO
 
       case CLR_BROWN:
         return SDL_BROWN;
+
+      case CLR_BLUE:
+        // We don't use dark blue because it blends in with the black
+        // background too much.
+        goto case CLR_LITEBLUE;
 
       case CLR_MAGENTA:
         return SDL_MAGENTA;
@@ -248,7 +246,7 @@ class SDLTerminalIO : SwashIO
       case CLR_YELLOW:
         return SDL_YELLOW;
 
-      case CLR_BLUE:
+      case CLR_LITEBLUE:
         return SDL_BLUE;
 
       case CLR_LITEMAGENTA:
@@ -263,8 +261,8 @@ class SDLTerminalIO : SwashIO
       // If we don't get a valid color, default to the "standard color"
       default:
         goto case CLR_GRAY;
-    } // switch( actual_color )
-  } // SDL_Color to_SDL_Color( ulong )
+    } // switch( color )
+  } // SDL_Color to_SDL_Color( ubyte )
 
   ///////////
   // Input //
@@ -304,8 +302,8 @@ class SDLTerminalIO : SwashIO
   // Output //
   ////////////
 
-  void put_char( uint y, uint x, char c, ulong color = CLR_NONE,
-                 bool reversed = false )
+  void put_char( uint y, uint x, char c,
+                 Color color = Color( CLR_NONE, false ) )
   {
 
     // Tell the renderer to draw to our own `framebuffer' rather than the
@@ -316,9 +314,13 @@ class SDLTerminalIO : SwashIO
 
     SDL_Texture* renderedchar;
 
+    Color co = color;
+
     // null means there's no glyph, so fall back on a backup character
     if( tileset[c] is null )
-    { renderedchar = tileset['?'];
+    {
+      renderedchar = tileset['?'];
+      co = Color( CLR_LITERED, true );
     }
     else
     { renderedchar = tileset[c];
@@ -338,14 +340,14 @@ class SDLTerminalIO : SwashIO
     SDL_Color fg, bg;
 
     // Assign `fg' and `bg' appropriately
-    if( reversed )
+    if( co.reverse )
     {
       fg = SDL_BLACK;
-      bg = to_SDL_Color( color );
+      bg = to_SDL_Color( co.fg );
     }
     else
     {
-      fg = to_SDL_Color( color );
+      fg = to_SDL_Color( co.fg );
       bg = SDL_BLACK;
     }
 
@@ -405,21 +407,7 @@ class SDLTerminalIO : SwashIO
   // curses.
   void display( uint y, uint x, symbol s, bool center = true )
   {
-static if( !TEXT_EFFECTS )
-{
-    put_char( y, x, s.ch );
-}
-else
-{
-  static if( COLOR )
-  {
-    put_char( y, x, s.ch, s.color, cast(bool)(s.color & A_REVERSE) );
-  }
-  else
-  {
-    put_char( y, x, s.ch, CLR_NONE, cast(bool)(s.color & A_REVERSE) );
-  }
-}
+    put_char( y, x, s.ch, s.color );
   }
 } // class SDLTerminalIO
 

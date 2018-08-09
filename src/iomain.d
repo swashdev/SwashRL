@@ -52,8 +52,8 @@ interface SwashIO
   // The default `color' value of `CLR_NONE' will cause the function to use
   // the "default color."  If `reversed', the foreground and background colors
   // will be swapped.
-  void put_char( uint y, uint x, char c, ulong color = CLR_NONE,
-                 bool reversed = false );
+  void put_char( uint y, uint x, char c,
+                 Color color = Color( CLR_NONE, false ) );
 
   // The central `display' function.  Displays a given `symbol' at given
   // coordinates.  If `center', the cursor will be centered over the symbol
@@ -295,12 +295,7 @@ static if( USE_FOV )
   {
             // Set the remembered map tile's color to dark gray to distinguish
             // it from the current line-of-sight
-            if( cast(bool)(output.color & A_REVERSE) )
-            { output.color = CLR_DARKGRAY | A_REVERSE;
-            }
-            else
-            { output.color = CLR_DARKGRAY;
-            }
+            output.color = Color( CLR_DARKGRAY, output.color.reverse );
   }
 
           } // if( to_display.t[y][x].seen )

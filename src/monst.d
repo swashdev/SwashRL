@@ -32,7 +32,8 @@ mon mondat( char isym, string iname, ubyte ifly, ubyte iswim,
             ubyte hit_dice, short hit_modifier, int hit_min, int hit_max,
             ubyte at_dice, short at_modifier, int at_min, int at_max )
 {
-  mon mn = { sym:symdata( isym, A_NORMAL ), name:iname, fly:ifly, swim:iswim,
+  mon mn = { sym:symdata( isym, CLR_DEFAULT ), name:iname, fly:ifly,
+             swim:iswim,
              hit_dice:Dice( hit_dice, hit_modifier, hit_min, hit_max ),
              attack_roll:Dice( at_dice, at_modifier, at_min, at_max )
            };
@@ -70,7 +71,7 @@ monst new_monst_at( char isym, string iname, ubyte ifly, ubyte iswim,
                     ubyte at_dice, short at_mod, int at_min, int at_max,
                     ubyte x, ubyte y )
 {
-  monst mon = { sym:symdata( isym, A_NORMAL ), name:iname,
+  monst mon = { sym:symdata( isym, CLR_DEFAULT ), name:iname,
                 fly:ifly, swim:iswim,
                 hp:roll( hit_dice, hit_mod ),
                 attack_roll:Dice( at_dice, at_mod, at_min, at_max ),

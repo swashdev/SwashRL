@@ -195,7 +195,7 @@ static if( COLOR )
     foreach( y; 0 .. MESSAGE_BUFFER_LINES )
     {
       foreach( x; 0 .. MAP_X )
-      { putch( y, x, ' ' );
+      { put_char( y, x, ' ' );
       }
     }
   }

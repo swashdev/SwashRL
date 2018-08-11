@@ -38,6 +38,25 @@ officially support systems by their availability to me.  If you'd like to
 become a volunteer maintainer for SwashRL on your system, [contact me on
 GitHub](https://github.com/swashdev) and we can work something out.
 
+## Known Bugs
+
+To submit a bug fix or report a possible solution, leave an Issue or a Pull
+Request on [our GitHub page](https://github.com/swashdev/SwashRL).
+
+* The PDCurses interface does not yet work due to all versions of PDCurses
+  which we have been able to compile or otherwise acquire not working with
+  DMD.
+
+* The curses interface does not display remembered map tiles which fall
+  outside the player's line-of-sight.
+
+### Not Bugs
+
+* The map generator function doesn't always separate rooms properly and carves
+  corridors which can alter the shape of rooms rather than simply creating a
+  doorway.  This is not a bug because the current map generator functions are
+  only temporary fixes.
+
 ## Compiling
 
 Starting with version 0.022, SwashRL has been programmed in D.  This means

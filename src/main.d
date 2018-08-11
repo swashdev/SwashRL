@@ -20,6 +20,7 @@ import global;
 import std.string: toStringz;
 
 static map Current_map;
+static uint Current_level;
 static SwashIO IO;
 
 void help()
@@ -98,25 +99,21 @@ int main( string[] args )
   }
 
   // Assign initial map
-debug
-{
   if( use_test_map )
-  { Current_map = test_map();
+  {
+debug
+    Current_map = test_map();
+else
+{
+    writeln( "The test map is only available for debug builds of the game.
+Try compiling with dub build -b debug" );
+    return 31;
+}
   }
   else
   { Current_map = generate_new_map();
   }
-}
-else
-{
-  if( use_test_map )
-  {
-    writeln( "The test map is only available for debug builds of the game.
-Try compiling with dub build -b debug" );
-    return 31;
-  }
-  Current_map = generate_new_map();
-}
+  Current_level = 0;
 
   try
   {

@@ -54,4 +54,5 @@ enum Terrain {
   floor = tile( SYM_FLOOR, false, false, false, true, false, 0            ),
   wall  = tile( SYM_WALL,  true,  true,  true,  true, false, 0            ),
   water = tile( SYM_WATER, false, false, false, true, false, HAZARD_WATER ),
+  door  = tile( SYM_DOOR,  false, true,  true,  true, false, 0            )
 }

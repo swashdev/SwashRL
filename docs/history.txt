@@ -196,3 +196,11 @@ focus on exercising my skills hopefully for the betterment of humanity.
         generator.
         "Community Documentation," such as a Guideline for Contributors and
         GitHub-specific Issue and Pull Request templates, are added.
+
+0.025   2018-08-10 03:29 EST First version with color support.  Map memory
+        implemented, but buggy on certain user interfaces.  The message buffer
+        and status bar now use a bold font on the SDL terminal interface so
+        they look better on the default smaller tile size.  Configuration
+        options added to allow the builder to define their own fonts and font
+        size.  The test map can now be accessed using the --test-map
+        command-line option, but only on debug builds.

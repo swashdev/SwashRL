@@ -1,6 +1,7 @@
 SwashRL official changelog
 
 VERSION 0.025
+Finalized 2018-08-10 03:29 EST
 
   Known bugs:
    - The curses interface doesn't display "seen" tiles when they leave the

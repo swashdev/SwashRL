@@ -46,7 +46,14 @@ class SDLTerminalIO : SwashIO
   SDL_Window* window;
   SDL_Renderer* renderer;
 
+  // The default tileset for drawing the map &c:
   SDL_Texture*[] tileset;
+  // The special tileset for drawing the message line, status bar, and other
+  // "messages":
+  SDL_Texture*[] message_font;
+
+  // Which of the above two tilesets we are currently using
+  SDL_Texture*[] cur_tileset;
 
   // This texture is used as a backup of the frame buffer, to prevent errors
   // when SDL's "back" and "front" frame buffers are swapped by the
@@ -102,6 +109,14 @@ class SDLTerminalIO : SwashIO
                        tileset ) )
         { sdl_error( "Could not import " ~ FONT );
         }
+
+        // Load the message font
+        if( !loadfont( MESSAGE_FONT, tile_height, message_font ) )
+        { sdl_error( "Could not import " ~ MESSAGE_FONT );
+        }
+
+        // Set the current font to default
+        cur_tileset = tileset;
 
         // (end cannibalized code)
 
@@ -317,13 +332,13 @@ class SDLTerminalIO : SwashIO
     Color co = color;
 
     // null means there's no glyph, so fall back on a backup character
-    if( tileset[c] is null )
+    if( cur_tileset[c] is null )
     {
-      renderedchar = tileset['?'];
+      renderedchar = cur_tileset['?'];
       co = Color( CLR_LITERED, true );
     }
     else
-    { renderedchar = tileset[c];
+    { renderedchar = cur_tileset[c];
     }
 
     // Draw a square with the background color (this will erase any character
@@ -365,6 +380,86 @@ class SDLTerminalIO : SwashIO
     SDL_RenderCopy( renderer, renderedchar, null, &tile );
 
     // (end cannibalized code)
+  }
+
+  // Reads the player all of their messages one at a time
+  void read_messages()
+  {
+    // Because we're writing to the message line, set the current tileset to
+    // the special `message_font':
+    cur_tileset = message_font;
+
+    while( !Messages.empty() )
+    {
+      clear_message_line();
+      put_line( 0, 0, "%s%s", pop_message(),
+                Messages.empty() == false ? "  (More)" : "" );
+      refresh_screen();
+
+      if( !Messages.empty() )
+      { get_key();
+      }
+    }
+
+    // We're done displaying messages, so set the current tileset back to the
+    // default `tileset':
+    cur_tileset = tileset;
+  }
+
+  // Gives the player a menu containing their message history.
+  void read_message_history()
+  {
+    clear_screen();
+
+    // Because we're outputting a message, set the current tileset to the
+    // special `message_font':
+    cur_tileset = message_font;
+
+    uint actual_c = 0;
+    foreach( c; 0 .. Message_history.length )
+    {
+      if( actual_c > 23 )
+      {
+        refresh_screen();
+        get_key();
+        clear_screen();
+        actual_c = 0;
+      }
+
+      put_line( actual_c, 0, Message_history[c] );
+
+      actual_c++;
+    }
+
+    refresh_screen();
+    get_key();
+    clear_message_line();
+
+    // We're done displaying messages, so set the current tileset back to the
+    // default `tileset':
+    cur_tileset = tileset;
+  }
+
+  // Refreshes the status bar
+  void refresh_status_bar( player* u )
+  {
+    int hp = u.hp;
+    int dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].addd;
+    int mod = u.attack_roll.modifier + u.inventory.items[INVENT_WEAPON].addm;
+
+    // Because the status bar is considered a "message," switch the current
+    // tileset to the special `message_font':
+    cur_tileset = message_font;
+
+    foreach( x; 0 .. MAP_X )
+    { put_char( 1 + MAP_Y, x, ' ' );
+    }
+    put_line( 1 + MAP_Y, 0, "HP: %d    Attack: %ud %c %u",
+              hp, dice, mod >= 0 ? '+' : '-', mod * ((-1) * mod < 0) );
+
+    // We're done displaying messages, so set the current tileset back to the
+    // default `tileset':
+    cur_tileset = tileset;
   }
 
   // Refreshes the screen to reflect the changes made by the below output

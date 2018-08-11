@@ -64,6 +64,15 @@ interface SwashIO
   // clears the current message off the message line
   void clear_message_line();
 
+  // Reads the player all of their messages one at a time
+  void read_messages();
+
+  // Gives the player a menu containing their message history.
+  void read_message_history();
+
+  // Refreshes the status bar
+  void refresh_status_bar( player* u );
+
   /////////////////////
   // Final Functions //
   /////////////////////
@@ -129,21 +138,6 @@ interface SwashIO
 
   } // int getcommand
 
-  // Reads the player all of their messages one at a time
-  final void read_messages()
-  {
-    while( !Messages.empty() )
-    {
-      clear_message_line();
-      put_line( 0, 0, "%s%s", pop_message(),
-                Messages.empty() == false ? "  (More)" : "" );
-      refresh_screen();
-
-      if( !Messages.empty() )
-      { get_key();
-      }
-    }
-  }
   final void put_line( T... )( uint y, uint x, T args )
   {
     import std.string: format;
@@ -152,47 +146,6 @@ interface SwashIO
     foreach( c; 0 .. cast(uint)output.length )
     { put_char( y, x + c, output[c] );
     }
-  }
-
-
-  // Gives the player a menu containing their message history.
-  final void read_message_history()
-  {
-    clear_screen();
-
-    uint actual_c = 0;
-    foreach( c; 0 .. Message_history.length )
-    {
-      if( actual_c > 23 )
-      {
-        refresh_screen();
-        get_key();
-        clear_screen();
-        actual_c = 0;
-      }
-
-      put_line( actual_c, 0, Message_history[c] );
-
-      actual_c++;
-    }
-
-    refresh_screen();
-    get_key();
-    clear_message_line();
-  }
-
-  // Refreshes the status bar
-  final void refresh_status_bar( player* u )
-  {
-    int hp = u.hp;
-    int dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].addd;
-    int mod = u.attack_roll.modifier + u.inventory.items[INVENT_WEAPON].addm;
-
-    foreach( x; 0 .. MAP_X )
-    { put_char( 1 + MAP_Y, x, ' ' );
-    }
-    put_line( 1 + MAP_Y, 0, "HP: %d    Attack: %ud %c %u",
-              hp, dice, mod >= 0 ? '+' : '-', mod * ((-1) * mod < 0) );
   }
 
   // Displays the "help" screen and waits for the player to clear it

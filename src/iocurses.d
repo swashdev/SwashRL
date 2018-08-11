@@ -182,6 +182,63 @@ static if( COLOR )
     mvprintw( y, x, toStringz( output ) );
   }
 
+  // Reads the player all of their messages one at a time
+  void read_messages()
+  {
+    while( !Messages.empty() )
+    {
+      clear_message_line();
+      put_line( 0, 0, "%s%s", pop_message(),
+                Messages.empty() == false ? "  (More)" : "" );
+      refresh_screen();
+
+      if( !Messages.empty() )
+      { get_key();
+      }
+    }
+  }
+
+  // Gives the player a menu containing their message history.
+  void read_message_history()
+  {
+    clear_screen();
+
+    uint actual_c = 0;
+    foreach( c; 0 .. Message_history.length )
+    {
+      if( actual_c > 23 )
+      {
+        refresh_screen();
+        get_key();
+        clear_screen();
+        actual_c = 0;
+      }
+
+      put_line( actual_c, 0, Message_history[c] );
+
+      actual_c++;
+    }
+
+    refresh_screen();
+    get_key();
+    clear_message_line();
+  }
+
+  // Refreshes the status bar
+  void refresh_status_bar( player* u )
+  {
+    int hp = u.hp;
+    int dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].addd;
+    int mod = u.attack_roll.modifier + u.inventory.items[INVENT_WEAPON].addm;
+
+    foreach( x; 0 .. MAP_X )
+    { put_char( 1 + MAP_Y, x, ' ' );
+    }
+    put_line( 1 + MAP_Y, 0, "HP: %d    Attack: %ud %c %u",
+              hp, dice, mod >= 0 ? '+' : '-', mod * ((-1) * mod < 0) );
+  }
+
+
   void refresh_screen()
   { refresh();
   }

@@ -55,6 +55,7 @@ enum TEXT_EFFECTS = true;
 // size.
 enum FONT = "assets/fonts/DejaVuSansMono.ttf";
 //enum FONT = "assets/fonts/DejaVuSansMono-Bold.ttf";
+enum MESSAGE_FONT = "assets/fonts/DejaVuSansMono-Bold.ttf";
 enum TILE_HEIGHT = 16;
 enum TILE_WIDTH = 8;
 

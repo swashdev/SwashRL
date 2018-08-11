@@ -16,7 +16,11 @@ VERSION 0.025
    - Color support.  Color is supported by both the curses and SDL interfaces.
    - Configuration options to determine the font and tile size in the SDL
      interface.
+   - Configuration settings to determine the font and character size.
    - Bold version of the DejaVu Sans Mono font, as on option for the user.
+   - Messages, such as the message line and status bar, are now printed using
+     the Bold version of DejaVu Sans Mono to make them more clear on the small
+     default tile size.
 
 VERSION 0.024
 Finalized 2018-08-05 02:23 EST

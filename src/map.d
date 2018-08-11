@@ -180,12 +180,6 @@ map generate_new_map()
 {
   import std.random;
 
-debug
-{
-  // DEBUG OUTPUT
-  import std.stdio : writefln;
-}
-
   // We're going to use a classic Roguelike room generation system:  Split the
   // map into nine sectors, generate a room in each one, and then connect them
   // with corridors.
@@ -269,42 +263,14 @@ room_gen:
   // Randomly get coordinates from each room and connect them
   foreach( c; 0 .. 8 )
   {
-debug
-{
-    writefln( "c is %d, c + 1 is %d", c, c + 1 );
-}
 
     room r1 = rr[c];
     room r2 = rr[c + 1];
 
-debug
-{
-    writefln( "r1 is rr[%d]\nr2 is rr[%d]", c, c + 1 );
-    writefln( "r1.x1 is %d, r1.x2 is %d", r1.x1, r1.x2 );
-    writefln( "r1.y1 is %d, r1.y2 is %d", r1.y1, r1.y2 );
-    writefln( "r2.x1 is %d, r2.x1 is %d", r2.x1, r2.x2 );
-    writefln( "r2.y1 is %d, r2.y2 is %d", r2.y1, r2.y2 );
-}
-
     uint x1 = uniform( r1.x1, r1.x2 + 1, Lucky );
-
-debug
-    writefln( "Generated value for x1: %d", x1 );
-
     uint x2 = uniform( r2.x1, r2.x2 + 1, Lucky );
-
-debug
-    writefln( "Generated value for x2: %d", x2 );
-
     uint y1 = uniform( r1.y1, r1.y2 + 1, Lucky );
-
-debug
-    writefln( "Generated value for y1: %d", y1 );
-
     uint y2 = uniform( r2.y1, r2.y2 + 1, Lucky );
-
-debug
-    writefln( "Generated value for y2: %d", y2 );
 
     // Randomly decide whether to carve horizontally or vertically first.
     if( flip() )
@@ -355,27 +321,10 @@ version( none )
 
   uint srindex = uniform( 0, 9, Lucky );
 
-debug
-  writefln( "sr is r[%d]", srindex );
-
   room sr = r[ uniform( 0, 9, Lucky ) ];
-
-debug
-{
-  writefln( "sr.x1 is %d, sr.x2 is %d", sr.x1, sr.x2 );
-  writefln( "range for player x is [%d, %d]", sr.x1 + 1, sr.x2 - 1 );
-  writefln( "sr.y1 is %d, sr.y2 is %d", sr.y1, sr.y2 );
-  writefln( "range for player y is [%d, %d]", sr.y1 + 1, sr.y2 - 1 );
-}
 
   ubyte px = cast(ubyte)uniform( sr.x1 + 1, sr.x2, Lucky );
   ubyte py = cast(ubyte)uniform( sr.y1 + 1, sr.y2, Lucky );
-
-debug
-{
-  writefln( "Generated player x is %d", px );
-  writefln( "Generated player y is %d", py );
-}
 
   m.player_start = [py, px];
 

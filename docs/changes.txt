@@ -11,6 +11,9 @@ VERSION 0.025
      been seen are drawn in the normal display functions.  This allows the
      player to fill out the map by exploring.  Items and monsters are only
      displayed if they are currently in the player's line-of-sight.
+   - After extensive testing, it has been determined that the current map
+     generation code does not produce errors, so the annoying debug messages
+     have been removed.
 
   Added:
    - Color support.  Color is supported by both the curses and SDL interfaces.

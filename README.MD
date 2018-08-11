@@ -1,7 +1,7 @@
 SwashRL
 =======
 
-Readme file, last updated 2018-08-05 02:00 EST  
+Readme file, last updated 2018-08-11 03:26 EST  
 Contact the maintainer: <philip@swash.link>
 
 ---
@@ -31,7 +31,7 @@ SwashRL uses some third-party resources to function.  For details, see the
 ## Supported Systems
 
 SwashRL was originally written for Linux, and is confirmed to still work on
-Windows and Linux as of development version 0.024.
+Windows and Linux as of development version 0.025.
 
 I hope to eventually port it to more systems, but I'm limited in my ability to
 officially support systems by their availability to me.  If you'd like to

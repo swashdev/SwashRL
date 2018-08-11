@@ -14,6 +14,13 @@ VERSION 0.025
    - After extensive testing, it has been determined that the current map
      generation code does not produce errors, so the annoying debug messages
      have been removed.
+   - The test map is now available for debug builds, rather than requiring a
+     special "testmap" version, and can be accessed by running the game with
+     command-line argument --test-map
+   - Functions which might cause the program to quit immediately, such as SDL
+     initialization or keymapping, have been moved to an earlier place in the
+     program so that the player doesn't have to wait for the SDL interface to
+     initialize before the program gives an error message.
 
   Added:
    - Color support.  Color is supported by both the curses and SDL interfaces.

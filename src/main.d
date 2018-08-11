@@ -58,6 +58,7 @@ bool SDL_full()
 //   1 Exit due to --help prompt, no errors
 //  11 Exit due to KeymapException
 //  21 Exit due to SDLException
+//  31 Exit due to invalid command-line argument
 // 100 Catch-all error code
 
 int main( string[] args )
@@ -65,8 +66,13 @@ int main( string[] args )
   import std.getopt;
   import std.stdio: writeln;
 
+  bool use_test_map = false;
+
   // use getopt to get command-line arguments
   auto clarguments = getopt( args,
+    // For debugging purposes, this "test map" can be generated at runtime
+    // to test new features or other changes to the game.
+    "test-map", &use_test_map,
     // the display mode, either an SDL "terminal" or "none" for curses ("full"
     // is the same as "terminal" until a full graphics version of the game is
     // finished)
@@ -83,12 +89,48 @@ int main( string[] args )
                       Can be \"none\" for curses output or \"terminal\" for an
                       SDL terminal.  If your copy of SwashRL was compiled
                       without SDL or curses, this option may have no effect.
+    --test-map        Debug builds only: Starts the game on a test map.
   examples:
     swashrl -S none
     swashrl -S terminal"
     );
     return 1;
   }
+
+  // Assign initial map
+debug
+{
+  if( use_test_map )
+  { Current_map = test_map();
+  }
+  else
+  { Current_map = generate_new_map();
+  }
+}
+else
+{
+  if( use_test_map )
+  {
+    writeln( "The test map is only available for debug builds of the game.
+Try compiling with dub build -b debug" );
+    return 31;
+  }
+  Current_map = generate_new_map();
+}
+
+  try
+  {
+    // Initialize keymaps
+    Keymaps = [ keymap(), keymap( "ftgdnxhb.iw,P " ), keymap() ];
+  }
+  catch( InvalidKeymapException e )
+  {
+    writeln( e.msg );
+    return 11;
+  }
+
+  // Assign default keymap
+  Current_keymap = 0;
 
   // Check to make sure the SDL_Mode does not conflict with the way SwashRL
   // was compiled:
@@ -122,30 +164,6 @@ version( sdl )
     writeln( e.msg );
     return 21;
   }
-}
-
-  try
-  {
-    // Initialize keymaps
-    Keymaps = [ keymap(), keymap( "ftgdnxhb.iw,P " ), keymap() ];
-  }
-  catch( InvalidKeymapException e )
-  {
-    writeln( e.msg );
-    return 11;
-  }
-
-  // Assign default keymap
-  Current_keymap = 0;
-
-  // Assign initial map
-version( testmap )
-{
-  Current_map = test_map();
-}
-else
-{
-  Current_map = generate_new_map();
 }
 
   // Initialize the player

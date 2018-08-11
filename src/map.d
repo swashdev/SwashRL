@@ -352,7 +352,7 @@ map empty_map()
   return m;
 }
 
-version( testmap )
+debug
 {
 
 map test_map()

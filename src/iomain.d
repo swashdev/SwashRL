@@ -308,6 +308,9 @@ else
     // the number of turns that have passed...
     uint turns = 0;
 
+    // clear the screen:
+    clear_screen();
+
     do
     {
       string  snam; // "slot name"
@@ -316,9 +319,6 @@ else
       {
         refnow = 0;
   
-        /* clear the screen */
-        clear_screen();
-
         foreach( count; 0 .. INVENT_LAST_SLOT )
         {
           // This switch statement of doom sets up the name and selection
@@ -347,18 +347,13 @@ else
           { break;
           }
 
-          put_line( 1 + count, 1, "%c) %s: %s", schr, snam,
+          put_line( 1 + count, 1, "         %c) %s: %s", schr, snam,
                     u.inventory.items[count].sym.ch == '\0'
                       ? "EMPTY" : u.inventory.items[count].name
                   );
         } /* foreach( count; 0 .. INVENT_LAST_SLOT ) */
 
         put_line( 16, 1, "i) Bag [NOT IMPLEMENTED]" );
-
-        // this line is here to clear error messages
-        foreach( count; 1 .. 79 )
-        { put_char( 21, count, ' ' );
-        }
 
         put_line( 18, 1,
           "Press a letter to \"grab\" that item (or \'i\' to open your bag)" );
@@ -373,6 +368,12 @@ else
       if( grab == 'Q' || grab == ' ' )
       { break;
       }
+
+      // this line is here to clear error messages
+      foreach( count; 1 .. 79 )
+      { put_char( 21, count, ' ' );
+      }
+
       grab = toLower( grab );
       switch( grab )
       {
@@ -413,18 +414,24 @@ else
         {
           // ...confirm the slot is not empty...
           if( u.inventory.items[line].sym.ch == '\0' )
-          { put_line( 21, 1, "There is no item there." );
+          {
+            put_line( 21, 1, "There is no item there." );
+            refresh_screen();
           }
           else
           {
             // ...grab the item...
             grabbed = u.inventory.items[line];
+            put_line( 1 + line, 1, "GRABBED:" );
 // TODO: Figure out a way to genericize highlighting this line
 version( none )
 {
             // ...mark that line...
             mvchgat( 1 + line, 1, 78, A_REVERSE, cast(short)0, cast(void*)null );
 }
+
+            refresh_screen();
+
             // ...and save that line so we can swap the items later.
             grabbedline = line;
           }
@@ -443,6 +450,7 @@ version( none )
                   "You stab yourself in the head with a %s and die instantly.",
                   grabbed.name );
 seppuku:
+                  refresh_screen();
                   get_key();
                   u.hp = 0;
                   return 0;
@@ -471,8 +479,9 @@ seppuku:
             put_line( 21, 1, "You can not equip a %s there.",
                       grabbed.name );
 discard_swap:
-            grabbedline = line = 255;
+            grabbedline = 255;
             grabbed.sym.ch = '\0';
+            //get_key();
             refnow = true;
             continue;
           }
@@ -498,6 +507,8 @@ discard_swap:
           // ...remove the grabbed item...
           grabbed.sym.ch = '\0';
           grabbedline = line = 255;
+          // ...clear the screen...
+          clear_screen();
           // ...and make a note to refresh the inventory screen.
           refnow = true;
   

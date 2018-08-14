@@ -98,6 +98,8 @@ int main( string[] args )
     return 1;
   }
 
+  seed();
+
   // Assign initial map
   if( use_test_map )
   {
@@ -137,8 +139,6 @@ Try compiling with dub build -b debug" );
   if( !SDL_ENABLED && !SDL_none() )
   { SDL_Mode = SDL_MODES.none;
   }
-
-  seed();
 
 version( curses )
 {

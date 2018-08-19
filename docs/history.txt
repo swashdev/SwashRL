@@ -210,6 +210,6 @@ Version Date/time Finalized   Info
 0.026   2018-08-19 04:53 EST  First version that allows saving and loading of
         the map.
 
-0.027                         First version to implement mold, a feature
+0.027   2018-08-19 07:19 EST  First version to implement mold, a feature
         that was originally implemented in the Python version of Crawl back in
         2012.  Blood is also implemented for the first time.

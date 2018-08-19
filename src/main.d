@@ -17,6 +17,9 @@
 
 import global;
 
+import fexcept;
+import fdun;
+
 import std.string: toStringz;
 
 static map Current_map;
@@ -293,5 +296,6 @@ playerquit:
   // quit the program.
   IO.get_key();
   IO.cleanup();
+
   return 0;
 }

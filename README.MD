@@ -1,7 +1,7 @@
 SwashRL
 =======
 
-Readme file, last updated 2018-08-11 03:26 EST  
+Readme file, last updated 2018-08-18 22:35 EST  
 Contact the maintainer: <philip@swash.link>
 
 ---
@@ -17,6 +17,8 @@ file.
 SwashRL currently has git respositories hosted at the following locations:
 
 * <https://github.com/swashdev/SwashRL>
+
+* <https://github.com/swashdev/swash-tentative>
 
 ## License Agreement
 

@@ -37,6 +37,11 @@ interface SwashIO
   // Gets a character input from the user and returns it
   char get_key();
 
+  // Outputs a question to the user and returns a char result.  If
+  // `assume_lower', any input by the user will be converted to a lowercase
+  // letter.
+  char ask( string question, char[] options, bool assume_lower = false );
+
   ////////////
   // Output //
   ////////////

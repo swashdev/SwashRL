@@ -24,6 +24,7 @@ version( curses )
 import global;
 
 import std.string: toStringz;
+import std.ascii : toLower;
 
 // This class contains functions for the curses display
 // These functions should all be cross-compatible between pdcurses and ncurses
@@ -80,6 +81,37 @@ static if( COLOR )
   // Gets a character input from the user and returns it
   char get_key()
   { return cast(char)getch();
+  }
+
+  // Outputs a question to the user and returns a char result
+  char ask( string question, char[] options, bool assume_lower = false )
+  {
+    clear_message_line();
+    char[] q = (question ~ " [").dup;
+    foreach( c; 0 .. options.length )
+    {
+      q ~= options[c];
+      if( c + 1 < options.length )
+      { q ~= '/';
+      }
+    }
+    q ~= ']';
+
+    put_line( 0, 0, q );
+    refresh_screen();
+
+    char answer = '\0';
+
+    while( true )
+    {
+      answer = get_key();
+
+      if( assume_lower ) answer = toLower( answer );
+
+      foreach( c; 0 .. options.length )
+      { if( answer == options[c] ) return answer;
+      }
+    }
   }
 
   ////////////

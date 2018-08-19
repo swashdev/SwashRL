@@ -26,6 +26,7 @@ import global;
 import std.string : fromStringz;
 import std.string : toStringz;
 import std.format;
+import std.ascii : toLower;
 
 // For catching exceptions when initializing or working with SDL:
 class SDLException : Exception
@@ -311,6 +312,39 @@ class SDLTerminalIO : SwashIO
     }
 
     // (end cannibalized code)
+  }
+
+  // Outputs a question to the user and returns a char result
+  char ask( string question, char[] options, bool assume_lower = false )
+  {
+    clear_message_line();
+    char[] q = (question ~ " [").dup;
+    foreach( c; 0 .. options.length )
+    {
+      q ~= options[c];
+      if( c + 1 < options.length )
+      { q ~= '/';
+      }
+    }
+    q ~= ']';
+
+    cur_tileset = message_font;
+    put_line( 0, 0, q );
+    cur_tileset = tileset;
+    refresh_screen();
+
+    char answer = '\0';
+
+    while( true )
+    {
+      answer = get_key();
+
+      if( assume_lower ) answer = toLower( answer );
+
+      foreach( c; 0 .. options.length )
+      { if( answer == options[c] ) return answer;
+      }
+    }
   }
 
   ////////////

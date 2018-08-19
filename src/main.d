@@ -21,6 +21,9 @@ import fexcept;
 import fdun;
 
 import std.string: toStringz;
+import std.getopt;
+import std.stdio : writeln;
+import std.ascii : toLower;
 
 static map Current_map;
 static uint Current_level;
@@ -67,13 +70,14 @@ bool SDL_full()
 
 int main( string[] args )
 {
-  import std.getopt;
-  import std.stdio: writeln;
-
   bool use_test_map = false;
+  string saved_lev;
 
   // use getopt to get command-line arguments
   auto clarguments = getopt( args,
+    // s, the file name of a saved game
+    "s",        &saved_lev,
+    "save",     &saved_lev,
     // For debugging purposes, this "test map" can be generated at runtime
     // to test new features or other changes to the game.
     "test-map", &use_test_map,
@@ -89,13 +93,17 @@ int main( string[] args )
     writeln( "Usage: swashrl [options]
   options:
     -h, --help        Displays this help output and then exits.
+    -s, --save        Sets the saved level that SwashRL will load in.  The
+                      game will load in your input save file name with
+                      \".lev\" appended to the end in the save/lev directory.
     -S, --sdl-mode    Sets the output mode for SwashRL.  Default \"terminal\"
                       Can be \"none\" for curses output or \"terminal\" for an
                       SDL terminal.  If your copy of SwashRL was compiled
                       without SDL or curses, this option may have no effect.
-    --test-map        Debug builds only: Starts the game on a test map.
+    --test-map        Debug builds only: Starts the game on a test map.  Will
+                      have no effect if -s or --save was used.
   examples:
-    swashrl -S none
+    swashrl -s save0
     swashrl -S terminal"
     );
     return 1;
@@ -104,26 +112,33 @@ int main( string[] args )
   seed();
 
   // Assign initial map
-  if( use_test_map )
-  {
-debug
-    Current_map = test_map();
-else
-{
-    writeln( "The test map is only available for debug builds of the game.
-Try compiling with dub build -b debug" );
-    return 31;
-}
+  if( saved_lev.length > 0 )
+  { Current_map = level_from_file( saved_lev );
   }
   else
-  { Current_map = generate_new_map();
-  }
+  {
+    if( use_test_map )
+    {
+debug
+      Current_map = test_map();
+else
+{
+      writeln( "The test map is only available for debug builds of the game.
+Try compiling with dub build -b debug" );
+      return 31;
+}
+    }
+    else
+    { Current_map = generate_new_map();
+    }
+  } // else from if( saved_lev.length > 0 )
   Current_level = 0;
 
   try
   {
     // Initialize keymaps
-    Keymaps = [ keymap(), keymap( "ftgdnxhb.iw,P " ), keymap() ];
+    Keymaps = [ keymap(), keymap( "ftgdnxhb.iw,P S" ) ];
+    Keymap_labels = ["Standard", "Dvorak"];
   }
   catch( InvalidKeymapException e )
   {
@@ -191,7 +206,7 @@ version( sdl )
 
   uint moved = 0;
   int mv = 5;
-  while( mv != MOVE_QUIT && u.hp > 0 )
+  while( u.hp > 0 )
   {
     moved = 0;
     mv = IO.getcommand();
@@ -200,6 +215,7 @@ version( sdl )
       case MOVE_UNKNOWN:
          message( "Command not recognized.  Press ? for help." );
          break;
+
       // display help
       case MOVE_HELP:
          IO.help_screen();
@@ -208,13 +224,28 @@ version( sdl )
          IO.refresh_status_bar( &u );
          IO.display_map_and_player( Current_map, u );
          break;
+
+      // save and quit
+      case MOVE_SAVE:
+        if( 'y' == IO.ask( "Really save?", ['y', 'n'], true ) )
+        {
+          save_level( Current_map, u, "save0" );
+          goto playerquit;
+        }
+        break;
+
       // quit
       case MOVE_QUIT:
-        goto playerquit;
+        if( 'y' == IO.ask( "Really quit?", ['y', 'n'], true ) )
+        { goto playerquit;
+        }
+        break;
+
       // display version information
       case MOVE_GETVERSION:
         sp_version();
         break;
+
       case MOVE_ALTKEYS:
         if( Current_keymap >= Keymaps.length - 1 )
         { Current_keymap = 0;
@@ -225,27 +256,32 @@ version( sdl )
         message( "Control scheme swapped to %s", Keymap_labels[Current_keymap]
                );
         break;
+
       // print the message buffer
       case MOVE_MESS_DISPLAY:
         IO.read_message_history();
         IO.refresh_status_bar( &u );
         IO.display_map_all( Current_map );
         break;
+
       // clear the message line
       case MOVE_MESS_CLEAR:
         IO.clear_message_line();
         break;
+
       // wait
       case MOVE_WAIT:
         message( "You bide your time." );
         moved = 1;
         break;
+
       // inventory management
       case MOVE_INVENTORY:
         moved = IO.control_inventory( &u );
         // we must redraw the screen after the inventory window is cleared
         IO.display_map_and_player( Current_map, u );
         break;
+
       // all other commands go to umove
       default:
         IO.clear_message_line();

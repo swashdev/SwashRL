@@ -37,6 +37,9 @@ enum MOVE_GET = 22;
 enum MOVE_MESS_DISPLAY = 30;
 enum MOVE_MESS_CLEAR   = 31;
 
+// Game management keys:
+enum MOVE_SAVE = 40;
+
 // Global "admin" keys:
 enum MOVE_HELP = 0;
 enum MOVE_QUIT = 10;

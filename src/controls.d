@@ -38,7 +38,7 @@ class InvalidKeymapException : Exception
 uint[char] keymap( string keylist = "" )
 {
   // The standard keymap, which is being overwritten
-  char[] kl = "ykuhlbjn.iw,P ".dup;
+  char[] kl = "ykuhlbjn.iw,P S".dup;
 
   // Check to make sure that the keylist will not overwrite any reserved
   // commands
@@ -101,6 +101,9 @@ uint[char] keymap( string keylist = "" )
   // Message management
   ret[ kl[12] ] = MOVE_MESS_DISPLAY;
   ret[ kl[13] ] = MOVE_MESS_CLEAR;
+
+  // Game management
+  ret[ kl[14] ] = MOVE_SAVE;
 
 version( none )
 {

@@ -45,8 +45,7 @@ static if( CURSES_ENABLED )
 // The global list of labels for keymaps; thise are used in the "Control
 // scheme swapped to %s" message.  The first value will be the name of the
 // default control scheme.  The "Custom" label should always be last.
-static string[] Keymap_labels = ["Standard", "Dvorak",
-"Custom"];
+static string[] Keymap_labels;
 
 // IMPORTANT: Make sure `Keymap_labels' and `Keymaps' are the same length,
 // and the keymaps in `Keymaps' are in the same order as the labels in

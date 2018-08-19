@@ -35,11 +35,11 @@ enum COLOR = true;
 
 // Enables foliage.  Foliage grows randomly in dungeons and has no practical
 // effect on gameplay other than turning tiles green.
-enum FOLIAGE = false;  // NOT YET IMPLEMENTED
+enum FOLIAGE = true;
 
 // Enables blood.  Blood splatter will appear on map tiles when a creature is
 // hit.  This has no practical effect other than turning map tiles red.
-enum BLOOD = false;  // NOT YET IMPLEMENTED
+enum BLOOD = true;
 
 // Curses-only options: //
 

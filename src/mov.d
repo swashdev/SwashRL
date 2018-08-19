@@ -68,6 +68,19 @@ void mattacku( monst* m, player* u )
   {
     u.hp -= atk;
     message( "The %s attacks you!", m.name );
+static if( BLOOD )
+{
+    import main : Current_map;
+    int k = u.x, j = u.y;
+    // The player bleeds...
+    Current_map.t[j][k].hazard |= SPECIAL_BLOOD;
+    foreach( c; d() .. atk )
+    {
+      byte dk, dj;
+      getdydx( cast(ubyte)td10(), &dj, &dk );
+      Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
+    }
+}
   }
   else
   { message( "The %s barely misses you!", m.name );
@@ -84,6 +97,19 @@ void uattackm( player* u, monst* m )
   {
     m.hp -= atk;
     message( "You attack the %s!", m.name );
+static if( BLOOD )
+{
+    import main : Current_map;
+    // The monster bleeds...
+    int k = m.x, j = m.y;
+    Current_map.t[j][k].hazard |= SPECIAL_BLOOD;
+    foreach( c; d() .. atk )
+    {
+      byte dk, dj;
+      getdydx( cast(ubyte)td10(), &dj, &dk );
+      Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
+    }
+}
   }
   else
   { message( "You barely miss the %s!", m.name );

@@ -238,6 +238,31 @@ static if( USE_FOV )
         {
           output = to_display.t[y][x].sym;
 
+static if( FOLIAGE )
+{
+          // If there is mold growing on this tile, change the tile's color
+          // to green (unless there's also water)
+          if( to_display.t[y][x].hazard & SPECIAL_MOLD )
+          {
+            if( !(to_display.t[y][x].hazard & HAZARD_WATER ) )
+            {
+              output.color.fg = CLR_GREEN;
+            }
+          }
+}
+static if( BLOOD )
+{
+          // If there is blood spattered on this tile, change the tile's
+          // color to red (unless there's also water?)
+          if( to_display.t[y][x].hazard & SPECIAL_BLOOD )
+          {
+            if( !(to_display.t[y][x].hazard & HAZARD_WATER) )
+            {
+              output.color.fg = CLR_RED;
+            }
+          }
+}
+
           // If the player can see this tile, and there is an item on it,
           // display that item instead of the map tile.
           if( to_display.i[y][x].sym.ch != '\0' )

@@ -175,6 +175,91 @@ bool add_room( room r, map* m )
   return add_room( r.y1, r.x1, r.y2, r.x2, m );
 } // bool add_room( room, map* )
 
+static if( FOLIAGE )
+{
+/++
+ + Grows mold in the given map
+ +/
+void grow_mold( map* m )
+{
+  import std.random;
+
+  // This is the number of seeds we're going to have for mold growths:
+  int num_molds = td10();
+
+  if( num_molds > 0 )
+  {
+    foreach( c; 1 .. num_molds )
+    {
+      // This is the maximum number of tiles this mold growth will affect:
+      int mold_len = d100();
+
+      // Choose coordinates where our mold growth will start:
+      int x = uniform( 0, MAP_X, Lucky );
+      int y = uniform( 0, MAP_Y, Lucky );
+
+      // Now we begin growing mold:
+      foreach( d; 1 .. mold_len )
+      {
+        // Place mold on the current tile:
+        m.t[y][x].hazard |= SPECIAL_MOLD;
+
+        // Now decide a random direction to move in:
+        final switch( uniform( 0, 10, Lucky ) )
+        {
+          // You may notice that values which modify x are slightly more
+          // common; this is to encourage the mold to spread out along the
+          // wider x axis and fill more of the map
+          case 0: x--; y--; break;
+          case 1:
+          case 2: x--;      break;
+          case 3: x--; y++; break;
+          case 4:      y++; break;
+          case 5:      y--; break;
+          case 6: x++; y--; break;
+          case 7:
+          case 8: x++;      break;
+          case 9: x++; y++; break;
+        }
+
+        // Terminate growing mold if we hit the edge of the map
+        if( x >= MAP_X || x < 0 ) break;
+        if( y >= MAP_Y || y < 0 ) break;
+      } // foreach( d; 1 .. mold_len )
+    } // foreach( c; 1 .. num_molds )
+  } // if( num_molds > 0 )
+
+  // Also grow mold around pools of water by first searching for water tiles:
+  foreach( y; 0 .. MAP_Y )
+  {
+    foreach( x; 0 .. MAP_X )
+    {
+      if( m.t[y][x].hazard & HAZARD_WATER )
+      {
+        // 1 in 4 chance the tile will have mold growing near it...
+        if( dn(4) == 1 )
+        {
+          // Grow mold in a random tile near the water...
+          int trux, truy;
+
+          do
+          {
+            trux = flip() ? x : flip() ? x + 1 : x - 1;
+            truy = flip() ? y : flip() ? y + 1 : y - 1;
+          } while( trux == x && truy == y );
+
+          // Cancel here if x or y are out of bounds
+          if( trux >= MAP_X || trux < 0 ) continue;
+          if( truy >= MAP_Y || truy < 0 ) continue;
+
+          m.t[y][x].hazard |= SPECIAL_MOLD;
+        }
+      }
+    } // foreach( x; 0 .. MAP_X )
+  } // foreach( y; 0 .. MAP_Y )
+} // void grow_mold( map* )
+} // static if( FOLIAGE )
+
 // Generates a new map randomly
 map generate_new_map()
 {
@@ -285,36 +370,11 @@ room_gen:
     }
   } // foreach( c; 0 .. 7 )
 
-version( none )
+static if( FOLIAGE )
 {
-  // Now we'll do the same thing with a random sample of 1d6 of the rooms, so
-  // that some rooms have multiple corridors leading to or from them.
-  room[] rr2 = r.dup.partialShuffle( d(), Lucky );
-
-  // Randomly get coordinates from each room and connect them
-  foreach( c; 0 .. rr2.length - 1 )
-  {
-    room r1 = rr2[c];
-    room r2 = rr2[c + 1];
-
-    uint x1 = uniform( r1.x1, r1.x2 + 1, Lucky );
-    uint x2 = uniform( r2.x1, r2.x2 + 1, Lucky );
-    uint y1 = uniform( r1.y1, r1.y2 + 1, Lucky );
-    uint y2 = uniform( r2.y1, r2.y2 + 1, Lucky );
-
-    // Randomly decide whether to carve horizontally or vertically first.
-    if( flip() )
-    {
-      add_corridor_x( y1, x1, x2, &m );
-      add_corridor_y( x2, y1, y2, &m );
-    }
-    else
-    {
-      add_corridor_y( x1, y1, y2, &m );
-      add_corridor_x( y2, x1, x2, &m );
-    }
-  } // foreach( c; 0 .. rr2.length - 1 )
-} // version( none )
+  // Plant mold in the map:
+  grow_mold( &m );
+}
 
   // Finally, get random coordinates from a random room and put the player
   // there:
@@ -387,6 +447,8 @@ map test_map()
       } /* else from if( y == 0 || y == MAP_y ... */
     } /* foreach( x; 0 .. MAP_X ) */
   } /* foreach( y; 0 .. MAP_Y ) */
+
+  grow_mold( &nu );
 
   // test monsters
 

@@ -17,6 +17,10 @@
 
 import global;
 
-enum SPECIAL_NONE = 0x0000;
+enum SPECIAL_NONE  = 0x0000;
 
-enum HAZARD_WATER = 0x0010;
+enum SPECIAL_MOLD  = 0x0001;
+
+enum SPECIAL_BLOOD = 0x0002;
+
+enum HAZARD_WATER  = 0x0010;

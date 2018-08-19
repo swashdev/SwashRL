@@ -74,6 +74,10 @@ static if( COLOR )
   { endwin();
   }
 
+  bool window_closed()
+  { return false;
+  }
+
   ///////////
   // Input //
   ///////////

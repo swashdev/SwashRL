@@ -208,8 +208,13 @@ version( sdl )
   int mv = 5;
   while( u.hp > 0 )
   {
+    if( IO.window_closed() ) goto abrupt_quit;
+
     moved = 0;
     mv = IO.getcommand();
+
+    if( IO.window_closed() ) goto abrupt_quit;
+
     switch( mv )
     {
       case MOVE_UNKNOWN:
@@ -331,6 +336,8 @@ playerquit:
   // Wait for the user to press any key and then close the graphical mode and
   // quit the program.
   IO.get_key();
+
+abrupt_quit:
   IO.cleanup();
 
   return 0;

@@ -30,6 +30,11 @@ interface SwashIO
   // Final clearing of the display before the game is closed
   void cleanup();
 
+  // This boolean is used to determine if the SDL window's "close" button has
+  // been pressed.  This is to allow the program to break out of infinite
+  // loops that could only otherwise be terminated by user input.
+  bool window_closed();
+
   ///////////
   // Input //
   ///////////

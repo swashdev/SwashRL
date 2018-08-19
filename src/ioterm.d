@@ -64,6 +64,8 @@ class SDLTerminalIO : SwashIO
   enum tile_width = TILE_WIDTH;
   enum tile_height = TILE_HEIGHT;
 
+  bool close_button_pressed = false;
+
   /////////////////////
   // Setup & Cleanup //
   /////////////////////
@@ -127,6 +129,10 @@ class SDLTerminalIO : SwashIO
                                          (MAP_Y + 2) * tile_height );
       }
     }
+  }
+
+  bool window_closed()
+  { return close_button_pressed;
   }
 
   // Final clearing of the display before the game is closed
@@ -300,9 +306,12 @@ class SDLTerminalIO : SwashIO
         }
         // gained focus, so we need to redraw.  IDK why
         else if( e.type == SDL_WINDOWEVENT )
-        { refresh_screen();
+        {
+          refresh_screen();
           if ( e.window.event == SDL_WINDOWEVENT_CLOSE )
-          { return MOVE_QUIT;
+          {
+            close_button_pressed = true;
+            return 'Q';
           }
         }
       }
@@ -338,6 +347,10 @@ class SDLTerminalIO : SwashIO
     while( true )
     {
       answer = get_key();
+
+      // If the player attempted to close the window while SDL was waiting
+      // for input, break the loop now and signal the mainloop to shut down.
+      if( close_button_pressed ) return 255;
 
       if( assume_lower ) answer = toLower( answer );
 

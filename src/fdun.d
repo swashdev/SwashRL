@@ -96,6 +96,8 @@ void save_level( T... )( map m, player u, T args )
   File fil;
   string path = format( "save/lev/%s.lev", format( args ) );
 
+  mkdirRecurse( "save/lev" );
+
   if( exists( path ) && !isFile( path ) )
   {
     level_file_error( path,

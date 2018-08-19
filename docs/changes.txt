@@ -1,5 +1,11 @@
 SwashRL official changelog
 
+VERSION 0.027
+
+  Added:
+   - Mold is now randomly generated and decorates dungeon floors and walls
+   - Players and monsters now bleed when hit in combat
+
 VERSION 0.026
 Finalized 2018-08-19 04:53 EST
 

@@ -207,5 +207,5 @@ Version Date/time Finalized   Info
         size.  The test map can now be accessed using the --test-map
         command-line option, but only on debug builds.
 
-0.026                         First version that allows saving and loading of
+0.026   2018-08-19 04:53 EST  First version that allows saving and loading of
         the map.

@@ -328,7 +328,7 @@ map level_from_file( string file_label )
 
   ver = to!float( strip_line( fil ) );
 
-  if( ver < 0.025 )
+  if( ver < 0.026 )
   {
     fil.close();
     level_file_error( path, "File version %.3f not compatible with current "

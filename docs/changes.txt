@@ -1,6 +1,7 @@
 SwashRL official changelog
 
 VERSION 0.026
+Finalized 2018-08-19 04:53 EST
 
   Changed:
    - The "quit" command now prompts for confirmation before exiting.

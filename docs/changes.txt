@@ -1,5 +1,18 @@
 SwashRL official changelog
 
+VERSION 0.026
+
+  Changed:
+   - The "quit" command now prompts for confirmation before exiting.
+   - Pressing the "close window" button in the SDL terminal interface now
+     causes the program to quit immediately, without a "See you later"
+     message.
+
+  Added:
+   - The ability to save and load in maps has been implemented.
+   - A command line argument for loading saved maps has been added.
+   - A "Save" command has been added.
+
 VERSION 0.025
 Finalized 2018-08-10 03:29 EST
 

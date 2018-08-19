@@ -180,6 +180,8 @@ getting it confused with Spelunky, and re-licensed it under the Apache License
 pursue my programming not just as a hobby, but as a passion, so that I could
 focus on exercising my skills hopefully for the betterment of humanity.
 
+Version Date/time Finalized   Info
+======= ==========================
 0.024   2018-08-05 02:23 EST  First version with SDL support.  The program can
         be compiled with or without SDL, ncurses, or PDCurses depending on
         what configuration is requested of dub.  As a result, Windows support
@@ -204,3 +206,6 @@ focus on exercising my skills hopefully for the betterment of humanity.
         options added to allow the builder to define their own fonts and font
         size.  The test map can now be accessed using the --test-map
         command-line option, but only on debug builds.
+
+0.026                         First version that allows saving and loading of
+        the map.

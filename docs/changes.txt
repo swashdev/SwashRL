@@ -15,6 +15,10 @@ VERSION 0.028
    - Added a NAME flag in global.d so that source modders can change the name
      of the game super easily.
 
+  Fixed:
+   - The test map no longer causes an error by attempting to grow mold when
+     the mold flag is turned off.
+
 VERSION 0.027
 Finalized 2018-08-19 07:19 EST
 

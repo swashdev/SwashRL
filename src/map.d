@@ -448,7 +448,10 @@ map test_map()
     } /* foreach( x; 0 .. MAP_X ) */
   } /* foreach( y; 0 .. MAP_Y ) */
 
+static if( FOLIAGE )
+{
   grow_mold( &nu );
+}
 
   // test monsters
 

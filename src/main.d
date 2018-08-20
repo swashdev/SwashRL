@@ -40,19 +40,9 @@ void help()
 string sp_version()
 {
 static if( INCLUDE_COMMIT )
-{
-  // If the program is being compiled from a git repository, append the commit
-  // ID to the version number.
-  string commit = "-" ~ import( ".git/" ~ import( ".git/HEAD" ).split[1] );
-}
+  return format( "%.3f-%s", VERSION, COMMIT );
 else
-{
-  // This placeholder string is short for "home compile," and signals that
-  // there is no git information to be had.
-  string commit = "-HOMECMP";
-}
-
-  return format( "%.3f%s", VERSION, commit[0 .. 8] );
+  return format( "%.3f", VERSION );
 }
 
 // `SDL_Mode' is a static variable used by the display functions to determine

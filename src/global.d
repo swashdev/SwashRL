@@ -33,6 +33,11 @@ enum NAME = "SwashRL";
 // In the current version numbering system, the first number is the release
 // number and the second is the three-digit revision number.
 enum VERSION = 0.027;
+static if( INCLUDE_COMMIT )
+{
+import std.string : split;
+enum COMMIT = import( ".git/" ~ import( ".git/HEAD" ).split[1] )[0 .. 7];
+}
 
 // Include the config file
 public import config;

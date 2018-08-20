@@ -6,6 +6,7 @@ VERSION 0.028
    - The --help message and version number disclosure message now state the
      name of the executable, rather than simply SwashRL, to make it easier to
      change the name of the program later.
+   - Mold and blood are now visible when field-of-vision is turned off.
 
   Added:
    - If INCLUDE_COMMIT is true at compile time, the version number output by

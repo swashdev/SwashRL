@@ -18,6 +18,17 @@
 // This is the configuration file for Spelunk!.  It defines flags which affect
 // how your copy of Spelunk! will compile.
 
+// SECTION 0: ////////////////////////////////////////////////////////////////
+// Instructions for the compiler                                            //
+//////////////////////////////////////////////////////////////////////////////
+
+// Setting this to true will cause the program to output the current git
+// commit number when asked for the version number.  This will not affect
+// version numbers which are output to save files for compatibility purposes.
+// If you are not compiling from a git repository, you'll have to set this to
+// false in order to compile.
+enum INCLUDE_COMMIT = true;
+
 // SECTION 1: ////////////////////////////////////////////////////////////////
 // Display configuration                                                    //
 //////////////////////////////////////////////////////////////////////////////

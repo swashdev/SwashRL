@@ -1,7 +1,7 @@
 SwashRL
 =======
 
-Readme file, last updated 2018-08-18 22:35 EST  
+Readme file, last updated 2018-08-20 03:10 EST  
 Contact the maintainer: <philip@swash.link>
 
 ---
@@ -19,6 +19,26 @@ SwashRL currently has git respositories hosted at the following locations:
 * <https://github.com/swashdev/SwashRL>
 
 * <https://github.com/swashdev/swash-tentative>
+
+## Table of Contents
+
+* [License Agreement](#license-agreement)
+
+* [Supported Systems](#supported-systems)
+
+* [Known Bugs](#known-bugs)
+
+  * [Not Bugs](#not-bugs)
+
+* [Compiling](#compiling)
+
+  * [Compiling for Derivatives](#compiling-for-derivatives)
+
+* [Change Logs](#change-logs)
+
+* [Contributing](#contributing)
+
+* [Careware](#careware)
 
 ## License Agreement
 
@@ -62,9 +82,11 @@ Request on [our GitHub page](https://github.com/swashdev/SwashRL).
 ## Compiling
 
 Starting with version 0.022, SwashRL has been programmed in D.  This means
-you'll need DmD to compile it (there are versions available for every major
-platform including FreeBSD), but if you also get dub, the D package manager,
-it will do a lot of your work for you including downloading dependencies.
+you'll need [DmD](https://dlang.org/download.html) or some other D
+compiler (there are versions available for every major platform including
+FreeBSD), but if you also get [dub](https://code.dlang.org/download), the D
+package manager, it will do a lot of your work for you including downloading
+dependencies.
 
 You can make some changes to how SwashRL is configured by editing the file
 [config.d](src/config.d)  This file has a lot of comment blocks which explain
@@ -76,8 +98,8 @@ in) and type:
 
 > `dub build`
 
-You'll need to be connected to the Internet so that dub can download the
-packages that it needs.
+You'll need to be connected to the Internet the first time you compile so that
+dub can download the packages that it needs.
 
 By default, SwashRL will compile with SDL.  However, you can also compile
 with ncurses by using dub's `--config` flag, and even compile with _only_
@@ -92,7 +114,47 @@ If you can, we'd love to hear how you did it.  To compile with PDCurses,
 use one of the following commands:
 
 > `dub build --config pdcurses`  
-> `dub build --config pdcurses-nosdl`  
+> `dub build --config pdcurses-nosdl`
+
+If you're compiling from a git repository, your compiled SwashRL will include
+the current commit ID when asked for its version number.  If you are _not_
+compiling from a git repository, you'll have to edit [config.d](src/config.d)
+and set the `INCLUDE_COMMIT` flag to `false`, otherwise it will not compile.
+
+If you're not sure whether or not your source code is in a git repository,
+check and see if there's a `.git` directory in this folder.  If there isn't,
+you can get the up-to-date source repository from
+[our GitHub](https://github.com/swashdev/SwashRL).
+
+For more information about git, check out
+[their website](https://git-scm.com/).
+
+### Compiling for Derivatives
+
+There are a few things to note if you want to use the SwashRL source code to
+make your own game.  First of all, [the Apache License 2.0](LICENSE) is very
+permissive, and unlike the GNU GPL and other copyleft licenses you absolutely
+can commercially exploit SwashRL without having to release your source code.
+This is not an oversight; I have intentionally licensed SwashRL to allow you
+to do this.  However, you _must_ retain all copyright notices, attribution
+notices, etcetera.
+
+Secondly, you'll have to change the name of the program.  I've made this very
+easy to do.  It only requires two steps:
+
+1. Edit the file [dub.json](dub.json) so that the "name" field has been
+   changed to the name of your executable file (i.e., instead of saying
+   `"name": "swashrl",` it will say `"name": "yourname",`)
+
+   1. You should also modify the "authors" and "copyright" fields to reflect
+      your copyright information, and the "license" field if you choose to
+      relicense it.  For more information about the dub.json file, see [the
+      Dlang documentation
+      page](https://code.dlang.org/package-format?lang=json).
+
+2. Edit the file [global.d](src/global.d) so that the "NAME" enum will be the
+   name of your program (i.e. instead of saying `enum NAME = "SwashRL;` it
+   will say `enum NAME = "Your Game's Name";`)
 
 ## Change Logs
 
@@ -109,13 +171,6 @@ all thank you very much!  We now have
 The best way to contribute to SwashRL is via
 [our GitHub page](https://github.com/swashdev/Spelunk), where you can follow
 the conversation and see where we need help.
-
-## Have fun!
-
-SwashRL is the reinvigoration of a game project I've been fiddling with and
-rebooting ever since I was in high school, so do try not to take it too
-seriously and have fun with it.  Do take the license agreement seriously,
-though, because we do.
 
 ## Careware
 

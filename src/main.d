@@ -20,10 +20,12 @@ import global;
 import fexcept;
 import fdun;
 
-import std.string: toStringz;
+import std.string;
 import std.getopt;
 import std.stdio : writeln;
+import std.stdio : writefln;
 import std.ascii : toLower;
+import std.file;
 
 static map Current_map;
 static uint Current_level;
@@ -35,9 +37,22 @@ void help()
     "hjklyubn or number pad to move. PERIOD to wait, SPACE to clear." );
 }
 
-void sp_version()
+string sp_version()
 {
-  message( "%s, version %.3f", "SwashRL", VERSION );
+static if( INCLUDE_COMMIT )
+{
+  // If the program is being compiled from a git repository, append the commit
+  // ID to the version number.
+  string commit = "-" ~ import( ".git/" ~ import( ".git/HEAD" ).split[1] );
+}
+else
+{
+  // This placeholder string is short for "home compile," and signals that
+  // there is no git information to be had.
+  string commit = "-HOMECMP";
+}
+
+  return format( "%.3f%s", VERSION, commit[0 .. 8] );
 }
 
 // `SDL_Mode' is a static variable used by the display functions to determine
@@ -71,10 +86,14 @@ bool SDL_full()
 int main( string[] args )
 {
   bool use_test_map = false;
+  bool disp_version = false;
   string saved_lev;
 
   // use getopt to get command-line arguments
   auto clarguments = getopt( args,
+    // v, display the version number and then exit
+    "v",        &disp_version,
+    "version",  &disp_version,
     // s, the file name of a saved game
     "s",        &saved_lev,
     "save",     &saved_lev,
@@ -88,11 +107,15 @@ int main( string[] args )
     "S",        &SDL_Mode
   );
 
+  // Get the name of the executable:
+  string Name = args[0];
+
   if( clarguments.helpWanted )
   {
-    writeln( "Usage: swashrl [options]
+    writefln( "Usage: %s [options]
   options:
     -h, --help        Displays this help output and then exits.
+    -v, --version     Displays the version number and then exits.
     -s, --save        Sets the saved level that SwashRL will load in.  The
                       game will load in your input save file name with
                       \".lev\" appended to the end in the save/lev directory.
@@ -103,9 +126,16 @@ int main( string[] args )
     --test-map        Debug builds only: Starts the game on a test map.  Will
                       have no effect if -s or --save was used.
   examples:
-    swashrl -s save0
-    swashrl -S terminal"
-    );
+    %s -s save0
+    %s -S terminal
+You are running %s version %s",
+      Name, Name, Name, NAME, sp_version() );
+    return 1;
+  }
+
+  if( disp_version )
+  {
+    writefln( "%s, version %s", NAME, sp_version() );
     return 1;
   }
 
@@ -248,7 +278,7 @@ version( sdl )
 
       // display version information
       case MOVE_GETVERSION:
-        sp_version();
+        message( "%s, version %s", NAME, sp_version() );
         break;
 
       case MOVE_ALTKEYS:

@@ -1,5 +1,19 @@
 SwashRL official changelog
 
+VERSION 0.028
+
+  Changed:
+   - The --help message and version number disclosure message now state the
+     name of the executable, rather than simply SwashRL, to make it easier to
+     change the name of the program later.
+
+  Added:
+   - If INCLUDE_COMMIT is true at compile time, the version number output by
+     the 'v' key and the --help command line argument will include the current
+     commit ID.
+   - Added a NAME flag in global.d so that source modders can change the name
+     of the game super easily.
+
 VERSION 0.027
 Finalized 2018-08-19 07:19 EST
 

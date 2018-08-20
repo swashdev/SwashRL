@@ -24,13 +24,15 @@
 // SwashRL version control & configuration                                  //
 //////////////////////////////////////////////////////////////////////////////
 
+// The name
+// If you're using the source code for a commercial product, change this
+// value to the name of your game to change all references to SwashRL.
+enum NAME = "SwashRL";
+
 // The version number
 // In the current version numbering system, the first number is the release
 // number and the second is the three-digit revision number.
 enum VERSION = 0.027;
-version( full )
-{ pragma( msg, "Compiling for release number: ", VERSION );
-}
 
 // Include the config file
 public import config;

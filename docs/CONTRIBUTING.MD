@@ -1,7 +1,7 @@
 SwashRL Guidelines for Contributors
 ===================================
 
-Last updated 2018-08-05 02:07 EST
+Version 1.0.2.  Last updated 2018-08-20 05:03 EST
 
 ---
 
@@ -69,7 +69,7 @@ message or Pull Request._
 ## Compiling Your Changes
 
 You can find instructions for compiling SwashRL
-[in the Readme](../README.MD#Compiling)
+[in the Readme](../README.MD#compiling)
 
 ## Submitting Changes
 
@@ -136,36 +136,28 @@ class, enum, &c names are always separated\_by\_underscores.
 
 * Two different conventions are used for comment lines:
 
-  1. Most comment lines use a ``//``double-slash format, so that users can
+  1. Most comment lines use a `//`double-slash format, so that users can
 accidentally delete a line without breaking anything.
 
   2. Comment blocks which are considered important, such as copyright notices,
 attribution notices, or otherwise important notices, use the more modern
-``/*``slash-asterisk format``*/`` with an asterisk preceding each new line.
+`/*`slash-asterisk format`*/` with an asterisk preceding each new line.
 
   3. In the case of section headers, a box is drawn around the comment using
 asterisks or slashes to grab the user's attention.
 
-* In comment lines or blocks, references to variables, functions, or types are
-wrapped in quotes \`that look like this', with one backtic at the beginning
-and one single-quote at the end.  References to files, such as a source file
-or the license document, are surrounded in quotes \`\`that look like this'',
-with two of each.  This is to disambiguate references to the names of
-variables, functions, or files that might have a similar name to a common
-word.
-
-* Curly brackets ``{}`` should always be placed on their own line, like this:  
-``if( this )``  
-``{``  
-``  that();``  
-``  the( other );``  
-``}``  
+* Curly brackets `{}` should always be placed on their own line, like this:  
+`if( this )`  
+`{`  
+`  that();`  
+`  the( other );`  
+`}`  
 The exception to this rule is code blocks which contain only one line.  In a
 lot of conventions, curly brackets aren't used at all, but in our case we
 choose a less ambiguous compromise:  
-``if( this )``  
-``{ that();``  
-``}``
+`if( this )`  
+`{ that();`  
+`}`
 
 * The end of a long ``if`` block, function, or other programming block that
 ends with a curly bracket ``}`` should include a ``//`` comment that lets the

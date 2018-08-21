@@ -229,77 +229,12 @@ else
     {
       foreach( x; 0 .. MAP_X )
       {
-static if( USE_FOV )
-{
-        symbol output = SYM_SHADOW;
-
-        // If the player can currently see this map tile, display it.
-        if( to_display.v[y][x] )
-        {
-          output = to_display.t[y][x].sym;
-
- static if( COLOR )
- {
-  static if( FOLIAGE )
-  {
-          // If there is mold growing on this tile, change the tile's color
-          // to green (unless there's also water)
-          if( to_display.t[y][x].hazard & SPECIAL_MOLD )
-          {
-            if( !(to_display.t[y][x].hazard & HAZARD_WATER ) )
-            {
-              output.color.fg = CLR_GREEN;
-            }
-          }
-  }
-  static if( BLOOD )
-  {
-          // If there is blood spattered on this tile, change the tile's
-          // color to red (unless there's also water?)
-          if( to_display.t[y][x].hazard & SPECIAL_BLOOD )
-          {
-            if( !(to_display.t[y][x].hazard & HAZARD_WATER) )
-            {
-              output.color.fg = CLR_RED;
-            }
-          }
-  }
- } // static if( COLOR )
-
-          // If the player can see this tile, and there is an item on it,
-          // display that item instead of the map tile.
-          if( to_display.i[y][x].sym.ch != '\0' )
-          { output = to_display.i[y][x].sym;
-          }
-        }
-        else
-        {
-          // If the player can't currently see this tile, but they have seen
-          // it before, display it anyway (we need to do this explicitly,
-          // otherwise we'll get ghost monsters in the spot we were looking
-          // at before)
-          if( to_display.t[y][x].seen )
-          {
-            output = to_display.t[y][x].sym;
-
- static if( COLOR )
- {
-            // Set the remembered map tile's color to dark gray to distinguish
-            // it from the current line-of-sight
-            output.color = Color( CLR_DARKGRAY, output.color.reverse );
- }
-
-          } // if( to_display.t[y][x].seen )
-        } // else from if( to_display.v[y][x] )
-} // static if( USE_FOV )
-else
-{
         symbol output = to_display.t[y][x].sym;
 
- static if( COLOR )
+static if( COLOR )
+{
+ static if( FOLIAGE )
  {
-  static if( FOLIAGE )
-  {
           // If there is mold growing on this tile, change the tile's color
           // to green (unless there's also water)
           if( to_display.t[y][x].hazard & SPECIAL_MOLD )
@@ -310,8 +245,8 @@ else
             }
           }
   }
-  static if( BLOOD )
-  {
+ static if( BLOOD )
+ {
           // If there is blood spattered on this tile, change the tile's
           // color to red (unless there's also water?)
           if( to_display.t[y][x].hazard & SPECIAL_BLOOD )
@@ -321,13 +256,19 @@ else
               output.color.fg = CLR_RED;
             }
           }
-  }
- } // static if( COLOR )
+ }
+} // static if( COLOR )
 
         if( to_display.i[y][x].sym.ch != '\0' )
         { output = to_display.i[y][x].sym;
         }
-} // else from static if( USE_FOV )
+
+static if( USE_FOV )
+{
+        if( !to_display.v[y][x] )
+        { output = SYM_SHADOW;
+        }
+}
 
         display( y + 1, x, output );
       } /* foreach( x; 0 .. MAP_X ) */

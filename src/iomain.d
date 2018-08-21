@@ -266,7 +266,20 @@ static if( COLOR )
 static if( USE_FOV )
 {
         if( !to_display.v[y][x] )
-        { output = SYM_SHADOW;
+        {
+ static if( !COLOR )
+            output = SYM_SHADOW;
+ else
+ {
+          if( to_display.t[y][x].seen )
+          {
+            output.color.fg = CLR_DARKGRAY; 
+          }
+          else
+          {
+            output = SYM_SHADOW;
+          }
+ }
         }
 }
 

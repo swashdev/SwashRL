@@ -1,7 +1,7 @@
 SwashRL
 =======
 
-Readme file, last updated 2018-08-20 03:10 EST  
+Readme file, last updated 2018-08-25 07:23 EST  
 Contact the maintainer: <philip@swash.link>
 
 ---
@@ -19,6 +19,10 @@ SwashRL currently has git respositories hosted at the following locations:
 * <https://github.com/swashdev/SwashRL>
 
 * <https://github.com/swashdev/swash-tentative>
+
+If you're reading this Markdown file in a text editor or other program that
+doesn't display hyperlinks, links to files or web pages referenced in this
+document can be found at the bottom.
 
 ## Table of Contents
 
@@ -42,13 +46,12 @@ SwashRL currently has git respositories hosted at the following locations:
 
 ## License Agreement
 
-SwashRL is released under the Apache License 2.0, excepting that Derivative
+SwashRL is released under [the Apache License 2.0], excepting that Derivative
 Works are not required to carry prominent notices in changed files as
-required by the normal Apache License 2.0 in Section 4b.  The license can be
-found [here](LICENSE).
+required by the normal Apache License 2.0 in Section 4b.
 
-SwashRL uses some third-party resources to function.  For details, see the
-[NOTICE file](NOTICE) and the third-party licenses referenced therein.
+SwashRL uses some third-party resources to function.  For details, see
+[the NOTICE file] and the third-party licenses referenced therein.
 
 ## Supported Systems
 
@@ -57,13 +60,13 @@ Windows and Linux as of development version 0.025.
 
 I hope to eventually port it to more systems, but I'm limited in my ability to
 officially support systems by their availability to me.  If you'd like to
-become a volunteer maintainer for SwashRL on your system, [contact me on
-GitHub](https://github.com/swashdev) and we can work something out.
+become a volunteer maintainer for SwashRL on your system, [contact me] and we
+can work something out.
 
 ## Known Bugs
 
 To submit a bug fix or report a possible solution, leave an Issue or a Pull
-Request on [our GitHub page](https://github.com/swashdev/SwashRL).
+Request on [our GitHub page].
 
 * The PDCurses interface does not yet work due to all versions of PDCurses
   which we have been able to compile or otherwise acquire not working with
@@ -82,16 +85,14 @@ Request on [our GitHub page](https://github.com/swashdev/SwashRL).
 ## Compiling
 
 Starting with version 0.022, SwashRL has been programmed in D.  This means
-you'll need [DmD](https://dlang.org/download.html) or some other D
-compiler (there are versions available for every major platform including
-FreeBSD), but if you also get [dub](https://code.dlang.org/download), the D
+you'll need [DmD] or some other D compiler, but if you also get [dub], the D
 package manager, it will do a lot of your work for you including downloading
 dependencies.
 
 You can make some changes to how SwashRL is configured by editing the file
-[config.d](src/config.d)  This file has a lot of comment blocks which explain
-how to configure SwashRL  These configuration settings will be interpreted
-in [global.d](src/global.d)
+[config.d].  This file has a lot of comment blocks which explain how to
+configure SwashRL.  These configuration settings will be interpreted in
+[global.d].
 
 To compile, navigate to the root folder (the same folder this readme file is
 in) and type:
@@ -118,21 +119,20 @@ use one of the following commands:
 
 If you're compiling from a git repository, your compiled SwashRL will include
 the current commit ID when asked for its version number.  If you are _not_
-compiling from a git repository, you'll have to edit [config.d](src/config.d)
-and set the `INCLUDE_COMMIT` flag to `false`, otherwise it will not compile.
+compiling from a git repository, you'll have to edit [config.d] and set the
+`INCLUDE_COMMIT` flag to `false`, otherwise it will not compile.
 
 If you're not sure whether or not your source code is in a git repository,
-check and see if there's a `.git` directory in this folder.  If there isn't,
+check and see if there's a `[.git]` directory in this folder.  If there isn't,
 you can get the up-to-date source repository from
-[our GitHub](https://github.com/swashdev/SwashRL).
+[our GitHub page].
 
-For more information about git, check out
-[their website](https://git-scm.com/).
+For more information about git, check out [the git website].
 
 ### Compiling for Derivatives
 
 There are a few things to note if you want to use the SwashRL source code to
-make your own game.  First of all, [the Apache License 2.0](LICENSE) is very
+make your own game.  First of all, [the Apache License 2.0] is very
 permissive, and unlike the GNU GPL and other copyleft licenses you absolutely
 can commercially exploit SwashRL without having to release your source code.
 This is not an oversight; I have intentionally licensed SwashRL to allow you
@@ -142,35 +142,33 @@ notices, etcetera.
 Secondly, you'll have to change the name of the program.  I've made this very
 easy to do.  It only requires two steps:
 
-1. Edit the file [dub.json](dub.json) so that the "name" field has been
-   changed to the name of your executable file (i.e., instead of saying
-   `"name": "swashrl",` it will say `"name": "yourname",`)
+1. Edit the file [dub.json] so that the "name" field has been changed to the
+   name of your executable file (i.e., instead of saying `"name": "swashrl",`
+   it will say `"name": "yourname",`; do not include the `.exe`)
 
    1. You should also modify the "authors" and "copyright" fields to reflect
       your copyright information, and the "license" field if you choose to
-      relicense it.  For more information about the dub.json file, see [the
-      Dlang documentation
-      page](https://code.dlang.org/package-format?lang=json).
+      relicense it.  For more information about the dub.json file, see
+      [the Dlang JSON file documentation].
 
-2. Edit the file [global.d](src/global.d) so that the "NAME" enum will be the
+2. Edit the file [global.d] so that the "NAME" enum will be the
    name of your program (i.e. instead of saying `enum NAME = "SwashRL;` it
    will say `enum NAME = "Your Game's Name";`)
 
 ## Change Logs
 
-For all of your change logging needs, see [changes.txt](docs/changes.txt).
-For those interested, there's also a more in-depth history of the project
-being recorded in [history.txt](docs/history.txt)
+For all of your change logging needs, see [changes.txt].  For those
+interested, there's also a more in-depth history of the project being recorded
+in [history.txt].
 
 ## Contributing
 
 If you're thinking of making a contribution to the SwashRL project, first of
-all thank you very much!  We now have
-[contribution guidelines](docs/CONTRIBUTING.MD) to help you get started.
+all thank you very much!  We now have [contribution guidelines] to help you
+get started.
 
-The best way to contribute to SwashRL is via
-[our GitHub page](https://github.com/swashdev/Spelunk), where you can follow
-the conversation and see where we need help.
+The best way to contribute to SwashRL is via [our GitHub page], where you can
+follow the conversation and see where we need help.
 
 ## Careware
 
@@ -204,3 +202,19 @@ THIS LETTER.
 
 * <http://www.foregen.org/>
 * <https://www.doctorsopposingcircumcision.org/>
+
+[our GitHub page]: https://github.com/swashdev/SwashRL
+[the Apache license 2.0]: LICENSE
+[the NOTICE file]: NOTICE
+[contact me]: philip@swash.link
+[contribution guidelines]: docs/CONTRIBUTING.MD
+[config.d]: src/config.d
+[global.d]: src/global.d
+[dub.json]: dub.json
+[changes.txt]: docs/changes.txt
+[history.txt]: docs/history.txt
+[.git]: .git
+[DmD]: https://dlang.org/download.html
+[dub]: https://code.dlang.org/download
+[the git website]: https://git-scm.com/
+[the Dlang JSON file documentation]: https://code.dlang.org/package-format?lang=json

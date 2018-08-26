@@ -31,12 +31,27 @@ static map Current_map;
 static uint Current_level;
 static SwashIO IO;
 
-void help()
-{
-  message(
-    "hjklyubn or number pad to move. PERIOD to wait, SPACE to clear." );
-}
-
+/++
+ + Formats the version number
+ +
+ + This function is used to get the full version number from `VERSION` as a
+ + string.  If `INCLUDE_COMMIT` is `true`, the seven-digit git commit hash
+ + will be appended.
+ +
+ + The formatted output will be one of the following:
+ +
+ +  - `INCLUDE_COMMIT == true`: `%.3f-%s`, `VERSION`, `COMMIT`
+ +
+ +  - `INCLUDE_COMMIT == false`: `%.3f`, `VERSION`
+ +
+ + See Also:
+ +   `VERSION` from global.d,
+ +   `INCLUDE_COMMIT` from global.d,
+ +   `COMMIT` from global.d
+ +
+ + Returns:
+ +   A `string` representing the full version number.
+ +/
 string sp_version()
 {
 static if( INCLUDE_COMMIT )
@@ -45,34 +60,120 @@ else
   return format( "%.3f", VERSION );
 }
 
-// `SDL_Mode' is a static variable used by the display functions to determine
-// whether SDL or curses is being used.  `SDL_MODES' is an enum that stores
-// the possible values of `SDL_Mode'.
-// Depending on how your compile is configured, the default will be either
-// `SDL_MODES.terminal' or `SDL_MODES.none' but can be set in the command
-// line.  If the command line input conflicts with your compile, `SDL_Mode'
-// will be reset in `main'.
+/++
+ + An enum representing valid values for `SDL_Mode`
+ +/
 enum SDL_MODES { none, terminal, full };
+
+/++
+ + Used to determine how the SDL interface will behave.
+ +
+ + This variable is referenced when initializing the game's display to
+ + determine which output mode to use.
+ +
+ + If `SDL_Mode == SDL_MODES.terminal`, SDL will imitate a console terminal.
+ + If `SDL_Mode == SDL_MODES.none`, a curses interface will be used instead.
+ +
+ + This setting might be overridden in `main` if the given SDL_Mode is
+ + invalid:
+ +
+ + 1. If the game is not compiled with SDL, SDL_Mode will always be
+ +    `SDL_MODES.none`, even if the player tries to override it with a
+ +    command-line argument.
+ +
+ + 2. If the game is not compiled with curses, SDL_Mode will always be
+ +    `SDL_MODES.terminal`, even if the player tries to override it with a
+ +    command-line argument.
+ +
+ + The default value is always `SDL_MODES.terminal`, unless the game was not
+ + compiled with SDL, in which case the default will be `SDL_MODES.none`.
+ +/
 static SDL_MODES SDL_Mode = SDL_ENABLED ? SDL_MODES.terminal : SDL_MODES.none;
 
+/// A shortcut for checking if `SDL_Mode` is set to `SDL_MODES.none`
 bool SDL_none()
 { return SDL_Mode == SDL_MODES.none;
 }
+/// A shortcut for checking if `SDL_Mode` is set to `SDL_MODES.terminal`
 bool SDL_terminal()
 { return SDL_Mode == SDL_MODES.terminal;
 }
+/++
+ + A shortcut for checking if `SDL_Mode` is set to `SDL_MODES.full`
+ +
+ + Deprecated:
+ +   The full graphical version of this game is not yet available.  This
+ +   function is an alias for `SDL_terminal`.
+ +/
 bool SDL_full()
 { return SDL_terminal();
 }
 
-// Exit codes for `main':
-//   0 Exit without error
-//   1 Exit due to --help prompt, no errors
-//  11 Exit due to KeymapException
-//  21 Exit due to SDLException
-//  31 Exit due to invalid command-line argument
-// 100 Catch-all error code
 
+
+/++
+ + The main function for SwashRL
+ +
+ + This function sets up the SwashRL program and governs the mainloop and
+ + cleanup code.  Command input functions and drawing functions are mostly
+ + called from here.
+ +
+ + The command-line parameters are also passed into the program from here.
+ + They are as follows:
+ +
+ + <table>
+ +   <tr>
+ +     <th>-v</th>
+ +     <td rowspan = "2">Displays the version number and then exits</td>
+ +   </tr>
+ +   <tr>
+ +     <th>--version</th>
+ +   </tr>
+ +   <tr>
+ +     <th>-h</th>
+ +     <td rowspan = "2">Displays a help prompt and then exits</td>
+ +   </tr>
+ +   <tr>
+ +     <th>--help</th>
+ +   </tr>
+ +   <tr>
+ +     <th>-s</th>
+ +     <td rowspan = "2">The next argument is the file name of a saved level
+ +     file, not including the directory or the ".lev" ending</td>
+ +   </tr>
+ +   <tr>
+ +     <th>--save</th>
+ +   </tr>
+ +   <tr>
+ +     <th>-S</th>
+ +     <td rowspan = "2">The next argument is either "none", "terminal", or
+ +     "full", and determines the behavior of the SDL interface.  If this
+ +     parameter is set to "none" and the program was not compiled with
+ +     curses, "terminal" will be used instead.  If this parameter is set to
+ +     "terminal" or "full" and the program was not compiled with SDL, "none"
+ +     will be used instead.</td>
+ +   </tr>
+ +   <tr>
+ +     <th>--sdl-mode</th>
+ +   </tr>
+ +   <tr>
+ +     <th>--test-map</th>
+ +     <td>If the program was compiled in debug mode, generate a test map and
+ +     start the game there.  If the program was not compiled in debug mode,
+ +     this parameter instead gives an error message and then quits the
+ +     program.</td>
+ +   </tr>
+ + </table>
+ +
+ + Parameters:
+ +   args    The command-line arguments passed into the program at runtime.
+ +
+ + Returns:
+ +   0 if no errors, 1 if the -h or -v prompts were activated, 11 if kepmaps
+ +   failed to initialize properly, 21 if an error occurred during SDL
+ +   initialization or runtime, or 31 if an invalid command-line argument was
+ +   given.
+ +/
 int main( string[] args )
 {
   bool use_test_map = false;

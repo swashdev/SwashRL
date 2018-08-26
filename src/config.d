@@ -22,76 +22,75 @@
 // Instructions for the compiler                                            //
 //////////////////////////////////////////////////////////////////////////////
 
-// Setting this to true will cause the program to output the current git
-// commit number when asked for the version number.  This will not affect
-// version numbers which are output to save files for compatibility purposes.
-// If you are not compiling from a git repository, you'll have to set this to
-// false in order to compile.
+/// Setting this to `true` will cause the program to output the current git
+/// commit number when asked for the version number.  This will not affect
+/// version numbers which are output to save files for compatibility purposes.
+/// If you are not compiling from a git repository, you'll have to set this to
+/// `false` in order to compile.
 enum INCLUDE_COMMIT = true;
 
 // SECTION 1: ////////////////////////////////////////////////////////////////
 // Display configuration                                                    //
 //////////////////////////////////////////////////////////////////////////////
 
-// What character to use for the player.  '@' is recommended.
+/// What character to use for the player.  `'@'` is recommended.
 enum SMILEY = '@';
 
-// Whether to use reversed graphics to make walls look more solid and
-// connected (this makes the game much more pleasing to the eye on a number
-// of terminals I tested with it)
+/// Whether to use reversed graphics to make walls look more solid and
+/// connected (this makes the game much more pleasing to the eye on a number
+/// of terminals I tested with it)
 enum REVERSED_WALLS = true;
 
-// Enables color.
+/// Enables color.
 enum COLOR = true;
 
-// Enables foliage.  Foliage grows randomly in dungeons and has no practical
-// effect on gameplay other than turning tiles green.
+/// Enables foliage.  Foliage grows randomly in dungeons and has no practical
+/// effect on gameplay other than turning tiles green.
 enum FOLIAGE = true;
 
-// Enables blood.  Blood splatter will appear on map tiles when a creature is
-// hit.  This has no practical effect other than turning map tiles red.
+/// Enables blood.  Blood splatter will appear on map tiles when a creature is
+/// hit.  This has no practical effect other than turning map tiles red.
 enum BLOOD = true;
 
 // Curses-only options: //
 
-// Enables special effects like the highlighted player and reversed walls.
-// Only works if your curses standard uses these effects (it probably does).
+/// Enables special effects like the highlighted player and reversed walls.
+/// Only works if your curses standard uses these effects (it probably does).
 enum TEXT_EFFECTS = true;
 
 // SDL-only options //
 
-// Font information for the SDL terminal interface.  `FONT' should point to
-// an existing font file.  SwashRL comes with two.  `TILE_HEIGHT' and
-// `TILE_WIDTH' will determine the font size, which also determines the window
-// size.
+/// A path to a font file to use for the map
 enum FONT = "assets/fonts/DejaVuSansMono.ttf";
 //enum FONT = "assets/fonts/DejaVuSansMono-Bold.ttf";
+/// A path to a font file to use for the message buffer, status bar, and other
+/// messages
 enum MESSAGE_FONT = "assets/fonts/DejaVuSansMono-Bold.ttf";
+
+/// The height to use for each tile in pixels
 enum TILE_HEIGHT = 16;
+/// The width to use for each tile in pixels
 enum TILE_WIDTH = 8;
 
-// Whether to highlight the player in the game display.  This only has an
-// effect on the SDL virtual terminal display, as the curses terminal
-// highlights the player using the cursor.
+/// Whether to highlight the player in the game display.  This only has an
+/// effect on the SDL virtual terminal display, as the curses terminal
+/// highlights the player using the cursor.
 enum HILITE_PLAYER = true;
 
 // SECTION 2: ////////////////////////////////////////////////////////////////
 // Spelunk! configuration                                                   //
 //////////////////////////////////////////////////////////////////////////////
 
-// Set USE_FOV to false if you need to be able to see the whole map (say, for
-// debugging, testing, &c)
+/++
+ + Enables field-of-vision
+ +
+ + Set this to `false` if you need to be able to see the whole map for
+ + whatever reason.
+ +/
 enum USE_FOV = true;
 
-// The number of messages to store in the message buffer
+/// The number of messages to store in the message buffer
 enum MAX_MESSAGE_BUFFER = 20;
 
-// These lines will define the lowest and highest possible dice roll,
-// including modifiers, that is possible in-game.  If adjusted they will not
-// necessarily impact all die rolls, but will impact die rolls with a minimum
-// and maximum result.  The standard of -1000 and 1000 essentially mean no
-// limit, as it is highly improbable that you fill find a monster that hits
-// that hard.
-// XXX: Are these values really necessary?
 enum MINIMUM_DIE_ROLL = -1000;
 enum MAXIMUM_DIE_ROLL = 1000;

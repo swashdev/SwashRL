@@ -123,7 +123,7 @@ compiling from a git repository, you'll have to edit [config.d] and set the
 `INCLUDE_COMMIT` flag to `false`, otherwise it will not compile.
 
 If you're not sure whether or not your source code is in a git repository,
-check and see if there's a `[.git]` directory in this folder.  If there isn't,
+check and see if there's a `.git` directory in this folder.  If there isn't,
 you can get the up-to-date source repository from
 [our GitHub page].
 
@@ -213,7 +213,6 @@ THIS LETTER.
 [dub.json]: dub.json
 [changes.txt]: docs/changes.txt
 [history.txt]: docs/history.txt
-[.git]: .git
 [DmD]: https://dlang.org/download.html
 [dub]: https://code.dlang.org/download
 [the git website]: https://git-scm.com/

@@ -17,9 +17,6 @@
 
 import global;
 
-import fexcept;
-import fdun;
-
 import std.string;
 import std.getopt;
 import std.stdio : writeln;

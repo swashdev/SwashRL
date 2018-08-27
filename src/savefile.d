@@ -20,11 +20,73 @@
 
 import global;
 
-import fexcept;
-
 import std.stdio;
 import std.format;
 import std.file;
+import std.exception : basicExceptionCtors;
+
+/++
+ + An exception for invalid save file access
+ +
+ + See_Also: save_error
+ +/
+class SaveFileException : Exception
+{
+  mixin basicExceptionCtors;
+}
+
+/++
+ + An exception for invalid dungeon level file access
+ +
+ + See_Also: level_file_error
+ +/
+class DungeonFileException : Exception
+{
+  mixin basicExceptionCtors;
+}
+
+/++
+ + Throws a SaveFileException
+ +
+ + This function throws a SaveFileException with the given `error` message.
+ +
+ + The message thrown will always be: "Unable to access save file (1): (2)",
+ + where (1) is `save_file` and (2) is `error`
+ +
+ + Throws:
+ +     SaveFileException
+ +
+ + Params:
+ +     save_file = The path to the file that caused the error
+ +     error = The message to be appended to the thrown `SaveFileException`
+ +/
+void save_error( T... )( string file, T args )
+{
+  throw new SaveFileException( format( "Unable to access save file %s: %s",
+                                       file, format( args ) ) );
+}
+
+/++
+ + Throws a DungeonFileException
+ +
+ + This function throws a DungeonFileException with the given `error` message.
+ +
+ + The message thrown will always be: "Unable to access dungeon level file
+ + (1): (2)", where (1) is `dungeon_file` and (2) is `error`
+ +
+ + Throws:
+ +     DungeonFileException
+ +
+ + Params:
+ +     dungeon_file = The path to the file that caused the error
+ +     error = The message to be appended to the thrown `SaveFileException`
+ +/
+void level_file_error( T... )( string dungeon_file, T args )
+{
+  throw new DungeonFileException(
+    format( "Unable to read dungeon level file %s: %s",
+    dungeon_file, format( args ) ) );
+}
 
 /++
  + Opens a level from a file.

@@ -55,6 +55,63 @@ enum INVENT_TAIL      = 13;
 
 enum INVENT_LAST_SLOT = INVENT_TAIL;
 
+// Checks a given item against a given inventory equipment slot
+bool check_equip( item i, ubyte s )
+{
+  // an empty item can go in any slot (obviously)
+  if( i.sym.ch == '\0' )
+  { return true;
+  }
+  // the player can hold any item in their hands
+  if( s == INVENT_WEAPON || s == INVENT_OFFHAND )
+  { return true;
+  }
+
+  // everything else goes into the switch statement
+  switch( s )
+  {
+    case INVENT_QUIVER:
+      return cast(bool)i.type & ITEM_WEAPON_MISSILE;
+
+    case INVENT_HELMET:
+      return cast(bool)i.equip & EQUIP_HELMET;
+
+    case INVENT_CUIRASS:
+      // the "cuirass" item slot can accept either cuirasses or shields (the
+      // player straps a shield to their back)
+      return (i.equip & EQUIP_CUIRASS) || (i.equip & EQUIP_SHIELD);
+
+    case INVENT_PAULDRONS:
+      return cast(bool)i.equip & EQUIP_PAULDRONS;
+
+    case INVENT_BRACERS:
+      return cast(bool)i.equip & EQUIP_BRACERS;
+
+    case INVENT_RINGL:
+      // rings are obviously ambidexterous
+    case INVENT_RINGR:
+      return cast(bool)i.equip & EQUIP_JEWELERY_RING;
+
+    case INVENT_NECKLACE:
+      return cast(bool)i.equip & EQUIP_JEWELERY_NECK;
+
+    case INVENT_GREAVES:
+      return cast(bool)i.equip & EQUIP_GREAVES;
+
+    case INVENT_KILT:
+      return cast(bool)i.equip & EQUIP_KILT;
+
+    case INVENT_FEET:
+      return cast(bool)i.equip & EQUIP_FEET;
+
+    case INVENT_TAIL:
+      return cast(bool)i.equip & EQUIP_TAIL;
+
+    default:
+      return false;
+  }
+}
+
 void get_inv_slot_name( string* nam, char* ch, ubyte slot );
 
 // see ``invent.d'' for functions related to inventory management (these

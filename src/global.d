@@ -137,4 +137,3 @@ public import ioterm;
 public import moves;
 public import keymaps;
 public import mov;
-public import invent;

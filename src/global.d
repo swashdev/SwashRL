@@ -135,7 +135,6 @@ public import iomain;
 public import iocurses;
 public import ioterm;
 public import moves;
-public import controls;
 public import keymaps;
 public import mov;
 public import invent;

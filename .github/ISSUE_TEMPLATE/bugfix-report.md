@@ -1,8 +1,8 @@
 ---
 name: Bugfix report
-about: Let us know that you found a way to fix a bug. This should only be used
-if the solution for the bug is not simply to edit the source code, since you
-can do a simple pull request for that.
+about: Let us know that you found a way to fix a bug. This should only be used if
+  the solution for the bug is not simply to edit the source code, since you can do
+  a simple pull request for that.
 
 ---
 

@@ -16,26 +16,46 @@
  */
 
 // This is the global file for SwashRL.  It will public import config.d and
-// util.d for you and process the data in both of these files to configure how
-// SwashRL will compile.  THIS FILE SHOULD BE INCLUDED AT THE TOP OF EVERY
-// FILE.  It will include all of the other files for you.
+// util.d for you and process the data in both of these files to configure
+// how SwashRL will compile.  THIS FILE SHOULD BE IMPORTED AT THE TOP OF
+// EVERY FILE.  It will import all of the other files for you.
 
 // SECTION 0: ////////////////////////////////////////////////////////////////
 // SwashRL version control & configuration                                  //
 //////////////////////////////////////////////////////////////////////////////
 
-// The name
-// If you're using the source code for a commercial product, change this
-// value to the name of your game to change all references to SwashRL.
+/++
+ + The name of the compiled game
+ +
+ + If you're using the source code for a derivative software product, change
+ + this value to the name of your game to change all references to SwashRL.
+ +/
 enum NAME = "SwashRL";
 
-// The version number
-// In the current version numbering system, the first number is the release
-// number and the second is the three-digit revision number.
+/++
+ + The version number
+ +
+ + In the current version numbering system, the first number is the release
+ + number and the second is the three-digit revision number.  This number
+ + is stored as a floating-point number.
+ +/
 enum VERSION = 0.027;
+
 static if( INCLUDE_COMMIT )
 {
 import std.string : split;
+
+/++
+ + The commit ID
+ +
+ + This string value represents the first seven digits of the commit number
+ + that the git repository was in when SwashRL was compiled.  This acts as
+ + the "patch number" for that version of the program.
+ +
+ + This value will not be declared if `INCLUDE_COMMIT` is `false`.
+ +
+ + See_Also: <a href="#VERSION">VERSION</a>
+ +/
 enum COMMIT = import( ".git/" ~ import( ".git/HEAD" ).split[1] )[0 .. 7];
 }
 
@@ -62,6 +82,8 @@ public import sys;
 // `SPELUNK_CURSES' evaluates to `true' if either ncurses or pdcurses is being
 // used and `false' otherwise.
 
+/// This value is used by some `static if` statements to determine whether or
+/// not curses is available for the program to use.
 version( ncurses )
 {
   public import deimos.ncurses.curses;
@@ -77,6 +99,8 @@ else
   enum CURSES_ENABLED = false;
 }
 
+/// This value is used by some `static if` statements to determine whether or
+/// not SDL2 is available for the program to use.
 version( sdl )
 {
   public import derelict.sdl2.sdl, derelict.sdl2.ttf;
@@ -91,20 +115,35 @@ else
 // SwashRL final setup                                                      //
 //////////////////////////////////////////////////////////////////////////////
 
-// The size of the map in the display
-// SwashRL will always attempt to have one line open at the top for the
-// message buffer and one at the bottom for the status bar.  If MAP_Y is
-// smaller than that, this variable takes effect.  MAP_X will always take
-// effect.  MAP_y and MAP_x are used for zero-counted for loops.  NUMTILES is
-// the number of tiles allowable on a map (1,760 by default)
+/// Used to determine the height of the map.
+/// 22 is recommended.
 enum MAP_Y = 22;
+
+/// Used to determine the width of the map.
+/// 80 is recommended.
 enum MAP_X = 80;
 
+/// Used by some `for` loops as a maximum value for zero-counted arrays.
+/// Always equal to `MAP_Y - 1`.
 enum MAP_y = MAP_Y - 1;
+
+/// Used by some `for` loops as a maximum value for zero-counted arrays.
+/// Always equal to `MAP_X - 1`.
 enum MAP_x = MAP_X - 1;
+
+/// The number of tiles on the map.  Always equal to `MAP_Y * MAP_X`.
 enum NUMTILES = MAP_Y * MAP_X;
 
+/++
+ + The number of reserved lines at the top of the display.
+ +
+ + The message buffer appears at the top of the display.  The number of lines
+ + it takes up is listed here as `RESERVED_LINES`.  Map display functions use
+ + this value to offset the y coordinate of the draw functions.
+ +/
 enum RESERVED_LINES = MESSAGE_BUFFER_LINES;
+
+/// An alias for `RESERVED_LINES`
 enum Y_OFFSET = RESERVED_LINES;
 
 // include the utility file

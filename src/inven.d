@@ -19,14 +19,14 @@ import global;
 
 // defines the `inven' struct, used for inventories
 
-// inventory slots have unique names related to the letter they are associated
-// with.
-// The `tail' inventory slot is only available for characters who have tails
-// and should be treated as a special case.
-// Note that the `weapon' and `off' hands are also used for carrying things.
-// TODO: Implement a "bag" for the user's miscellaneous items carried in a bag
-// (perhaps the bag should be an inventory item as well?)
-
+/++
+ + The inventory
+ +
+ + This struct defines an inventory.  It contains an array of 40 `item`s (14
+ + for equipment slots followed by 26 more for a "bag"), a counter for the
+ + number of items in the quiver (`quiver_count`), and the number of `coins`
+ + in the inventory.
+ +/
 struct inven
 {
   // all `items' carried in this inventory; 14 "inventory slots" for the
@@ -55,7 +55,25 @@ enum INVENT_TAIL      = 13;
 
 enum INVENT_LAST_SLOT = INVENT_TAIL;
 
-// Checks a given item against a given inventory equipment slot
+/++
+ + Checks a given item against a given inventory equipment slot
+ +
+ + This function checks the given item `i`'s equipment type against a given
+ + equipment slot `s`.  The function returns `true` if the item can go in the
+ + given inventory slot.
+ +
+ + The function will always return `true` if `s` represents one of the
+ + character's hands (`INVENT_WEAPON` for the "weapon-hand" or
+ + `INVENT_OFFHAND` for the "off-hand"), because any item can be carried in
+ + one's hands.
+ +
+ + Params:
+ +   i = an `item` to be checked
+ +   s = the index of the equipment slot to be checked
+ +
+ + Returns:
+ +   `true` if i can be equipped in equipment slot s, `false` otherwise
+ +/
 bool check_equip( item i, ubyte s )
 {
   // an empty item can go in any slot (obviously)
@@ -113,8 +131,3 @@ bool check_equip( item i, ubyte s )
 }
 
 void get_inv_slot_name( string* nam, char* ch, ubyte slot );
-
-// see ``invent.d'' for functions related to inventory management (these
-// needed to be moved there since these won't compile in the current load
-// order until ``you.d'' has been included--possibly something to fix later
-// [TODO])

@@ -19,6 +19,23 @@
 
 import global;
 
+/++
+ + The item struct
+ +
+ + This struct defines an item.
+ +
+ + It contains the item's `symbol`, which also defines colors; a string
+ + representing the item's `name`, and unsigned shorts defining the item
+ + `type` and what, if any, `equip` slot it goes into.
+ +
+ + It also defines two bytes `addd` and `addm`, which respectively add dice
+ + and a modifier to rolls which impact the item in question.  For example,
+ + an attack roll by the player while they are equipping an item of type
+ + `ITEM_WEAPON` will add `addd` to the dice rolls and `addm` to the modifier
+ + for damage output.
+ +
+ + Flags for `type` and `equip` are defined in iflags.d
+ +/
 struct item
 {
   symbol sym;
@@ -28,4 +45,6 @@ struct item
   byte addd, addm;
 }
 
+/// A generic item used to signal an empty equipment slot or a floor tile
+/// which does not have an item on it
 item No_item = { sym:symbol('\0'), name:"NO ITEM", addd:0, addm:0 };

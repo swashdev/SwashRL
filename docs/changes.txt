@@ -18,6 +18,7 @@ VERSION 0.028
   Fixed:
    - The test map no longer causes an error by attempting to grow mold when
      the mold flag is turned off.
+   - iocurses.d no longer generates errors due to undeclared "format" calls
 
 VERSION 0.027
 Finalized 2018-08-19 07:19 EST

@@ -23,8 +23,9 @@ version( curses )
 
 import global;
 
-import std.string: toStringz;
+import std.string : toStringz;
 import std.ascii : toLower;
+import std.string : format;
 
 // This class contains functions for the curses display
 // These functions should all be cross-compatible between pdcurses and ncurses

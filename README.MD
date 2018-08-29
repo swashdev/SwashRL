@@ -1,7 +1,7 @@
 SwashRL
 =======
 
-Readme file, last updated 2018-08-25 07:23 EST  
+Readme file, last updated 2018-08-29 03:00 EST  
 Contact the maintainer: <philip@swash.link>
 
 ---
@@ -68,9 +68,7 @@ can work something out.
 To submit a bug fix or report a possible solution, leave an Issue or a Pull
 Request on [our GitHub page].
 
-* The PDCurses interface does not yet work due to all versions of PDCurses
-  which we have been able to compile or otherwise acquire not working with
-  DMD.
+* The PDCurses interface does not yet work on Windows due to an unknown error.
 
 * The curses interface does not display remembered map tiles which fall
   outside the player's line-of-sight.
@@ -109,10 +107,10 @@ ncurses, by using one of the following commands:
 > `dub build --config ncurses`  
 > `dub build --config ncurses-nosdl`  
 
-In theory, you could use PDCurses instead, but this isn't being actively
-supported because frankly noone on the development team can get it to work.
-If you can, we'd love to hear how you did it.  To compile with PDCurses,
-use one of the following commands:
+You can also compile with PDCurses.  However, support for this is tentative at
+best because it only seems to work on certain systems, namely Linux.  We are
+working on Windows support and have opened [an issue] looking for help with
+this problem.  The commands to compile with PDCurses are as follows:
 
 > `dub build --config pdcurses`  
 > `dub build --config pdcurses-nosdl`
@@ -206,7 +204,8 @@ THIS LETTER.
 [our GitHub page]: https://github.com/swashdev/SwashRL
 [the Apache license 2.0]: LICENSE
 [the NOTICE file]: NOTICE
-[contact me]: philip@swash.link
+[an issue]: https://github.com/swashdev/SwashRL/issues/2
+[contact me]: mailto:philip@swash.link
 [contribution guidelines]: docs/CONTRIBUTING.MD
 [config.d]: src/config.d
 [global.d]: src/global.d

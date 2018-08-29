@@ -23,6 +23,12 @@
 version( Windows )
 {
   pragma( msg, "Compiling for Windows" );
+
+ version( pdcurses )
+ {
+  pragma( msg, "WARNING:  Running the Windows version of SwashRL in the PDCurses interface currently causes the program to crash without an error message.  We are still working on a solution to the problem.  For more information, please see the Issue on our GitHub page:
+https://github.com/swashdev/SwashRL/issues/2" );
+ }
 }
 else version( linux )
 {
@@ -35,15 +41,4 @@ else version( FreeBSD )
 else
 {
   pragma( msg, "WARNING: You are compiling SwashRL for an operating system that is not currently being actively supported.  While it is highly likely that it will \"just work,\" especially on a Linux distribution or one of the BSDs, it may fail or crash." );
-}
-
-version( pdcurses )
-{
-  pragma( msg, "WARNING: PDCurses is not being actively supported " ~
-"due to difficulties with getting dmd to recognize " ~
-"any version of pdcurses.lib we have compiled.  We are unsure of the " ~
-"problem and are working on a workaround or an alternative.\n" ~
-"If you manage to get PDCurses working for Spelunk!, we would be delighted " ~
-"to learn how you did it.  Please leave an Issue on our GitHub page:\n" ~
-"https://github.com/swashdev/SwashRL" );
 }

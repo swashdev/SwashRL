@@ -15,8 +15,33 @@
  * limitations under the License.
  */
 
+// mov.d:  Functions related to player and monster movement
+// TODO:  Allow the player to be represented by a `monst` to allow some of
+// these functions to be deprecated
+
 import global;
 
+/++
+ + Gets the change in x and y coordinates associated with the given direction
+ + of travel
+ +
+ + This function takes a flag dir, representing a direction that a monster is
+ + moving in, and alters dy and dx to represent what changes that movement
+ + makes to the monster's x and y coordinates.
+ +
+ + dir is actually a movement flag defined in moves.d.
+ +
+ + Params:
+ +   dir = A movement flag determining what `dir`ection is being used to
+ +         calculate dy and dx
+ +   dy  = A pointer to a `byte` representing the change in the monster's y
+ +         coordinate, which will be changed to either -1, 0, or 1 depending
+ +         on what `dir`ection the monster is moving in;  Note that -1 means
+ +         "up" and 1 means "down" due to the way the coordinate system works
+ +   dx  = A pointer to a `byte` representing the change in the monster's x
+ +         coordinate, which will be changed to either -1, 0, or 1 depending
+ +         on what `dir`ection the monster is moving in
+ +/
 void getdydx( ubyte dir, byte* dy, byte* dx )
 {
   switch( dir )
@@ -61,6 +86,23 @@ void getdydx( ubyte dir, byte* dy, byte* dx )
   }
 }
 
+/++
+ + Causes a monster to attack the player
+ +
+ + This function alters the given `player` u to reflect changes, if any,
+ + resulting from the given `monst` m attacking u, and outputs messages to
+ + show the user what is happening.
+ +
+ + <strong>This function can kill the player if m does enough damage to
+ + u</strong>
+ +
+ + See_Also:
+ +   <a href="#uattackm">uattackm</a>
+ +
+ + Params:
+ +   m = A pointer to the `monst`er which is attacking u
+ +   u = A pointer to the `player` which is being attacked by m
+ +/
 void mattacku( monst* m, player* u )
 {
   uint atk = rollbag( m.attack_roll );
@@ -87,6 +129,20 @@ static if( BLOOD )
   }
 }
 
+/++
+ + Causes the player to attack a monster
+ +
+ + This function alters the given `monst` m to reflect changes, if any,
+ + resulting from the given `player` u attacking m, and outputs messages to
+ + show the user what is happening.
+ +
+ + See_Also:
+ +   <a href="#mattacku">mattacku</a>
+ +
+ + Params:
+ +   u = A pointer to the `player` which is attacking m
+ +   m = A pointer to the `monst`er which is being attacked by u
+ +/
 void uattackm( player* u, monst* m )
 {
   int mod = u.attack_roll.modifier + u.inventory.items[INVENT_WEAPON].addm;
@@ -133,6 +189,35 @@ enum CAN_NOT_SWIM  = 0;
 enum CAN_SWIM      = 1;
 enum CAN_ONLY_SWIM = 2;
 
+/++
+ + Moves a given monster on the given map
+ +
+ + This function attempts to move mn in the direction given by idy and idx
+ + based on what's going on in the given `map` m and where the given `player`
+ + u is.
+ +
+ + Specifically, this function attempts to alter `mn`'s x and y coordinates by
+ + idx and idy, but might change them to a different value if there is a tile
+ + in m blocking their way.  If u is in their path, mn will attack u instead
+ + of moving.
+ +
+ + idy and idx can be calculated by the `getdydx` function.
+ +
+ + <strong>This function can kill the player if mn attacks u</strong>
+ +
+ + See_Also:
+ +   <a href="#mattacku">mattacku</a>,
+ +   <a href="#monstai">monstai</a>
+ +
+ + Params:
+ +   mn  = A pointer to the `monst` which is being moved
+ +   m   = A pointer to the `map` that mn is currently in
+ +   idy = The initial dy which `mn.y` will try to be altered by if the
+ +         terrain and the player allow
+ +   idx = The initial dx which `mn.x` will try to be altered by if the
+ +         terrain and the player allow
+ +   u   = A pointer to the `player` character
+ +/
 void mmove( monst* mn, map* m, byte idy, byte idx, player* u )
 {
   uint dy = idy, dx = idx;
@@ -204,6 +289,27 @@ void mmove( monst* mn, map* m, byte idy, byte idx, player* u )
   }
 }
 
+/++
+ + Tells the given monster to make their move
+ +
+ + This function is called when it is a particular monster's turn to make a
+ + move.  Based on the position of the given `player` u, the monster will
+ + attempt to move toward u on the map.
+ +
+ + Which monster is being activated is determined by the index of the monster
+ + in the given `map` `m`'s monster array (`m.m`).
+ +
+ + <strong>This function can kill the player if `m.m[index]` attacks
+ + u</strong>
+ +
+ + See_Also:
+ +   <a href="#mmove">mmove</a>
+ +
+ + Params:
+ +   m     = A pointer to the `map` that the monster is stored in
+ +   index = The index of the monster in `m.m`
+ +   u     = A pointer to the `player` character
+ +/
 void monstai( map* m, uint index, player* u )
 {
   monst* mn = &m.m[index];
@@ -220,6 +326,38 @@ void monstai( map* m, uint index, player* u )
   mmove( mn, m, cast(byte)dy, cast(byte)dx, u );
 }
 
+/++
+ + Causes the player to move
+ +
+ + This function takes in the `player` character u, the current `map` m, and
+ + the `dir`ection that the player wants to move in, and computes the result.
+ +
+ + If there is terrain in the `dir`ection that u wants to go, this function
+ + governs how u is affected by that.
+ + <strong>This function might kill the player depending on what terrain they
+ + bump into</strong>.
+ +
+ + If there is a monster in the `dir`ection that u wants to go, this function
+ + will cause u to attack it.
+ +
+ + dir is a movement flag from moves.d.  If dir is not a direction that can
+ + be passed into `getdydx`, this function will sometimes handle what the
+ + player character does instead of moving, but this use of the function is
+ + not recommended because this function is best used for cases where the
+ + player is <em>actually</em> trying to move.
+ +
+ + See_Also:
+ +   <a href="#uattackm">uattackm</a>
+ +
+ + Params:
+ +   u   = A pointer to the `player` character
+ +   m   = A pointer to the `map` that u is currently navigating
+ +   dir = The `dir`ection that u wants to go in
+ +
+ + Returns:
+ +   A `ubyte` representing the number of turns expended by the player while
+ +   moving (usually 1 or 0)
+ +/
 ubyte umove( player* u, map* m, ubyte dir )
 {
   if( dir == MOVE_GET )
@@ -282,6 +420,25 @@ message( "You step into the water and are pulled down by your equipment..." );
   return 1;
 }
 
+/++
+ + Causes the player to try to pick up a given item
+ +
+ + This function takes the `player` character u and a given `item` i and tries
+ + to get u to pick up i.
+ +
+ + i is an `item` which should be obtained from the `i` array of the `map`
+ + that the player character is currently occupying.
+ +
+ + This function will automatically check both of the player's hands to make
+ + sure that u has a free grasp to pick an item up.
+ +
+ + Params:
+ +   u = A pointer to the `player` character
+ +   i = An `item` that u is trying to pick up
+ +
+ + Returns:
+ +   `true` if u successfully picked up i; `false` otherwise
+ +/
 bool upickup( player* u, item i )
 {
   if( i.sym.ch == '\0' )
@@ -322,6 +479,28 @@ bool upickup( player* u, item i )
   return false;
 }
 
+/++
+ + Moves all monsters on the given `map`
+ +
+ + This function cycles through all of the monsters in `m`'s monster array
+ + (`m.m`) and calls `monstai` on all of them.  The function takes in the
+ + `player` character so that the monsters know where he or she is in order
+ + to make a decision.
+ +
+ + If any monsters have been killed by the player, this function will remove
+ + them from `m.m`.
+ +
+ + <strong>This function can kill the player if any of the monsters in `m.m`
+ + attack u</strong>
+ +
+ + See_Also:
+ +   <a href="#monstai">monstai</a>,
+ +   <a href="#mmove">mmove</a>
+ +
+ + Params:
+ +   m = A pointer to the `map` whose monsters we want to move
+ +   u = A pointer to the `player` character
+ +/
 void map_move_all_monsters( map* m, player* u )
 {
   if( m.m.length == 0 )

@@ -15,10 +15,35 @@
  * limitations under the License.
  */
 
+// tile.d:  Defines the `tile` struct and the `Terrain` enum
+
 import global;
 
-// New in version 0.021--tiles are a struct rather than a bitmask.  Hopefully
-// this doesn't blow up in my face.
+/++
+ + The tile struct
+ +
+ + This struct defines a map tile.  It does this using the following assets:
+ +
+ + `sym`: A `symbol` used to define the tile's appearance in the display
+ +
+ + `block_cardinal_movement`: A `bool` which prevents monsters from moving in
+ + cardinal directions through the tile
+ +
+ + `block_diagonal_movement`: A `bool` which prevents monsters from moving in
+ + diagonal directions through the tile
+ +
+ + `block_vision`: A `bool` which prevents the player from seeing the tile or
+ + spaces behind it
+ +
+ + `lit`: A `bool` which determines whether or not the tile is illuminated
+ + (not currently implemented)
+ +
+ + `seen`: A `bool` which determines whether or not the player has seen this
+ + tile already.  Used for map memory.
+ +
+ + `hazard`: A `ushort` containing flags which indicate what hazards and other
+ + special properties the tile has.
+ +/
 struct tile
 {
   // the tile's symbol--this can be easily overwritten by functions intended
@@ -50,6 +75,15 @@ struct tile
   ushort hazard;
 }
 
+/++
+ + A list of standard terrain elements
+ +
+ + This enum defines and names standard map tiles to be used by level
+ + generation code.
+ +
+ + See_Also:
+ +   <a href="#tile">tile</a>
+ +/
 enum Terrain {
   floor = tile( SYM_FLOOR, false, false, false, true, false, 0            ),
   wall  = tile( SYM_WALL,  true,  true,  true,  true, false, 0            ),

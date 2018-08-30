@@ -23,12 +23,6 @@
 version( Windows )
 {
   pragma( msg, "Compiling for Windows" );
-
- version( pdcurses )
- {
-  pragma( msg, "WARNING:  Running the Windows version of SwashRL in the PDCurses interface currently causes the program to crash without an error message.  We are still working on a solution to the problem.  For more information, please see the Issue on our GitHub page:
-https://github.com/swashdev/SwashRL/issues/2" );
- }
 }
 else version( linux )
 {

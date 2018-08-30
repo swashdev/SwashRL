@@ -1,7 +1,7 @@
 SwashRL
 =======
 
-Readme file, last updated 2018-08-29 03:00 EST  
+Readme file, last updated 2018-08-30 01:48 EST  
 Contact the maintainer: <philip@swash.link>
 
 ---
@@ -107,10 +107,8 @@ ncurses, by using one of the following commands:
 > `dub build --config ncurses`  
 > `dub build --config ncurses-nosdl`  
 
-You can also compile with PDCurses.  However, support for this is tentative at
-best because it only seems to work on certain systems, namely Linux.  We are
-working on Windows support and have opened [an issue] looking for help with
-this problem.  The commands to compile with PDCurses are as follows:
+You can also compile with PDCurses, which is compatible with Windows, using
+one of the following commands:
 
 > `dub build --config pdcurses`  
 > `dub build --config pdcurses-nosdl`

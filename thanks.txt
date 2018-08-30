@@ -16,5 +16,8 @@ significant help to the SwashRL source code:
 Further thanks to the following people who have contributed code or help in
 some way:
 
+  unleashy from GitHub, who explained how to fix PDCurses and allow it to
+  compile with dub.
+
   Björn Bergström, who designed the recursive shadowcasting algorithm for fog
   of war, the Doryen implementation of which is used in SwashRL.

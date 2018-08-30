@@ -15,8 +15,24 @@
  * limitations under the License.
  */
 
+// you.d:  Defines functions related to the player struct
+
 import global;
 
+/++
+ + The player struct
+ +
+ + This struct represents the player character by storing the following
+ + values:
+ +
+ + `sym`: A `symbol` that represents the player's appearance in the display
+ +
+ + `x` and `y`: `ubyte`s that represent the player's current coordinates
+ +
+ + `inventory`: An `inven` representing the player's current inventory
+ +
+ + `attack_roll`: A `dicebag` that represents the player's attack roll
+ +/
 struct player
 {
   symbol sym;
@@ -26,6 +42,27 @@ struct player
   dicebag attack_roll;
 }
 
+/++
+ + Initializes the `player`
+ +
+ + This function does initial setup for the player character and places him or
+ + her at the coordinates (x, y).
+ +
+ + The player's hit dice are defined and rolled here, and the inventory is set
+ + (to a bunch of empty items).  The player's symbol is also defined in this
+ + function, as are his or her attack dice.
+ +
+ + The coordinates input into this function are checked against `MAP_X` and
+ + `MAP_Y`, and if the function attempts to initialize the player outside this
+ + boundary it is fixed.
+ +
+ + Params:
+ +   y = The player's initial y coordinate
+ +   x = The player's initial x coordinate
+ +
+ + Returns:
+ +   The `player`
+ +/
 player init_player( ubyte y, ubyte x )
 {
   player u;

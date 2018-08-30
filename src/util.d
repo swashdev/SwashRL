@@ -15,8 +15,24 @@
  * limitations under the License.
  */
 
+// util.d:  Defines miscellaneous utility functions
+
 import global;
 
+/++
+ + Quickly checks if a number is within a certain range
+ +
+ + This function is used to quickly check if a certain value is within a
+ + given range.  It returns `true` if floor &lt;= n &lt;= ceil.
+ +
+ + Params:
+ +   n     = The `n`umber to be checked
+ +   floor = The lowest acceptable value for n
+ +   ceil  = The highest acceptable value for n
+ +
+ + Returns:
+ +   `true` if `floor <= n <= ceil`, `false` otherwise
+ +/
 bool within_minmax( int n, int floor, int ceil )
 {
   if( floor <= n && n <= ceil && floor <= ceil )
@@ -25,6 +41,24 @@ bool within_minmax( int n, int floor, int ceil )
   return false;
 }
 
+/++
+ + Changes a number to be within a certain range
+ +
+ + This number is used to convert a given number n to a certain range.  It
+ + does this by checking n against the floor and `ceil`ing of that range, and
+ + alters n if necessary to be within that range.
+ +
+ + Params:
+ +   n     = The `n`umber to be checked
+ +   floor = The lowest acceptable value for n
+ +   ceil  = The highest acceptable value for n
+ +
+ + Returns:
+ +   n, if `floor < n < ceil`; $(LF)
+ +   floor, if `n <= floor`; $(LF)
+ +   ceil, if `n >= ceil`; $(LF)
+ +   Return value is an `int`
+ +/
 int minmax( int n, int floor, int ceil )
 {
   if( floor == ceil )

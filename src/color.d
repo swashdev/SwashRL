@@ -114,21 +114,21 @@ version( curses )
 {
 
 /// The predefined value of "black" in curses
-enum CURSES_BLACK       =  0;
+enum CURSES_BLACK       =  COLOR_BLACK;
 /// The predefined value of "red" in curses
-enum CURSES_RED         =  1;
+enum CURSES_RED         =  COLOR_RED;
 /// The predefined value of "green" in curses
-enum CURSES_GREEN       =  2;
+enum CURSES_GREEN       =  COLOR_GREEN;
 /// The predefined value of "brown" or "dim yellow" in curses
-enum CURSES_BROWN       =  3;
-/// The predefined value of "magenta" in curses
-enum CURSES_MAGENTA     =  4;
+enum CURSES_BROWN       =  COLOR_YELLOW;
 /// The predefined value of "blue" in curses
-enum CURSES_BLUE        =  5;
+enum CURSES_BLUE        =  COLOR_BLUE;
+/// The predefined value of "magenta" in curses
+enum CURSES_MAGENTA     =  COLOR_MAGENTA;
 /// The predefined value of "cyan" in curses
-enum CURSES_CYAN        =  6;
+enum CURSES_CYAN        =  COLOR_CYAN;
 /// The predefined value of "gray" or "dim white" in curses
-enum CURSES_GRAY        =  7;
+enum CURSES_GRAY        =  COLOR_WHITE;
 
 } // version( curses )
 

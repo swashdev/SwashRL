@@ -27,9 +27,15 @@ import std.string : toStringz;
 import std.ascii : toLower;
 import std.string : format;
 
-// This class contains functions for the curses display
-// These functions should all be cross-compatible between pdcurses and ncurses
-// since they don't do anything fancy or complicated.
+/++
+ + This class contains functions for the curses display
+ +
+ + These functions should all be cross-compatible between pdcurses and ncurses
+ + since they don't do anything fancy or complicated.
+ +
+ + See_Also:
+ +   <a href="iomain.html">SwashIO</a>
+ +/
 class CursesIO : SwashIO
 {
 
@@ -37,6 +43,14 @@ class CursesIO : SwashIO
   // Constructors //
   //////////////////
 
+  /++
+   + The constructor for the CursesIO class
+   +
+   + The parameters don't actually do anything, but are placeholder values to
+   + make the SwashIO() constructor work with both CursesIO and SDLTerminalIO.
+   +
+   + If `COLOR` is turned on, curses color pairs will be defined here.
+   +/
   this( ushort screen_size_vertical = 24, ushort screen_size_horizontal = 80 )
   {
     // Initializing curses
@@ -53,17 +67,17 @@ static if( COLOR )
 {
     start_color();
 
-    short black = COLOR_BLACK;
+    short black = CURSES_BLACK;
 
     // Initialize color pairs:
-    init_pair( cast(short)CURSES_BLACK  , cast(short)COLOR_BLACK  , black );
-    init_pair( cast(short)CURSES_RED    , cast(short)COLOR_RED    , black );
-    init_pair( cast(short)CURSES_GREEN  , cast(short)COLOR_GREEN  , black );
-    init_pair( cast(short)CURSES_BROWN  , cast(short)COLOR_YELLOW , black );
-    init_pair( cast(short)CURSES_BLUE   , cast(short)COLOR_BLUE   , black );
-    init_pair( cast(short)CURSES_MAGENTA, cast(short)COLOR_MAGENTA, black );
-    init_pair( cast(short)CURSES_CYAN   , cast(short)COLOR_CYAN   , black );
-    init_pair( cast(short)CURSES_GRAY   , cast(short)COLOR_WHITE  , black );
+    init_pair( 1, CURSES_BLACK  , black );
+    init_pair( 2, CURSES_RED    , black );
+    init_pair( 3, CURSES_GREEN  , black );
+    init_pair( 4, CURSES_BROWN  , black );
+    init_pair( 5, CURSES_BLUE   , black );
+    init_pair( 6, CURSES_MAGENTA, black );
+    init_pair( 7, CURSES_CYAN   , black );
+    init_pair( 8, CURSES_GRAY   , black );
 }
   }
 
@@ -71,10 +85,23 @@ static if( COLOR )
   // Setup & Cleanup //
   /////////////////////
 
+  /++
+   + Performs final cleanup functions for the input/output module, to close
+   + the display before exiting the program.
+   +
+   + See_Also:
+   +   <a href="iomain.html#SwashIO.cleanup>cleanup</a>
+   +/
   void cleanup()
   { endwin();
   }
 
+  /++
+   + Used to determine if the "close window" button has been pressed.
+   +
+   + See_Also:
+   +   <a href="iomain.html#SwashIO.window_closed>window_closed</a>
+   +/
   bool window_closed()
   { return false;
   }
@@ -83,13 +110,24 @@ static if( COLOR )
   // Input //
   ///////////
 
-  // Gets a character input from the user and returns it
+  /++
+   + Gets a character input from the user and returns it
+   +
+   + See_Also:
+   +   <a href="iomain.html#SwashIO.get_key>get_key</a>
+   +/
   char get_key()
   { return cast(char)getch();
   }
 
-  // Outputs a question to the user and returns a char result
-  char ask( string question, char[] options, bool assume_lower = false )
+  /++
+   + Outputs a question to the user and returns a `char` result.
+   +
+   + See_Also:
+   +   <a href="iomain.html#SwashIO.ask>ask</a>
+   +/
+  char ask( string question, char[] options = ['y', 'n'],
+            bool assume_lower = false )
   {
     clear_message_line();
     char[] q = (question ~ " [").dup;
@@ -125,21 +163,34 @@ static if( COLOR )
 
   // Takes in a `color' and returns a curses-style `attr_t' representing that
   // color
+  /++
+   + Takes in a color value and returns a curses-style `attr_t`
+   +
+   + This function converts the color flags defined in color.d to a
+   + `COLOR_PAIR` that curses can use.
+   +
+   + Params:
+   +   color = The color to be converted
+   +
+   + Returns:
+   +   An `attr_t` which can be used to activate colors in the curses
+   +   interface
+   +/
   attr_t get_color( ubyte color )
   {
     switch( color )
     {
       case CLR_BLACK:
-        return COLOR_PAIR( CURSES_BLACK );
+        return COLOR_PAIR( 1 );
 
       case CLR_RED:
-        return COLOR_PAIR( CURSES_RED );
+        return COLOR_PAIR( 2 );
 
       case CLR_GREEN:
-        return COLOR_PAIR( CURSES_GREEN );
+        return COLOR_PAIR( 3 );
 
       case CLR_BROWN:
-        return COLOR_PAIR( CURSES_BROWN );
+        return COLOR_PAIR( 4 );
 
       case CLR_BLUE:
         // We don't use dark blue because it blends in with the black
@@ -147,37 +198,37 @@ static if( COLOR )
         goto case CLR_LITEBLUE;
 
       case CLR_MAGENTA:
-        return COLOR_PAIR( CURSES_MAGENTA );
+        return COLOR_PAIR( 6 );
 
       case CLR_CYAN:
-        return COLOR_PAIR( CURSES_CYAN );
+        return COLOR_PAIR( 7 );
 
       case CLR_GRAY:
-        return COLOR_PAIR( CURSES_GRAY );
+        return COLOR_PAIR( 8 );
 
       case CLR_DARKGRAY:
-        return COLOR_PAIR( CURSES_BLACK ) | A_BOLD;
+        return COLOR_PAIR( 1 ) | A_BOLD;
 
       case CLR_LITERED:
-        return COLOR_PAIR( CURSES_RED ) | A_BOLD;
+        return COLOR_PAIR( 2 ) | A_BOLD;
 
       case CLR_LITEGREEN:
-        return COLOR_PAIR( CURSES_GREEN ) | A_BOLD;
+        return COLOR_PAIR( 3 ) | A_BOLD;
 
       case CLR_YELLOW:
-        return COLOR_PAIR( CURSES_BROWN ) | A_BOLD;
+        return COLOR_PAIR( 4 ) | A_BOLD;
 
       case CLR_LITEBLUE:
-        return COLOR_PAIR( CURSES_BLUE ) | A_BOLD;
+        return COLOR_PAIR( 5 ) | A_BOLD;
 
       case CLR_LITEMAGENTA:
-        return COLOR_PAIR( CURSES_MAGENTA ) | A_BOLD;
+        return COLOR_PAIR( 6 ) | A_BOLD;
 
       case CLR_LITECYAN:
-        return COLOR_PAIR( CURSES_CYAN ) | A_BOLD;
+        return COLOR_PAIR( 7 ) | A_BOLD;
 
       case CLR_WHITE:
-        return COLOR_PAIR( CURSES_GRAY ) | A_BOLD;
+        return COLOR_PAIR( 8 ) | A_BOLD;
 
       // If we don't get a valid color, default to the "standard color"
       default:
@@ -185,6 +236,12 @@ static if( COLOR )
     } // switch( color )
   } // attr_t get_color( ubyte color )
 
+  /++
+   + Outputs a text character at the given coordinates with a certain color
+   +
+   + See_Also:
+   +   <a href="iomain.html#SwashIO.put_char>put_char</a>
+   +/
   void put_char( uint y, uint x, char c,
                  Color color = Color( CLR_NONE, false ) )
   {
@@ -212,6 +269,12 @@ static if( COLOR )
 }
   }
 
+  /++
+   + Prints a `string` at the given coordinates
+   +
+   + See_Also:
+   +   <a href="iomain.html#SwashIO.put_line>put_line</a>
+   +/
   void put_line( T... )( uint y, uint x, T args )
   {
     import std.string : toStringz;
@@ -219,7 +282,12 @@ static if( COLOR )
     mvprintw( y, x, toStringz( output ) );
   }
 
-  // Reads the player all of their messages one at a time
+  /++
+   + Reads the player all of their messages one at a time
+   +
+   + See_Also:
+   +   <a href="iomain.html#SwashIO.read_messages>read_messages</a>
+   +/
   void read_messages()
   {
     while( !Messages.empty() )
@@ -235,7 +303,13 @@ static if( COLOR )
     }
   }
 
-  // Gives the player a menu containing their message history.
+  // 
+  /++
+   + Gives the player a menu containing their message history.
+   +
+   + See_Also:
+   +   <a href="iomain.html#SwashIO.read_message_history>read_message_history</a>
+   +/
   void read_message_history()
   {
     clear_screen();
@@ -261,7 +335,12 @@ static if( COLOR )
     clear_message_line();
   }
 
-  // Refreshes the status bar
+  /++
+   + Refreshes the status bar
+   +
+   + See_Also:
+   +   <a href="iomain.html#SwashIO.refresh_status_bar>refresh_status_bar</a>
+   +/
   void refresh_status_bar( player* u )
   {
     int hp = u.hp;
@@ -275,15 +354,33 @@ static if( COLOR )
               hp, dice, mod >= 0 ? '+' : '-', mod * ((-1) * mod < 0) );
   }
 
-
+  /++
+   + Refreshes the screen to reflect the changes made by the below `display`
+   + functions
+   +
+   + See_Also:
+   +   <a href="iomain.html#SwashIO.refresh_screen>refresh_screen</a>
+   +/
   void refresh_screen()
   { refresh();
   }
 
+  /++
+   + Clears the screen
+   +
+   + See_Also:
+   +   <a href="iomain.html#SwashIO.clear_screen>clear_screen</a>
+   +/
   void clear_screen()
   { clear();
   }
 
+  /++
+   + Clears the current message off the message line
+   +
+   + See_Also:
+   +   <a href="iomain.html#SwashIO.clear_message_line>clear_message_line</a>
+   +/
   void clear_message_line()
   {
     foreach( y; 0 .. MESSAGE_BUFFER_LINES )
@@ -294,6 +391,12 @@ static if( COLOR )
     }
   }
 
+  /++
+   + The central display function
+   +
+   + See_Also:
+   +   <a href="iomain.html#SwashIO.display>display</a>
+   +/
   void display( uint y, uint x, symbol s, bool center = false )
   {
     put_char( y, x, s.ch,

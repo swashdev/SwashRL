@@ -16,6 +16,9 @@ VERSION 0.028
      commit ID.
    - Added a NAME flag in global.d so that source modders can change the name
      of the game super easily.
+   - Cheat modes: type --dqd in the command line for godmode, --spispopd for
+     noclip, --esm to instantly kill all monsters, and/or --eoa to see the
+     whole map.  Noclip also reveals the whole map.
 
   Fixed:
    - The test map no longer causes an error by attempting to grow mold when

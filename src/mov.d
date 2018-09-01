@@ -108,21 +108,28 @@ void mattacku( monst* m, player* u )
   uint atk = rollbag( m.attack_roll );
   if( atk > 0 )
   {
-    u.hp -= atk;
-    message( "The %s attacks you!", m.name );
+    if( Degreelessness )
+    {
+      message( "The puny %s's feeble attack does nothing!", m.name );
+    }
+    else
+    {
+      u.hp -= atk;
+      message( "The %s attacks you!", m.name );
 static if( BLOOD )
 {
-    import main : Current_map;
-    int k = u.x, j = u.y;
-    // The player bleeds...
-    Current_map.t[j][k].hazard |= SPECIAL_BLOOD;
-    foreach( c; d() .. atk )
-    {
-      byte dk, dj;
-      getdydx( cast(ubyte)td10(), &dj, &dk );
-      Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
-    }
+      import main : Current_map;
+      int k = u.x, j = u.y;
+      // The player bleeds...
+      Current_map.t[j][k].hazard |= SPECIAL_BLOOD;
+      foreach( c; d() .. atk )
+      {
+        byte dk, dj;
+        getdydx( cast(ubyte)td10(), &dj, &dk );
+        Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
+      }
 }
+    } // else from if( Degreelessness )
   }
   else
   { message( "The %s barely misses you!", m.name );
@@ -145,21 +152,15 @@ static if( BLOOD )
  +/
 void uattackm( player* u, monst* m )
 {
-  int mod = u.attack_roll.modifier + u.inventory.items[INVENT_WEAPON].addm;
-  int dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].addd;
-  int atk = roll_x( dice, mod, u.attack_roll.floor, u.attack_roll.ceiling );
-
-  if( atk > 0 )
+  if( Infinite_weapon )
   {
-    m.hp -= atk;
-    message( "You attack the %s!", m.name );
+    m.hp = 0;
+    message( "The %s explodes from the force of your attack!", m.name );
 static if( BLOOD )
 {
     import main : Current_map;
-    // The monster bleeds...
     int k = m.x, j = m.y;
-    Current_map.t[j][k].hazard |= SPECIAL_BLOOD;
-    foreach( c; d() .. atk )
+    foreach( c; 0 .. 10 )
     {
       byte dk, dj;
       getdydx( cast(ubyte)td10(), &dj, &dk );
@@ -168,12 +169,41 @@ static if( BLOOD )
 }
   }
   else
-  { message( "You barely miss the %s!", m.name );
-  }
+  {
+    int mod = u.attack_roll.modifier + u.inventory.items[INVENT_WEAPON].addm;
+    int dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].addd;
+    int atk = roll_x( dice, mod, u.attack_roll.floor, u.attack_roll.ceiling );
 
-  if( m.hp <= 0 )
-  { message( "The %s is slain!", m.name );
-  }
+    if( atk > 0 )
+    {
+      m.hp -= atk;
+      message( "You attack the %s!", m.name );
+static if( BLOOD )
+{
+      import main : Current_map;
+      // The monster bleeds...
+      int k = m.x, j = m.y;
+      Current_map.t[j][k].hazard |= SPECIAL_BLOOD;
+      int blood = d();
+      if( blood < atk )
+      {
+        foreach( c; d() .. atk )
+        {
+          byte dk, dj;
+          getdydx( cast(ubyte)td10(), &dj, &dk );
+          Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
+        }
+      }
+}
+    }
+    else
+    { message( "You barely miss the %s!", m.name );
+    }
+
+    if( m.hp <= 0 )
+    { message( "The %s is slain!", m.name );
+    }
+  } // else from if( Infinite_weapon )
 }
 
 enum FLOOR_HERE = 0;
@@ -389,21 +419,33 @@ ubyte umove( player* u, map* m, ubyte dir )
     }
   }
 
-  if( (cardinal && (m.t[dy][dx].block_cardinal_movement))
-  || (!cardinal && (m.t[dy][dx].block_diagonal_movement)) )
+  if( Noclip )
   {
-    message( "Ouch!  You walk straight into a wall!" );
-    // report "no movement" to the mainloop so we don't expend a turn
-    return 0;
+    if( dx <= 0 || dx >= MAP_X || dy <= 0 || dy >= MAP_Y )
+    {
+      message( "Woah there!  You ain't Orpheus!  Get back in the game!"
+             );
+      return 0;
+    }
   }
   else
   {
-    if( m.t[dy][dx].hazard & HAZARD_WATER )
+    if( (cardinal && (m.t[dy][dx].block_cardinal_movement))
+    || (!cardinal && (m.t[dy][dx].block_diagonal_movement)) )
     {
-      u.hp = 0;
-message( "You step into the water and are pulled down by your equipment..." );
+      message( "Ouch!  You walk straight into a wall!" );
+      // report "no movement" to the mainloop so we don't expend a turn
+      return 0;
     }
-  }
+    else
+    {
+      if( m.t[dy][dx].hazard & HAZARD_WATER )
+      {
+        u.hp = 0;
+message( "You step into the water and are pulled down by your equipment..." );
+      }
+    }
+  } // else from if( Noclip )
 
   if( m.i[dy][dx].sym.ch != '\0' )
   { message( "You see here a %s", m.i[dy][dx].name );

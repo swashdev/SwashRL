@@ -173,7 +173,6 @@ bool SDL_full()
  +/
 int main( string[] args )
 {
-  bool use_test_map = false;
   bool disp_version = false;
   string saved_lev;
 
@@ -185,14 +184,19 @@ int main( string[] args )
     // s, the file name of a saved game
     "s",        &saved_lev,
     "save",     &saved_lev,
-    // For debugging purposes, this "test map" can be generated at runtime
-    // to test new features or other changes to the game.
-    "test-map", &use_test_map,
     // the display mode, either an SDL "terminal" or "none" for curses ("full"
     // is the same as "terminal" until a full graphics version of the game is
     // finished)
     "sdl-mode", &SDL_Mode,
-    "S",        &SDL_Mode
+    "S",        &SDL_Mode,
+    // For debugging purposes, this "test map" can be generated at runtime
+    // to test new features or other changes to the game.
+    "test-map", &Use_test_map,
+    // Cheat modes (keep these a secret):
+    "dqd",      &Degreelessness,
+    "esm",      &Infinite_weapon,
+    "spispopd", &Noclip,
+    "eoa",      &No_shadows
   );
 
   // Get the name of the executable:
@@ -227,6 +231,24 @@ You are running %s version %s",
     return 1;
   }
 
+  //clear_messages();
+
+  // Announce cheat modes
+  if( Degreelessness )
+  { message( "Degreelessness mode is turned on." );
+  }
+  if( Infinite_weapon )
+  { message( "Killer heels mode is turned on." );
+  }
+  if( Noclip )
+  {
+    message( "Xorn mode is turned on." );
+    No_shadows = true;
+  }
+  if( No_shadows )
+  { message( "Silent Cartographer is turned on." );
+  }
+
   seed();
 
   // Assign initial map
@@ -235,7 +257,7 @@ You are running %s version %s",
   }
   else
   {
-    if( use_test_map )
+    if( Use_test_map )
     {
 debug
       Current_map = test_map();
@@ -314,13 +336,14 @@ version( sdl )
   { calc_visible( &Current_map, u.x, u.y );
   }
 
-  clear_messages();
-
   // Initialize the status bar
   IO.refresh_status_bar( &u );
 
   // Display the map and player
   IO.display_map_and_player( Current_map, u );
+
+
+  IO.read_messages();
 
   uint moved = 0;
   int mv = 5;

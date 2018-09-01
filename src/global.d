@@ -156,6 +156,7 @@ public import util;
 // include the rest of SwashRL's files in the order appointed in
 // notes/include
 
+public import cheats;
 public import dice;
 public import color;
 public import sym;

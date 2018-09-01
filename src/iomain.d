@@ -351,7 +351,7 @@ interface SwashIO
 
 static if( USE_FOV )
 {
-     if( to_display.v[mn.y][mn.x] )
+     if( No_shadows || to_display.v[mn.y][mn.x] )
      { display_mon( mn );
      }
 }
@@ -422,7 +422,7 @@ static if( COLOR )
 
 static if( USE_FOV )
 {
-        if( !to_display.v[y][x] )
+        if( !No_shadows && !to_display.v[y][x] )
         {
  static if( !COLOR )
             output = SYM_SHADOW;

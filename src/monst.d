@@ -132,6 +132,7 @@ struct monst
   ubyte swim;
   dicebag attack_roll;
   ubyte x, y;
+  inven inventory;
 }
 
 /++
@@ -165,6 +166,11 @@ monst monster_at( mon mn, ubyte x, ubyte y )
                 attack_roll:mn.attack_roll,
                 x:x, y:y
               };
+
+  foreach( count; 0 .. 40 )
+  { mon.inventory.items[count] = No_item;
+  }
+
   return mon;
 }
 
@@ -240,6 +246,11 @@ monst new_monst_at( char isym, string iname, ubyte ifly, ubyte iswim,
                 attack_roll:Dice( at_dice, at_mod, at_min, at_max ),
                 x:x, y:y
               };
+
+  foreach( count; 0 .. 40 )
+  { mon.inventory.items[count] = No_item;
+  }
+
   return mon;
 }
 

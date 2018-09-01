@@ -7,6 +7,8 @@ VERSION 0.028
      name of the executable, rather than simply SwashRL, to make it easier to
      change the name of the program later.
    - Mold and blood are now visible when field-of-vision is turned off.
+   - The player no longer has their own struct, and is instead defined as a
+     monst.
 
   Added:
    - If INCLUDE_COMMIT is true at compile time, the version number output by

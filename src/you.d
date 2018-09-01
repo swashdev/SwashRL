@@ -22,25 +22,19 @@ import global;
 /++
  + The player struct
  +
- + This struct represents the player character by storing the following
- + values:
+ + Deprecated:
+ +   The player character is now a `monst` as of development version 0.028.
+ +   This is done to allow monsters to behave more like the player, and to
+ +   reduce the amount of special-casing that must be done when calculating
+ +   how monsters react to the environment versus the player.
  +
- + `sym`: A `symbol` that represents the player's appearance in the display
+ +   Use the `monst` struct to generate the player, and simply keep that
+ +   `monst` separate from the monster containers in maps to separate the
+ +   player from monsters.
  +
- + `x` and `y`: `ubyte`s that represent the player's current coordinates
- +
- + `inventory`: An `inven` representing the player's current inventory
- +
- + `attack_roll`: A `dicebag` that represents the player's attack roll
+ + Date:  2018-09-01
  +/
-struct player
-{
-  symbol sym;
-  ubyte x, y;
-  int hp;
-  inven inventory;
-  dicebag attack_roll;
-}
+alias player = monst;
 
 /++
  + Initializes the `player`
@@ -55,6 +49,8 @@ struct player
  + The coordinates input into this function are checked against `MAP_X` and
  + `MAP_Y`, and if the function attempts to initialize the player outside this
  + boundary it is fixed.
+ +
+ + Date:  2018-09-01
  +
  + Params:
  +   y = The player's initial y coordinate
@@ -87,5 +83,8 @@ player init_player( ubyte y, ubyte x )
   u.inventory.quiver_count = 0;
   u.inventory.coins = 0;
   u.attack_roll = Dice( 2, 0, 0, 1000 );
+
+  u.fly  = 0;
+  u.swim = 0;
   return u;
 }

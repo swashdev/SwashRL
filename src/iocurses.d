@@ -90,7 +90,7 @@ static if( COLOR )
    + the display before exiting the program.
    +
    + See_Also:
-   +   <a href="iomain.html#SwashIO.cleanup>cleanup</a>
+   +   <a href="iomain.html#SwashIO.cleanup">SwashIO.cleanup</a>
    +/
   void cleanup()
   { endwin();
@@ -99,8 +99,16 @@ static if( COLOR )
   /++
    + Used to determine if the "close window" button has been pressed.
    +
+   + This function has no purpose for the curses interface because the curses
+   + interface is run from the terminal.  This function only exists because
+   + it's necessary for the `SwashIO` class to contain it in order for the
+   + `SDLTerminalIO` class to use it in the mainloop.
+   +
    + See_Also:
-   +   <a href="iomain.html#SwashIO.window_closed>window_closed</a>
+   +   <a href="iomain.html#SwashIO.window_closed">SwashIO.window_closed</a>
+   +
+   + Returns:
+   +   `false`
    +/
   bool window_closed()
   { return false;
@@ -114,7 +122,7 @@ static if( COLOR )
    + Gets a character input from the user and returns it
    +
    + See_Also:
-   +   <a href="iomain.html#SwashIO.get_key>get_key</a>
+   +   <a href="iomain.html#SwashIO.get_key">SwashIO.get_key</a>
    +/
   char get_key()
   { return cast(char)getch();
@@ -124,7 +132,7 @@ static if( COLOR )
    + Outputs a question to the user and returns a `char` result.
    +
    + See_Also:
-   +   <a href="iomain.html#SwashIO.ask>ask</a>
+   +   <a href="iomain.html#SwashIO.ask">SwashIO.ask</a>
    +/
   char ask( string question, char[] options = ['y', 'n'],
             bool assume_lower = false )
@@ -168,6 +176,9 @@ static if( COLOR )
    +
    + This function converts the color flags defined in color.d to a
    + `COLOR_PAIR` that curses can use.
+   +
+   + See_Also:
+   +   <a href="ioterm.html#SDLTerminalIO.to_SDL_Color">SDLTerminalIO.to_SDL_Color</a>
    +
    + Params:
    +   color = The color to be converted
@@ -240,7 +251,7 @@ static if( COLOR )
    + Outputs a text character at the given coordinates with a certain color
    +
    + See_Also:
-   +   <a href="iomain.html#SwashIO.put_char>put_char</a>
+   +   <a href="iomain.html#SwashIO.put_char">SwashIO.put_char</a>
    +/
   void put_char( uint y, uint x, char c,
                  Color color = Color( CLR_NONE, false ) )
@@ -273,7 +284,7 @@ static if( COLOR )
    + Prints a `string` at the given coordinates
    +
    + See_Also:
-   +   <a href="iomain.html#SwashIO.put_line>put_line</a>
+   +   <a href="iomain.html#SwashIO.put_line">SwashIO.put_line</a>
    +/
   void put_line( T... )( uint y, uint x, T args )
   {
@@ -286,7 +297,7 @@ static if( COLOR )
    + Reads the player all of their messages one at a time
    +
    + See_Also:
-   +   <a href="iomain.html#SwashIO.read_messages>read_messages</a>
+   +   <a href="iomain.html#SwashIO.read_messages">SwashIO.read_messages</a>
    +/
   void read_messages()
   {
@@ -308,7 +319,7 @@ static if( COLOR )
    + Gives the player a menu containing their message history.
    +
    + See_Also:
-   +   <a href="iomain.html#SwashIO.read_message_history>read_message_history</a>
+   +   <a href="iomain.html#SwashIO.read_message_history">SwashIO.read_message_history</a>
    +/
   void read_message_history()
   {
@@ -339,7 +350,7 @@ static if( COLOR )
    + Refreshes the status bar
    +
    + See_Also:
-   +   <a href="iomain.html#SwashIO.refresh_status_bar>refresh_status_bar</a>
+   +   <a href="iomain.html#SwashIO.refresh_status_bar">SwashIO.refresh_status_bar</a>
    +/
   void refresh_status_bar( player* u )
   {
@@ -359,7 +370,7 @@ static if( COLOR )
    + functions
    +
    + See_Also:
-   +   <a href="iomain.html#SwashIO.refresh_screen>refresh_screen</a>
+   +   <a href="iomain.html#SwashIO.refresh_screen">SwashIO.refresh_screen</a>
    +/
   void refresh_screen()
   { refresh();
@@ -369,7 +380,7 @@ static if( COLOR )
    + Clears the screen
    +
    + See_Also:
-   +   <a href="iomain.html#SwashIO.clear_screen>clear_screen</a>
+   +   <a href="iomain.html#SwashIO.clear_screen">SwashIO.clear_screen</a>
    +/
   void clear_screen()
   { clear();
@@ -379,7 +390,7 @@ static if( COLOR )
    + Clears the current message off the message line
    +
    + See_Also:
-   +   <a href="iomain.html#SwashIO.clear_message_line>clear_message_line</a>
+   +   <a href="iomain.html#SwashIO.clear_message_line">SwashIO.clear_message_line</a>
    +/
   void clear_message_line()
   {
@@ -395,7 +406,7 @@ static if( COLOR )
    + The central display function
    +
    + See_Also:
-   +   <a href="iomain.html#SwashIO.display>display</a>
+   +   <a href="iomain.html#SwashIO.display">SwashIO.display</a>
    +/
   void display( uint y, uint x, symbol s, bool center = false )
   {

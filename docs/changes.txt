@@ -25,6 +25,8 @@ VERSION 0.028
      the mold flag is turned off.
    - iocurses.d no longer generates errors due to undeclared "format" calls
    - The curses interface now uses the correct colors
+   - The -S (SDL mode) command-line argument has been changed to -m (short for
+     "mode") in order to fix the broken -s ("load save") command-line argument
 
 VERSION 0.027
 Finalized 2018-08-19 07:19 EST

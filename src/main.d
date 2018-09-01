@@ -188,7 +188,7 @@ int main( string[] args )
     // is the same as "terminal" until a full graphics version of the game is
     // finished)
     "sdl-mode", &SDL_Mode,
-    "S",        &SDL_Mode,
+    "m",        &SDL_Mode,
     // For debugging purposes, this "test map" can be generated at runtime
     // to test new features or other changes to the game.
     "test-map", &Use_test_map,
@@ -211,7 +211,7 @@ int main( string[] args )
     -s, --save        Sets the saved level that SwashRL will load in.  The
                       game will load in your input save file name with
                       \".lev\" appended to the end in the save/lev directory.
-    -S, --sdl-mode    Sets the output mode for SwashRL.  Default \"terminal\"
+    -m, --sdl-mode    Sets the output mode for SwashRL.  Default \"terminal\"
                       Can be \"none\" for curses output or \"terminal\" for an
                       SDL terminal.  If your copy of SwashRL was compiled
                       without SDL or curses, this option may have no effect.
@@ -219,7 +219,7 @@ int main( string[] args )
                       have no effect if -s or --save was used.
   examples:
     %s -s save0
-    %s -S terminal
+    %s -m terminal
 You are running %s version %s",
       Name, Name, Name, NAME, sp_version() );
     return 1;

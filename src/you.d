@@ -37,6 +37,25 @@ import global;
 alias player = monst;
 
 /++
+ + Returns `true` if the given monster is you
+ +
+ + This function checks if the given `monst`'s `name` is `"spelunker"`, and
+ + returns `true` if it is so.  This function is used to distinguish the
+ + player character from other monsters.
+ +
+ + Date:  2018-09-01
+ +
+ + Params:
+ +   u = The `monst`er to be checked
+ +
+ + Returns:
+ +   u.name == "spelunker"
+ +/
+bool is_you( monst u )
+{ return u.name == "spelunker";
+}
+
+/++
  + Initializes the `player`
  +
  + This function does initial setup for the player character and places him or
@@ -62,6 +81,11 @@ alias player = monst;
 player init_player( ubyte y, ubyte x )
 {
   player u;
+
+  // The "spelunker" name should ONLY be used for the player character, and
+  // is a signal to monster movement functions that the monster is "you."
+  u.name = "spelunker";
+
   if( x < 80 )
   { u.x = x;
   }

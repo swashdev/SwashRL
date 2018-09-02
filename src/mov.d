@@ -87,35 +87,57 @@ void getdydx( ubyte dir, byte* dy, byte* dx )
 }
 
 /++
- + Causes a monster to attack the player
+ + Causes a monster to attack another monster
  +
- + This function alters the given `player` u to reflect changes, if any,
+ + This function alters the given `monst` u to reflect changes, if any,
  + resulting from the given `monst` m attacking u, and outputs messages to
  + show the user what is happening.
  +
  + <strong>This function can kill the player if m does enough damage to
  + u</strong>
  +
- + See_Also:
- +   <a href="#uattackm">uattackm</a>
+ + Date:  2018-09-01
  +
  + Params:
  +   m = A pointer to the `monst`er which is attacking u
- +   u = A pointer to the `player` which is being attacked by m
+ +   u = A pointer to the `monst`er which is being attacked by m
  +/
-void mattacku( monst* m, player* u )
+void mattack( monst* m, monst* u )
 {
-  uint atk = rollbag( m.attack_roll );
+  int dic = m.attack_roll.dice + m.inventory.items[INVENT_WEAPON].addd;
+  int mod = m.attack_roll.modifier  + m.inventory.items[INVENT_WEAPON].addm;
+  int atk = roll_x( dic, mod, m.attack_roll.floor, m.attack_roll.ceiling );
+
   if( atk > 0 )
   {
-    if( Degreelessness )
+    if( is_you( *u ) && Degreelessness )
     {
       message( "The puny %s's feeble attack does nothing!", m.name );
     }
+    else if( is_you( *m ) && Infinite_weapon )
+    {
+      u.hp = 0;
+      message( "The %s explodes from the force of your attack!", u.name );
+
+static if( BLOOD )
+{
+      // Spread viscera everywhere:
+      import main : Current_map;
+      int k = u.x, j = u.y;
+      foreach( c; 0 .. 10 )
+      {
+        byte dk, dj;
+        getdydx( cast(ubyte)td10(), &dj, &dk );
+        Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
+      }
+}
+
+    } // else if( is_you( m ) && Infinite_weapon )
     else
     {
       u.hp -= atk;
-      message( "The %s attacks you!", m.name );
+      message( "%s attack%s %s!", The_monst( *m ),
+               is_you( *m ) ? "" : "s", the_monst( *u ) );
 static if( BLOOD )
 {
       import main : Current_map;
@@ -129,81 +151,15 @@ static if( BLOOD )
         Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
       }
 }
-    } // else from if( Degreelessness )
-  }
+
+      if( u.hp <= 0 )  message( "%s %s slain!", The_monst( *u ),
+                                is_you( *u ) ? "are" : "is" );
+    } // else from if( is_you( m ) && Infinite_weapon )
+  } // if( atk > 0 )
   else
-  { message( "The %s barely misses you!", m.name );
+  { message( "%s barely miss%s %s!", The_monst( *m ),
+             is_you( *m ) ? "" : "es", the_monst( *u ) );
   }
-}
-
-/++
- + Causes the player to attack a monster
- +
- + This function alters the given `monst` m to reflect changes, if any,
- + resulting from the given `player` u attacking m, and outputs messages to
- + show the user what is happening.
- +
- + See_Also:
- +   <a href="#mattacku">mattacku</a>
- +
- + Params:
- +   u = A pointer to the `player` which is attacking m
- +   m = A pointer to the `monst`er which is being attacked by u
- +/
-void uattackm( player* u, monst* m )
-{
-  if( Infinite_weapon )
-  {
-    m.hp = 0;
-    message( "The %s explodes from the force of your attack!", m.name );
-static if( BLOOD )
-{
-    import main : Current_map;
-    int k = m.x, j = m.y;
-    foreach( c; 0 .. 10 )
-    {
-      byte dk, dj;
-      getdydx( cast(ubyte)td10(), &dj, &dk );
-      Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
-    }
-}
-  }
-  else
-  {
-    int mod = u.attack_roll.modifier + u.inventory.items[INVENT_WEAPON].addm;
-    int dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].addd;
-    int atk = roll_x( dice, mod, u.attack_roll.floor, u.attack_roll.ceiling );
-
-    if( atk > 0 )
-    {
-      m.hp -= atk;
-      message( "You attack the %s!", m.name );
-static if( BLOOD )
-{
-      import main : Current_map;
-      // The monster bleeds...
-      int k = m.x, j = m.y;
-      Current_map.t[j][k].hazard |= SPECIAL_BLOOD;
-      int blood = d();
-      if( blood < atk )
-      {
-        foreach( c; d() .. atk )
-        {
-          byte dk, dj;
-          getdydx( cast(ubyte)td10(), &dj, &dk );
-          Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
-        }
-      }
-}
-    }
-    else
-    { message( "You barely miss the %s!", m.name );
-    }
-
-    if( m.hp <= 0 )
-    { message( "The %s is slain!", m.name );
-    }
-  } // else from if( Infinite_weapon )
 }
 
 enum FLOOR_HERE = 0;
@@ -299,7 +255,7 @@ void mmove( monst* mn, map* m, byte idy, byte idx, player* u )
 
   if( dx == u.x && dy == u.y )
   {
-    mattacku( mn, u );
+    mattack( mn, u );
     monster = 1;
   }
   else
@@ -413,7 +369,7 @@ ubyte umove( player* u, map* m, ubyte dir )
     mn = &m.m[c];
     if( mn.x == dx && mn.y == dy && mn.hp > 0 )
     {
-      uattackm( u, mn );
+      mattack( u, mn );
       monster = 1;
       break;
     }

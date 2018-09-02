@@ -19,6 +19,7 @@
 // data
 
 import global;
+import std.string : format;
 
 /++
  + A struct for `mon`ster generation data
@@ -298,4 +299,42 @@ monst new_monst( char isym, string iname, ubyte ifly, ubyte iswim,
                        hit_max, at_dice, at_mod, at_min, at_max,
                        0, 0
                      );
+}
+
+/++
+ + Gives an appropriate name for the given monster
+ +
+ + This function is used for getting an appropriate title for the given
+ + monster in messages.
+ +
+ + If the monster is the player, the string `"you"` is returned.  Otherwise,
+ + it gives `mn.name`.
+ +
+ + Date:  2018-09-01
+ +
+ + Params:
+ +   mn  = The monster to check
+ +
+ + Returns:
+ +   A `string` representing an appropriate title for the monster
+ +/
+string monst_name( monst mn )
+{
+  if( mn.name == "spelunker" )  return "you";
+
+  return mn.name;
+}
+
+string the_monst( monst mn )
+{
+  if( mn.name == "spelunker" )  return "you";
+
+  return format( "the %s", mn.name );
+}
+
+string The_monst( monst mn )
+{
+  if( mn.name == "spelunker" )  return "You";
+
+  return format( "The %s", mn.name );
 }

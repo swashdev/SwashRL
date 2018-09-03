@@ -136,7 +136,7 @@ interface SwashIO
    +   center = Whether or not to explicitly recenter the cursor on top of the
    +            drawn cursor
    +/
-  void display( uint y, uint x, symbol s, bool center = true );
+  void display( uint y, uint x, Symbol s, bool center = true );
 
   /// Clears the current message off the message line
   void clear_message_line();
@@ -154,9 +154,9 @@ interface SwashIO
    + reflect changes to the player's stats.
    +
    + Params:
-   +   u = The `player` whose stats are to be drawn to the status bar
+   +   u = The `Player` whose stats are to be drawn to the status bar
    +/
-  void refresh_status_bar( player* u );
+  void refresh_status_bar( Player* u );
 
   /////////////////////
   // Final Functions //
@@ -180,7 +180,7 @@ interface SwashIO
    + Returns:
    +   A `uint` movement flag, defined in moves.d
    +/
-  final uint getcommand()
+  final uint get_command()
   {
     char c = get_key();
 
@@ -237,7 +237,7 @@ interface SwashIO
     // not recognized" response.
     return MOVE_UNKNOWN;
 
-  } // int getcommand
+  } // int get_command
 
   /++
    + Prints a `string` at the given coordinates
@@ -295,23 +295,23 @@ interface SwashIO
   /++
    + Uses `display` to draw the player
    +
-   + This function doesn't require coordinate inputs, because the `player`
+   + This function doesn't require coordinate inputs, because the `Player`
    + struct contains its own coordinates.
    +
    + See_Also:
    +   <a href="#SwashIO.display">display</a>
    +
    + Params:
-   +   u = The `player` to be displayed
+   +   u = The `Player` to be displayed
    +/
-  final void display_player( player u )
+  final void display_player( Player u )
   { display( u.y + 1, u.x, u.sym, true );
   }
 
   /++
    + Uses `display` to draw the given monster
    +
-   + This function doesn't require coordinate inputs, because the `monst`
+   + This function doesn't require coordinate inputs, because the `Monst`
    + struct contains its own coordinates.
    +
    + <b>Note</b>:  This function <em>can not</em> check field-of-vision.
@@ -320,9 +320,9 @@ interface SwashIO
    +   <a href="#SwashIO.display">display</a>
    +
    + Params:
-   +   m = The `monst` to be displayed
+   +   m = The `Monst` to be displayed
    +/
-  final void display_mon( monst m )
+  final void display_mon( Monst m )
   { display( m.y + 1, m.x, m.sym );
   }
 
@@ -341,10 +341,10 @@ interface SwashIO
    + Params:
    +   to_display = The map whose monsters we want to display
    +/
-  final void display_map_mons( map to_display )
+  final void display_map_mons( Map to_display )
   {
     size_t d = to_display.m.length;
-    monst mn;
+    Monst mn;
     foreach( c; 0 .. d )
     {
       mn = to_display.m[c];
@@ -359,7 +359,7 @@ interface SwashIO
   /++
    + Uses `display` to draw all of the map tiles and items on the given map
    +
-   + Color values and coordinates are taken from the `map` struct that is
+   + Color values and coordinates are taken from the `Map` struct that is
    + passed into this function.
    +
    + Map tiles and items which are outside the field-of-view are not
@@ -370,16 +370,16 @@ interface SwashIO
    +   <a href="#SwashIO.display">display</a>
    +
    + Params:
-   +   to_display = The map from which map `tile`s and `item`s are to be
+   +   to_display = The map from which map `Tile`s and `Item`s are to be
    +                displayed
    +/
-  final void display_map( map to_display )
+  final void display_map( Map to_display )
   {
     foreach( y; 0 .. MAP_Y )
     {
       foreach( x; 0 .. MAP_X )
       {
-        symbol output = to_display.t[y][x].sym;
+        Symbol output = to_display.t[y][x].sym;
 
 static if( COLOR )
 {
@@ -447,7 +447,7 @@ else
    +   to_display = The map from which the monsters, tiles, and items are
    +                taken to be displayed
    +/
-  final void display_map_all( map to_display )
+  final void display_map_all( Map to_display )
   {
     display_map( to_display );
     display_map_mons( to_display );
@@ -466,7 +466,7 @@ else
    +                taken to be displayed
    +   u          = The `player` character to be displayed
    +/
-  final void display_map_and_player( map to_display, player u )
+  final void display_map_and_player( Map to_display, Player u )
   {
     display_map_all( to_display );
     display_player( u );
@@ -507,23 +507,23 @@ else
    + turns they will skip after the inventory screen is closed.
    +
    + Params:
-   +   u = The `player` whose inventory is being controlled
+   +   u = The `Player` whose inventory is being controlled
    +
    + Returns:
    +   A number of turns, as a `uint`, to be passed to the mainloop which the
    +   player will skip after this function finishes.
    +/
-  final uint control_inventory( player* u )
+  final uint control_inventory( Player* u )
   {
     import std.ascii: toLower;
 
     // the inventory slot letter the player has selected
     char grab = 0;
     // `line': the line corresponding to the `grab' slot letter
-    // `grabbedline': the line corresponding to an item that has been grabbed
-    ubyte line = 255, grabbedline = 255;
+    // `grabbed_line': the line corresponding to an item that has been grabbed
+    ubyte line = 255, grabbed_line = 255;
     // `grabbed': an item that has been grabbed
-    item grabbed = No_item;
+    Item grabbed = No_item;
   
     // whether to refresh the inventory screen
     bool refnow = 1;
@@ -656,7 +656,7 @@ version( none )
             refresh_screen();
 
             // ...and save that line so we can swap the items later.
-            grabbedline = line;
+            grabbed_line = line;
           }
         } /* if( grabbed.sym.ch == '\0' ) */
         // if we have already grabbed an item...
@@ -702,7 +702,7 @@ seppuku:
             put_line( 21, 1, "You can not equip a %s there.",
                       grabbed.name );
 discard_swap:
-            grabbedline = 255;
+            grabbed_line = 255;
             grabbed.sym.ch = '\0';
             //get_key();
             refnow = true;
@@ -711,7 +711,7 @@ discard_swap:
           else
           {
             // check again in the opposite direction
-            if( !check_equip( u.inventory.items[line], grabbedline ) )
+            if( !check_equip( u.inventory.items[line], grabbed_line ) )
             {
               put_line( 21, 1, "You can not swap the %s and the %s.",
                         u.inventory.items[line].name,
@@ -720,7 +720,7 @@ discard_swap:
             }
           }
           // ...swap the inventory items...
-          u.inventory.items[grabbedline] = u.inventory.items[line];
+          u.inventory.items[grabbed_line] = u.inventory.items[line];
           // if the new slot is not empty, the player expends a turn moving
           // that item
           if( u.inventory.items[line].sym.ch != '\0' )
@@ -729,7 +729,7 @@ discard_swap:
           u.inventory.items[line] = grabbed;
           // ...remove the grabbed item...
           grabbed.sym.ch = '\0';
-          grabbedline = line = 255;
+          grabbed_line = line = 255;
           // ...clear the screen...
           clear_screen();
           // ...and make a note to refresh the inventory screen.

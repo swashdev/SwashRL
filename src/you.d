@@ -23,40 +23,40 @@ import global;
  + The player struct
  +
  + Deprecated:
- +   The player character is now a `monst` as of development version 0.028.
+ +   The player character is now a `Monst` as of development version 0.028.
  +   This is done to allow monsters to behave more like the player, and to
  +   reduce the amount of special-casing that must be done when calculating
  +   how monsters react to the environment versus the player.
  +
- +   Use the `monst` struct to generate the player, and simply keep that
- +   `monst` separate from the monster containers in maps to separate the
+ +   Use the `Monst` struct to generate the player, and simply keep that
+ +   `Monst` separate from the monster containers in maps to separate the
  +   player from monsters.
  +
  + Date:  2018-09-01
  +/
-alias player = monst;
+alias Player = Monst;
 
 /++
  + Returns `true` if the given monster is you
  +
- + This function checks if the given `monst`'s `name` is `"spelunker"`, and
+ + This function checks if the given `Monst`'s `name` is `"spelunker"`, and
  + returns `true` if it is so.  This function is used to distinguish the
  + player character from other monsters.
  +
  + Date:  2018-09-01
  +
  + Params:
- +   u = The `monst`er to be checked
+ +   u = The `Monst`er to be checked
  +
  + Returns:
  +   u.name == "spelunker"
  +/
-bool is_you( monst u )
+bool is_you( Monst u )
 { return u.name == "spelunker";
 }
 
 /++
- + Initializes the `player`
+ + Initializes the `Player`
  +
  + This function does initial setup for the player character and places him or
  + her at the coordinates (x, y).
@@ -76,11 +76,11 @@ bool is_you( monst u )
  +   x = The player's initial x coordinate
  +
  + Returns:
- +   The `player`
+ +   The `Player`
  +/
-player init_player( ubyte y, ubyte x )
+Player init_player( ubyte y, ubyte x )
 {
-  player u;
+  Player u;
 
   // The "spelunker" name should ONLY be used for the player character, and
   // is a signal to monster movement functions that the monster is "you."

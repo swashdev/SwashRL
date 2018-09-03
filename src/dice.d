@@ -36,8 +36,8 @@ struct Dicebag
 {
   // `dice' is the number of d6es, `modifier' gets added to the result of the
   // roll
-  ubyte dice;
-  short modifier;
+  uint dice;
+  int modifier;
   // `floor' and `ceiling' represent an absolute maximum and absolute minimum.
   // these are enforced after the modifier is added.  If `floor' < `ceiling',
   // use the global limits.  Note that there is absolutely nothing stopping
@@ -52,7 +52,7 @@ struct Dicebag
  +   This function is a holdover from the C days.  Use D's generic struct
  +   constructor instead.
  +/
-Dicebag Dice( ubyte d, short m, int f, int c )
+Dicebag Dice( uint d, int m, int f, int c )
 { 
   Dicebag r = { dice:d, modifier:m, floor:f, ceiling:c };
   return r;
@@ -111,7 +111,7 @@ bool flip()
  + Returns:
  +   A random value between 1 and 6 as a `uint`.
  +/
-uint d()
+int d()
 { return uniform( 1, 7, Lucky );
 }
 
@@ -127,7 +127,7 @@ uint d()
  + Returns:
  +   A random number between 1 + `mod` and 6 + `mod`
  +/
-int dm( byte mod )
+int dm( int mod )
 { return (d() + mod);
 }
 
@@ -169,9 +169,9 @@ int td10()
  + Returns:
  +   A random number from 1 to 10
  +/
-uint d10()
+int d10()
 {
-  uint result = td10();
+  int result = td10();
   return result == 0 ? 10 : result;
 } 
 
@@ -194,9 +194,9 @@ uint d10()
  + Returns:
  +   A random number between 1 and 100
  +/
-uint d100()
+int d100()
 {
-  uint t = td10(), u = td10();
+  int t = td10(), u = td10();
   if( t == 0 && u == 0 )
   { return 100;
   } 
@@ -216,7 +216,7 @@ uint d100()
  + Returns:
  +   Either a 1 or a 2, randomly selected.
  +/
-uint d2()
+int d2()
 { return uniform( 1, 3 );
 } 
 
@@ -244,7 +244,7 @@ uint d2()
  +   1, if s == 1; $(LF)
  +   A random number between 1 and s, if s &gt; 1
  +/
-uint dn( int s )
+int dn( int s )
 {
   /* if sides == 1, just return 1.  if sides == 0, return 0.
    * if sides < 0, force that result (e.g. -4 always produces 4) */
@@ -416,6 +416,6 @@ bool quick_check( uint num, int mod, uint difficulty )
  +   `false` otherwise.
  +/
 bool quick_check_x( uint num, int mod, uint difficulty,
-                   uint floor, uint ceiling )
+                    int floor, int ceiling )
 { return roll_x( num, mod, floor, ceiling ) <= difficulty;
 }

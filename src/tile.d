@@ -72,7 +72,7 @@ struct Tile
   // note: this flag could potentially be used for other special tiles, not
   // just hazards--the sky's the limit when you're programming your own
   // universe!
-  ushort hazard;
+  uint hazard;
 }
 
 /++

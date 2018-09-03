@@ -51,8 +51,8 @@ struct Mon
 {
   Symbol sym;
   string name;
-  ubyte fly;
-  ubyte swim;
+  uint fly;
+  uint swim;
   Dicebag hit_dice;
   Dicebag attack_roll;
 }
@@ -90,9 +90,9 @@ struct Mon
  + Returns:
  +   A `mon`
  +/
-Mon mondat( char isym, string iname, ubyte ifly, ubyte iswim,
-            ubyte hit_dice, short hit_modifier, int hit_min, int hit_max,
-            ubyte at_dice, short at_modifier, int at_min, int at_max )
+Mon mondat( char isym, string iname, uint ifly, uint iswim,
+            uint hit_dice, int hit_modifier, int hit_min, int hit_max,
+            uint at_dice, int at_modifier, int at_min, int at_max )
 {
   Mon mn = { sym:symdata( isym, CLR_DEFAULT ), name:iname, fly:ifly,
              swim:iswim,
@@ -129,8 +129,8 @@ struct Monst
   Symbol sym;
   string name;
   int hp;
-  ubyte fly;
-  ubyte swim;
+  uint fly;
+  uint swim;
   Dicebag attack_roll;
   ubyte x, y;
   Inven inventory;
@@ -236,9 +236,9 @@ Monst monster( Mon mn )
  + Returns:
  +   A `Monst` generated from the function parameters at coordinates (x, y)
  +/
-Monst new_monst_at( char isym, string iname, ubyte ifly, ubyte iswim,
-                    ubyte hit_dice, short hit_mod, int hit_min, int hit_max,
-                    ubyte at_dice, short at_mod, int at_min, int at_max,
+Monst new_monst_at( char isym, string iname, uint ifly, uint iswim,
+                    uint hit_dice, int hit_mod, int hit_min, int hit_max,
+                    uint at_dice, int at_mod, int at_min, int at_max,
                     ubyte x, ubyte y )
 {
   Monst mon = { sym:symdata( isym, CLR_DEFAULT ), name:iname,
@@ -292,9 +292,9 @@ Monst new_monst_at( char isym, string iname, ubyte ifly, ubyte iswim,
  + Returns:
  +   A `Monst` generated from the function parameters
  +/
-Monst new_monst( char isym, string iname, ubyte ifly, ubyte iswim,
-                 ubyte hit_dice, short hit_mod, int hit_min, int hit_max,
-                 ubyte at_dice, short at_mod, int at_min, int at_max )
+Monst new_monst( char isym, string iname, uint ifly, uint iswim,
+                 uint hit_dice, int hit_mod, int hit_min, int hit_max,
+                 uint at_dice, int at_mod, int at_min, int at_max )
 { return new_monst_at( isym, iname, ifly, iswim, hit_dice, hit_mod, hit_min,
                        hit_max, at_dice, at_mod, at_min, at_max,
                        0, 0

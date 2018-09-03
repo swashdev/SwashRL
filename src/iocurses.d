@@ -51,7 +51,7 @@ class CursesIO : SwashIO
    +
    + If `COLOR` is turned on, curses color pairs will be defined here.
    +/
-  this( ushort screen_size_vertical = 24, ushort screen_size_horizontal = 80 )
+  this( ubyte screen_size_vertical = 24, ubyte screen_size_horizontal = 80 )
   {
     // Initializing curses
     initscr();
@@ -187,7 +187,7 @@ static if( COLOR )
    +   An `attr_t` which can be used to activate colors in the curses
    +   interface
    +/
-  attr_t get_color( ubyte color )
+  attr_t get_color( uint color )
   {
     switch( color )
     {

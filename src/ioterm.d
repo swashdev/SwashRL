@@ -233,7 +233,7 @@ class SDLTerminalIO : SwashIO
    + Returns:
    +   `true` if successful, `false` otherwise.
    +/
-  private bool loadfont( string fpath, ushort height,
+  private bool loadfont( string fpath, uint height,
                          ref SDL_Texture*[] target )
   {
     import std.string : toStringz;
@@ -336,7 +336,7 @@ class SDLTerminalIO : SwashIO
    + Returns:
    +   An `SDL_Color` which can be used by SDL to color textures
    +/
-  SDL_Color to_SDL_Color( ubyte color )
+  SDL_Color to_SDL_Color( uint color )
   {
 
     // Unfortunately this is one of those cases where we just have to use a

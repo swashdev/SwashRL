@@ -223,7 +223,7 @@ void save_level( T... )( Map m, Player u, T args )
       // Each symbol has a Color...
       Color c = s.color;
 
-      ubyte fg = c.fg;
+      uint fg = c.fg;
       fil.writeln( fg );
 
       bool reverse = c.reverse;
@@ -240,7 +240,7 @@ void save_level( T... )( Map m, Player u, T args )
       fil.writeln( lit );
       fil.writeln( seen );
 
-      ushort hazard = t.hazard;
+      uint hazard = t.hazard;
       fil.writeln( hazard );
 
       // We're done with this tile.
@@ -277,7 +277,7 @@ void save_level( T... )( Map m, Player u, T args )
 
       Color c = s.color;
 
-      ubyte fg = c.fg;
+      uint fg = c.fg;
       fil.writeln( fg );
 
       bool reverse = c.reverse;
@@ -287,11 +287,11 @@ void save_level( T... )( Map m, Player u, T args )
       string name = i.name;
       fil.writeln( name );
 
-      ushort type = i.type, equip = i.equip;
+      uint type = i.type, equip = i.equip;
       fil.writeln( type );
       fil.writeln( equip );
 
-      byte addd = i.addd, addm = i.addm;
+      int addd = i.addd, addm = i.addm;
       fil.writeln( addd );
       fil.writeln( addm );
 
@@ -322,7 +322,7 @@ void save_level( T... )( Map m, Player u, T args )
 
     Color c = s.color;
 
-    ubyte fg = c.fg;
+    uint fg = c.fg;
     fil.writeln( fg );
 
     bool reverse = c.reverse;
@@ -335,7 +335,7 @@ void save_level( T... )( Map m, Player u, T args )
     int hp = mn.hp;
     fil.writeln( hp );
 
-    ubyte fly = mn.fly, swim = mn.swim, x = mn.x, y = mn.y;
+    uint fly = mn.fly, swim = mn.swim, x = mn.x, y = mn.y;
     fil.writeln( fly );
     fil.writeln( swim );
     fil.writeln( x );
@@ -344,10 +344,10 @@ void save_level( T... )( Map m, Player u, T args )
     // Every monster has a dicebag...
     Dicebag db = mn.attack_roll;
 
-    ubyte di = db.dice;
+    uint di = db.dice;
     fil.writeln( di );
 
-    short modifier = db.modifier;
+    int modifier = db.modifier;
     fil.writeln( modifier );
 
     int floor = db.floor, ceiling = db.ceiling;
@@ -447,12 +447,12 @@ Map level_from_file( string file_label )
       Tile t;
 
       char ch = '?';
-      ubyte fg = CLR_LITERED;
+      uint fg = CLR_LITERED;
       bool reversed = 1;
 
 
       ch = to!char( strip_line( fil ) );
-      fg = to!ubyte( strip_line( fil ) );
+      fg = to!uint( strip_line( fil ) );
       reversed = to!bool( strip_line( fil ) );
 
       t.sym.ch = ch;
@@ -473,9 +473,9 @@ Map level_from_file( string file_label )
       t.lit = lit;
       t.seen = seen;
 
-      ushort hazard = 0;
+      uint hazard = 0;
 
-      hazard = to!ushort( strip_line( fil ) );
+      hazard = to!uint( strip_line( fil ) );
 
       t.hazard = hazard;
 
@@ -508,10 +508,10 @@ Map level_from_file( string file_label )
 
       Item i;
 
-      ubyte fg = CLR_LITERED;
+      uint fg = CLR_LITERED;
       bool reversed = 1;
 
-      fg = to!ubyte( strip_line( fil ) );
+      fg = to!uint( strip_line( fil ) );
       reversed = to!bool( strip_line( fil ) );
 
       i.sym.ch = ch;
@@ -522,18 +522,18 @@ Map level_from_file( string file_label )
 
       i.name = name;
 
-      ushort type = 0, equip = 0;
+      uint type = 0, equip = 0;
 
-      type = to!ushort( strip_line( fil ) );
-      equip = to!ushort( strip_line( fil ) );
+      type = to!uint( strip_line( fil ) );
+      equip = to!uint( strip_line( fil ) );
 
       i.type = type;
       i.equip = equip;
 
-      byte addd = 0, addm = 0;
+      int addd = 0, addm = 0;
 
-      addd = to!byte( strip_line( fil ) );
-      addm = to!byte( strip_line( fil ) );
+      addd = to!int( strip_line( fil ) );
+      addm = to!int( strip_line( fil ) );
 
       i.addd = addd;
       i.addm = addm;
@@ -566,10 +566,10 @@ Map level_from_file( string file_label )
 
     Monst mn;
 
-    ubyte fg = CLR_LITERED;
+    uint fg = CLR_LITERED;
     bool reversed = 1;
 
-    fg = to!byte( strip_line( fil ) );
+    fg = to!uint( strip_line( fil ) );
     reversed = to!bool( strip_line( fil ) );
 
     mn.sym.ch = ch;
@@ -586,10 +586,10 @@ Map level_from_file( string file_label )
 
     mn.hp = hp;
 
-    ubyte fly = 0, swim = 0;
+    uint fly = 0, swim = 0;
 
-    fly = to!ubyte( strip_line( fil ) );
-    swim = to!ubyte( strip_line( fil ) );
+    fly = to!uint( strip_line( fil ) );
+    swim = to!uint( strip_line( fil ) );
 
     mn.fly = fly;
     mn.swim = swim;
@@ -599,15 +599,15 @@ Map level_from_file( string file_label )
     x = to!ubyte( strip_line( fil ) );
     y = to!ubyte( strip_line( fil ) );
 
-    ubyte di = 0;
+    uint di = 0;
 
-    di = to!ubyte( strip_line( fil ) );
+    di = to!uint( strip_line( fil ) );
 
     mn.attack_roll.dice = di;
 
-    short modifier = 0;
+    int modifier = 0;
 
-    modifier = to!short( strip_line( fil ) );
+    modifier = to!int( strip_line( fil ) );
 
     mn.attack_roll.modifier = modifier;
 

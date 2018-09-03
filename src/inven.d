@@ -32,8 +32,8 @@ struct Inven
   // all `Items' carried in this inventory; 14 "inventory slots" for the
   // various body parts, plus 26 for the "bag" (to be implemented)
   Item[40] items; 
-  ubyte quiver_count;
-  ubyte coins;
+  uint quiver_count;
+  uint coins;
 }
 
 // Special array indeces in the `items' array which correspond to the
@@ -74,7 +74,7 @@ enum INVENT_LAST_SLOT = INVENT_TAIL;
  + Returns:
  +   `true` if i can be equipped in equipment slot s, `false` otherwise
  +/
-bool check_equip( Item i, ubyte s )
+bool check_equip( Item i, uint s )
 {
   // an empty item can go in any slot (obviously)
   if( i.sym.ch == '\0' )

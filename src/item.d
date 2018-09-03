@@ -40,9 +40,9 @@ struct Item
 {
   Symbol sym;
   string name;
-  ushort type, equip;
+  uint type, equip;
   /* modifiers to the player's dice rolls */
-  byte addd, addm;
+  int addd, addm;
 }
 
 /// A generic Item used to signal an empty equipment slot or a floor tile

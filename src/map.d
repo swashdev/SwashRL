@@ -96,7 +96,7 @@ void add_mon( Map* mp, Monst mn )
  +           be a pointer.
  +   index = The index in `mp.m` which is to be removed.
  +/
-void remove_mon( Map* mp, ushort index )
+void remove_mon( Map* mp, uint index )
 {
   // To remove a Monster in a Map's mon array, move all Monsters that are
   // past it in the array up, thus overwriting it.
@@ -132,7 +132,7 @@ void remove_mon( Map* mp, ushort index )
  + Returns:
  +   `true` if the corridor was added to m successfully, `false` otherwise
  +/
-bool add_corridor_y( uint x, uint y1, int y2, Map* m )
+bool add_corridor_y( uint x, uint y1, uint y2, Map* m )
 {
   // Check if the corridor will be within the bounds of the Map.
   if( x < 1 || x > MAP_x )

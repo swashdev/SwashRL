@@ -216,7 +216,7 @@ void TCOD_map_compute_fov_recursive_shadowcasting(
  +   viewer_y   = The y coordinate of the start point for field-of-vision
  +                calculation
  +/
-void calc_visible( Map* to_display, ushort viewer_x, ushort viewer_y )
+void calc_visible( Map* to_display, uint viewer_x, uint viewer_y )
 {
   TCOD_map_compute_fov_recursive_shadowcasting(
     to_display, viewer_x, viewer_y, 0, true );

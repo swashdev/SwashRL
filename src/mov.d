@@ -42,7 +42,7 @@ import global;
  +         coordinate, which will be changed to either -1, 0, or 1 depending
  +         on what `dir`ection the monster is moving in
  +/
-void get_dydx( ubyte dir, byte* dy, byte* dx )
+void get_dydx( uint dir, byte* dy, byte* dx )
 {
   switch( dir )
   {
@@ -208,7 +208,7 @@ void mmove( Monst* mn, Map* m, byte idy, byte idx, Player* u )
 {
   uint dy = idy, dx = idx;
 
-  ubyte terrain = 0, monster = 0;
+  uint terrain = 0, monster = 0;
 
   dx = dx + mn.x; dy = dy + mn.y;
   bool cardinal = dx == 0 || dy == 0;
@@ -299,8 +299,8 @@ void mmove( Monst* mn, Map* m, byte idy, byte idx, Player* u )
 void monst_ai( Map* m, uint index, Player* u )
 {
   Monst* mn = &m.m[index];
-  int mnx = mn.x, mny = mn.y, ux = u.x, uy = u.y,
-    dx = 0, dy = 0;
+  ubyte mnx = mn.x, mny = mn.y, ux = u.x, uy = u.y;
+  byte dx = 0, dy = 0;
   if( mnx > ux )
     dx = -1;
   if( mnx < ux )
@@ -309,7 +309,7 @@ void monst_ai( Map* m, uint index, Player* u )
     dy = -1;
   if( mny < uy )
     dy =  1;
-  mmove( mn, m, cast(byte)dy, cast(byte)dx, u );
+  mmove( mn, m, dy, dx, u );
 }
 
 /++
@@ -344,7 +344,7 @@ void monst_ai( Map* m, uint index, Player* u )
  +   A `ubyte` representing the number of turns expended by the player while
  +   moving (usually 1 or 0)
  +/
-ubyte umove( Player* u, Map* m, ubyte dir )
+uint umove( Player* u, Map* m, uint dir )
 {
   if( dir == MOVE_GET )
   {
@@ -359,7 +359,7 @@ ubyte umove( Player* u, Map* m, ubyte dir )
   get_dydx( dir, &dy, &dx );
   bool cardinal = dy == 0 || dx == 0;
 
-  ubyte terrain = 0, monster = 0;
+  uint terrain = 0, monster = 0;
 
   dx += u.x; dy += u.y;
 
@@ -529,10 +529,10 @@ void map_move_all_monsters( Map* m, Player* u )
   foreach( mn; 0 .. m.m.length )
   {
     if( m.m[mn].hp > 0 )
-    { monst_ai( m, cast(uint)mn, u );
+    { monst_ai( m, mn, u );
     }
     else
-    { remove_mon( m, cast(ushort)mn );
+    { remove_mon( m, mn );
     }
   }
 }

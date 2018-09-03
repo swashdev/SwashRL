@@ -40,7 +40,7 @@ import global;
  +/
 struct Color
 {
-  ubyte fg;
+  uint fg;
   // `reverse' determines if the foreground and background colors are
   // reversed.
   bool reverse;

@@ -348,7 +348,7 @@ ubyte umove( player* u, map* m, ubyte dir )
 {
   if( dir == MOVE_GET )
   {
-    if( upickup( u, m.i[u.y][u.x] ) )
+    if( pickup( u, m.i[u.y][u.x] ) )
     {
       m.i[u.y][u.x] = No_item;
       return 1;
@@ -419,59 +419,80 @@ message( "You step into the water and are pulled down by your equipment..." );
 }
 
 /++
- + Causes the player to try to pick up a given item
+ + Causes a monster to try to pick up a given item
  +
- + This function takes the `player` character u and a given `item` i and tries
- + to get u to pick up i.
+ + This function takes the `monst` mn and a given `item` i and tries to get mn
+ + to pick up i.
  +
  + i is an `item` which should be obtained from the `i` array of the `map`
- + that the player character is currently occupying.
+ + that the monster is currently occupying.
  +
- + This function will automatically check both of the player's hands to make
- + sure that u has a free grasp to pick an item up.
+ + This function will automatically check both of the monster's hands to make
+ + sure that mn has a free grasp to pick an item up.
+ +
+ + The only difference between monsters and the player, as far as this
+ + function is concerned, is that the player will get certain messages that
+ + monsters will not.
  +
  + Params:
- +   u = A pointer to the `player` character
- +   i = An `item` that u is trying to pick up
+ +   mn = A pointer to the monster that is attempting to pick up an item
+ +   i  = An `item` that u is trying to pick up
  +
  + Returns:
  +   `true` if u successfully picked up i; `false` otherwise
  +/
-bool upickup( player* u, item i )
+bool pickup( monst* mn, item i )
 {
+  bool mon_picked_up = false;
+
   if( i.sym.ch == '\0' )
   {
-    message( "There is nothing here to pick up." );
+    if( is_you( *mn ) )  message( "There is nothing here to pick up." );
     return false;
   }
 
-  // TODO: These three `if' statements can be condensed down to two.  Figure
-  // out how and git 'r' done.
-  if( i.type & ITEM_WEAPON
-      && u.inventory.items[INVENT_WEAPON].sym.ch == '\0' )
+  // Items are picked up in the weapon-hand if the weapon-hand is empty, AND
+  // the item is a weapon OR the off-hand is NOT empty
+  if( mn.inventory.items[INVENT_WEAPON].sym.ch == '\0' &&
+          (i.type & ITEM_WEAPON
+        || mn.inventory.items[INVENT_OFFHAND].sym.ch != '\0')
+    )
   {
-    message( "You pick up a %s in your weapon-hand.",
-             i.name );
-    u.inventory.items[INVENT_WEAPON] = i;
-    return true;
+
+    mn.inventory.items[INVENT_WEAPON] = i;
+
+    if( is_you( *mn ) )
+    {
+      message( "You pick up a %s in your weapon-hand.", i.name );
+      return true;
+    }
+    else
+    { mon_picked_up = true;
+    }
+  }
+  // Items go in the off-hand if the off-hand is empty, AND the item is not a
+  // weapon OR the weapon-hand is NOT empty
+  else if( mn.inventory.items[INVENT_OFFHAND].sym.ch == '\0' )
+  {
+    mn.inventory.items[INVENT_OFFHAND] = i;
+
+    if( is_you( *mn ) )
+    {
+      message( "You pick up a %s in your off-hand.", i.name );
+      return true;
+    }
+    else
+    { mon_picked_up = true;
+    }
+  }
+  else if( is_you( *mn ) )
+  { message( "You do not have a free grasp." );
   }
 
-  if( u.inventory.items[INVENT_OFFHAND].sym.ch == '\0' )
+  if( mon_picked_up )
   {
-    message( "You pick up a %s in your off-hand.",
-             i.name );
-    u.inventory.items[INVENT_OFFHAND] = i;
+    message( "The %s picks up a %s.", monst_name( *mn ), i.name );
     return true;
-  }
-  else if( u.inventory.items[INVENT_WEAPON].sym.ch == '\0' )
-  {
-    message( "You pick up a %s in your weapon-hand.",
-             i.name );
-    u.inventory.items[INVENT_WEAPON] = i;
-    return true;
-  }
-  else
-  { message( "You do not have a free grasp." );
   }
 
   return false;

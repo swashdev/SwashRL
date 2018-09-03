@@ -41,10 +41,6 @@ enum NAME = "SwashRL";
  +/
 enum VERSION = 0.027;
 
-static if( INCLUDE_COMMIT )
-{
-import std.string : split;
-
 /++
  + The commit ID
  +
@@ -52,11 +48,19 @@ import std.string : split;
  + that the git repository was in when SwashRL was compiled.  This acts as
  + the "patch number" for that version of the program.
  +
- + This value will not be declared if `INCLUDE_COMMIT` is `false`.
+ + This value will be declared as "HOMEMOD" if `INCLUDE_COMMIT` is `false`
  +
  + See_Also: <a href="#VERSION">VERSION</a>
  +/
+static if( INCLUDE_COMMIT )
+{
+import std.string : split;
+
 enum COMMIT = import( ".git/" ~ import( ".git/HEAD" ).split[1] )[0 .. 7];
+}
+else
+{
+enum COMMIT = "HOMEMOD";
 }
 
 // Include the config file

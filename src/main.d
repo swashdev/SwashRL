@@ -51,10 +51,7 @@ static SwashIO IO;
  +/
 string sp_version()
 {
-static if( INCLUDE_COMMIT )
   return format( "%.3f-%s", VERSION, COMMIT );
-else
-  return format( "%.3f", VERSION );
 }
 
 /++

@@ -372,23 +372,6 @@ void save_level( T... )( Map m, Player u, T args )
 } // save_level( map, player, uint )
 
 /++
- + Reads a line from a file and strips the newline off the end
- +
- + Params:
- +     fil = The file to be read
- +
- + Returns:
- +     A `string` representing the line read from fil, not including the
- +     newline
- +/
-string strip_line( File fil )
-{
-  char[] line = fil.readln().dup;
-  line.length--;
-  return cast(string)line;
-}
-
-/++
  + Get a saved level from a file
  +
  + This function reads in a level file and populates a map based on its

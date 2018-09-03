@@ -83,6 +83,3 @@ enum HILITE_PLAYER = true;
 
 /// The number of messages to store in the message buffer
 enum MAX_MESSAGE_BUFFER = 20;
-
-enum MINIMUM_DIE_ROLL = -1000;
-enum MAXIMUM_DIE_ROLL = 1000;

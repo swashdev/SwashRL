@@ -305,8 +305,7 @@ int roll( uint num, int mod )
  + if the result is below `floor` or above `ceiling` and adjusts the output
  + appropriately.
  +
- + `MAXIMIM_DICE_ROLL` and `MINIMUM_DICE_ROLL` are also checked, and take
- + precedence over the given `floor` and `ceiling` parameters.
+ + Date:  2018-09-03
  +
  + See_Also:
  +   <a href="#d">d</a>,
@@ -338,13 +337,6 @@ int roll_x( uint num, int mod, uint floor, uint ceiling )
     result += d();
   } 
 
-  if( result > MAXIMUM_DIE_ROLL )
-  { result = MAXIMUM_DIE_ROLL;
-  } 
-
-  if( result < MINIMUM_DIE_ROLL )
-  { result = MINIMUM_DIE_ROLL;
-  } 
   return minmax( result, floor, ceiling ) + mod;
 }
 

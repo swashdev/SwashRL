@@ -349,16 +349,9 @@ interface SwashIO
     {
       mn = to_display.m[c];
 
-static if( USE_FOV )
-{
-     if( No_shadows || to_display.v[mn.y][mn.x] )
-     { display_mon( mn );
-     }
-}
-else
-{
-     display_mon( mn );
-}
+      if( No_shadows || to_display.v[mn.y][mn.x] )
+      { display_mon( mn );
+      }
 
     } /* foreach( c; 0 .. d ) */
   }
@@ -420,14 +413,12 @@ static if( COLOR )
         { output = to_display.i[y][x].sym;
         }
 
-static if( USE_FOV )
-{
         if( !No_shadows && !to_display.v[y][x] )
         {
- static if( !COLOR )
-            output = SYM_SHADOW;
- else
- {
+static if( !COLOR )
+          output = SYM_SHADOW;
+else
+{
           if( to_display.t[y][x].seen )
           {
             output.color.fg = CLR_DARKGRAY; 
@@ -436,9 +427,8 @@ static if( USE_FOV )
           {
             output = SYM_SHADOW;
           }
- }
-        }
 }
+        }
 
         display( y + 1, x, output );
       } /* foreach( x; 0 .. MAP_X ) */

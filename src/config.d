@@ -81,14 +81,6 @@ enum HILITE_PLAYER = true;
 // Spelunk! configuration                                                   //
 //////////////////////////////////////////////////////////////////////////////
 
-/++
- + Enables field-of-vision
- +
- + Set this to `false` if you need to be able to see the whole map for
- + whatever reason.
- +/
-enum USE_FOV = true;
-
 /// The number of messages to store in the message buffer
 enum MAX_MESSAGE_BUFFER = 20;
 

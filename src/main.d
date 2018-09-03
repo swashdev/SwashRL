@@ -332,8 +332,19 @@ version( sdl )
   }
 
   // Initialize the fog of war
-  static if( USE_FOV )
+  if( !No_shadows )
   { calc_visible( &Current_map, u.x, u.y );
+  }
+  // If fog of war has been disabled, set all tiles to visible.
+  else
+  {
+    foreach( vy; 0 .. MAP_Y )
+    {
+      foreach( vx; 0 .. MAP_X )
+      {
+        Current_map.v[vy][vx] = true;
+      }
+    }
   }
 
   // Initialize the status bar
@@ -445,7 +456,7 @@ version( sdl )
         map_move_all_monsters( &Current_map, &u );
         moved--;
       }
-      static if( USE_FOV )
+      if( !No_shadows )
       { calc_visible( &Current_map, u.x, u.y );
       }
       IO.refresh_status_bar( &u );

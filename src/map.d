@@ -36,10 +36,6 @@ struct room
  + the map; a two-layered array of `item`s, `i`, which represents the items
  + contained on each tile of the map.
  +
- + If `USE_FOV` is `true`, the map will also contain a two-layered array of
- + `bool`s, `v`, which represents whether or not each tile on the map is
- + currently visible.
- +
  + The map also contains an array of two `ubyte`s, `player_start`, which
  + represents where the player starts out when the map is loaded.  This is
  + currently only used for opening save files.
@@ -55,10 +51,7 @@ struct map
 
   room[9] r;
 
-static if( USE_FOV )
-{
   bool[MAP_X][MAP_Y] v; // 'v'isibility
-}
 
   ubyte[2] player_start;
 

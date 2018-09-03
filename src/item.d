@@ -15,36 +15,36 @@
  * limitations under the License.
  */
 
-// This file defines items and functions related to them
+// This file defines Items and functions related to them
 
 import global;
 
 /++
- + The item struct
+ + The Item struct
  +
- + This struct defines an item.
+ + This struct defines an Item.
  +
- + It contains the item's `symbol`, which also defines colors; a string
- + representing the item's `name`, and unsigned shorts defining the item
+ + It contains the Item's `symbol`, which also defines colors; a string
+ + representing the Item's `name`, and unsigned shorts defining the Item
  + `type` and what, if any, `equip` slot it goes into.
  +
  + It also defines two bytes `addd` and `addm`, which respectively add dice
- + and a modifier to rolls which impact the item in question.  For example,
- + an attack roll by the player while they are equipping an item of type
+ + and a modifier to rolls which impact the Item in question.  For example,
+ + an attack roll by the player while they are equipping an Item of type
  + `ITEM_WEAPON` will add `addd` to the dice rolls and `addm` to the modifier
  + for damage output.
  +
  + Flags for `type` and `equip` are defined in iflags.d
  +/
-struct item
+struct Item
 {
-  symbol sym;
+  Symbol sym;
   string name;
   ushort type, equip;
   /* modifiers to the player's dice rolls */
   byte addd, addm;
 }
 
-/// A generic item used to signal an empty equipment slot or a floor tile
-/// which does not have an item on it
-item No_item = { sym:symbol('\0'), name:"NO ITEM", addd:0, addm:0 };
+/// A generic Item used to signal an empty equipment slot or a floor tile
+/// which does not have an Item on it
+Item No_item = { sym:Symbol('\0', CLR_DEFAULT), name:"NO ITEM", addd:0, addm:0 };

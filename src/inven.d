@@ -17,27 +17,27 @@
 
 import global;
 
-// defines the `inven' struct, used for inventories
+// defines the `Inven' struct, used for Inventories
 
 /++
  + The inventory
  +
- + This struct defines an inventory.  It contains an array of 40 `item`s (14
+ + This struct defines an inventory.  It contains an array of 40 `items` (14
  + for equipment slots followed by 26 more for a "bag"), a counter for the
  + number of items in the quiver (`quiver_count`), and the number of `coins`
  + in the inventory.
  +/
-struct inven
+struct Inven
 {
-  // all `items' carried in this inventory; 14 "inventory slots" for the
+  // all `Items' carried in this inventory; 14 "inventory slots" for the
   // various body parts, plus 26 for the "bag" (to be implemented)
-  item[40] items; 
+  Item[40] items; 
   ubyte quiver_count;
   ubyte coins;
 }
 
 // Special array indeces in the `items' array which correspond to the
-// specific inventory slots seen on the inventory screen
+// specific Inventory slots seen on the Inventory screen
 enum INVENT_WEAPON    =  0;
 enum INVENT_OFFHAND   =  1;
 enum INVENT_QUIVER    =  2;
@@ -58,7 +58,7 @@ enum INVENT_LAST_SLOT = INVENT_TAIL;
 /++
  + Checks a given item against a given inventory equipment slot
  +
- + This function checks the given item `i`'s equipment type against a given
+ + This function checks the given `Item` `i`'s equipment type against a given
  + equipment slot `s`.  The function returns `true` if the item can go in the
  + given inventory slot.
  +
@@ -68,13 +68,13 @@ enum INVENT_LAST_SLOT = INVENT_TAIL;
  + one's hands.
  +
  + Params:
- +   i = an `item` to be checked
+ +   i = an `Item` to be checked
  +   s = the index of the equipment slot to be checked
  +
  + Returns:
  +   `true` if i can be equipped in equipment slot s, `false` otherwise
  +/
-bool check_equip( item i, ubyte s )
+bool check_equip( Item i, ubyte s )
 {
   // an empty item can go in any slot (obviously)
   if( i.sym.ch == '\0' )

@@ -352,7 +352,7 @@ static if( COLOR )
    + See_Also:
    +   <a href="iomain.html#SwashIO.refresh_status_bar">SwashIO.refresh_status_bar</a>
    +/
-  void refresh_status_bar( player* u )
+  void refresh_status_bar( Player* u )
   {
     int hp = u.hp;
     int dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].addd;
@@ -408,7 +408,7 @@ static if( COLOR )
    + See_Also:
    +   <a href="iomain.html#SwashIO.display">SwashIO.display</a>
    +/
-  void display( uint y, uint x, symbol s, bool center = false )
+  void display( uint y, uint x, Symbol s, bool center = false )
   {
     put_char( y, x, s.ch,
               COLOR ? s.color : Color( CLR_GRAY, s.color.reverse ) );

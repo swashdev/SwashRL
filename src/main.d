@@ -24,7 +24,7 @@ import std.stdio : writefln;
 import std.ascii : toLower;
 import std.file;
 
-static map Current_map;
+static Map Current_map;
 static uint Current_level;
 static SwashIO IO;
 
@@ -319,8 +319,8 @@ version( sdl )
 }
 
   // Initialize the player
-  player u = init_player( Current_map.player_start[0],
-                          Current_map.player_start[1] );
+  Monst u = init_player( Current_map.player_start[0],
+                         Current_map.player_start[1] );
 
   // if the game is configured to highlight the player, and the SDL terminal
   // is being used, highlight the player.
@@ -360,7 +360,7 @@ version( sdl )
     if( IO.window_closed() ) goto abrupt_quit;
 
     moved = 0;
-    mv = IO.getcommand();
+    mv = IO.get_command();
 
     if( IO.window_closed() ) goto abrupt_quit;
 

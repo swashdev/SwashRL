@@ -68,7 +68,7 @@ static int[][] mult = [
  + See_Also:
  +   <a href="http://www.roguebasin.com/index.php?title=FOV_using_recursive_shadowcasting">Roguebasin:  FOV using recursive shadowcasting</a>
  +/
-void cast_light( map* to_display, int cx, int cy, int row, float start,
+void cast_light( Map* to_display, int cx, int cy, int row, float start,
                  float end, int radius, int r2, int xx, int xy, int yx,
                  int yy, int id, bool light_walls)
 {
@@ -169,7 +169,7 @@ void cast_light( map* to_display, int cx, int cy, int row, float start,
  +   light_walls = Whether or not to illuminate walls
  +/
 void TCOD_map_compute_fov_recursive_shadowcasting(
-    map* to_display, int player_x, int player_y, int max_radius,
+    Map* to_display, int player_x, int player_y, int max_radius,
     bool light_walls)
 {
   int r2;
@@ -216,7 +216,7 @@ void TCOD_map_compute_fov_recursive_shadowcasting(
  +   viewer_y   = The y coordinate of the start point for field-of-vision
  +                calculation
  +/
-void calc_visible( map* to_display, ushort viewer_x, ushort viewer_y )
+void calc_visible( Map* to_display, ushort viewer_x, ushort viewer_y )
 {
   TCOD_map_compute_fov_recursive_shadowcasting(
     to_display, viewer_x, viewer_y, 0, true );

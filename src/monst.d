@@ -22,52 +22,52 @@ import global;
 import std.string : format;
 
 /++
- + A struct for `mon`ster generation data
+ + A struct for `Mon`ster generation data
  +
  + This struct is used for storing data used to generate new monsters.
  + The data stored in the struct is parsed by functions used for declaring a
- + new `monst`.
+ + new `Monst`.
  +
  + This struct can be thought of as describing a specific <em>kind</em> of
  + monster rather than an individual monster.
  +
- + The struct contains the monster's `symbol`, `sym`; a `string` representing
+ + The struct contains the monster's `Symbol`, `sym`; a `string` representing
  + its `name`.
  +
  + It also contains a `ubyte` called `fly` which stores flags related to
  + whether or not the monster can fly and a `ubyte` called `swim` which stores
  + flags related to whether or not the monster can swim.
  +
- + It also contains two `dicebag`s, one (`hit_dice`) used to generate the
+ + It also contains two `Dicebag`s, one (`hit_dice`) used to generate the
  + monster's hit points; and one (`attack_roll`) representing the monster's
  + attack roll.
  +
  + See_Also:
- +   <a href="#monst">monst</a>,
+ +   <a href="#Monst">Monst</a>,
  +   <a href="#monster">monster</a>,
  +   <a href="#monster_at">monster_at</a>
  +/
-struct mon
+struct Mon
 {
-  symbol sym;
+  Symbol sym;
   string name;
   ubyte fly;
   ubyte swim;
-  dicebag hit_dice;
-  dicebag attack_roll;
+  Dicebag hit_dice;
+  Dicebag attack_roll;
 }
 
 /++
- + Generates a new `mon`
+ + Generates a new `Mon`
  +
- + This function defines a `mon` struct based on the input parameters.
+ + This function defines a `Mon` struct based on the input parameters.
  +
  + Deprecated:
  +   This function is longwinded and unnecessary.  Use D's generic struct
  +   constructor instead.
  +
  + See_Also:
- +   <a href="#mon">mon</a>
+ +   <a href="#Mon">Mon</a>
  +
  + Params:
  +   isym         = The monster's on-screen character;  Note that color
@@ -90,11 +90,11 @@ struct mon
  + Returns:
  +   A `mon`
  +/
-mon mondat( char isym, string iname, ubyte ifly, ubyte iswim,
+Mon mondat( char isym, string iname, ubyte ifly, ubyte iswim,
             ubyte hit_dice, short hit_modifier, int hit_min, int hit_max,
             ubyte at_dice, short at_modifier, int at_min, int at_max )
 {
-  mon mn = { sym:symdata( isym, CLR_DEFAULT ), name:iname, fly:ifly,
+  Mon mn = { sym:symdata( isym, CLR_DEFAULT ), name:iname, fly:ifly,
              swim:iswim,
              hit_dice:Dice( hit_dice, hit_modifier, hit_min, hit_max ),
              attack_roll:Dice( at_dice, at_modifier, at_min, at_max )
@@ -103,12 +103,12 @@ mon mondat( char isym, string iname, ubyte ifly, ubyte iswim,
 }
 
 /++
- + The `monst`er struct
+ + The `Monst`er struct
  +
- + This struct defines a specific monster, as opposed to `mon` which defines
+ + This struct defines a specific monster, as opposed to `Mon` which defines
  + a <em>type</em> of monster.
  +
- + This struct contains the monster's `symbol`, `sym`; a `string` representing
+ + This struct contains the monster's `Symbol`, `sym`; a `string` representing
  + its `name`; an `int`, `hp`, representing the monster's hit points; and two
  + `ubyte`s representing its `x` and `y` coordinates.
  +
@@ -116,53 +116,53 @@ mon mondat( char isym, string iname, ubyte ifly, ubyte iswim,
  + related to the monster's ability to fly; and a `ubyte` called `swim` which
  + contains flags related to the monster's ability to swim.
  +
- + This struct also contains a `dicebag` called `attack_roll` which determines
+ + This struct also contains a `Dicebag` called `attack_roll` which determines
  + the monster's attack rolls.
  +
  + See_Also:
- +   <a href="#mon">mon</a>,
+ +   <a href="#Mon">Mon</a>,
  +   <a href="#monster">monster</a>,
  +   <a href="#monster_at">monster_at</a>
  +/
-struct monst
+struct Monst
 {
-  symbol sym;
+  Symbol sym;
   string name;
   int hp;
   ubyte fly;
   ubyte swim;
-  dicebag attack_roll;
+  Dicebag attack_roll;
   ubyte x, y;
-  inven inventory;
+  Inven inventory;
 }
 
 /++
- + Generates a `monst`er from the given `mon`ster generation data at the given
+ + Generates a `Monst`er from the given `Mon`ster generation data at the given
  + coordinates
  +
- + This function takes a `mon` and uses it to build a `monst` at the given
+ + This function takes a `Mon` and uses it to build a `Monst` at the given
  + coordinates (x, y).  It's essentially a method used to turn the monster
  + generation data defined in a `mon` struct into an actual monster defined
- + by a `monst` struct.
+ + by a `Monst` struct.
  +
  + See_Also:
- +   <a href="#mon">mon</a>,
- +   <a href="#monst">monst</a>,
+ +   <a href="#Mon">Mon</a>,
+ +   <a href="#Monst">Monst</a>,
  +   <a href="#monster">monster</a>
  +
  + Params:
- +   mn = A `mon` representing the monster generation data being used to
- +        generate a new `monst` struct
+ +   mn = A `Mon` representing the monster generation data being used to
+ +        generate a new `Monst` struct
  +   x  = The x coordinate at which the monster should start
  +   y  = The y coordinate at which the monster should start
  +
  + Returns:
- +   A `monst` generated by the monster generation data in mn with x and y set
+ +   A `Monst` generated by the monster generation data in mn with x and y set
  +   by the x and y parameters of this function
  +/
-monst monster_at( mon mn, ubyte x, ubyte y )
+Monst monster_at( Mon mn, ubyte x, ubyte y )
 {
-  monst mon = { sym:mn.sym, name:mn.name, fly:mn.fly, swim:mn.swim,
+  Monst mon = { sym:mn.sym, name:mn.name, fly:mn.fly, swim:mn.swim,
                 hp:roll( mn.hit_dice.dice, mn.hit_dice.modifier ),
                 attack_roll:mn.attack_roll,
                 x:x, y:y
@@ -176,9 +176,9 @@ monst monster_at( mon mn, ubyte x, ubyte y )
 }
 
 /++
- + Generates a `monst`er from the given `mon`ster generation data
+ + Generates a `Monst`er from the given `Mon`ster generation data
  +
- + This function takes a `mon` and uses it to build a `monst`.
+ + This function takes a `Mon` and uses it to build a `Monst`.
  +
  + This function is essentially an alias for `monster_at( mn, 0, 0 )`.
  +
@@ -194,23 +194,23 @@ monst monster_at( mon mn, ubyte x, ubyte y )
  + Returns:
  +   A `monst` generated by the monster generation data in mn
  +/
-monst monster( mon mn )
+Monst monster( Mon mn )
 { return monster_at( mn, 0, 0 );
 }
 
 /++
- + Generates a new `monst` at the coordinates (x, y)
+ + Generates a new `Monst` at the coordinates (x, y)
  +
- + This function generates a new `monst`er at the given coordinates (x, y)
+ + This function generates a new `Monst`er at the given coordinates (x, y)
  + using the function parameters.
  +
  + Deprecated:
  +   This function is longwinded and unnecessary.  Use D's generic struct
- +   constructor instead, or use `monster_at` to generate a `monst` from a
- +   predefined `mon` struct.
+ +   constructor instead, or use `monster_at` to generate a `Monst` from a
+ +   predefined `Mon` struct.
  +
  + See_Also:
- +   <a href="#monst">monst</a>,
+ +   <a href="#Monst">Monst</a>,
  +   <a href="#monster_at">monster_at</a>,
  +   <a href="#new_monst">new_monst
  +
@@ -234,14 +234,14 @@ monst monster( mon mn )
  +   y        = The monster's starting y coordinate
  +
  + Returns:
- +   A `monst` generated from the function parameters at coordinates (x, y)
+ +   A `Monst` generated from the function parameters at coordinates (x, y)
  +/
-monst new_monst_at( char isym, string iname, ubyte ifly, ubyte iswim,
+Monst new_monst_at( char isym, string iname, ubyte ifly, ubyte iswim,
                     ubyte hit_dice, short hit_mod, int hit_min, int hit_max,
                     ubyte at_dice, short at_mod, int at_min, int at_max,
                     ubyte x, ubyte y )
 {
-  monst mon = { sym:symdata( isym, CLR_DEFAULT ), name:iname,
+  Monst mon = { sym:symdata( isym, CLR_DEFAULT ), name:iname,
                 fly:ifly, swim:iswim,
                 hp:roll( hit_dice, hit_mod ),
                 attack_roll:Dice( at_dice, at_mod, at_min, at_max ),
@@ -256,19 +256,19 @@ monst new_monst_at( char isym, string iname, ubyte ifly, ubyte iswim,
 }
 
 /++
- + Generates a new `monst`
+ + Generates a new `Monst`
  +
- + This function generates a new `monst`er using the function parameters.
+ + This function generates a new `Monst`er using the function parameters.
  +
  + This function is essentially an alias for `new_monst_at( isym, ... 0, 0 )`.
  +
  + Deprecated:
  +   This function is longwinded and unnecessary.  Use D's generic struct
- +   constructor instead, or use `monster` to generate a `monst` from a
- +   predefined `mon` struct.
+ +   constructor instead, or use `monster` to generate a `Monst` from a
+ +   predefined `Mon` struct.
  +
  + See_Also:
- +   <a href="#monst">monst</a>,
+ +   <a href="#Monst">Monst</a>,
  +   <a href="#monster">monster</a>,
  +   <a href="#new_monst_at">new_monst_at</a>
  +
@@ -290,9 +290,9 @@ monst new_monst_at( char isym, string iname, ubyte ifly, ubyte iswim,
  +   at_mod   = The maximum possible result of the monster's `attack_roll`
  +
  + Returns:
- +   A `monst` generated from the function parameters
+ +   A `Monst` generated from the function parameters
  +/
-monst new_monst( char isym, string iname, ubyte ifly, ubyte iswim,
+Monst new_monst( char isym, string iname, ubyte ifly, ubyte iswim,
                  ubyte hit_dice, short hit_mod, int hit_min, int hit_max,
                  ubyte at_dice, short at_mod, int at_min, int at_max )
 { return new_monst_at( isym, iname, ifly, iswim, hit_dice, hit_mod, hit_min,
@@ -318,21 +318,21 @@ monst new_monst( char isym, string iname, ubyte ifly, ubyte iswim,
  + Returns:
  +   A `string` representing an appropriate title for the monster
  +/
-string monst_name( monst mn )
+string monst_name( Monst mn )
 {
   if( mn.name == "spelunker" )  return "you";
 
   return mn.name;
 }
 
-string the_monst( monst mn )
+string the_monst( Monst mn )
 {
   if( mn.name == "spelunker" )  return "you";
 
   return format( "the %s", mn.name );
 }
 
-string The_monst( monst mn )
+string The_monst( Monst mn )
 {
   if( mn.name == "spelunker" )  return "You";
 

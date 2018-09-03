@@ -17,14 +17,14 @@
 
 import global;
 
-// declare symbols for dungeon tiles--see ``sym.d'' for declaration of the
-// `symbol' struct and `symdata' function.
+// declare symbols for dungeon Tiles--see ``sym.d'' for declaration of the
+// `Symbol' struct and `symdata' function.
 
-static const symbol SYM_FLOOR  = symdata( '.', Color( CLR_GRAY, false ) );
-static const symbol SYM_WALL   = symdata( '#',
+static const Symbol SYM_FLOOR  = symdata( '.', Color( CLR_GRAY, false ) );
+static const Symbol SYM_WALL   = symdata( '#',
                                           Color( CLR_GRAY, REVERSED_WALLS ) );
-static const symbol SYM_STALA  = symdata( 'V',
+static const Symbol SYM_STALA  = symdata( 'V',
                                           Color( CLR_GRAY, REVERSED_WALLS ) );
-static const symbol SYM_DOOR   = symdata( '+', Color( CLR_BROWN, false ) );
-static const symbol SYM_WATER  = symdata( '}', Color( CLR_BLUE, false ) );
-static const symbol SYM_SHADOW = symdata( ' ', Color( CLR_BLACK, false ) );
+static const Symbol SYM_DOOR   = symdata( '+', Color( CLR_BROWN, false ) );
+static const Symbol SYM_WATER  = symdata( '}', Color( CLR_BLUE, false ) );
+static const Symbol SYM_SHADOW = symdata( ' ', Color( CLR_BLACK, false ) );

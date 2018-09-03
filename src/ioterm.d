@@ -83,7 +83,7 @@ class SDLTerminalIO : SwashIO
   /// This texture is used as a backup of the frame buffer, to prevent errors
   /// when SDL's "back" and "front" frame buffers are swapped by the
   /// `refresh_screen` function
-  SDL_Texture* framebuffer;
+  SDL_Texture* frame_buffer;
 
   /// The width of the tiles in the SDL display.  Always equal to
   /// `TILE_WIDTH`.
@@ -162,7 +162,7 @@ class SDLTerminalIO : SwashIO
 
         // (end cannibalized code)
 
-        framebuffer = SDL_CreateTexture( renderer, SDL_PIXELFORMAT_RGB888,
+        frame_buffer = SDL_CreateTexture( renderer, SDL_PIXELFORMAT_RGB888,
                                          SDL_TEXTUREACCESS_TARGET,
                                          MAP_X * tile_width,
                                          (MAP_Y + 2) * tile_height );
@@ -500,9 +500,9 @@ class SDLTerminalIO : SwashIO
                  Color color = Color( CLR_NONE, false ) )
   {
 
-    // Tell the renderer to draw to our own `framebuffer' rather than the
+    // Tell the renderer to draw to our own `frame_buffer' rather than the
     // screen so we have better control over the contents of the backbuffer
-    SDL_SetRenderTarget( renderer, framebuffer );
+    SDL_SetRenderTarget( renderer, frame_buffer );
 
     // The following code was cannibalized from Elronnd's SwashRL project:
 
@@ -638,7 +638,7 @@ class SDLTerminalIO : SwashIO
    + See_Also:
    +   <a href="iomain.html#SwashIO.refresh_status_bar">SwashIO.refresh_status_bar</a>
    +/
-  void refresh_status_bar( player* u )
+  void refresh_status_bar( Player* u )
   {
     int hp = u.hp;
     int dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].addd;
@@ -671,9 +671,9 @@ class SDLTerminalIO : SwashIO
   void refresh_screen()
   {
     // Set the `renderer' back on the screen itself to copy the contents of
-    // `framebuffer' to the buffer before blitting everything
+    // `frame_buffer' to the buffer before blitting everything
     SDL_SetRenderTarget( renderer, null );
-    SDL_RenderCopy( renderer, framebuffer, null, null );
+    SDL_RenderCopy( renderer, frame_buffer, null, null );
 
     SDL_RenderPresent( renderer );
   }
@@ -686,7 +686,7 @@ class SDLTerminalIO : SwashIO
    +/
   void clear_screen()
   {
-    SDL_SetRenderTarget( renderer, framebuffer );
+    SDL_SetRenderTarget( renderer, frame_buffer );
     SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
     SDL_RenderClear( renderer );
   }
@@ -705,7 +705,7 @@ class SDLTerminalIO : SwashIO
     rect.w = tile_width * MAP_X;
     rect.h = tile_height;
 
-    SDL_SetRenderTarget( renderer, framebuffer );
+    SDL_SetRenderTarget( renderer, frame_buffer );
 
     SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
 
@@ -722,7 +722,7 @@ class SDLTerminalIO : SwashIO
    + See_Also:
    +   <a href="iomain.html#SwashIO.display">SwashIO.display</a>
    +/
-  void display( uint y, uint x, symbol s, bool center = true )
+  void display( uint y, uint x, Symbol s, bool center = true )
   {
     put_char( y, x, s.ch,
               COLOR ? s.color : Color( CLR_GRAY, s.color.reverse ) );

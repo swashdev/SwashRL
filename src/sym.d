@@ -32,7 +32,7 @@ import global;
  + used to represent the symbol in text-based displays; and a `Color` called
  + `color` which is used to determine the color that `ch` is drawn in.
  +/
-struct symbol
+struct Symbol
 {
   char ch;
 
@@ -43,27 +43,27 @@ struct symbol
 }
 
 /++
- + Generates a new `symbol`
+ + Generates a new `Symbol`
  +
- + This function is a simple constructor for a `symbol`.
+ + This function is a simple constructor for a `Symbol`.
  +
  + Deprecated:
  +   This function has exactly the same function and parameters as D's
  +   generic struct constructor, so use that instead.
  +
  + Params:
- +   character = The `char` used to represent the `symbol` in text-based
+ +   character = The `char` used to represent the `Symbol` in text-based
  +               displays
  +   color     = A `Color` used to determine what color character will be
  +               drawn in
  +
  + Returns:
- +   A `symbol` containing character and color
+ +   A `Symbol` containing character and color
  +/
-symbol symdata( char character, Color color )
+Symbol symdata( char character, Color color )
 {
 
-  symbol ret;
+  Symbol ret;
   ret.ch = character;
   ret.color = color;
 

@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-// tile.d:  Defines the `tile` struct and the `Terrain` enum
+// tile.d:  Defines the `Tile` struct and the `Terrain` enum
 
 import global;
 
 /++
- + The tile struct
+ + The Tile struct
  +
  + This struct defines a map tile.  It does this using the following assets:
  +
- + `sym`: A `symbol` used to define the tile's appearance in the display
+ + `sym`: A `Symbol` used to define the tile's appearance in the display
  +
  + `block_cardinal_movement`: A `bool` which prevents monsters from moving in
  + cardinal directions through the tile
@@ -44,11 +44,11 @@ import global;
  + `hazard`: A `ushort` containing flags which indicate what hazards and other
  + special properties the tile has.
  +/
-struct tile
+struct Tile
 {
   // the tile's symbol--this can be easily overwritten by functions intended
   // to change the properties of the tile
-  symbol sym;
+  Symbol sym;
   
   // attribute booleans
   // block_cardinal_movement and block_diagonal_movement do exactly what it
@@ -82,11 +82,11 @@ struct tile
  + generation code.
  +
  + See_Also:
- +   <a href="#tile">tile</a>
+ +   <a href="#Tile">Tile</a>
  +/
 enum Terrain {
-  floor = tile( SYM_FLOOR, false, false, false, true, false, 0            ),
-  wall  = tile( SYM_WALL,  true,  true,  true,  true, false, 0            ),
-  water = tile( SYM_WATER, false, false, false, true, false, HAZARD_WATER ),
-  door  = tile( SYM_DOOR,  false, true,  true,  true, false, 0            )
+  floor = Tile( SYM_FLOOR, false, false, false, true, false, 0            ),
+  wall  = Tile( SYM_WALL,  true,  true,  true,  true, false, 0            ),
+  water = Tile( SYM_WATER, false, false, false, true, false, HAZARD_WATER ),
+  door  = Tile( SYM_DOOR,  false, true,  true,  true, false, 0            )
 }

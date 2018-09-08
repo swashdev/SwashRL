@@ -526,7 +526,7 @@ void map_move_all_monsters( Map* m, Player* u )
   { return;
   }
 
-  foreach( mn; 0 .. m.m.length )
+  foreach( mn; 0 .. cast(uint)m.m.length )
   {
     if( m.m[mn].hp > 0 )
     { monst_ai( m, mn, u );

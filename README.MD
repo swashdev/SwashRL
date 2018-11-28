@@ -148,7 +148,7 @@ easy to do.  It only requires two steps:
       [the Dlang JSON file documentation].
 
 2. Edit the file [global.d] so that the "NAME" enum will be the
-   name of your program (i.e. instead of saying `enum NAME = "SwashRL;` it
+   name of your program (i.e. instead of saying `enum NAME = "SwashRL";` it
    will say `enum NAME = "Your Game's Name";`)
 
 ## Change Logs

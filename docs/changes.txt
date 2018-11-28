@@ -1,6 +1,7 @@
 SwashRL official changelog
 
 VERSION 0.028
+Finalized 2018-11-27 19:58 EST
 
   Changed:
    - The --help message and version number disclosure message now state the
@@ -9,6 +10,8 @@ VERSION 0.028
    - Mold and blood are now visible when field-of-vision is turned off.
    - The player no longer has their own struct, and is instead defined as a
      monst.
+   - The special exception to the Apache License 2.0 has been reworded to be
+     more clear and rigorous.
 
   Added:
    - If INCLUDE_COMMIT is true at compile time, the version number output by

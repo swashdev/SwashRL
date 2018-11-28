@@ -1,4 +1,3 @@
-Have seen map tiles appear shaded in the view, rather than being forgotten
 Finalize inventory
  - Implement the player's "bag"
 Implement appropriate item stats (attack & defense modifiers, &c)

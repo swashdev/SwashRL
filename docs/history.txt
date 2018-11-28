@@ -213,3 +213,11 @@ Version Date/time Finalized   Info
 0.027   2018-08-19 07:19 EST  First version to implement mold, a feature
         that was originally implemented in the Python version of Crawl back in
         2012.  Blood is also implemented for the first time.
+
+0.028   2018-11-27 19:58 EST  Largely a bugfix version.  Added the git commit
+        number to version number reports to make it easier to identify problem
+        commits.  Made it easier to change the name of the program for source
+        modders.  Added some cheat modes which are activated as command-line
+        arguments.  Some changes to the source code to be more consistent and
+        cause fewer problems.  Slight changes to the wording of the special
+        exception to the Apache License 2.0.

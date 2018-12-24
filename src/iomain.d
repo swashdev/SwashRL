@@ -606,7 +606,16 @@ else
           line = 255;
           break;
         case 'i':
-          put_line( 21, 1, "The bag has not yet been implemented." );
+          // If the player does not have a free grasp, let them know.
+          if( !check_grasp( u.inventory ) )
+          {
+            put_line( 21, 1,
+                     "You do not have a free grasp to reach into your bag." );
+          }
+          else
+          {
+            put_line( 21, 1, "Bag is not implemented yet." );
+          }
           refresh_screen();
           line = 255;
           break;

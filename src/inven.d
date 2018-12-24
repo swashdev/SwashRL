@@ -55,6 +55,21 @@ enum INVENT_TAIL      = 13;
 
 enum INVENT_LAST_SLOT = INVENT_TAIL;
 
+/**
+ * Checks if the player or other monster has a free grasp
+ *
+ * Params:
+ *   tory  The `Inven`tory to check
+ * Returns:
+ *   `true` if either `INVENT_WEAPON` or `INVENT_OFFHAND` are empty.
+ *   `false` otherwise.
+ */
+bool check_grasp( Inven tory )
+{
+  return !Item_here( tory.items[INVENT_WEAPON] )
+      || !Item_here( tory.items[INVENT_OFFHAND] );
+}
+
 /++
  + Checks a given item against a given inventory equipment slot
  +

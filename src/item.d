@@ -48,3 +48,29 @@ struct Item
 /// A generic Item used to signal an empty equipment slot or a floor tile
 /// which does not have an Item on it
 Item No_item = { sym:Symbol('\0', CLR_DEFAULT), name:"NO ITEM", addd:0, addm:0 };
+
+/**
+ * A function used to quickly check if there is an item on a floor tile or
+ * inventory slot
+ *
+ * This function takes in an `Item`, ideally taken from a `Tile` or from the
+ * player's `Inven`tory, and checks to see if the `Item` represents an actual
+ * item or if it's simply a placeholder representing `No_item`.
+ *
+ * SwashRL generally uses the `Item`'s character to determine if there is an
+ * item on the `Tile` or in the inventory slot, specifically by checking if
+ * `i.sym.ch` is equal to `'\0'`.  The reason this behavior is that it's
+ * easier to check if a single variable is "null" than it is to check if the
+ * entire `Item` struct is equal to `No_item`.
+ *
+ * This function is used to make the entire `if` check even less cumbersome.
+ *
+ * Params:
+ *   i  The `Item` to check
+ *
+ * Returns:
+ *   `true` if there is an `Item_here`.  `false` otherwise.
+ */
+bool Item_here( Item i )
+{ return i.sym.ch != '\0';
+}

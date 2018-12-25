@@ -521,7 +521,7 @@ else
     char grab = 0;
     // `line': the line corresponding to the `grab' slot letter
     // `grabbed_line': the line corresponding to an item that has been grabbed
-    ubyte line = 255, grabbed_line = 255;
+    int line = 255, grabbed_line = 255;
     // `grabbed': an item that has been grabbed
     Item grabbed = No_item;
   
@@ -606,6 +606,7 @@ else
           line = 255;
           break;
         case 'i':
+          // The player has chosen to access an item in their bag
           // If the player does not have a free grasp, let them know.
           if( !check_grasp( u.inventory ) )
           {
@@ -614,7 +615,75 @@ else
           }
           else
           {
-            put_line( 21, 1, "Bag is not implemented yet." );
+            // Always refresh the screen after displaying the bag menu, since
+            // we'll need to go back to the inventory slots screen afterwards
+            refnow = true;
+            // Clear the screen and display a new menu with the items in the
+            // bag
+            clear_screen();
+            // `I_sym` will represent the character associated with the item
+            // in the menu, i.e. the key that the player should press to
+            // access that item.
+            char I_sym = 'a';
+            do
+            {
+              foreach( I; 0 .. 24 )
+              {
+                // Inform the player of each item, up to 24 (one per line)
+                if( Item_here( u.inventory.items[INVENT_LAST_SLOT + 1 + I] ) )
+                {
+                  put_line( I, 0, "%c) %s", I_sym,
+                      u.inventory.items[INVENT_LAST_SLOT + 1 + I].name );
+                  I_sym++;
+                }
+              }
+              // From here on out `I_sym` doubles as a little cheat letting us
+              // know which character came last so we know which not to
+              // accept.
+              // In the meantime, `grab` will tell us which item has been
+              // selected.
+              grab = get_key();
+
+              if( toLower( grab ) >= I_sym || grab < 'a' )
+              { put_line( 23, 0, "You do not have that item..." );
+              }
+              else
+              {
+                line = (grab - 'a') + INVENT_LAST_SLOT + 1;
+                int hand = 0;
+                // Decide which hand to place the item in.  As with picking up
+                // items off the floor, weapons will prefer to go into the
+                // weapon-hand, but other objects will favor the off-hand,
+                // except when the favored hand is already taken.
+                if( !Item_here( u.inventory.items[INVENT_WEAPON] ) &&
+                      (u.inventory.items[line].type & ITEM_WEAPON
+                    || Item_here( u.inventory.items[INVENT_OFFHAND] ))
+                  )
+                { hand = INVENT_WEAPON;
+                }
+                else
+                { hand = INVENT_OFFHAND;
+                }
+
+                // Transfer the item to the hand...
+                u.inventory.items[hand] = u.inventory.items[line];
+                // Now we shuffle all the items in the inventory up one to
+                // overwrite the item we've just removed from the bag.
+                foreach( I; (line + 1) .. (24 + INVENT_LAST_SLOT) )
+                {
+                  if( !Item_here( u.inventory.items[I] ) )
+                  { break;
+                  }
+                  else
+                  {
+                    u.inventory.items[I - 1] = u.inventory.items[I];
+                    u.inventory.items[I].sym.ch = '\0';
+                  }
+                }
+
+                break;
+              }
+            } while( grab != 'Q' );
           }
           refresh_screen();
           line = 255;

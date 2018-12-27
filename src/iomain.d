@@ -576,7 +576,7 @@ else
                   );
         } /* foreach( count; 0 .. INVENT_LAST_SLOT ) */
 
-        put_line( 16, 1, "i) Bag [NOT IMPLEMENTED]" );
+        put_line( 16, 1, "i) Bag" );
 
         put_line( 18, 1,
           "Press a letter to \"grab\" that item (or \'i\' to open your bag)" );

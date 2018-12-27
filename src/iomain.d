@@ -671,6 +671,8 @@ else
                     I_sym++;
                   }
                 }
+                refresh_screen();
+
                 // From here on out `I_sym` doubles as a little cheat letting
                 // us know which character came last so we know which not to
                 // accept.
@@ -719,7 +721,7 @@ else
   
                   break;
                 } /* else from if( toLower( grab ) >= I_sym || grab < 'a' ) */
-              } while( grab != 'Q' );
+              } while( grab != 'Q' && grab != ' ' );
             } /* else from if( !check_grasp( u.inventory ) ) */
           } /* else from if( grabbed_line != 255 ) */
           refnow = true;

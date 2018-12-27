@@ -1,5 +1,7 @@
 Finalize inventory
  - Implement the player's "bag"
+ - Put the "bag" code in a separate function to make the inventory management
+   code less of a NIGHTMARE
 Implement appropriate item stats (attack & defense modifiers, &c)
 Implement stat generator
 Implement skills

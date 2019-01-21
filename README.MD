@@ -48,7 +48,10 @@ document can be found at the bottom.
 
 SwashRL is released under [the Apache License 2.0], excepting that Derivative
 Works are not required to carry prominent notices in changed files as
-required by the normal Apache License 2.0 in Section 4b.
+required by the normal Apache License 2.0 in Section 4b; instead, we allow for
+Derivative Works to carry a single notice specifying that the software product
+as a whole has been modified.  This is done to make attribution and
+notification less cumbersome and more convenient.
 
 SwashRL uses some third-party resources to function.  For details, see
 [the NOTICE file] and the third-party licenses referenced therein.
@@ -67,8 +70,6 @@ can work something out.
 
 To submit a bug fix or report a possible solution, leave an Issue or a Pull
 Request on [our GitHub page].
-
-* The PDCurses interface does not yet work on Windows due to an unknown error.
 
 * The curses interface does not display remembered map tiles which fall
   outside the player's line-of-sight.
@@ -150,6 +151,12 @@ easy to do.  It only requires two steps:
 2. Edit the file [global.d] so that the "NAME" enum will be the
    name of your program (i.e. instead of saying `enum NAME = "SwashRL";` it
    will say `enum NAME = "Your Game's Name";`)
+
+Third and finally, you have to include a notice with your derivative software
+product indicating that it has been modified from the SwashRL project.  Thanks
+to a special exception to the normal Apache License 2.0, only one such notice
+is required, and it can be done by modifying the existing attribution notice
+at the top of [the NOTICE file].
 
 ## Change Logs
 

@@ -494,6 +494,8 @@ else
    + that this function will not format `msg` for you; if formatting must be
    + done, it must be done before the string is passed into this function.
    +
+   + See_Also: SwashIO.display_inventory
+   +
    + Params:
    +   u       A pointer to the `Player` whose inventory we are displaying.
    +   grabbed An integer indicating which equipment slot has been "grabbed"
@@ -567,6 +569,21 @@ else
 
   } // final void display_equipment_screen( Player*(, int, string) )
 
+  /++
+   + Displays the inventory screen
+   +
+   + This function displays the player's inventory screen by placing each
+   + `Item` in the "bag slots" of its `Inventory` on a line with a character
+   + next to it to indicate what key the user should press to interact with
+   + that item.
+   +
+   + The inventory is not to be confused with the equipment screen.
+   +
+   + See_Also: SwashIO.display_equipment_screen
+   +
+   + Params:
+   +  u  A pointer to the `Player` whose inventory is being displayed.
+   +/
   final void display_inventory( Player* u )
   {
 

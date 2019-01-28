@@ -54,6 +54,8 @@ enum INVENT_FEET      = 12;
 enum INVENT_TAIL      = 13;
 
 enum INVENT_LAST_SLOT = INVENT_TAIL;
+// Marks the first slot of the "bag":
+enum INVENT_BAG = INVENT_LAST_SLOT + 1;
 
 /**
  * Checks if the player or other monster has a free grasp

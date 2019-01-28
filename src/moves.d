@@ -30,7 +30,7 @@ enum MOVE_WAIT = 5;
 
 // Inventory management
 enum MOVE_INVENTORY = 20;
-enum MOVE_WIELD = 21;
+enum MOVE_EQUIPMENT = 21;
 enum MOVE_GET = 22;
 
 // Message management

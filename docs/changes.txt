@@ -1,5 +1,24 @@
 SwashRL official changelog
 
+VERSION 0.029
+
+  Changed:
+   - Numerous improvements to the inventory management code
+   - The inventory screen (the "bag") and the equipment screen are now clearly
+     separated in the code base
+   - The drawing and control functions for the equipment and inventory screens
+     are now clearly separated
+   - The inventory screen now exits immediately if the inventory is empty or
+     no further transactions are possible.
+   - Instructions given on the equipment screen now clearly tell the player
+     how to interact with their equipment slots and change depending on what
+     function the player is currently performing (i.e. whether they're
+     "grabbing" or "swapping"/"moving" items)
+
+  Known Bugs or Oversights:
+   - Oversight:  Taking items out of the inventory and placing them in the
+     hands does not cost any turns.
+
 VERSION 0.028
 Finalized 2018-11-27 19:58 EST
 

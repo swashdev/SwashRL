@@ -548,15 +548,15 @@ else
 
     if( grabbed <= -1 )
     {
-      put_line( 18, 1,
-        "Press a letter to \"grab\" that item (or \'i\' to open your bag)" );
+      put_line( 18, 1, "Press a letter to \"grab\" that item" );
+      put_line( 19, 1, "or \'i\' to take an item out of your bag" );
     }
     else
     {
       put_line( grabbed + 1, 1, "GRABBED:" );
       put_line( 18, 1,
-         "Press a letter to move the grabbed item into a new equipment slot" );
-      put_line( 19, 1, "(or \'i\' to put it in your bag)" );
+        "Press a letter to move the grabbed item into a new equipment slot" );
+      put_line( 19, 1, "or \'i\' to put it in your bag" );
     }
 
     put_line( 20, 1, "Press \'Q\' or SPACE to exit this screen" );

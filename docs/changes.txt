@@ -15,6 +15,11 @@ VERSION 0.029
      function the player is currently performing (i.e. whether they're
      "grabbing" or "swapping"/"moving" items)
 
+  Added:
+   - New "equipment key," e by default, to get to the equipment screen.  The
+     inventory key now functions as a shortcut to get to the "bag" in the
+     equipment screen.
+
   Known Bugs or Oversights:
    - Oversight:  Taking items out of the inventory and placing them in the
      hands does not cost any turns.

@@ -672,7 +672,7 @@ else
             if( bag_full )
             {
               grabbed_line = -1;
-              line = 255;
+              line = -1;
               display_equipment_screen( u, -1,
                 "Your bag can not contain any more items." );
               break;
@@ -773,7 +773,7 @@ else
                 } /* else from if( toLower( grab ) >= I_sym || grab < 'a' ) */
               } while( grab != 'Q' && grab != ' ' );
             } /* else from if( !check_grasp( u.inventory ) ) */
-          } /* else from if( grabbed_line != 255 ) */
+          } /* else from if( grabbed_line != -1 ) */
           refnow = true;
           refresh_screen();
           line = -1;
@@ -906,7 +906,7 @@ discard_swap:
           // the player expends a turn moving an inventory item
           turns += 1;
         } /* if( grabbed.sym.ch != '\0' ) */
-      } /* if( line != 255 ) */
+      } /* if( line != -1 ) */
     } while( grab != 'Q' && grab != ' ' );
   
     return turns;

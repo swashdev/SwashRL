@@ -222,7 +222,7 @@ Version Date/time Finalized   Info
         cause fewer problems.  Slight changes to the wording of the special
         exception to the Apache License 2.0.
 
-0.029                         Numerous idiosyncratic changes to the inventory
+0.029   2019-01-28 17:54 EST  Numerous idiosyncratic changes to the inventory
         code, including giving the user more clear instructions on how to
         interact with the equipment screen.  The equipment and inventory
         screens are now clearly separated and cooperate nicely with each

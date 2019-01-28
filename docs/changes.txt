@@ -1,6 +1,7 @@
 SwashRL official changelog
 
 VERSION 0.029
+Finalized 2019-01-28 17:54 EST
 
   Changed:
    - Numerous improvements to the inventory management code

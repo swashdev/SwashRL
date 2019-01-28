@@ -1,5 +1,11 @@
 SwashRL official changelog
 
+VERSION 0.029
+
+  Fixed:
+    - Garbage output on the message line at the start of the program has been
+      fixed.  The message line will now be blank at the beginning of the game.
+
 VERSION 0.028
 Finalized 2018-11-27 19:58 EST
 

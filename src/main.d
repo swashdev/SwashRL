@@ -350,8 +350,7 @@ version( sdl )
   // Display the map and player
   IO.display_map_and_player( Current_map, u );
 
-
-  IO.read_messages();
+  IO.clear_message_line();
 
   uint moved = 0;
   int mv = 5;

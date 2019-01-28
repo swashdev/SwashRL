@@ -609,6 +609,144 @@ else
   } // final void display_inventory( Player* )
 
   /++
+   + Display the inventory screen and allow the user to remove items from
+   + their bag.
+   +
+   + This function will use `display_inventory` to draw the inventory screen
+   + and then take in user inputs to remove items from the bag and place them
+   + into an open hand on the equipment screen.
+   +
+   + Because this function needs to be able to draw the equipment screen in
+   + order to output error messages, it is given the ability to inform the
+   + `control_inventory` function not to re-draw the equipment screen.  It
+   + will return `true` if the equipment screen should be re-drawn after the
+   + player is finished managing their inventory.
+   +
+   + See_Also:  SwashIO.control_inventory
+   +
+   + Params:
+   +   u  A pointer to the `Player` whose inventory is being managed.
+   +
+   + Returns:
+   +   `true` if the calling function should redraw the equipment screen;
+   +   `false` otherwise.
+   +/
+  final bool manage_inventory( Player* u )
+  {
+    import std.ascii: toLower;
+
+    // Whether to communicate to the calling function to refresh the screen
+    // after managing the inventory.  Depending on what goes down in here, it
+    // may be beneficial to let this function draw the screen itself so it can
+    // display its own error messages.
+    bool refnow = true;
+
+    // `grab` and `line` here perform much the same functions they do in
+    // `control_inventory`
+    char grab = '\0';
+    int line = -1;
+
+    do
+    {
+
+      // Clear the screen and display a new menu with the items in the
+      // bag
+      display_inventory( u );
+
+      // `last_i_sym` is the character that comes _after_ the last
+      // item in the inventory.  This variable is used to determine
+      // which characters not to accept when the player requests
+      // an item.
+      char last_i_sym = 'a';
+      foreach( size_t slot_temp; INVENT_BAG .. u.inventory.items.length )
+      {
+        last_i_sym++;
+        if( !Item_here( u.inventory.items[slot_temp] ) )
+        {
+          // If the _first_ inventory slot is empty, just exit the inventory
+          // screen and go back to the equipment screen; there's nothing left
+          // to be done here.
+          if( slot_temp == INVENT_BAG )
+          {
+            display_equipment_screen( u, -1, "Your bag is empty." );
+            return false;
+          }
+
+          break;
+        }
+      }
+
+      // In the meantime, `grab` will tell us which item has been
+      // selected.
+      grab = get_key();
+
+      if( grab == 'Q' || grab == ' ' )  return true;
+
+      // Check the player's grasp; if they do not have an open hand, they can
+      // not take any more items out of their inventory.
+      if( !check_grasp( u.inventory ) )
+      {
+        display_equipment_screen( u, -1, "You do not have a free grasp." );
+        return false;
+      }
+
+      if( toLower( grab ) >= last_i_sym || grab < 'a' )
+      {
+        display_equipment_screen( u, -1,
+          "You do not have that item." );
+        return false;
+      }
+      else
+      {
+        line = (grab - 'a') + INVENT_BAG;
+        int hand = 0;
+        // Decide which hand to place the item in.  As with picking up
+        // items off the floor, weapons will prefer to go into the
+        // weapon-hand, but other objects will favor the off-hand,
+        // except when the favored hand is already taken.
+        if( !Item_here( u.inventory.items[INVENT_WEAPON] ) &&
+              (u.inventory.items[line].type & ITEM_WEAPON
+            || Item_here( u.inventory.items[INVENT_OFFHAND] ))
+          )
+        { hand = INVENT_WEAPON;
+        }
+        else
+        { hand = INVENT_OFFHAND;
+        }
+
+        // Transfer the item to the hand...
+        u.inventory.items[hand] = u.inventory.items[line];
+        u.inventory.items[line] = No_item;
+        // Now we shuffle all the items in the inventory up one to
+        // overwrite the item we've just removed from the bag.
+        int I;
+        for( I = (line + 1); I <= (24 + INVENT_LAST_SLOT); I++ )
+        {
+          if( !Item_here( u.inventory.items[I] ) )  break;
+          else
+          {
+            u.inventory.items[I - 1] = u.inventory.items[I];
+            u.inventory.items[I] = No_item;
+          }
+        }
+
+        // Don't break this do loop just because we were successful in
+        // extracting an item; the player might want to take out more than one
+        // item.
+        // Besides, in future implementations, we might want to allow the
+        // player to remove a certain _number_ of a stacking item, and
+        // breaking here makes it more of a hassle to correct a mistake if
+        // they decide they want more stuff.
+        //break;
+      } /* else from if( toLower( grab ) >= I_sym || grab < 'a' ) */
+
+    } while( grab != 'Q' && grab != ' ' );
+
+    return refnow;
+
+  } // final bool manage_inventory( Player* )
+
+  /++
    + Controls the inventory screen
    +
    + This function outputs the inventory screen and allows the player to
@@ -626,9 +764,6 @@ else
    + to ensure that the player does not place an inventory item on an
    + inappropriate slot; for example, wearing a cuirass as a helmet.
    +
-   + <b>Note</b>:  This function displays an instruction for placing items in
-   + the "bag," but the bag has not yet been implemented.
-   +
    + <strong>This function can kill the player if they commit seppukku on the
    + inventory screen.</strong>
    +
@@ -636,6 +771,8 @@ else
    + another, a turn passes in the game.  Swapping two inventory items is
    + counted as two turns.  The more items the player moves around, the more
    + turns they will skip after the inventory screen is closed.
+   +
+   + See_Also:  SwashIO.manage_inventory
    +
    + Params:
    +   u = The `Player` whose inventory is being controlled
@@ -697,7 +834,7 @@ else
           // The player has chosen to access an item in their bag
           // If the player already has an item selected, attempt to place that
           // item in the bag.
-          if( grabbed_line != -1 )
+          if( grabbed_line > -1 )
           {
             // First we need to check if the bag is full.
             bool bag_full = true;
@@ -710,24 +847,35 @@ else
                 break;
               }
             }
+            // If the bag is full, complain to the user and discard the swap
             if( bag_full )
             {
               grabbed_line = -1;
               line = -1;
               display_equipment_screen( u, -1,
                 "Your bag can not contain any more items." );
-              break;
+              refnow = false;
+              // Go back to the start of the loop
+              continue;
             }
+            // If the bag is NOT full, append the item to the end of their bag
+            // and remove it from the equipment slot it came from
             else
             {
               grabbed = u.inventory.items[grabbed_line];
               u.inventory.items[grabbed_line] = No_item;
               u.inventory.items[INVENT_BAG + I] = grabbed;
+
+              // Make a note to refresh the screen, discard all swaps, and go
+              // back to the start of the loop:
+              refnow = true;
+              grabbed_line = line = -1;
               grabbed = No_item;
-              line = -1;
-              grabbed_line = -1;
+              continue;
             }
           } /* if( grabbed_line != -1 ) */
+          // If the player does NOT have an item already selected, they are
+          // trying to REMOVE an item from their bag...
           else
           {
             // If the player does not have a free grasp, let them know.
@@ -735,83 +883,41 @@ else
             {
               display_equipment_screen( u, grabbed_line,
                      "You do not have a free grasp to reach into your bag." );
+              refnow = false;
+              // Discard all swaps and go back to the start of the loop...
+              grabbed_line = line = -1;
+              continue;
             }
             else
             {
-              // Always refresh the screen after displaying the bag menu, since
-              // we'll need to go back to the inventory slots screen afterwards
-              refnow = true;
-              // Clear the screen and display a new menu with the items in the
-              // bag
-              display_inventory( u );
-              do
-              {
+              // Pass control over to the inventory management function.
+              // Note that we're letting `manage_inventory` decide whether or
+              // not to refresh the equipment screen now.  This is because in
+              // some circumstances the function will redraw the equipment
+              // screen for us.
+              refnow = manage_inventory( u );
 
-                // `last_i_sym` is the character that comes _after_ the last
-                // item in the inventory.  This variable is used to determine
-                // which characters not to accept when the player requests
-                // an item.
-                char last_i_sym = 'a';
-                foreach( size_t slot_temp; INVENT_BAG .. u.inventory.items.length )
-                {
-                  last_i_sym++;
-                  if( !Item_here( u.inventory.items[slot_temp] ) )  break;
-                }
+              // Also reset the `line` and `grabbed_line` variables _after_
+              // managing the inventory so that we don't end up anomalously
+              // grabbing a new item right out the gate
+              grabbed_line = line = -1;
 
-                // In the meantime, `grab` will tell us which item has been
-                // selected.
-                grab = get_key();
+              // Reset `grab` so that a press of 'Q' or SPACE doesn't kick
+              // the user out of the equipment screen as well as the inventory
+              // screen.
+              grab = '\0';
 
-                if( toLower( grab ) >= last_i_sym || grab < 'a' )
-                {
-                  display_equipment_screen( u, -1,
-                    "You do not have that item..." );
-                }
-                else
-                {
-                  line = (grab - 'a') + INVENT_BAG;
-                  int hand = 0;
-                  // Decide which hand to place the item in.  As with picking up
-                  // items off the floor, weapons will prefer to go into the
-                  // weapon-hand, but other objects will favor the off-hand,
-                  // except when the favored hand is already taken.
-                  if( !Item_here( u.inventory.items[INVENT_WEAPON] ) &&
-                        (u.inventory.items[line].type & ITEM_WEAPON
-                      || Item_here( u.inventory.items[INVENT_OFFHAND] ))
-                    )
-                  { hand = INVENT_WEAPON;
-                  }
-                  else
-                  { hand = INVENT_OFFHAND;
-                  }
+              // Go back to the start of the loop
+              continue;
 
-                  // Transfer the item to the hand...
-                  u.inventory.items[hand] = u.inventory.items[line];
-                  u.inventory.items[line] = No_item;
-                  // Now we shuffle all the items in the inventory up one to
-                  // overwrite the item we've just removed from the bag.
-                  int I;
-                  for( I = (line + 1); I <= (24 + INVENT_LAST_SLOT); I++ )
-                  {
-                    if( !Item_here( u.inventory.items[I] ) )
-                    { break;
-                    }
-                    else
-                    {
-                      u.inventory.items[I - 1] = u.inventory.items[I];
-                      u.inventory.items[I] = No_item;
-                    }
-                  }
-  
-                  break;
-                } /* else from if( toLower( grab ) >= I_sym || grab < 'a' ) */
-              } while( grab != 'Q' && grab != ' ' );
             } /* else from if( !check_grasp( u.inventory ) ) */
+
           } /* else from if( grabbed_line != -1 ) */
-          refnow = true;
-          refresh_screen();
-          line = -1;
-          break; /* case 'i' */
+
+        /* end of case 'i'; there's no `break` statement here because all of
+         * the above `if` statements have `continue` statements that would
+         * render it unreachable and frankly the warnings get on my nerves
+         */
 
         case 'w': line =  0; break;
         case 'o': line =  1; break;

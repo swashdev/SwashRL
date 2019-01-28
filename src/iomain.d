@@ -478,6 +478,87 @@ else
   ///////////////////////////////////////////////////////////////////////
 
   /++
+   + Displays the equipment screen
+   +
+   + This is the key function used to display the equipment screen.  It draws
+   + The screen as a list of slots each marked with a letter indicating which
+   + key the player should push in order to interact with that equipment slot.
+   +
+   + If `grabbed` is given as a non-negative integer, that line will be marked
+   + as having been "grabbed" by the player, usually for the purposes of
+   + moving it to a new inventory slot or swapping two items.
+   +
+   + If `msg` is given as a non-empty string, that message will be displayed
+   + below the equipment screen.  This is normally done for error messages
+   + such as "there is no item there" or "you can not equip a %s there."  Note
+   + that this function will not format `msg` for you; if formatting must be
+   + done, it must be done before the string is passed into this function.
+   +
+   + Params:
+   +   u       A pointer to the `Player` whose inventory we are displaying.
+   +   grabbed An integer indicating which equipment slot has been "grabbed"
+   +           by the player prior to the screen being drawn.
+   +   msg     A message to be displayed to the player after drawing the
+   +           equipment screen.
+   +/
+  final void display_equipment_screen( Player* u, int grabbed = -1,
+                                       string msg = "" )
+  {
+
+    clear_screen();
+
+    string snam; // the name of the slot
+    char   schr; // the character that represents the slot
+
+    foreach( count; 0 .. INVENT_LAST_SLOT )
+    {
+      // This switch statement of doom sets up the name and selection
+      // button for each inventory slot
+      switch( count )
+      {
+        default: snam = "bag"; schr = '\0'; break;
+  
+        case INVENT_WEAPON:    snam = "Weapon-hand";    schr = 'w'; break;
+        case INVENT_OFFHAND:   snam = "Off-hand";       schr = 'o'; break;
+        case INVENT_QUIVER:    snam = "Quiver";         schr = 'q'; break;
+        case INVENT_HELMET:    snam = "Helmet";         schr = 'h'; break;
+        case INVENT_CUIRASS:   snam = "Cuirass";        schr = 'c'; break;
+        case INVENT_PAULDRONS: snam = "Pauldrons";      schr = 'p'; break;
+        case INVENT_BRACERS:   snam = "Bracers/gloves"; schr = 'b'; break;
+        case INVENT_RINGL:     snam = "Left ring";      schr = 'l'; break;
+        case INVENT_RINGR:     snam = "Right ring";     schr = 'r'; break;
+        case INVENT_NECKLACE:  snam = "Necklace";       schr = 'n'; break;
+        case INVENT_GREAVES:   snam = "Greaves";        schr = 'g'; break;
+        case INVENT_KILT:      snam = "Kilt/skirt";     schr = 'k'; break;
+        case INVENT_FEET:      snam = "Feet";           schr = 'f'; break;
+        case INVENT_TAIL:      snam = "Tailsheath";     schr = 't'; break;
+      } // switch( count )
+
+      if( schr == '\0' )
+      { break;
+      }
+
+      put_line( 1 + count, 1, "         %c) %s: %s", schr, snam,
+                u.inventory.items[count].sym.ch == '\0'
+                  ? "EMPTY" : u.inventory.items[count].name
+              );
+    } /* foreach( count; 0 .. INVENT_LAST_SLOT ) */
+
+    put_line( 16, 1, "i) Bag" );
+
+    put_line( 18, 1,
+      "Press a letter to \"grab\" that item (or \'i\' to open your bag)" );
+    put_line( 19, 1, "Press \'Q\' or SPACE to exit this screen" );
+
+    if( grabbed > -1 )  put_line( grabbed + 1, 1, "GRABBED:" );
+
+    if( msg != "" )  put_line( 21, 1, msg );
+  
+    refresh_screen();
+
+  } // final void display_inventory_screen( Player*(, int, string) )
+
+  /++
    + Controls the inventory screen
    +
    + This function outputs the inventory screen and allows the player to
@@ -516,12 +597,13 @@ else
   final uint control_inventory( Player* u )
   {
     import std.ascii: toLower;
+    import std.format : format;
 
     // the inventory slot letter the player has selected
     char grab = 0;
     // `line': the line corresponding to the `grab' slot letter
     // `grabbed_line': the line corresponding to an item that has been grabbed
-    int line = 255, grabbed_line = 255;
+    int line = -1, grabbed_line = -1;
     // `grabbed': an item that has been grabbed
     Item grabbed = No_item;
   
@@ -536,54 +618,10 @@ else
 
     do
     {
-      string  snam; // "slot name"
-      char schr; // "slot character"
       if( refnow )
       {
         refnow = 0;
-  
-        foreach( count; 0 .. INVENT_LAST_SLOT )
-        {
-          // This switch statement of doom sets up the name and selection
-          // button for each inventory slot
-          switch( count )
-          {
-            default: snam = "bag"; schr = '\0'; break;
-  
-            case INVENT_WEAPON:    snam = "Weapon-hand";    schr = 'w'; break;
-            case INVENT_OFFHAND:   snam = "Off-hand";       schr = 'o'; break;
-            case INVENT_QUIVER:    snam = "Quiver";         schr = 'q'; break;
-            case INVENT_HELMET:    snam = "Helmet";         schr = 'h'; break;
-            case INVENT_CUIRASS:   snam = "Cuirass";        schr = 'c'; break;
-            case INVENT_PAULDRONS: snam = "Pauldrons";      schr = 'p'; break;
-            case INVENT_BRACERS:   snam = "Bracers/gloves"; schr = 'b'; break;
-            case INVENT_RINGL:     snam = "Left ring";      schr = 'l'; break;
-            case INVENT_RINGR:     snam = "Right ring";     schr = 'r'; break;
-            case INVENT_NECKLACE:  snam = "Necklace";       schr = 'n'; break;
-            case INVENT_GREAVES:   snam = "Greaves";        schr = 'g'; break;
-            case INVENT_KILT:      snam = "Kilt/skirt";     schr = 'k'; break;
-            case INVENT_FEET:      snam = "Feet";           schr = 'f'; break;
-            case INVENT_TAIL:      snam = "Tailsheath";     schr = 't'; break;
-          } // switch( count )
-
-          if( schr == '\0' )
-          { break;
-          }
-
-          put_line( 1 + count, 1, "         %c) %s: %s", schr, snam,
-                    u.inventory.items[count].sym.ch == '\0'
-                      ? "EMPTY" : u.inventory.items[count].name
-                  );
-        } /* foreach( count; 0 .. INVENT_LAST_SLOT ) */
-
-        put_line( 16, 1, "i) Bag" );
-
-        put_line( 18, 1,
-          "Press a letter to \"grab\" that item (or \'i\' to open your bag)" );
-        put_line( 19, 1, "Press \'Q\' or SPACE to exit this screen" );
-  
-        refresh_screen();
-
+        display_equipment_screen( u, grabbed_line );
       } /* if( refnow ) */
 
       // grab an item
@@ -601,15 +639,15 @@ else
       switch( grab )
       {
         case 't':
-          put_line( 21, 1, "You do not have a tail." );
+          display_equipment_screen( u, -1, "You do not have a tail." );
           refresh_screen();
-          line = 255;
+          line = -1;
           break;
         case 'i':
           // The player has chosen to access an item in their bag
           // If the player already has an item selected, attempt to place that
           // item in the bag.
-          if( grabbed_line != 255 )
+          if( grabbed_line != -1 )
           {
             // First we need to check if the bag is full.
             bool bag_full = true;
@@ -624,9 +662,10 @@ else
             }
             if( bag_full )
             {
-              grabbed_line = 255;
+              grabbed_line = -1;
               line = 255;
-              put_line( 21, 1, "Your bag can not contain any more items." );
+              display_equipment_screen( u, -1,
+                "Your bag can not contain any more items." );
               break;
             }
             else
@@ -635,16 +674,16 @@ else
               u.inventory.items[grabbed_line] = No_item;
               u.inventory.items[I + INVENT_LAST_SLOT + 1] = grabbed;
               grabbed = No_item;
-              line = 255;
-              grabbed_line = 255;
+              line = -1;
+              grabbed_line = -1;
             }
-          } /* if( grabbed_line != 255 ) */
+          } /* if( grabbed_line != -1 ) */
           else
           {
             // If the player does not have a free grasp, let them know.
             if( !check_grasp( u.inventory ) )
             {
-              put_line( 21, 1,
+              display_equipment_screen( u, grabbed_line,
                      "You do not have a free grasp to reach into your bag." );
             }
             else
@@ -681,7 +720,9 @@ else
                 grab = get_key();
 
                 if( toLower( grab ) >= I_sym || grab < 'a' )
-                { put_line( 0, 0, "You do not have that item..." );
+                {
+                  display_equipment_screen( u, -1,
+                    "You do not have that item..." );
                 }
                 else
                 {
@@ -726,7 +767,7 @@ else
           } /* else from if( grabbed_line != 255 ) */
           refnow = true;
           refresh_screen();
-          line = 255;
+          line = -1;
           break; /* case 'i' */
 
         case 'w': line =  0; break;
@@ -745,7 +786,7 @@ else
         default: break;
       } // switch( grab )
 
-      if( line == 255 )
+      if( line == -1 )
       { continue;
       }
       else
@@ -756,22 +797,14 @@ else
           // ...confirm the slot is not empty...
           if( u.inventory.items[line].sym.ch == '\0' )
           {
-            put_line( 21, 1, "There is no item there." );
-            refresh_screen();
+            display_equipment_screen( u, -1, "There is no item there." );
+            line = -1;
           }
           else
           {
             // ...grab the item...
             grabbed = u.inventory.items[line];
-            put_line( 1 + line, 1, "GRABBED:" );
-// TODO: Figure out a way to genericize highlighting this line
-version( none )
-{
-            // ...mark that line...
-            mvchgat( 1 + line, 1, 78, A_REVERSE, cast(short)0, cast(void*)null );
-}
-
-            refresh_screen();
+            display_equipment_screen( u, line );
 
             // ...and save that line so we can swap the items later.
             grabbed_line = line;
@@ -787,6 +820,9 @@ version( none )
             case INVENT_HELMET:
               if( grabbed.type & ITEM_WEAPON )
               {
+                // Don't use `display_equipment_screen` here because we need
+                // to be able to format this message and we're going to end up
+                // quitting the equipment screen immediately anyway.
                 put_line( 21, 1,
                   "You stab yourself in the head with a %s and die instantly.",
                   grabbed.name );
@@ -801,6 +837,8 @@ seppuku:
             case INVENT_CUIRASS:
               if( grabbed.type & ITEM_WEAPON )
               {
+                // See above comment at `case INVENT_HELMET` for why we're not
+                // using `display_equipment_screen`
                 put_line( 21, 1,
                   "You slice into your gut with a %s and commit seppuku.",
                   grabbed.name );
@@ -817,13 +855,14 @@ seppuku:
           if( !confirm_swap )
           {
             // if we can't equip that item here, discard the swap
-            put_line( 21, 1, "You can not equip a %s there.",
-                      grabbed.name );
+            display_equipment_screen( u, -1,
+                      format( "You can not equip a %s there.", grabbed.name )
+                    );
 discard_swap:
-            grabbed_line = 255;
+            grabbed_line = -1;
             grabbed.sym.ch = '\0';
             //get_key();
-            refnow = true;
+            //refnow = true;
             continue;
           }
           else
@@ -831,9 +870,11 @@ discard_swap:
             // check again in the opposite direction
             if( !check_equip( u.inventory.items[line], grabbed_line ) )
             {
-              put_line( 21, 1, "You can not swap the %s and the %s.",
+              display_equipment_screen( u, -1,
+                format( "You can not swap the %s and the %s.",
                         u.inventory.items[line].name,
-                        grabbed.name );
+                        grabbed.name )
+              );
               goto discard_swap;
             }
           }
@@ -847,7 +888,7 @@ discard_swap:
           u.inventory.items[line] = grabbed;
           // ...remove the grabbed item...
           grabbed.sym.ch = '\0';
-          grabbed_line = line = 255;
+          grabbed_line = line = -1;
           // ...clear the screen...
           clear_screen();
           // ...and make a note to refresh the inventory screen.

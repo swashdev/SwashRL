@@ -565,7 +565,31 @@ else
   
     refresh_screen();
 
-  } // final void display_inventory_screen( Player*(, int, string) )
+  } // final void display_equipment_screen( Player*(, int, string) )
+
+  final void display_inventory( Player* u )
+  {
+
+    clear_screen();
+
+    // The symbol of the current item
+    char slot_char = 'a';
+
+    foreach( slot_index; 0 .. 24 )
+    {
+      // Inform the player of each item, up to 24 (one per line)
+      if( Item_here( u.inventory.items[INVENT_BAG + slot_index] ) )
+      {
+        put_line( slot_index, 0, "%c) %s", slot_char,
+            u.inventory.items[INVENT_BAG + slot_index].name );
+        slot_char++;
+      }
+      else break;
+    }
+
+    refresh_screen();
+
+  } // final void display_inventory( Player* )
 
   /++
    + Controls the inventory screen
@@ -663,7 +687,7 @@ else
             size_t I = 0;
             for( I = 0; I < 24; I++ )
             {
-              if( !Item_here( u.inventory.items[I + INVENT_LAST_SLOT + 1] ) )
+              if( !Item_here( u.inventory.items[INVENT_BAG + I] ) )
               {
                 bag_full = false;
                 break;
@@ -681,7 +705,7 @@ else
             {
               grabbed = u.inventory.items[grabbed_line];
               u.inventory.items[grabbed_line] = No_item;
-              u.inventory.items[I + INVENT_LAST_SLOT + 1] = grabbed;
+              u.inventory.items[INVENT_BAG + I] = grabbed;
               grabbed = No_item;
               line = -1;
               grabbed_line = -1;
@@ -702,40 +726,33 @@ else
               refnow = true;
               // Clear the screen and display a new menu with the items in the
               // bag
-              clear_screen();
-              // `I_sym` will represent the character associated with the item
-              // in the menu, i.e. the key that the player should press to
-              // access that item.
-              char I_sym = 'a';
+              display_inventory( u );
               do
               {
-                foreach( I; 0 .. 24 )
-                {
-                  // Inform the player of each item, up to 24 (one per line)
-                  if( Item_here( u.inventory.items[INVENT_LAST_SLOT + 1 + I] ) )
-                  {
-                    put_line( I, 0, "%c) %s", I_sym,
-                        u.inventory.items[INVENT_LAST_SLOT + 1 + I].name );
-                    I_sym++;
-                  }
-                }
-                refresh_screen();
 
-                // From here on out `I_sym` doubles as a little cheat letting
-                // us know which character came last so we know which not to
-                // accept.
+                // `last_i_sym` is the character that comes _after_ the last
+                // item in the inventory.  This variable is used to determine
+                // which characters not to accept when the player requests
+                // an item.
+                char last_i_sym = 'a';
+                foreach( size_t slot_temp; INVENT_BAG .. u.inventory.items.length )
+                {
+                  last_i_sym++;
+                  if( !Item_here( u.inventory.items[slot_temp] ) )  break;
+                }
+
                 // In the meantime, `grab` will tell us which item has been
                 // selected.
                 grab = get_key();
 
-                if( toLower( grab ) >= I_sym || grab < 'a' )
+                if( toLower( grab ) >= last_i_sym || grab < 'a' )
                 {
                   display_equipment_screen( u, -1,
                     "You do not have that item..." );
                 }
                 else
                 {
-                  line = (grab - 'a') + INVENT_LAST_SLOT + 1;
+                  line = (grab - 'a') + INVENT_BAG;
                   int hand = 0;
                   // Decide which hand to place the item in.  As with picking up
                   // items off the floor, weapons will prefer to go into the

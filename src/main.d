@@ -274,7 +274,7 @@ Try compiling with dub build -b debug" );
   try
   {
     // Initialize keymaps
-    Keymaps = [ keymap(), keymap( "ftgdnxhb.iw,P S" ) ];
+    Keymaps = [ keymap(), keymap( "ftgdnxhb.ie,P S" ) ];
     Keymap_labels = ["Standard", "Dvorak"];
   }
   catch( InvalidKeymapException e )
@@ -429,10 +429,27 @@ version( sdl )
         moved = 1;
         break;
 
-      // inventory management
+      // display the inventory screen
       case MOVE_INVENTORY:
+        // If the player's inventory is empty, don't waste their time.
+        if( !Item_here( u.inventory.items[INVENT_BAG] ) )
+        {
+          message( "You don't have anything in your bag at the moment." );
+          break;
+        }
+
+        // If the inventory is NOT empty, display it:
+        //IO.display_inventory( &u );
+        IO.manage_inventory( &u );
+
+        // Have the inventory screen exit to the equipment screen:
+        goto case MOVE_EQUIPMENT;
+
+      // inventory management
+      case MOVE_EQUIPMENT:
         moved = IO.manage_equipment( &u );
-        // we must redraw the screen after the inventory window is cleared
+        // we must redraw the screen after the equipment screen is cleared
+        IO.refresh_status_bar( &u );
         IO.display_map_and_player( Current_map, u );
         break;
 

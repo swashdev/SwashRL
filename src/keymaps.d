@@ -67,7 +67,7 @@ class InvalidKeymapException : Exception
 uint[char] keymap( string keylist = "" )
 {
   // The standard keymap, which is being overwritten
-  char[] kl = "ykuhlbjn.iw,P S".dup;
+  char[] kl = "ykuhlbjn.ie,P S".dup;
 
   // Check to make sure that the keylist will not overwrite any reserved
   // commands
@@ -124,7 +124,7 @@ uint[char] keymap( string keylist = "" )
 
   // Inventory management
   ret[ kl[ 9] ] = MOVE_INVENTORY;
-  ret[ kl[10] ] = MOVE_WIELD;
+  ret[ kl[10] ] = MOVE_EQUIPMENT;
   ret[ kl[11] ] = MOVE_GET;
 
   // Message management

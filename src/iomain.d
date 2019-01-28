@@ -747,17 +747,17 @@ else
   } // final bool manage_inventory( Player* )
 
   /++
-   + Controls the inventory screen
+   + Controls the equipment screen
    +
-   + This function outputs the inventory screen and allows the player to
-   + manipulate their inventory through it.
+   + This function outputs the equipment screen and allows the player to
+   + manipulate their equipment and inventory through it.
    +
    + The specific details of how this function works are actually somewhat
    + complicated and boring, but the jist of it is that each equipment slot
    + is associated with an array index, which is given a line and a letter
-   + on the inventory screen.  When the player enters a key that matches that
+   + on the equipment screen.  When the player enters a key that matches that
    + letter, that array index is "grabbed," and a second keypress will place
-   + that item on a new inventory slot, swapping it with a second item if
+   + that item on a new equipment slot, swapping it with a second item if
    + necessary.
    +
    + This function will also perform checks using the `check_equip` function
@@ -765,12 +765,12 @@ else
    + inappropriate slot; for example, wearing a cuirass as a helmet.
    +
    + <strong>This function can kill the player if they commit seppukku on the
-   + inventory screen.</strong>
+   + equipment screen.</strong>
    +
    + Each time the player moves an inventory item from one equipment slot to
    + another, a turn passes in the game.  Swapping two inventory items is
    + counted as two turns.  The more items the player moves around, the more
-   + turns they will skip after the inventory screen is closed.
+   + turns they will skip after the equipment screen is closed.
    +
    + See_Also:  SwashIO.manage_inventory
    +
@@ -781,7 +781,7 @@ else
    +   A number of turns, as a `uint`, to be passed to the mainloop which the
    +   player will skip after this function finishes.
    +/
-  final uint control_inventory( Player* u )
+  final uint manage_equipment( Player* u )
   {
     import std.ascii: toLower;
     import std.format : format;
@@ -1050,7 +1050,13 @@ discard_swap:
     } while( grab != 'Q' && grab != ' ' );
   
     return turns;
-  } // uint control_inventory
+  } // uint manage_equipment( Player* )
+
+  deprecated("control_inventory has been superceded by manage_equipment to prevent ambiguity.  Please use this function instead.")
+  final uint control_inventory( Player* u )
+  {
+    return manage_equipment( u );
+  }
 
 } // interface SpelunkIO
 

@@ -431,7 +431,7 @@ version( sdl )
 
       // inventory management
       case MOVE_INVENTORY:
-        moved = IO.control_inventory( &u );
+        moved = IO.manage_equipment( &u );
         // we must redraw the screen after the inventory window is cleared
         IO.display_map_and_player( Current_map, u );
         break;

@@ -1,8 +1,6 @@
-Finalize inventory
- - Implement the player's "bag"
- - Put the "bag" code in a separate function to make the inventory management
-   code less of a NIGHTMARE
+Implement item dropping
 Implement appropriate item stats (attack & defense modifiers, &c)
+Implement appropriate item behaviors (parrying, thrusting, &c)
 Implement stat generator
 Implement skills
 Stat up some monsters
@@ -19,11 +17,10 @@ Implement & design special levels
 Implement a town level, shops, &c
 Implement quests
 Balance stats(, monsters, difficulty checks, &c)
-Implement magic & psionics
-Fix the PDCurses display mode
 
 TENTATIVE:
 Implement ability for very large monsters to block the player's field of view
   Possible implementation with new boolean flag for `tile' struct
   `block_vision_monster' which is set any time a monster this large steps on
   any `tile'
+Implement magic & psionics

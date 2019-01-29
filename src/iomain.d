@@ -240,375 +240,6 @@ interface SwashIO
   } // int get_command
 
   /++
-   + Prints a `string` at the given coordinates
-   +
-   + This function has essentially the same function as `put_char`, except
-   + that it works to print a string.  It also doesn't take in a color value,
-   + as this is not the intended use of the function.
-   +
-   + Params:
-   +   y    = The y coordinate to print the message at
-   +   x    = The x coordinate to print the message at
-   +   args = Format arguments from which the message is generated
-   +/
-  final void put_line( T... )( uint y, uint x, T args )
-  {
-    import std.string: format;
-    string output = format( args );
-
-    foreach( c; 0 .. cast(uint)output.length )
-    { put_char( y, x + c, output[c] );
-    }
-  }
-
-  /// Displays the "help" screen and waits for the player to clear it
-  final void help_screen()
-  {
-    clear_screen();
-
-    put_line(  1, 1, "To move:   on numpad:   on Dvorak:"    );
-    put_line(  2, 1, "   y k u        7 8 9        f t g"    );
-    put_line(  3, 1, "    \\|/          \\|/          \\|/"  );
-    put_line(  4, 1, "   h-*-l        4-*-6        d-*-l"    );
-    put_line(  5, 1, "    /|\\          /|\\          /|\\"  );
-    put_line(  6, 1, "   b j n        1 2 3        x h b"    );
-
-    put_line(  8, 1, ". to wait"                     );
-    put_line(  9, 1, "i for inventory"               );
-    put_line( 10, 1, ", to pick up an item"          );
-    put_line( 11, 1, "P to read message history"     );
-    put_line( 12, 1, "SPACE clears the message line" );
-
-    put_line( 14, 1, "? this help screen"         );
-    put_line( 15, 1, "Q Quit"                     );
-    put_line( 16, 1, "v check the version number" );
-    put_line( 17, 1, "@ change keyboard layout"   );
-
-    put_line( 20, 1, "Press any key to continue..." );
-
-    refresh_screen();
-
-    // wait for the player to clear the screen
-    get_key();
-  } // void help_screen()
-
-  /++
-   + Uses `display` to draw the player
-   +
-   + This function doesn't require coordinate inputs, because the `Player`
-   + struct contains its own coordinates.
-   +
-   + See_Also:
-   +   <a href="#SwashIO.display">display</a>
-   +
-   + Params:
-   +   u = The `Player` to be displayed
-   +/
-  final void display_player( Player u )
-  { display( u.y + 1, u.x, u.sym, true );
-  }
-
-  /++
-   + Uses `display` to draw the given monster
-   +
-   + This function doesn't require coordinate inputs, because the `Monst`
-   + struct contains its own coordinates.
-   +
-   + <b>Note</b>:  This function <em>can not</em> check field-of-vision.
-   +
-   + See_Also:
-   +   <a href="#SwashIO.display">display</a>
-   +
-   + Params:
-   +   m = The `Monst` to be displayed
-   +/
-  final void display_mon( Monst m )
-  { display( m.y + 1, m.x, m.sym );
-  }
-
-  /++
-   + Uses `display_mon` to display all monsters on the given map
-   +
-   + This function gets all of the monsters from the input `map` and draws
-   + <em>all of them</em>.
-   +
-   + Monsters that are not within the field-of-vision are not displayed.
-   +
-   + See_Also:
-   +   <a href="#SwashIO.display">display</a>,
-   +   <a href="#SwashIO.display_mon">display_mon</a>
-   +
-   + Params:
-   +   to_display = The map whose monsters we want to display
-   +/
-  final void display_map_mons( Map to_display )
-  {
-    size_t d = to_display.m.length;
-    Monst mn;
-    foreach( c; 0 .. d )
-    {
-      mn = to_display.m[c];
-
-      if( No_shadows || to_display.v[mn.y][mn.x] )
-      { display_mon( mn );
-      }
-
-    } /* foreach( c; 0 .. d ) */
-  }
-
-  /++
-   + Uses `display` to draw all of the map tiles and items on the given map
-   +
-   + Color values and coordinates are taken from the `Map` struct that is
-   + passed into this function.
-   +
-   + Map tiles and items which are outside the field-of-view are not
-   + displayed, but map tiles which have already been seen by the player will
-   + be displayed with a shadow.
-   +
-   + See_Also:
-   +   <a href="#SwashIO.display">display</a>
-   +
-   + Params:
-   +   to_display = The map from which map `Tile`s and `Item`s are to be
-   +                displayed
-   +/
-  final void display_map( Map to_display )
-  {
-    foreach( y; 0 .. MAP_Y )
-    {
-      foreach( x; 0 .. MAP_X )
-      {
-        Symbol output = to_display.t[y][x].sym;
-
-static if( COLOR )
-{
- static if( FOLIAGE )
- {
-          // If there is mold growing on this tile, change the tile's color
-          // to green (unless there's also water)
-          if( to_display.t[y][x].hazard & SPECIAL_MOLD )
-          {
-            if( !(to_display.t[y][x].hazard & HAZARD_WATER ) )
-            {
-              output.color.fg = CLR_GREEN;
-            }
-          }
-  }
- static if( BLOOD )
- {
-          // If there is blood spattered on this tile, change the tile's
-          // color to red (unless there's also water?)
-          if( to_display.t[y][x].hazard & SPECIAL_BLOOD )
-          {
-            if( !(to_display.t[y][x].hazard & HAZARD_WATER) )
-            {
-              output.color.fg = CLR_RED;
-            }
-          }
- }
-} // static if( COLOR )
-
-        if( to_display.i[y][x].sym.ch != '\0' )
-        { output = to_display.i[y][x].sym;
-        }
-
-        if( !No_shadows && !to_display.v[y][x] )
-        {
-static if( !COLOR )
-          output = SYM_SHADOW;
-else
-{
-          if( to_display.t[y][x].seen )
-          {
-            output.color.fg = CLR_DARKGRAY; 
-          }
-          else
-          {
-            output = SYM_SHADOW;
-          }
-}
-        }
-
-        display( y + 1, x, output );
-      } /* foreach( x; 0 .. MAP_X ) */
-    } /* foreach( y; 0 .. MAP_Y ) */
-  }
-
-  /++
-   + Uses `display_map` and `display_map_mons` to display all map tiles,
-   + items, and monsters.
-   +
-   + See_Also:
-   +   <a href="#SwashIO.display_map">display_map</a>,
-   +   <a href="#SwashIO.display_map_mons">display_map_mons</a>
-   +
-   + Params:
-   +   to_display = The map from which the monsters, tiles, and items are
-   +                taken to be displayed
-   +/
-  final void display_map_all( Map to_display )
-  {
-    display_map( to_display );
-    display_map_mons( to_display );
-  }
-
-  /++
-   + Uses `display_map_all` and `display_player` to draw the full display
-   + including the map, items, monsters, and player
-   +
-   + See_Also:
-   +   <a href="#SwashIO.display_map_all">display_map_all</a>,
-   +   <a href="#SwashIO.display_player">display_player</a>
-   +
-   + Params:
-   +   to_display = The map from which the monsters, tiles, and items are
-   +                taken to be displayed
-   +   u          = The `player` character to be displayed
-   +/
-  final void display_map_and_player( Map to_display, Player u )
-  {
-    display_map_all( to_display );
-    display_player( u );
-  }
-
-  ///////////////////////////////////////////////////////////////////////
-  // The Inventory Screen                                              //
-  // (this function goes at the bottom because it's easily the worst ) //
-  ///////////////////////////////////////////////////////////////////////
-
-  /++
-   + Displays the equipment screen
-   +
-   + This is the key function used to display the equipment screen.  It draws
-   + The screen as a list of slots each marked with a letter indicating which
-   + key the player should push in order to interact with that equipment slot.
-   +
-   + If `grabbed` is given as a non-negative integer, that line will be marked
-   + as having been "grabbed" by the player, usually for the purposes of
-   + moving it to a new inventory slot or swapping two items.
-   +
-   + If `msg` is given as a non-empty string, that message will be displayed
-   + below the equipment screen.  This is normally done for error messages
-   + such as "there is no item there" or "you can not equip a %s there."  Note
-   + that this function will not format `msg` for you; if formatting must be
-   + done, it must be done before the string is passed into this function.
-   +
-   + See_Also: SwashIO.display_inventory
-   +
-   + Params:
-   +   u       A pointer to the `Player` whose inventory we are displaying.
-   +   grabbed An integer indicating which equipment slot has been "grabbed"
-   +           by the player prior to the screen being drawn.
-   +   msg     A message to be displayed to the player after drawing the
-   +           equipment screen.
-   +/
-  final void display_equipment_screen( Player* u, int grabbed = -1,
-                                       string msg = "" )
-  {
-
-    clear_screen();
-
-    string snam; // the name of the slot
-    char   schr; // the character that represents the slot
-
-    foreach( count; 0 .. INVENT_LAST_SLOT )
-    {
-      // This switch statement of doom sets up the name and selection
-      // button for each inventory slot
-      switch( count )
-      {
-        default: snam = "bag"; schr = '\0'; break;
-  
-        case INVENT_WEAPON:    snam = "Weapon-hand";    schr = 'w'; break;
-        case INVENT_OFFHAND:   snam = "Off-hand";       schr = 'o'; break;
-        case INVENT_QUIVER:    snam = "Quiver";         schr = 'q'; break;
-        case INVENT_HELMET:    snam = "Helmet";         schr = 'h'; break;
-        case INVENT_CUIRASS:   snam = "Cuirass";        schr = 'c'; break;
-        case INVENT_PAULDRONS: snam = "Pauldrons";      schr = 'p'; break;
-        case INVENT_BRACERS:   snam = "Bracers/gloves"; schr = 'b'; break;
-        case INVENT_RINGL:     snam = "Left ring";      schr = 'l'; break;
-        case INVENT_RINGR:     snam = "Right ring";     schr = 'r'; break;
-        case INVENT_NECKLACE:  snam = "Necklace";       schr = 'n'; break;
-        case INVENT_GREAVES:   snam = "Greaves";        schr = 'g'; break;
-        case INVENT_KILT:      snam = "Kilt/skirt";     schr = 'k'; break;
-        case INVENT_FEET:      snam = "Feet";           schr = 'f'; break;
-        case INVENT_TAIL:      snam = "Tailsheath";     schr = 't'; break;
-      } // switch( count )
-
-      if( schr == '\0' )
-      { break;
-      }
-
-      put_line( 1 + count, 1, "         %c) %s: %s", schr, snam,
-                u.inventory.items[count].sym.ch == '\0'
-                  ? "EMPTY" : u.inventory.items[count].name
-              );
-    } /* foreach( count; 0 .. INVENT_LAST_SLOT ) */
-
-    put_line( 16, 1, "i) Bag" );
-
-    if( grabbed <= -1 )
-    {
-      put_line( 18, 1, "Press a letter to \"grab\" that item" );
-      put_line( 19, 1, "or \'i\' to take an item out of your bag" );
-    }
-    else
-    {
-      put_line( grabbed + 1, 1, "GRABBED:" );
-      put_line( 18, 1,
-        "Press a letter to move the grabbed item into a new equipment slot" );
-      put_line( 19, 1, "or \'i\' to put it in your bag" );
-    }
-
-    put_line( 20, 1, "Press \'Q\' or SPACE to exit this screen" );
-
-    if( msg != "" )  put_line( 22, 1, msg );
-  
-    refresh_screen();
-
-  } // final void display_equipment_screen( Player*(, int, string) )
-
-  /++
-   + Displays the inventory screen
-   +
-   + This function displays the player's inventory screen by placing each
-   + `Item` in the "bag slots" of its `Inventory` on a line with a character
-   + next to it to indicate what key the user should press to interact with
-   + that item.
-   +
-   + The inventory is not to be confused with the equipment screen.
-   +
-   + See_Also: SwashIO.display_equipment_screen
-   +
-   + Params:
-   +  u  A pointer to the `Player` whose inventory is being displayed.
-   +/
-  final void display_inventory( Player* u )
-  {
-
-    clear_screen();
-
-    // The symbol of the current item
-    char slot_char = 'a';
-
-    foreach( slot_index; 0 .. 24 )
-    {
-      // Inform the player of each item, up to 24 (one per line)
-      if( Item_here( u.inventory.items[INVENT_BAG + slot_index] ) )
-      {
-        put_line( slot_index, 0, "%c) %s", slot_char,
-            u.inventory.items[INVENT_BAG + slot_index].name );
-        slot_char++;
-      }
-      else break;
-    }
-
-    refresh_screen();
-
-  } // final void display_inventory( Player* )
-
-  /++
    + Display the inventory screen and allow the user to remove items from
    + their bag.
    +
@@ -1058,7 +689,371 @@ discard_swap:
     return manage_equipment( u );
   }
 
-} // interface SpelunkIO
+  /++
+   + Prints a `string` at the given coordinates
+   +
+   + This function has essentially the same function as `put_char`, except
+   + that it works to print a string.  It also doesn't take in a color value,
+   + as this is not the intended use of the function.
+   +
+   + Params:
+   +   y    = The y coordinate to print the message at
+   +   x    = The x coordinate to print the message at
+   +   args = Format arguments from which the message is generated
+   +/
+  final void put_line( T... )( uint y, uint x, T args )
+  {
+    import std.string: format;
+    string output = format( args );
+
+    foreach( c; 0 .. cast(uint)output.length )
+    { put_char( y, x + c, output[c] );
+    }
+  }
+
+  /// Displays the "help" screen and waits for the player to clear it
+  final void help_screen()
+  {
+    clear_screen();
+
+    put_line(  1, 1, "To move:   on numpad:   on Dvorak:"    );
+    put_line(  2, 1, "   y k u        7 8 9        f t g"    );
+    put_line(  3, 1, "    \\|/          \\|/          \\|/"  );
+    put_line(  4, 1, "   h-*-l        4-*-6        d-*-l"    );
+    put_line(  5, 1, "    /|\\          /|\\          /|\\"  );
+    put_line(  6, 1, "   b j n        1 2 3        x h b"    );
+
+    put_line(  8, 1, ". to wait"                     );
+    put_line(  9, 1, "i for inventory"               );
+    put_line( 10, 1, ", to pick up an item"          );
+    put_line( 11, 1, "P to read message history"     );
+    put_line( 12, 1, "SPACE clears the message line" );
+
+    put_line( 14, 1, "? this help screen"         );
+    put_line( 15, 1, "Q Quit"                     );
+    put_line( 16, 1, "v check the version number" );
+    put_line( 17, 1, "@ change keyboard layout"   );
+
+    put_line( 20, 1, "Press any key to continue..." );
+
+    refresh_screen();
+
+    // wait for the player to clear the screen
+    get_key();
+  } // void help_screen()
+
+  /++
+   + Uses `display` to draw the player
+   +
+   + This function doesn't require coordinate inputs, because the `Player`
+   + struct contains its own coordinates.
+   +
+   + See_Also:
+   +   <a href="#SwashIO.display">display</a>
+   +
+   + Params:
+   +   u = The `Player` to be displayed
+   +/
+  final void display_player( Player u )
+  { display( u.y + 1, u.x, u.sym, true );
+  }
+
+  /++
+   + Uses `display` to draw the given monster
+   +
+   + This function doesn't require coordinate inputs, because the `Monst`
+   + struct contains its own coordinates.
+   +
+   + <b>Note</b>:  This function <em>can not</em> check field-of-vision.
+   +
+   + See_Also:
+   +   <a href="#SwashIO.display">display</a>
+   +
+   + Params:
+   +   m = The `Monst` to be displayed
+   +/
+  final void display_mon( Monst m )
+  { display( m.y + 1, m.x, m.sym );
+  }
+
+  /++
+   + Uses `display_mon` to display all monsters on the given map
+   +
+   + This function gets all of the monsters from the input `map` and draws
+   + <em>all of them</em>.
+   +
+   + Monsters that are not within the field-of-vision are not displayed.
+   +
+   + See_Also:
+   +   <a href="#SwashIO.display">display</a>,
+   +   <a href="#SwashIO.display_mon">display_mon</a>
+   +
+   + Params:
+   +   to_display = The map whose monsters we want to display
+   +/
+  final void display_map_mons( Map to_display )
+  {
+    size_t d = to_display.m.length;
+    Monst mn;
+    foreach( c; 0 .. d )
+    {
+      mn = to_display.m[c];
+
+      if( No_shadows || to_display.v[mn.y][mn.x] )
+      { display_mon( mn );
+      }
+
+    } /* foreach( c; 0 .. d ) */
+  }
+
+  /++
+   + Uses `display` to draw all of the map tiles and items on the given map
+   +
+   + Color values and coordinates are taken from the `Map` struct that is
+   + passed into this function.
+   +
+   + Map tiles and items which are outside the field-of-view are not
+   + displayed, but map tiles which have already been seen by the player will
+   + be displayed with a shadow.
+   +
+   + See_Also:
+   +   <a href="#SwashIO.display">display</a>
+   +
+   + Params:
+   +   to_display = The map from which map `Tile`s and `Item`s are to be
+   +                displayed
+   +/
+  final void display_map( Map to_display )
+  {
+    foreach( y; 0 .. MAP_Y )
+    {
+      foreach( x; 0 .. MAP_X )
+      {
+        Symbol output = to_display.t[y][x].sym;
+
+static if( COLOR )
+{
+ static if( FOLIAGE )
+ {
+          // If there is mold growing on this tile, change the tile's color
+          // to green (unless there's also water)
+          if( to_display.t[y][x].hazard & SPECIAL_MOLD )
+          {
+            if( !(to_display.t[y][x].hazard & HAZARD_WATER ) )
+            {
+              output.color.fg = CLR_GREEN;
+            }
+          }
+  }
+ static if( BLOOD )
+ {
+          // If there is blood spattered on this tile, change the tile's
+          // color to red (unless there's also water?)
+          if( to_display.t[y][x].hazard & SPECIAL_BLOOD )
+          {
+            if( !(to_display.t[y][x].hazard & HAZARD_WATER) )
+            {
+              output.color.fg = CLR_RED;
+            }
+          }
+ }
+} // static if( COLOR )
+
+        if( to_display.i[y][x].sym.ch != '\0' )
+        { output = to_display.i[y][x].sym;
+        }
+
+        if( !No_shadows && !to_display.v[y][x] )
+        {
+static if( !COLOR )
+          output = SYM_SHADOW;
+else
+{
+          if( to_display.t[y][x].seen )
+          {
+            output.color.fg = CLR_DARKGRAY; 
+          }
+          else
+          {
+            output = SYM_SHADOW;
+          }
+}
+        }
+
+        display( y + 1, x, output );
+      } /* foreach( x; 0 .. MAP_X ) */
+    } /* foreach( y; 0 .. MAP_Y ) */
+  }
+
+  /++
+   + Uses `display_map` and `display_map_mons` to display all map tiles,
+   + items, and monsters.
+   +
+   + See_Also:
+   +   <a href="#SwashIO.display_map">display_map</a>,
+   +   <a href="#SwashIO.display_map_mons">display_map_mons</a>
+   +
+   + Params:
+   +   to_display = The map from which the monsters, tiles, and items are
+   +                taken to be displayed
+   +/
+  final void display_map_all( Map to_display )
+  {
+    display_map( to_display );
+    display_map_mons( to_display );
+  }
+
+  /++
+   + Uses `display_map_all` and `display_player` to draw the full display
+   + including the map, items, monsters, and player
+   +
+   + See_Also:
+   +   <a href="#SwashIO.display_map_all">display_map_all</a>,
+   +   <a href="#SwashIO.display_player">display_player</a>
+   +
+   + Params:
+   +   to_display = The map from which the monsters, tiles, and items are
+   +                taken to be displayed
+   +   u          = The `player` character to be displayed
+   +/
+  final void display_map_and_player( Map to_display, Player u )
+  {
+    display_map_all( to_display );
+    display_player( u );
+  }
+
+  /++
+   + Displays the equipment screen
+   +
+   + This is the key function used to display the equipment screen.  It draws
+   + The screen as a list of slots each marked with a letter indicating which
+   + key the player should push in order to interact with that equipment slot.
+   +
+   + If `grabbed` is given as a non-negative integer, that line will be marked
+   + as having been "grabbed" by the player, usually for the purposes of
+   + moving it to a new inventory slot or swapping two items.
+   +
+   + If `msg` is given as a non-empty string, that message will be displayed
+   + below the equipment screen.  This is normally done for error messages
+   + such as "there is no item there" or "you can not equip a %s there."  Note
+   + that this function will not format `msg` for you; if formatting must be
+   + done, it must be done before the string is passed into this function.
+   +
+   + See_Also: SwashIO.display_inventory
+   +
+   + Params:
+   +   u       A pointer to the `Player` whose inventory we are displaying.
+   +   grabbed An integer indicating which equipment slot has been "grabbed"
+   +           by the player prior to the screen being drawn.
+   +   msg     A message to be displayed to the player after drawing the
+   +           equipment screen.
+   +/
+  final void display_equipment_screen( Player* u, int grabbed = -1,
+                                       string msg = "" )
+  {
+
+    clear_screen();
+
+    string snam; // the name of the slot
+    char   schr; // the character that represents the slot
+
+    foreach( count; 0 .. INVENT_LAST_SLOT )
+    {
+      // This switch statement of doom sets up the name and selection
+      // button for each inventory slot
+      switch( count )
+      {
+        default: snam = "bag"; schr = '\0'; break;
+  
+        case INVENT_WEAPON:    snam = "Weapon-hand";    schr = 'w'; break;
+        case INVENT_OFFHAND:   snam = "Off-hand";       schr = 'o'; break;
+        case INVENT_QUIVER:    snam = "Quiver";         schr = 'q'; break;
+        case INVENT_HELMET:    snam = "Helmet";         schr = 'h'; break;
+        case INVENT_CUIRASS:   snam = "Cuirass";        schr = 'c'; break;
+        case INVENT_PAULDRONS: snam = "Pauldrons";      schr = 'p'; break;
+        case INVENT_BRACERS:   snam = "Bracers/gloves"; schr = 'b'; break;
+        case INVENT_RINGL:     snam = "Left ring";      schr = 'l'; break;
+        case INVENT_RINGR:     snam = "Right ring";     schr = 'r'; break;
+        case INVENT_NECKLACE:  snam = "Necklace";       schr = 'n'; break;
+        case INVENT_GREAVES:   snam = "Greaves";        schr = 'g'; break;
+        case INVENT_KILT:      snam = "Kilt/skirt";     schr = 'k'; break;
+        case INVENT_FEET:      snam = "Feet";           schr = 'f'; break;
+        case INVENT_TAIL:      snam = "Tailsheath";     schr = 't'; break;
+      } // switch( count )
+
+      if( schr == '\0' )
+      { break;
+      }
+
+      put_line( 1 + count, 1, "         %c) %s: %s", schr, snam,
+                u.inventory.items[count].sym.ch == '\0'
+                  ? "EMPTY" : u.inventory.items[count].name
+              );
+    } /* foreach( count; 0 .. INVENT_LAST_SLOT ) */
+
+    put_line( 16, 1, "i) Bag" );
+
+    if( grabbed <= -1 )
+    {
+      put_line( 18, 1, "Press a letter to \"grab\" that item" );
+      put_line( 19, 1, "or \'i\' to take an item out of your bag" );
+    }
+    else
+    {
+      put_line( grabbed + 1, 1, "GRABBED:" );
+      put_line( 18, 1,
+        "Press a letter to move the grabbed item into a new equipment slot" );
+      put_line( 19, 1, "or \'i\' to put it in your bag" );
+    }
+
+    put_line( 20, 1, "Press \'Q\' or SPACE to exit this screen" );
+
+    if( msg != "" )  put_line( 22, 1, msg );
+  
+    refresh_screen();
+
+  } // final void display_equipment_screen( Player*(, int, string) )
+
+  /++
+   + Displays the inventory screen
+   +
+   + This function displays the player's inventory screen by placing each
+   + `Item` in the "bag slots" of its `Inventory` on a line with a character
+   + next to it to indicate what key the user should press to interact with
+   + that item.
+   +
+   + The inventory is not to be confused with the equipment screen.
+   +
+   + See_Also: SwashIO.display_equipment_screen
+   +
+   + Params:
+   +  u  A pointer to the `Player` whose inventory is being displayed.
+   +/
+  final void display_inventory( Player* u )
+  {
+
+    clear_screen();
+
+    // The symbol of the current item
+    char slot_char = 'a';
+
+    foreach( slot_index; 0 .. 24 )
+    {
+      // Inform the player of each item, up to 24 (one per line)
+      if( Item_here( u.inventory.items[INVENT_BAG + slot_index] ) )
+      {
+        put_line( slot_index, 0, "%c) %s", slot_char,
+            u.inventory.items[INVENT_BAG + slot_index].name );
+        slot_char++;
+      }
+      else break;
+    }
+
+    refresh_screen();
+
+  } // final void display_inventory( Player* )
+
+} // interface SwashIO
 
 // Import the classes which expand on this template depending on what display
 // outputs have been compiled:

@@ -227,3 +227,7 @@ Version Date/time Finalized   Info
         interact with the equipment screen.  The equipment and inventory
         screens are now clearly separated and cooperate nicely with each
         other without nearly so much spaghetti code.
+
+0.029-1 2019-01-29 13:10 EST  A minor release correcting small errors in the
+        documentation from version 0.029 and moving some of the code around in
+        iomain.d for consistency.

@@ -352,7 +352,12 @@ version( sdl )
   // Display the map and player
   IO.display_map_and_player( Current_map, u );
 
+  // Fill in the message line
   IO.clear_message_line();
+
+  // Greet the player
+  message( "Welcome back to SwashRL!" );
+  IO.read_messages();
 
   uint moved = 0;
   int mv = 5;

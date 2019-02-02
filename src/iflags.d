@@ -1,10 +1,9 @@
 /*
- * Copyright 2016-2018 Philip Pavlick
+ * Copyright 2016-2019 Philip Pavlick
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License, excepting that
- * Derivative Works are not required to carry prominent notices in changed
- * files.  You may obtain a copy of the License at
+ * use this file except in compliance with the License.  You may obtain a copy
+ * of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -13,6 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * SwashRL is distributed with a special exception to the normal Apache
+ * License 2.0.  See LICENSE for details.
  */
 
 // flags related to items

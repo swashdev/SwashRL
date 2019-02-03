@@ -222,12 +222,12 @@ Version Date/time Finalized   Info
         cause fewer problems.  Slight changes to the wording of the special
         exception to the Apache License 2.0.
 
-0.029   2019-01-28 17:54 EST  Numerous idiosyncratic changes to the inventory
+0.029   2019-01-28 17:54 CST  Numerous idiosyncratic changes to the inventory
         code, including giving the user more clear instructions on how to
         interact with the equipment screen.  The equipment and inventory
         screens are now clearly separated and cooperate nicely with each
         other without nearly so much spaghetti code.
 
-0.029-1 2019-01-29 13:10 EST  A minor release correcting small errors in the
+0.029-1 2019-01-29 13:10 CST  A minor release correcting small errors in the
         documentation from version 0.029 and moving some of the code around in
         iomain.d for consistency.

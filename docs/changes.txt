@@ -1,12 +1,12 @@
 SwashRL official changelog
 
 VERSION 0.029-1
-Finalized 2019-01-29 13:10 EST
+Finalized 2019-01-29 13:10 CST
   A minor release correcting small errors in the documentation from version
   0.029 and moving some of the code around in iomain.d for consistency.
 
 VERSION 0.029
-Finalized 2019-01-28 17:54 EST
+Finalized 2019-01-28 17:54 CST
 
   Changed:
    - Numerous improvements to the inventory management code

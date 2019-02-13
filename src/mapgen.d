@@ -63,11 +63,11 @@ Room random_Room()
  + coordinate.
  +
  + Params:
- +   m  The `Map` that we are searching for an appropriate wall
- +   y  A pointer to the y coordinate that will be generated for the selected
- +      wall.
- +   x  A pointer to the x coordinate that will be generated for the selected
- +      wall.
+ +   m = The `Map` that we are searching for an appropriate wall
+ +   y = A pointer to the y coordinate that will be generated for the selected
+ +       wall.
+ +   x = A pointer to the x coordinate that will be generated for the selected
+ +       wall.
  +/
 void select_random_adjacent_wall( Map m, byte* y, byte* x )
 {
@@ -181,8 +181,8 @@ did_not_get_adjacent_wall:
  +   http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm
  +
  + Params:
- +   mold  If `true`, grows mold on the generated level.  Has no effect if
- +         `FOLIAGE` is false at compile time.
+ +   mold = If `true`, grows mold on the generated level.  Has no effect if
+ +          `FOLIAGE` is `false` at compile time.
  +
  + Returns:
  +   A `Map` level generated using Anderson's algorithm.

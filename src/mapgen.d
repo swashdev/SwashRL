@@ -77,7 +77,13 @@ void select_random_adjacent_wall( Map m, byte* y, byte* x )
   // floor tiles
   bool[MAP_X][MAP_Y] valid;
 
-  foreach( row in valid )  foreach( col in row )  valid[row][col] = false;
+  // Initialize `valid` with `false` values
+  for( int _x = 0; _x < MAP_X; _x++ )
+  {
+    for( int _y = 0; _y < MAP_Y; _y++ )
+    { valid[_x][_y] = false;
+    }
+  }
 
   // First we'll check to make sure that the map does indeed contain non-wall
   // tiles.  In other words, we're checking to make sure the map isn't empty.

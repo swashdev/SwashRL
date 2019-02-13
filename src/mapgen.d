@@ -108,16 +108,16 @@ void select_random_adjacent_wall( Map m, byte* y, byte* x )
         // going to set the value corresponding to these coordinates in
         // `valid` to `true`.
         // Note that we're only checking in cardinal directions.
-        if( _x > 0 )  if( !m.t[_x - 1][_y].block_cardinal_movement )
+        if( _x > 0 )  if( m.t[_x - 1][_y].block_cardinal_movement )
         { valid[_x - 1][_y] = true;
         }
-        if( _x < (MAP_X - 1) )  if( !m.t[_x + 1][_y].block_cardinal_movement )
+        if( _x < (MAP_X - 1) )  if( m.t[_x + 1][_y].block_cardinal_movement )
         { valid[_x + 1][_y] = true;
         }
-        if( _y > 0 )  if( !m.t[_x][_y - 1].block_cardinal_movement )
+        if( _y > 0 )  if( m.t[_x][_y - 1].block_cardinal_movement )
         { valid[_x][_y - 1] = true;
         }
-        if( _y < (MAP_Y - 1) )  if( !m.t[_x][_y + 1].block_cardinal_movement )
+        if( _y < (MAP_Y - 1) )  if( m.t[_x][_y + 1].block_cardinal_movement )
         { valid[_x][_y + 1] = true;
         }
 
@@ -190,6 +190,8 @@ did_not_get_adjacent_wall:
 Map gen_anderson( bool mold = true )
 {
 
+  int reps = 0;
+
   // 1. Fill the whole map with solid earth
   Map m = empty_Map();
 
@@ -200,41 +202,36 @@ Map gen_anderson( bool mold = true )
   // 3. Pick a random wall.  Obviously since the map is composed _mostly_ of
   // walls, we'll want to pick one that's actually connected to something.
   // I've written a function that gets us some good coordinates.
-  int wall;
   uint x1, y1;
+  int dir;
 anderson_step_3:
-  r1 = r.length > 1 ? r.choice( Lucky ) : r[0];
+  // Check how many times we've repeated the scan-and-add process.  On
+  // RogueBasin, Anderson recommended 400-500 repetitions.
+  if( rep < 500 )  rep++;
+  else  return m;
 
-  // I'll just use the movement enums for the direction flags, no need to get
-  // all redundant about this.
-  wall = [MOVE_NORTH, MOVE_SOUTH, MOVE_EAST, MOVE_WEST].choice( Lucky );
+  select_random_adjacent_wall( m, &x1, &y1 );
 
-  // Now we need starting coordinates for the "scan" in step 5.
-  switch( wall )
-  {
+  // Determine which floor tile this wall is adjacent to and as such what
+  // direction we'll be moving in.
+  dir = -1;
+  if( x1 > 0 )  if( !m.t[x1 - 1][y1].blocks_cardinal_movement )
+  { dir = MOVE_EAST;
+  }
+  if( x1 < (MAP_X - 1) )  if( !m.t[x1 + 1][y1].blocks_cardinal_movement )
+  { dir = MOVE_WEST;
+  }
+  if( y1 > 0 )  if( !m.t[x1][y1 - 1].blocks_cardinal_movement )
+  { dir = MOVE_SOUTH;
+  }
+  if( y1 < (MAP_Y - 1) )  if( !m.t[x1][y1 + 1].blocks_cardinal_movement )
+  { dir = MOVE_NORTH;
+  }
 
-    case MOVE_NORTH:
-      y1 = r.y1 - 1;
-      x1 = random.uniform( r.x1, r.x2 + 1, Lucky );
-      break;
+  // If for whatever reason we didn't get a valid direction, abort and try
+  // again.
+  if( dir <= 0 )  goto anderson_step_3;
 
-    case MOVE_SOUTH:
-      y1 = r.y2 + 1;
-      x1 = random.uniform( r.x1, r.x2 + 1, Lucky );
-      break;
-
-    case MOVE_EAST:
-      x1 = r.x2 + 1;
-      y1 = random.uniform( r.y1, r.y2 + 1, Lucky );
-      break;
-
-    case MOVE_WEST:
-      x1 = r.x1 - 1;
-      y1 = random.uniform( r.y1, r.y2 + 1, Lucky );
-      break;
-
-  } // switch( wall )
-
-  return mp;
+  return m;
 
 } // Map gen_anderson( bool? )

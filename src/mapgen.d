@@ -53,6 +53,10 @@ Room random_Room()
 
 } // Room random_Room()
 
+// Deferred Anderson's algorithm for a future release
+version( none )
+{
+
 /++
  + Get coordinates for an appropriate wall from the given `Map`
  +
@@ -235,3 +239,5 @@ anderson_step_3:
   return m;
 
 } // Map gen_anderson( bool? )
+
+} // version( none )

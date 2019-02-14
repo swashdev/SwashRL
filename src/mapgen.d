@@ -25,7 +25,7 @@ import global;
 
 // Some universal configuration variables:
 enum MIN_ROOM_X =  3, MIN_ROOM_Y = 3;
-enum MAX_ROOM_X = 10, MAX_ROOM_Y = 6;
+enum MAX_ROOM_X = 10, MAX_ROOM_Y = 5;
 
 /++
  + Generates a random `Room`
@@ -41,17 +41,75 @@ Room random_Room()
 {
 
   Room r;
-  uint room_width  = cast(uint)random.uniform( "[]", MIN_ROOM_X, MAX_ROOM_X, Lucky );
-  uint room_height = cast(uint)random.uniform( "[]", MIN_ROOM_Y, MAX_ROOM_Y, Lucky );
+  int room_width  = uniform!"[]"( MIN_ROOM_X, MAX_ROOM_X, Lucky );
+  int room_height = uniform!"[]"( MIN_ROOM_Y, MAX_ROOM_Y, Lucky );
 
-  r.x1 = cast(uint)random.uniform( 1, (80 - MAX_ROOM_X), Lucky );
+  r.x1 = uniform( 1, (80 - MAX_ROOM_X), Lucky );
   r.x2 = r.x1 + room_width;
-  r.y1 = cast(uint)random.uniform( 1, (22 - MAX_ROOM_Y), Lucky );
+  r.y1 = uniform( 1, (22 - MAX_ROOM_Y), Lucky );
   r.y2 = r.y1 + room_height;
 
   return r;
 
 } // Room random_Room()
+
+/++
+ + Generates a simple, Rogue-like level
+ +
+ + This is the simplest of the dungeon generator algorithms, and uses a simple
+ + version of the map generation algorithm that Rogue used, for a very
+ + traditional-feeling level.
+ +
+ + Origin:  http://www.roguebasin.com/index.php?title=Simple_Rogue_levels
+ +
+ + Params:
+ +   mold = If `true`, generates mold on the generated map.  Has no effect if
+ +          `FOLIAGE` is set to `false` at compile time.
+ +
+ + Returns:
+ +   A `Map` representing a generated level.
+ +/
+Map gen_simple_roguelike( bool mold = true )
+{
+  int[4][12] sectors =
+  [ [1, 20,  1,  7], [21, 40,  1,  7], [41, 60,  1,  7], [61, 79,  1,  7],
+    [1, 20,  8, 13], [21, 40,  8, 13], [41, 60,  8, 13], [61, 79,  8, 13],
+    [1, 20, 14, 21], [21, 40, 14, 21], [41, 60, 14, 21], [61, 79, 14, 21]
+  ];
+
+  Room[9] rs;
+  size_t s;
+  for( s = 0; s < sectors.length; s++ )
+  {
+    // Randomly decide whether or not to put an "actual room" in this sector
+    // If we choose not to put a room here, use a placeholder "zero-size" room
+    if( 0 == td10() )
+    {
+      rs[s] = Room( 0, 0, 0, 0 );
+      continue;
+    }
+
+    Room r;
+    r.x1 = uniform!"[]"( sectors[s][0], sectors[s][1] - MIN_ROOM_X, Lucky );
+    r.x2 = uniform!"[]"( r.x1 + MIN_ROOM_X, sectors[s][1], Lucky );
+    r.y1 = uniform!"[]"( sectors[s][2], sectors[s][3] - MIN_ROOM_Y, Lucky );
+    r.y2 = uniform!"[]"( r.y1 + MIN_ROOM_Y, sectors[s][3], Lucky );
+  } // for( size_t s = 0; s < sectors.length; s++ )
+
+  Map m;
+
+  // Now we go through the list of generated rooms and carve out the ones that
+  // are "real rooms"
+  for( s = 0; s < rs.length; s++ )
+  {
+    if( 0 >= (rs[s].x2 - rs[s].x1) )  continue;
+    add_room( rs[s], &m );
+
+    
+  }
+
+  return empty_Map();
+} // Map gen_simple_roguelike( bool? )
 
 // Deferred Anderson's algorithm for a future release
 version( none )
@@ -145,13 +203,13 @@ did_not_get_adjacent_wall:
   // map that gave only floor tiles, `valid` won't contain any valid
   // coordinates.
   bool got_valid = false;
-  foreach( row in valid )
+  foreach( row; valid )
   {
     if( got_valid )  break;
 
-    foreach( col in row )
+    foreach( col; row )
     {
-      if( col == true )
+      if( row[col] == true )
       {
         got_valid = true;
         break;
@@ -168,8 +226,8 @@ did_not_get_adjacent_wall:
   // `true` value from those coordinates in `valid`.
   do
   {
-    x = cast(byte)random.uniform( 1, MAP_X, Lucky );
-    y = cast(byte)random.uniform( 1, MAP_Y, Lucky );
+    x = cast(byte)uniform( 1, MAP_X, Lucky );
+    y = cast(byte)uniform( 1, MAP_Y, Lucky );
   } while( valid[x][y] == false );
 
 } // void select_random_adjacent_wall( Map, byte*, byte* )
@@ -200,7 +258,7 @@ Map gen_anderson( bool mold = true )
   Map m = empty_Map();
 
   // 2. Dig out a single room in the centre of the map
-  Room r[] = { random_Room() };
+  Room[] r = { random_Room() };
   add_room( r[0], m );
 
   // 3. Pick a random wall.  Obviously since the map is composed _mostly_ of

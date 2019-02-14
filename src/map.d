@@ -22,7 +22,7 @@ import global;
 // A `struct' used to store `Room's for the Map generation code
 struct Room
 {
-  uint x1, y1, x2, y2;
+  int x1, y1, x2, y2;
 }
 
 // Defines a struct ``Map'' which stores Map data, including Map Tiles and
@@ -428,15 +428,15 @@ Map generate_new_map()
 
   // These integers will tell us what the Room boundaries for each sector are.
   // Note that some of them overlap; this is intentional.
-  uint s1x1 = 1,  s1x2 = 26, s1y1 = 1,  s1y2 = 7;
-  uint s2x1 = 26, s2x2 = 52, s2y1 = 1,  s2y2 = 7;
-  uint s3x1 = 52, s3x2 = 78, s3y1 = 1,  s3y2 = 7;
-  uint s4x1 = 1,  s4x2 = 26, s4y1 = 7,  s4y2 = 13;
-  uint s5x1 = 26, s5x2 = 52, s5y1 = 7,  s5y2 = 13;
-  uint s6x1 = 52, s6x2 = 78, s6y1 = 7,  s6y2 = 13;
-  uint s7x1 = 1,  s7x2 = 26, s7y1 = 13, s7y2 = 20;
-  uint s8x1 = 26, s8x2 = 52, s8y1 = 13, s8y2 = 20;
-  uint s9x1 = 52, s9x2 = 78, s9y1 = 13, s9y2 = 20;
+  int s1x1 = 1,  s1x2 = 26, s1y1 = 1,  s1y2 = 7;
+  int s2x1 = 26, s2x2 = 52, s2y1 = 1,  s2y2 = 7;
+  int s3x1 = 52, s3x2 = 78, s3y1 = 1,  s3y2 = 7;
+  int s4x1 = 1,  s4x2 = 26, s4y1 = 7,  s4y2 = 13;
+  int s5x1 = 26, s5x2 = 52, s5y1 = 7,  s5y2 = 13;
+  int s6x1 = 52, s6x2 = 78, s6y1 = 7,  s6y2 = 13;
+  int s7x1 = 1,  s7x2 = 26, s7y1 = 13, s7y2 = 20;
+  int s8x1 = 26, s8x2 = 52, s8y1 = 13, s8y2 = 20;
+  int s9x1 = 52, s9x2 = 78, s9y1 = 13, s9y2 = 20;
 
   // An array that stores generated Rooms:
   Room[9] r;
@@ -446,7 +446,7 @@ Map generate_new_map()
 
   foreach( c; 0 .. 9 )
   {
-    uint x1, x2, y1, y2;
+    int x1, x2, y1, y2;
 
     final switch( c )
     {
@@ -509,10 +509,10 @@ room_gen:
     Room r1 = rr[c];
     Room r2 = rr[c + 1];
 
-    uint x1 = uniform( r1.x1, r1.x2 + 1, Lucky );
-    uint x2 = uniform( r2.x1, r2.x2 + 1, Lucky );
-    uint y1 = uniform( r1.y1, r1.y2 + 1, Lucky );
-    uint y2 = uniform( r2.y1, r2.y2 + 1, Lucky );
+    int x1 = uniform( r1.x1, r1.x2 + 1, Lucky );
+    int x2 = uniform( r2.x1, r2.x2 + 1, Lucky );
+    int y1 = uniform( r1.y1, r1.y2 + 1, Lucky );
+    int y2 = uniform( r2.y1, r2.y2 + 1, Lucky );
 
     // Randomly decide whether to carve horizontally or vertically first.
     if( flip() )
@@ -536,7 +536,7 @@ static if( FOLIAGE )
   // Finally, get random coordinates from a random Room and put the player
   // there:
 
-  uint srindex = uniform( 0, 9, Lucky );
+  int srindex = uniform( 0, 9, Lucky );
 
   Room sr = r[ uniform( 0, 9, Lucky ) ];
 

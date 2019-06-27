@@ -375,7 +375,8 @@ Try compiling with dub build -b debug" );
   if( gen_map )
   {
     IO.display_map( Current_map );
-    IO.refresh_screen();
+    message( "%s, version %s", NAME, sp_version() );
+    IO.read_messages();
     IO.get_key();
 
     // skip the rest of main

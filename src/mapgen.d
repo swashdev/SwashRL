@@ -77,10 +77,12 @@ Map gen_simple_roguelike( bool mold = true )
     [1, 20, 14, 21], [21, 40, 14, 21], [41, 60, 14, 21], [61, 79, 14, 21]
   ];
 
-  Room[9] rs;
+  Room[12] rs;
   size_t s;
   for( s = 0; s < sectors.length; s++ )
   {
+version( none )
+{
     // Randomly decide whether or not to put an "actual room" in this sector
     // If we choose not to put a room here, use a placeholder "zero-size" room
     if( 0 == td10() )
@@ -88,12 +90,15 @@ Map gen_simple_roguelike( bool mold = true )
       rs[s] = Room( 0, 0, 0, 0 );
       continue;
     }
+}
 
     Room r;
     r.x1 = uniform!"[]"( sectors[s][0], sectors[s][1] - MIN_ROOM_X, Lucky );
     r.x2 = uniform!"[]"( r.x1 + MIN_ROOM_X, sectors[s][1], Lucky );
     r.y1 = uniform!"[]"( sectors[s][2], sectors[s][3] - MIN_ROOM_Y, Lucky );
     r.y2 = uniform!"[]"( r.y1 + MIN_ROOM_Y, sectors[s][3], Lucky );
+
+    rs[s] = r;
   } // for( size_t s = 0; s < sectors.length; s++ )
 
   Map m;
@@ -108,7 +113,7 @@ Map gen_simple_roguelike( bool mold = true )
     
   }
 
-  return empty_Map();
+  return m;
 } // Map gen_simple_roguelike( bool? )
 
 // Deferred Anderson's algorithm for a future release

@@ -18,7 +18,10 @@ SwashRL currently has git respositories hosted at the following locations:
 
 * <https://github.com/swashdev/SwashRL>
 
-* <https://github.com/swashdev/swash-tentative>
+* <https://repo.or.cz/SwashRL.git>
+
+* <https://github.com/swashdev/swash-tentative> (an additional repo used for
+  sketches and note-taking)
 
 If you're reading this Markdown file in a text editor or other program that
 doesn't display hyperlinks, links to files or web pages referenced in this

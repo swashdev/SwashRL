@@ -1,7 +1,0 @@
-There are no official release versions for the Linux or FreeBSD development
-libraries of SDL2 or SDL_ttf, because of the variety of architectures that
-those systems run on.  Please contact your distribution manager for updates.
-
-Because these are standard and very popular libraries, I suggest you check
-your package manager; they're probably in there, unless you're running a very
-new or very small system like MINIX 3.

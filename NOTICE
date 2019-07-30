@@ -18,26 +18,7 @@ SwashRL is distributed with a special exception to the normal Apache License
 The version of SwashRL which you have received uses the following third-party
 resources to function:
 
-  -- SDL2 and SDL_ttf --------------------------------------------------------
-
-SwashRL is designed to link to Simple DirectMedia Layer (SDL) version 2 and a
-sub-project called SDL_ttf.  As of version 0.024, this is the default display
-system for SwashRL.  Development binaries for SDL version 2.0.8 and SDL_ttf
-version 2.0.14 are included in the ``lib'' folder and its subdirectories.
-
-SDL2 and SDL_ttf are not critical for SwashRL to function, and either may be
-excluded from your copy by compiling with ncurses or PDCurses instead (see
-below)
-
-The SDL license can be found in ``docs/license/sdl2.txt''
-The SDL_ttf license can be found in ``docs/license/sdl_ttf.txt''
-
-SDL_ttf also uses zlib and FreeType, also included in the ``lib'' folder.
-
-The zlib license can be found in ``docs/license/zlib.txt''
-The FreeType license can be found in ``docs/license/freetype.txt''
-
-  -- DejaVu Fonts ------------------------------------------------------------
+ -- DejaVu Fonts ------------------------------------------------------------
 
 DejaVuSansMono, a freeware / open-source font, is included in the
 ``assets/fonts'' folder as the default font for the SDL interfaces to SwashRL.

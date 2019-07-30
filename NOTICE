@@ -46,25 +46,3 @@ The SmugglerRL git repository can be found here at the time of writing:
   http://repo.or.cz/SmugglerRL.git
 
 The SmugglerRL license can be found in ``docs/license/smuggler.txt''
-
-  -- ncurses and PDCurses ----------------------------------------------------
-
-SwashRL is designed to link to the ncurses and PDCurses libraries.  Neither
-of these are included with the software; you are expected to install (at least
-one of) them yourself before compiling.  Because of this, I can't say with any
-certainty what licenses the versions you are using will be released under.
-You are expected to use your own discretion.
-
-ncurses and PDCurses are not critical for SwashRL to function, and either may
-be excluded from your copy by compiling with SDL2 instead (see above).
-
-ncurses is released under the X11 license (as of version 6.0), and the Free
-Software Foundation has pledged that it will not release ncurses under any
-other license.  However, I can not guarantee that the version you have does
-not use other libraries or other functions under a different license.
-
-PDCurses, or at least the core library, is released into the public domain
-(accurate as of version 3.6) but some parts of it use other licenses.  This
-complicates the actual terms of distributing PDCurses to the point that again
-I can not say with any certainty with what freedom it may be distributed.
-Again, use discretion.

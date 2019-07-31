@@ -52,8 +52,7 @@ document can be found at the bottom.
 SwashRL is released under [the Zlib License], a simple
 open-source license which allows for free use in exchange for retaining the
 original license with all source distributions and changing the name of the
-software if it is modified.  It is similar, but not *quite* identical, to the
-popular zlib license.
+software if it is modified.
 
 SwashRL uses some third-party resources to function.  For details, see
 [the acknowledgement file] and the third-party licenses referenced therein.

@@ -49,12 +49,11 @@ document can be found at the bottom.
 
 ## License Agreement
 
-SwashRL is released under [the Apache License 2.0], excepting that Derivative
-Works are not required to carry prominent notices in changed files as
-required by the normal Apache License 2.0 in Section 4b; instead, we allow for
-Derivative Works to carry a single notice specifying that the software product
-as a whole has been modified.  This is done to make attribution and
-notification less cumbersome and more convenient.
+SwashRL is released under [the Zlib License], a simple
+open-source license which allows for free use in exchange for retaining the
+original license with all source distributions and changing the name of the
+software if it is modified.  It is similar, but not *quite* identical, to the
+popular zlib license.
 
 SwashRL uses some third-party resources to function.  For details, see
 [the NOTICE file] and the third-party licenses referenced therein.
@@ -132,7 +131,7 @@ For more information about git, check out [the git website].
 ### Compiling for Derivatives
 
 There are a few things to note if you want to use the SwashRL source code to
-make your own game.  First of all, [the Apache License 2.0] is very
+make your own game.  First of all, [the Zlib License] is very
 permissive, and unlike the GNU GPL and other copyleft licenses you absolutely
 can commercially exploit SwashRL without having to release your source code.
 This is not an oversight; I have intentionally licensed SwashRL to allow you
@@ -155,11 +154,9 @@ easy to do.  It only requires two steps:
    name of your program (i.e. instead of saying `enum NAME = "SwashRL";` it
    will say `enum NAME = "Your Game's Name";`)
 
-Third and finally, you have to include a notice with your derivative software
-product indicating that it has been modified from the SwashRL project.  Thanks
-to a special exception to the normal Apache License 2.0, only one such notice
-is required, and it can be done by modifying the existing attribution notice
-at the top of [the NOTICE file].
+Third and finally, be aware that SwashRL is not the only licensed product you
+will be interacting with, and there are a few other licenses that you'll have
+to comply with, as noted in [the NOTICE file].
 
 ## Change Logs
 
@@ -210,7 +207,7 @@ THIS LETTER.
 * <https://www.doctorsopposingcircumcision.org/>
 
 [our GitHub page]: https://github.com/swashdev/SwashRL
-[the Apache license 2.0]: LICENSE
+[the Zlib License]: LICENSE.TXT
 [the NOTICE file]: NOTICE
 [an issue]: https://github.com/swashdev/SwashRL/issues/2
 [contact me]: mailto:philip@swash.link

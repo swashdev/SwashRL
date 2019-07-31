@@ -1,5 +1,8 @@
 SwashRL official changelog
 
+VERSION 0.030
+  SwashRL is now licensed under the zlib license.
+
 VERSION 0.029-1
 Finalized 2019-01-29 13:10 CST
   A minor release correcting small errors in the documentation from version

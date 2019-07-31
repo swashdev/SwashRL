@@ -56,7 +56,7 @@ software if it is modified.  It is similar, but not *quite* identical, to the
 popular zlib license.
 
 SwashRL uses some third-party resources to function.  For details, see
-[the NOTICE file] and the third-party licenses referenced therein.
+[the acknowledgement file] and the third-party licenses referenced therein.
 
 ## Supported Systems
 
@@ -156,7 +156,7 @@ easy to do.  It only requires two steps:
 
 Third and finally, be aware that SwashRL is not the only licensed product you
 will be interacting with, and there are a few other licenses that you'll have
-to comply with, as noted in [the NOTICE file].
+to comply with, as noted in [the acknowledgement file].
 
 ## Change Logs
 
@@ -208,7 +208,8 @@ THIS LETTER.
 
 [our GitHub page]: https://github.com/swashdev/SwashRL
 [the Zlib License]: LICENSE.TXT
-[the NOTICE file]: NOTICE
+[the third-party file]: 3rdparty.txt
+[the acknowledgement file]: 3rdparty.txt
 [an issue]: https://github.com/swashdev/SwashRL/issues/2
 [contact me]: mailto:philip@swash.link
 [contribution guidelines]: docs/CONTRIBUTING.MD

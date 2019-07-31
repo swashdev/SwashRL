@@ -165,7 +165,7 @@ As a rule of thumb, just try to make your code look like our code for the sake
 of consistency and you'll be fine.
 
 [the SwashRL license]: ../LICENSE
-[the third-party licenses file]: ../NOTICE
+[the third-party licenses file]: ../3rdparty.txt
 [Readme]: ../README.MD
 [docs folder]: ../docs
 [to-do list]: ../docs/to-do.txt

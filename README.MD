@@ -2,7 +2,7 @@ SwashRL
 =======
 
 Readme file, last updated 2019-01-29 13:08 CST  
-Contact the maintainer: <philip@swash.link>
+Contact the maintainer: <swashdev@pm.me>
 
 ---
 

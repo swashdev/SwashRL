@@ -210,7 +210,7 @@ THIS LETTER.
 [the third-party file]: 3rdparty.txt
 [the acknowledgement file]: 3rdparty.txt
 [an issue]: https://github.com/swashdev/SwashRL/issues/2
-[contact me]: mailto:philip@swash.link
+[contact me]: mailto:swashdev@pm.me
 [contribution guidelines]: docs/CONTRIBUTING.MD
 [config.d]: src/config.d
 [global.d]: src/global.d

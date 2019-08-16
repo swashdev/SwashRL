@@ -2,7 +2,7 @@
   "name": "swashrl",
   "authors": [ "Philip Pavlick <philip@swash.link>" ],
   "copyright": "Copyright (c) 2015-2019, Philip Pavlick",
-  "license": "Zlib",
+  "license": "BSD 3-clause",
 
   "description": "Another open-source Roguelike",
 

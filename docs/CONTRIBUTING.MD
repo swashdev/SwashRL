@@ -164,7 +164,7 @@ make it easier for you to keep track of your own code.
 As a rule of thumb, just try to make your code look like our code for the sake
 of consistency and you'll be fine.
 
-[the SwashRL license]: ../LICENSE
+[the SwashRL license]: ../LICENSE.TXT
 [the third-party licenses file]: ../3rdparty.txt
 [Readme]: ../README.MD
 [docs folder]: ../docs

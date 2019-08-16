@@ -49,10 +49,10 @@ document can be found at the bottom.
 
 ## License Agreement
 
-SwashRL is released under [the Zlib License], a simple
-open-source license which allows for free use in exchange for retaining the
-original license with all source distributions and changing the name of the
-software if it is modified.
+SwashRL is released under [the BSD 3-clause "New" or "Revised" License], a
+simple open-source license which allows for free use in exchange for retaining
+the original license with all source distributions and not misrepresenting the
+authors as endorsing the software.
 
 SwashRL uses some third-party resources to function.  For details, see
 [the acknowledgement file] and the third-party licenses referenced therein.
@@ -130,7 +130,7 @@ For more information about git, check out [the git website].
 ### Compiling for Derivatives
 
 There are a few things to note if you want to use the SwashRL source code to
-make your own game.  First of all, [the Zlib License] is very
+make your own game.  First of all, [the BSD 3-clause License] is very
 permissive, and unlike the GNU GPL and other copyleft licenses you absolutely
 can commercially exploit SwashRL without having to release your source code.
 This is not an oversight; I have intentionally licensed SwashRL to allow you
@@ -206,7 +206,8 @@ THIS LETTER.
 * <https://www.doctorsopposingcircumcision.org/>
 
 [our GitHub page]: https://github.com/swashdev/SwashRL
-[the Zlib License]: LICENSE.TXT
+[the BSD 3-clause "New" or "Revised" License]: LICENSE.TXT
+[the BSD 3-clause License]: LICENSE.TXT
 [the third-party file]: 3rdparty.txt
 [the acknowledgement file]: 3rdparty.txt
 [an issue]: https://github.com/swashdev/SwashRL/issues/2

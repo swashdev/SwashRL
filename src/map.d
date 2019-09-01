@@ -51,7 +51,7 @@ struct Map
   Monst[]              m; // 'm'onsters
   Item[MAP_X][MAP_Y]   i; // 'i'tems
 
-  Room[9] r;
+  Room[12] r;
 
   bool[MAP_X][MAP_Y] v; // 'v'isibility
 

@@ -170,6 +170,59 @@ version( none )
     
   }
 
+  // This shuffled list of numbers will represent indexes for both the sectors
+  // of the map and the rooms we just generated contained within each sector.
+  int[8] sectors = [0, 1, 2, 3, 4, 5, 6, 7].randomShuffle( Lucky );
+
+  // For each pair of sectors adjacent to each other in the shuffled array,
+  // we'll connect them with a corridor.
+  for( int counter = 0; counter < 7; counter++ )
+  {
+    int counter2 = counter + 1;
+    // Carve a corridor connecting the first chosen ROOM with the second chosen
+    // SECTOR.  We will always pick odd numbers for our starting and ending
+    // coordinates, to avoid interfering with the rigid boundaries of
+    // already-generated rooms; however, we will allow corridors to intersect
+    // rooms.
+  
+    int start_x = uniform!"[]"( rs[counter].x1, rs[counter].x2, Lucky );
+    int start_y = uniform!"[]"( rs[counter].y1, rs[counter].y2, Lucky );
+    int mid_x   = uniform!"[]"( SECTORS[counter2][0], SECTORS[counter2][1],
+                                Lucky );
+    int mid_y   = uniform!"[]"( SECTORS[counter2][2], SECTORS[counter2][3],
+                                Lucky );
+
+    // Ensure the generated numbers are always odd
+    if( start_x % 2 == 0 )  start_x--;
+    if( start_y % 2 == 0 )  start_y--;
+    if( mid_x   % 2 == 0 )  mid_x--;
+    if( mid_y   % 2 == 0 )  mid_y--;
+
+    // Carve the resulting corridor:
+    add_corridor( &m, start_x, start_y, mid_x, mid_y );
+
+    // Now check if our midpoint is inside the room we want to connect to.  If
+    // it is, job done.  Otherwise, select new coordinates.
+    if( within_minmax( mid_x, rs[counter2].x1, rs[counter2].x2 )
+     && within_minmax( mid_y, rs[counter2].y1, rs[counter2].y2 ) )
+    { continue;
+    }
+
+    int end_x = uniform!"[]"( rs[counter2].x1, rs[counter2].x2, Lucky );
+    int end_y = uniform!"[]"( rs[counter2].y1, rs[counter2].y2, Lucky );
+
+    // Again. make sure our coordinates are odd:
+    if( end_x % 2 == 0 )  end_x--;
+    if( end_y % 2 == 0 )  end_y--;
+
+    // Carve the corridor.  Note that the way that the corridors are generated
+    // means that the generation algorithm may double back on itself, creating
+    // dead ends.  Since this isn't an undesireable effect, we'll let this
+    // slide.
+    add_corridor( &m, mid_x, mid_y, end_x, end_y );
+  } // for( int counter = 0; counter < 7; counter++ )
+  
+
 static if( FOLIAGE )
 {
   // Plant mold in the Map:

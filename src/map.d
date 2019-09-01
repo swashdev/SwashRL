@@ -425,12 +425,6 @@ Map generate_new_map()
   Map m = gen_simple_roguelike( FOLIAGE );
   Room[12] r = m.r;
 
-static if( FOLIAGE )
-{
-  // Plant mold in the Map:
-  grow_mold( &m );
-}
-
   return m;
 } // Map generate_new_map()
 

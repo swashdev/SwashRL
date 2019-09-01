@@ -147,6 +147,12 @@ version( none )
     
   }
 
+static if( FOLIAGE )
+{
+  // Plant mold in the Map:
+  if( mold )  grow_mold( &m );
+}
+
   return m;
 } // Map gen_simple_roguelike( bool? )
 

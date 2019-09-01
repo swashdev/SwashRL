@@ -27,6 +27,55 @@
  */
 
 /++
+ + Generates an empty `Map`
+ +/
+Map empty_Map()
+{
+  Map m;
+  foreach( y; 0 .. MAP_Y )
+  {
+    foreach( x; 0 .. MAP_X )
+    {
+      m.i[y][x] = No_item;
+      m.t[y][x] = Terrain.wall;
+    }
+  }
+
+  m.player_start = [ 0, 0 ];
+
+  return m;
+}
+
+/++
+ + Randomly generates a new `Map`
+ +
+ + This function will generate a new dungeon level.  This is accomplished by
+ + splitting the `Map` into nine sectors, placing a `Room` within each sector,
+ + and then randomly connecting them with corridors.
+ +
+ + Currently, the function is written to guarantee that there will always be a
+ + path which connects all of the Rooms, but there are no checks to prevent
+ + the Rooms from overlapping.
+ +
+ + If `FOLIAGE` is `true`, this function will also `grow_mold` in the Map
+ + before returning it.
+ +
+ + See_Also:
+ +   <a href="#add_corridor_y">add_corridor_y</a>,
+ +   <a href="#add_corridor_x">add_corridor_x</a>,
+ +   <a href="#add_room">add_room</a>
+ +
+ + Returns:
+ +   A `Map` with Rooms and corridors randomly generated
+ +/
+Map generate_new_map()
+{
+  import std.random;
+
+  Map m = gen_simple_roguelike( FOLIAGE );
+}
+
+/++
  + Generates a simple, Rogue-like level
  +
  + This is the simplest of the dungeon generator algorithms, and uses a simple

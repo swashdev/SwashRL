@@ -422,6 +422,9 @@ Map generate_new_map()
 {
   import std.random;
 
+version( none )
+{
+
   // We're going to use a classic Roguelike Room generation system:  Split the
   // Map into nine sectors, generate a Room in each one, and then connect them
   // with corridors.
@@ -527,6 +530,13 @@ room_gen:
     }
   } // foreach( c; 0 .. 7 )
 
+} // version( none )
+else
+{
+  Map m = gen_simple_roguelike( FOLIAGE );
+  Room[9] r = m.r;
+}
+
 static if( FOLIAGE )
 {
   // Plant mold in the Map:
@@ -540,8 +550,8 @@ static if( FOLIAGE )
 
   Room sr = r[ uniform( 0, 9, Lucky ) ];
 
-  ubyte px = cast(ubyte)uniform( sr.x1 + 1, sr.x2, Lucky );
-  ubyte py = cast(ubyte)uniform( sr.y1 + 1, sr.y2, Lucky );
+  ubyte px = cast(ubyte)uniform( sr.x1, sr.x2 + 1, Lucky );
+  ubyte py = cast(ubyte)uniform( sr.y1, sr.y2 + 1, Lucky );
 
   m.player_start = [py, px];
 

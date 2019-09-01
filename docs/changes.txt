@@ -1,5 +1,16 @@
 SwashRL official changelog
 
+VERSION 0.030-1
+Finalized 2019-09-01 16:53 CST
+ A minor release correcting an error made while copying and pasting the
+ license notice into the repository and the source code files within.  An
+ explanation for this error can be found within this snippet from the git
+ logs:
+
+    When I copied and pasted the BSD 3-clause license I neglected to check
+    if any alterations had been made to the warranty and liability
+    disclaimer.  As it happens there were, so I have to fix that now.
+
 VERSION 0.030
 Finalized 2019-09-01 19:38 CST
   SwashRL is now licensed under the BSD Revised License.

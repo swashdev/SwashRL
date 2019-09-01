@@ -63,6 +63,25 @@ Room random_Room()
 } // Room random_Room()
 
 /++
+ + Generates a corridor, which may include corners, between two points on the
+ + given map.
+ +/
+void add_corridor( Map* m, int start_x, int start_y, int end_x, int end_y )
+{
+  // Randomly decide whether to do y-coordinate or x-coordinate first
+  if( flip() )
+  {
+    add_corridor_x( start_y, start_x, end_x, m );
+    add_corridor_y( end_x,   start_y, end_y, m );
+  }
+  else
+  {
+    add_corridor_y( start_x, start_y, end_y, m );
+    add_corridor_x( end_y,   start_x, end_x, m );
+  }
+}
+
+/++
  + Generates a simple, Rogue-like level
  +
  + This is the simplest of the dungeon generator algorithms, and uses a simple

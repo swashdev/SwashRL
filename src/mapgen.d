@@ -127,7 +127,7 @@ version( none )
 
     // Adjust x1 & y1 to ensure they are odd numbers:
     if( r.x1 % 2 == 0 )  r.x1--;
-    if( r.y2 % 2 == 0 )  r.y2--;
+    if( r.y1 % 2 == 0 )  r.y1--;
 
     // Next, decide on a height and width:
     int w = uniform!"[]"( MIN_ROOM_X, MAX_ROOM_X, Lucky );
@@ -137,13 +137,13 @@ version( none )
     r.x2 = r.x1 + w;
     r.y2 = r.y1 + h;
 
-    // Adjust x2 & y2 to ensure they are odd numbers:
-    if( r.x2 % 2 == 0 )  r.x2--;
-    if( r.y2 % 2 == 0 )  r.y2--;
-
     // Adjust x2 & y2 to fit the sector:
     if( r.x2 > SECTORS[s][1] ) r.x2 = SECTORS[s][1];
     if( r.y2 > SECTORS[s][3] ) r.y2 = SECTORS[s][3];
+
+    // Adjust x2 & y2 to ensure they are odd numbers:
+    if( r.x2 % 2 == 0 )  r.x2--;
+    if( r.y2 % 2 == 0 )  r.y2--;
 
     // Add the room to the array:
     rs[s] = r;

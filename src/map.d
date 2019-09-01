@@ -423,7 +423,6 @@ Map generate_new_map()
   import std.random;
 
   Map m = gen_simple_roguelike( FOLIAGE );
-  Room[12] r = m.r;
 
   return m;
 } // Map generate_new_map()

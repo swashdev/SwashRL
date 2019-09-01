@@ -534,7 +534,7 @@ room_gen:
 else
 {
   Map m = gen_simple_roguelike( FOLIAGE );
-  Room[9] r = m.r;
+  Room[12] r = m.r;
 }
 
 static if( FOLIAGE )

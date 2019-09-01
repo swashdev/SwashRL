@@ -231,3 +231,9 @@ Version Date/time Finalized   Info
 0.029-1 2019-01-29 13:10 CST  A minor release correcting small errors in the
         documentation from version 0.029 and moving some of the code around in
         iomain.d for consistency.
+
+0.030   2019-09-01 16:38 CST  A new map generator was written, allowing better
+        generation of traditional "Rogue-like" maps, and setup begins for
+        further code revisions to make it easier to genericize the map
+        generation functions later on.  The code is re-licensed under the BSD
+        3-clause license.

@@ -1,7 +1,13 @@
 SwashRL official changelog
 
 VERSION 0.030
+Finalized 2019-09-01 19:38 CST
   SwashRL is now licensed under the BSD Revised License.
+
+  Changed:
+   - New map generation algorithm, as well as a generic generate_new_map
+     function which can be used later on as a function which will allow us to
+     choose or randomly select a map generation algorithm.
 
 VERSION 0.029-1
 Finalized 2019-01-29 13:10 CST

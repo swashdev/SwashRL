@@ -77,8 +77,12 @@ Room random_Room()
  +/
 Map gen_simple_roguelike( bool mold = true )
 {
+  // The `Map` to be returned
+  Map m;
 
+  // A list of `r`oom`s`
   Room[12] rs;
+
   size_t s;
   for( s = 0; s < SECTORS.length; s++ )
   {
@@ -123,7 +127,8 @@ version( none )
     rs[s] = r;
   } // for( size_t s = 0; s < SECTORS.length; s++ )
 
-  Map m;
+  // Give the list of rooms to the generated map:
+  m.r = rs;
 
   // Now we go through the list of generated rooms and carve out the ones that
   // are "real rooms"

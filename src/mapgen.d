@@ -23,9 +23,13 @@ import std.random;
 
 import global;
 
-// Some universal configuration variables:
+// Universal size configs for rooms:
 enum MIN_ROOM_X =  4, MIN_ROOM_Y = 4;
 enum MAX_ROOM_X = 18, MAX_ROOM_Y = 8;
+
+// Universal limits to coordinates permissible inside cooridors:
+enum MIN_HALL_X = 2, MAX_HALL_X = 76;
+enum MIN_HALL_Y = 2, MAX_HALL_Y = 18;
 
 const int[4][8] SECTORS =
 [ [1, 19,  1,  9], [21, 37,  1,  9], [39, 55,  1,  9], [57, 77,  1,  9],

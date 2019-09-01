@@ -25,7 +25,7 @@ import global;
 
 // Some universal configuration variables:
 enum MIN_ROOM_X =  3, MIN_ROOM_Y = 3;
-enum MAX_ROOM_X = 10, MAX_ROOM_Y = 5;
+enum MAX_ROOM_X = 17, MAX_ROOM_Y = 5;
 
 const int[4][12] SECTORS =
 [ [1, 19,  1,  7], [21, 39,  1,  7], [41, 59,  1,  7], [61, 79,  1,  7],

@@ -99,6 +99,10 @@ version( none )
     r.x1 = uniform!"[]"( SECTORS[s][0], SECTORS[s][1] - MIN_ROOM_X, Lucky );
     r.y1 = uniform!"[]"( SECTORS[s][2], SECTORS[s][3] - MIN_ROOM_Y, Lucky );
 
+    // Adjust x1 & y1 to ensure they are odd numbers:
+    if( r.x1 % 2 == 0 )  r.x1--;
+    if( r.y2 % 2 == 0 )  r.y2--;
+
     // Next, decide on a height and width:
     int w = uniform!"[]"( MIN_ROOM_X, MAX_ROOM_X, Lucky );
     int h = uniform!"[]"( MIN_ROOM_Y, MAX_ROOM_Y, Lucky );
@@ -106,6 +110,10 @@ version( none )
     // Assign x2 & y2 accordingly:
     r.x2 = r.x1 + w;
     r.y2 = r.y1 + h;
+
+    // Adjust x2 & y2 to ensure they are odd numbers:
+    if( r.x2 % 2 == 0 )  r.x2--;
+    if( r.y2 % 2 == 0 )  r.y2--;
 
     // Adjust x2 & y2 to fit the sector:
     if( r.x2 > SECTORS[s][1] ) r.x2 = SECTORS[s][1];

@@ -27,6 +27,12 @@ import global;
 enum MIN_ROOM_X =  3, MIN_ROOM_Y = 3;
 enum MAX_ROOM_X = 10, MAX_ROOM_Y = 5;
 
+const int[4][12] SECTORS =
+[ [1, 19,  1,  7], [21, 39,  1,  7], [41, 59,  1,  7], [61, 79,  1,  7],
+  [1, 19,  9, 13], [21, 39,  9, 13], [41, 59,  9, 13], [61, 79,  9, 13],
+  [1, 19, 15, 21], [21, 39, 15, 21], [41, 59, 15, 21], [61, 79, 15, 21]
+];
+
 /++
  + Generates a random `Room`
  +
@@ -71,15 +77,10 @@ Room random_Room()
  +/
 Map gen_simple_roguelike( bool mold = true )
 {
-  int[4][12] sectors =
-  [ [1, 19,  1,  7], [21, 39,  1,  7], [41, 59,  1,  7], [61, 79,  1,  7],
-    [1, 19,  9, 13], [21, 39,  9, 13], [41, 59,  9, 13], [61, 79,  9, 13],
-    [1, 19, 15, 21], [21, 39, 15, 21], [41, 59, 15, 21], [61, 79, 15, 21]
-  ];
 
   Room[12] rs;
   size_t s;
-  for( s = 0; s < sectors.length; s++ )
+  for( s = 0; s < SECTORS.length; s++ )
   {
 version( none )
 {
@@ -93,13 +94,13 @@ version( none )
 }
 
     Room r;
-    r.x1 = uniform!"[]"( sectors[s][0], sectors[s][1] - MIN_ROOM_X, Lucky );
-    r.x2 = uniform!"[]"( r.x1 + MIN_ROOM_X, sectors[s][1], Lucky );
-    r.y1 = uniform!"[]"( sectors[s][2], sectors[s][3] - MIN_ROOM_Y, Lucky );
-    r.y2 = uniform!"[]"( r.y1 + MIN_ROOM_Y, sectors[s][3], Lucky );
+    r.x1 = uniform!"[]"( SECTORS[s][0], SECTORS[s][1] - MIN_ROOM_X, Lucky );
+    r.x2 = uniform!"[]"( r.x1 + MIN_ROOM_X, SECTORS[s][1], Lucky );
+    r.y1 = uniform!"[]"( SECTORS[s][2], SECTORS[s][3] - MIN_ROOM_Y, Lucky );
+    r.y2 = uniform!"[]"( r.y1 + MIN_ROOM_Y, SECTORS[s][3], Lucky );
 
     rs[s] = r;
-  } // for( size_t s = 0; s < sectors.length; s++ )
+  } // for( size_t s = 0; s < SECTORS.length; s++ )
 
   Map m;
 

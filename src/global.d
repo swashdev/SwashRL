@@ -184,6 +184,8 @@ public import inven;
 public import monst;
 public import you;
 public import map;
+public import mapgen;
+public import mapalgo;
 public import fov;
 public import msg;
 public import iomain;

@@ -184,6 +184,8 @@ int main( string[] args )
   bool disp_version = false;
   string saved_lev;
 
+  bool gen_map = false;
+
   // use getopt to get command-line arguments
   auto clarguments = getopt( args,
     // v, display the version number and then exit
@@ -200,6 +202,9 @@ int main( string[] args )
     // For debugging purposes, this "test map" can be generated at runtime
     // to test new features or other changes to the game.
     "test-map", &Use_test_map,
+    // the "mapgen" mode generates a sample map, displays it, and then exits
+    // without starting a game
+    "mapgen",   &gen_map,
     // Cheat modes (keep these a secret):
     "dqd",      &Degreelessness,
     "esm",      &Infinite_weapon,
@@ -223,6 +228,8 @@ int main( string[] args )
                       Can be \"none\" for curses output or \"terminal\" for an
                       SDL terminal.  If your copy of SwashRL was compiled
                       without SDL or curses, this option may have no effect.
+    --mapgen          Displays a sample map and then exits without starting a
+                      game.
     --test-map        Debug builds only: Starts the game on a test map.  Will
                       have no effect if -s or --save was used.
   examples:
@@ -241,61 +248,31 @@ You are running %s version %s",
 
   //clear_messages();
 
-  // Announce cheat modes
-  if( Degreelessness )
-  { message( "Degreelessness mode is turned on." );
-  }
-  if( Infinite_weapon )
-  { message( "Killer heels mode is turned on." );
-  }
-  if( Noclip )
-  {
-    message( "Xorn mode is turned on." );
-    No_shadows = true;
-  }
-  if( No_shadows )
-  { message( "Silent Cartographer is turned on." );
-  }
-
-  seed();
-
-  // Assign initial map
-  if( saved_lev.length > 0 )
-  { Current_map = level_from_file( saved_lev );
-  }
+  // If all we're doing is a quick mapgen, turn on the Silent Cartographer and
+  // ignore the rest.
+  if( gen_map )  No_shadows = true;
   else
   {
-    if( Use_test_map )
+
+    // Announce cheat modes
+    if( Degreelessness )
+    { message( "Degreelessness mode is turned on." );
+    }
+    if( Infinite_weapon )
+    { message( "Killer heels mode is turned on." );
+    }
+    if( Noclip )
     {
-debug
-      Current_map = test_map();
-else
-{
-      writeln( "The test map is only available for debug builds of the game.
-Try compiling with dub build -b debug" );
-      return 31;
-}
+      message( "Xorn mode is turned on." );
+      No_shadows = true;
     }
-    else
-    { Current_map = generate_new_map();
+    if( No_shadows )
+    { message( "Silent Cartographer is turned on." );
     }
-  } // else from if( saved_lev.length > 0 )
-  Current_level = 0;
 
-  try
-  {
-    // Initialize keymaps
-    Keymaps = [ keymap(), keymap( "ftgdnxhb.ie,P S" ) ];
-    Keymap_labels = ["Standard", "Dvorak"];
-  }
-  catch( InvalidKeymapException e )
-  {
-    writeln( e.msg );
-    return 11;
-  }
+  } // else from `if( gen_map )`
 
-  // Assign default keymap
-  Current_keymap = 0;
+  seed();
 
   // Check to make sure the SDL_Mode does not conflict with the way SwashRL
   // was compiled:
@@ -329,6 +306,51 @@ version( sdl )
   }
 }
 
+  // Do the sample mapgen:
+  if( gen_map )  Current_map = generate_new_map();
+  else
+  {
+
+    // Assign initial map
+    if( saved_lev.length > 0 )
+    { Current_map = level_from_file( saved_lev );
+    }
+    else
+    {
+      if( Use_test_map )
+      {
+   debug
+        Current_map = test_map();
+   else
+   {
+        writeln( "The test map is only available for debug builds of the game.
+Try compiling with dub build -b debug" );
+        return 31;
+   }
+      }
+      else
+      { Current_map = generate_new_map();
+      }
+    } // else from if( saved_lev.length > 0 )
+    Current_level = 0;
+
+  } // else from `if( gen_map )`
+
+  try
+  {
+    // Initialize keymaps
+    Keymaps = [ keymap(), keymap( "ftgdnxhb.ie,P S" ) ];
+    Keymap_labels = ["Standard", "Dvorak"];
+  }
+  catch( InvalidKeymapException e )
+  {
+    writeln( e.msg );
+    return 11;
+  }
+
+  // Assign default keymap
+  Current_keymap = 0;
+
   // Initialize the player
   Monst u = init_player( Current_map.player_start[0],
                          Current_map.player_start[1] );
@@ -355,6 +377,21 @@ version( sdl )
     }
   }
 
+  uint moved = 0;
+  int mv = 5;
+
+  // If we're just doing a map gen, there's no need to display anything else
+  if( gen_map )
+  {
+    IO.display_map( Current_map );
+    message( "%s, version %s", NAME, sp_version() );
+    IO.read_messages();
+    IO.get_key();
+
+    // skip the rest of main
+    goto skip_main;
+  }
+
   // Initialize the status bar
   IO.refresh_status_bar( &u );
 
@@ -367,9 +404,6 @@ version( sdl )
   // Greet the player
   message( "Welcome back to SwashRL!" );
   IO.read_messages();
-
-  uint moved = 0;
-  int mv = 5;
   while( u.hp > 0 )
   {
     if( IO.window_closed() ) goto abrupt_quit;
@@ -518,6 +552,7 @@ playerquit:
   // quit the program.
   IO.get_key();
 
+skip_main:
 abrupt_quit:
   IO.cleanup();
 

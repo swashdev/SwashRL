@@ -26,6 +26,9 @@
  * DAMAGE.
  */
 
+public import global;
+import std.random;
+
 /++
  + Generates an empty `Map`
  +/
@@ -70,9 +73,9 @@ Map empty_Map()
  +/
 Map generate_new_map()
 {
-  import std.random;
-
   Map m = gen_simple_roguelike( FOLIAGE );
+
+  return m;
 }
 
 /++

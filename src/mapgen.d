@@ -94,11 +94,24 @@ version( none )
 }
 
     Room r;
-    r.x1 = uniform!"[]"( SECTORS[s][0], SECTORS[s][1] - MIN_ROOM_X, Lucky );
-    r.x2 = uniform!"[]"( r.x1 + MIN_ROOM_X, SECTORS[s][1], Lucky );
-    r.y1 = uniform!"[]"( SECTORS[s][2], SECTORS[s][3] - MIN_ROOM_Y, Lucky );
-    r.y2 = uniform!"[]"( r.y1 + MIN_ROOM_Y, SECTORS[s][3], Lucky );
 
+    // Get the coordinates for the upper-left corner of the room:
+    r.x1 = uniform!"[]"( SECTORS[s][0], SECTORS[s][1] - MIN_ROOM_X, Lucky );
+    r.y1 = uniform!"[]"( SECTORS[s][2], SECTORS[s][3] - MIN_ROOM_Y, Lucky );
+
+    // Next, decide on a height and width:
+    int w = uniform!"[]"( MIN_ROOM_X, MAX_ROOM_X, Lucky );
+    int h = uniform!"[]"( MIN_ROOM_Y, MAX_ROOM_Y, Lucky );
+
+    // Assign x2 & y2 accordingly:
+    r.x2 = r.x1 + w;
+    r.y2 = r.y1 + h;
+
+    // Adjust x2 & y2 to fit the sector:
+    if( r.x2 > SECTORS[s][1] ) r.x2 = SECTORS[s][1];
+    if( r.y2 > SECTORS[s][3] ) r.y2 = SECTORS[s][3];
+
+    // Add the room to the array:
     rs[s] = r;
   } // for( size_t s = 0; s < SECTORS.length; s++ )
 

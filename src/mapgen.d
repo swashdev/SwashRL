@@ -25,7 +25,7 @@ import global;
 
 // Some universal configuration variables:
 enum MIN_ROOM_X =  4, MIN_ROOM_Y = 4;
-enum MAX_ROOM_X = 18, MAX_ROOM_Y = 6;
+enum MAX_ROOM_X = 18, MAX_ROOM_Y = 8;
 
 const int[4][8] SECTORS =
 [ [1, 19,  1,  9], [21, 37,  1,  9], [39, 55,  1,  9], [57, 77,  1,  9],
@@ -128,6 +128,14 @@ version( none )
 
   // Give the list of rooms to the generated map:
   m.r = rs;
+
+  // Add the player to a random location in a random room on the map:
+  Room pr = rs[uniform( 0, 8, Lucky )];
+
+  ubyte px = cast(ubyte)uniform!"[]"( pr.x1, pr.x2, Lucky );
+  ubyte py = cast(ubyte)uniform!"[]"( pr.y1, pr.y2, Lucky );
+
+  m.player_start = [py, px];
 
   // Now we go through the list of generated rooms and carve out the ones that
   // are "real rooms"

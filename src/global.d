@@ -50,7 +50,7 @@ enum NAME = "SwashRL";
  + number and the second is the three-digit revision number.  This number
  + is stored as a floating-point number.
  +/
-enum VERSION = 0.029;
+enum VERSION = 0.030;
 
 /++
  + The commit ID

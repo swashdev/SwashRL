@@ -546,9 +546,16 @@ static if( FOLIAGE )
   // Finally, get random coordinates from a random Room and put the player
   // there:
 
+version( none )
+{
   int srindex = uniform( 0, 9, Lucky );
+}
+else
+{
+  int srindex = uniform( 0, 12, Lucky );
+}
 
-  Room sr = r[ uniform( 0, 9, Lucky ) ];
+  Room sr = r[srindex];
 
   ubyte px = cast(ubyte)uniform( sr.x1, sr.x2 + 1, Lucky );
   ubyte py = cast(ubyte)uniform( sr.y1, sr.y2 + 1, Lucky );

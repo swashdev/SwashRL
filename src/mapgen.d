@@ -78,7 +78,7 @@ Room random_Room()
 Map gen_simple_roguelike( bool mold = true )
 {
   // The `Map` to be returned
-  Map m;
+  Map m = empty_Map();
 
   // A list of `r`oom`s`
   Room[12] rs;

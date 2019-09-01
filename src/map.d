@@ -422,148 +422,14 @@ Map generate_new_map()
 {
   import std.random;
 
-version( none )
-{
-
-  // We're going to use a classic Roguelike Room generation system:  Split the
-  // Map into nine sectors, generate a Room in each one, and then connect them
-  // with corridors.
-
-  // These integers will tell us what the Room boundaries for each sector are.
-  // Note that some of them overlap; this is intentional.
-  int s1x1 = 1,  s1x2 = 26, s1y1 = 1,  s1y2 = 7;
-  int s2x1 = 26, s2x2 = 52, s2y1 = 1,  s2y2 = 7;
-  int s3x1 = 52, s3x2 = 78, s3y1 = 1,  s3y2 = 7;
-  int s4x1 = 1,  s4x2 = 26, s4y1 = 7,  s4y2 = 13;
-  int s5x1 = 26, s5x2 = 52, s5y1 = 7,  s5y2 = 13;
-  int s6x1 = 52, s6x2 = 78, s6y1 = 7,  s6y2 = 13;
-  int s7x1 = 1,  s7x2 = 26, s7y1 = 13, s7y2 = 20;
-  int s8x1 = 26, s8x2 = 52, s8y1 = 13, s8y2 = 20;
-  int s9x1 = 52, s9x2 = 78, s9y1 = 13, s9y2 = 20;
-
-  // An array that stores generated Rooms:
-  Room[9] r;
-
-  // An empty Map:
-  Map m = empty_Map();
-
-  foreach( c; 0 .. 9 )
-  {
-    int x1, x2, y1, y2;
-
-    final switch( c )
-    {
-      case 0:
-        x1 = s1x1; x2 = s1x2; y1 = s1y1; y2 = s1y2;
-        break;
-      case 1:
-        x1 = s2x1; x2 = s2x2; y1 = s2y1; y2 = s2y2;
-        break;
-      case 2:
-        x1 = s3x1; x2 = s3x2; y1 = s3y1; y2 = s3y2;
-        break;
-      case 3:
-        x1 = s4x1; x2 = s4x2; y1 = s4y1; y2 = s4y2;
-        break;
-      case 4:
-        x1 = s5x1; x2 = s5x2; y1 = s5y1; y2 = s5y2;
-        break;
-      case 5:
-        x1 = s6x1; x2 = s6x2; y1 = s6y1; y2 = s6y2;
-        break;
-      case 6:
-        x1 = s7x1; x2 = s7x2; y1 = s7y1; y2 = s7y2;
-        break;
-      case 7:
-        x1 = s8x1; x2 = s8x2; y1 = s8y1; y2 = s8y2;
-        break;
-      case 8:
-        x1 = s9x1; x2 = s9x2; y1 = s9y1; y2 = s9y2;
-        break;
-    } // switch( c )
-
-room_gen:
-
-    Room t;
-    t.x1 = uniform( x1, x2 - 2, Lucky );
-    t.x2 = uniform( t.x1 + 2, x2, Lucky );
-    t.y1 = uniform( y1, y2 - 2, Lucky );
-    t.y2 = uniform( t.y1 + 2, y2, Lucky );
-
-    // This if statement is just a failsafe.  It shouldn't be necessary, but
-    // I like to idiot-proof myself.
-    if( !add_room( t, &m ) )
-    { goto room_gen;
-    }
-
-    r[c] = t;
-        
-  } // foreach( c; 0 .. 9 )
-
-  // Shuffle the Rooms so that we can generate corridors randomly rather than
-  // in a predictable line while still ensuring that all of the Rooms are
-  // connected.
-  Room[9] rr = r.dup.randomShuffle( Lucky );
-
-  // Randomly get coordinates from each Room and connect them
-  foreach( c; 0 .. 8 )
-  {
-
-    Room r1 = rr[c];
-    Room r2 = rr[c + 1];
-
-    int x1 = uniform( r1.x1, r1.x2 + 1, Lucky );
-    int x2 = uniform( r2.x1, r2.x2 + 1, Lucky );
-    int y1 = uniform( r1.y1, r1.y2 + 1, Lucky );
-    int y2 = uniform( r2.y1, r2.y2 + 1, Lucky );
-
-    // Randomly decide whether to carve horizontally or vertically first.
-    if( flip() )
-    {
-      add_corridor_x( y1, x1, x2, &m );
-      add_corridor_y( x2, y1, y2, &m );
-    }
-    else
-    {
-      add_corridor_y( x1, y1, y2, &m );
-      add_corridor_x( y2, x1, x2, &m );
-    }
-  } // foreach( c; 0 .. 7 )
-
-} // version( none )
-else
-{
   Map m = gen_simple_roguelike( FOLIAGE );
   Room[12] r = m.r;
-}
 
 static if( FOLIAGE )
 {
   // Plant mold in the Map:
   grow_mold( &m );
 }
-
-  // Finally, get random coordinates from a random Room and put the player
-  // there:
-
-version( none )
-{
-  int srindex = uniform( 0, 9, Lucky );
-}
-else
-{
-  int srindex = uniform( 0, 12, Lucky );
-}
-
-  Room sr = r[srindex];
-
-  ubyte px = cast(ubyte)uniform( sr.x1, sr.x2 + 1, Lucky );
-  ubyte py = cast(ubyte)uniform( sr.y1, sr.y2 + 1, Lucky );
-
-  m.player_start = [py, px];
-
-  // Pass the generated Rooms to the Map for record-keeping
-  m.r = r;
 
   return m;
 } // Map generate_new_map()

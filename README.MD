@@ -1,7 +1,7 @@
 SwashRL
 =======
 
-Readme file, last updated 2019-01-29 13:08 CST  
+Readme file, last updated 2019-09-27 00:11 CST  
 Contact the maintainer: <swashdev@pm.me>
 
 ---
@@ -59,28 +59,26 @@ SwashRL uses some third-party resources to function.  For details, see
 
 ## Supported Systems
 
-SwashRL was originally written for Linux, and is confirmed to still work on
-Linux as of development version 0.029.
+SwashRL was originally written for Linux, and is currently only being
+maintained for Linux.  Previously, development versions have also been
+produced for Windows, but unfortunately I currently do not have access to a
+Windows computer, and I can not support the game on systems which I do not
+have access to.
 
-I hope to eventually port it to more systems, but I'm limited in my ability to
-officially support systems by their availability to me.  If you'd like to
-become a volunteer maintainer for SwashRL on your system, [contact me] and we
-can work something out.
+If you'd like to become a volunteer maintainer for SwashRL on your system,
+[contact me] and I might be able to add you to the GitHub repository as a
+collaborator.
 
 ## Known Bugs
 
 To submit a bug fix or report a possible solution, leave an Issue or a Pull
 Request on [our GitHub page].
 
-* The curses interface does not display remembered map tiles which fall
-  outside the player's line-of-sight.
+ * The [recursive shadowcasting algorithm] used in SwashRL very rarely
+   illuminates map tiles which fall well outside of the player's line-of-sight
+   and may even be behind walls.
 
-### Not Bugs
-
-* The map generator function doesn't always separate rooms properly and carves
-  corridors which can alter the shape of rooms rather than simply creating a
-  doorway.  This is not a bug because the current map generator functions are
-  only temporary fixes.
+[recursive shadowcasting algorithm]: src/fov.d
 
 ## Compiling
 

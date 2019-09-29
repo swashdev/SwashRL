@@ -181,12 +181,14 @@ version( none )
     // coordinates, to avoid interfering with the rigid boundaries of
     // already-generated rooms; however, we will allow corridors to intersect
     // rooms.
+
+    int index1 = sectors[counter], index2 = sectors[counter2];
   
-    int start_x = uniform!"[]"( rs[counter].x1, rs[counter].x2, Lucky );
-    int start_y = uniform!"[]"( rs[counter].y1, rs[counter].y2, Lucky );
-    int mid_x   = uniform!"[]"( SECTORS[counter2][0], SECTORS[counter2][1],
+    int start_x = uniform!"[]"( rs[index1].x1, rs[index1].x2, Lucky );
+    int start_y = uniform!"[]"( rs[index1].y1, rs[index1].y2, Lucky );
+    int mid_x   = uniform!"[]"( SECTORS[index2][0], SECTORS[index2][1],
                                 Lucky );
-    int mid_y   = uniform!"[]"( SECTORS[counter2][2], SECTORS[counter2][3],
+    int mid_y   = uniform!"[]"( SECTORS[index2][2], SECTORS[index2][3],
                                 Lucky );
 
     // Ensure the generated numbers are always odd
@@ -200,13 +202,13 @@ version( none )
 
     // Now check if our midpoint is inside the room we want to connect to.  If
     // it is, job done.  Otherwise, select new coordinates.
-    if( within_minmax( mid_x, rs[counter2].x1, rs[counter2].x2 )
-     && within_minmax( mid_y, rs[counter2].y1, rs[counter2].y2 ) )
+    if( within_minmax( mid_x, rs[index2].x1, rs[index2].x2 )
+     && within_minmax( mid_y, rs[index2].y1, rs[index2].y2 ) )
     { continue;
     }
 
-    int end_x = uniform!"[]"( rs[counter2].x1, rs[counter2].x2, Lucky );
-    int end_y = uniform!"[]"( rs[counter2].y1, rs[counter2].y2, Lucky );
+    int end_x = uniform!"[]"( rs[index2].x1, rs[index2].x2, Lucky );
+    int end_y = uniform!"[]"( rs[index2].y1, rs[index2].y2, Lucky );
 
     // Again. make sure our coordinates are odd:
     if( end_x % 2 == 0 )  end_x--;

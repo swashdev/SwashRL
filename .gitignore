@@ -1,0 +1,20 @@
+# git ignore file for the branch-readme branch on the SwashRL repo
+
+*~
+
+.dub
+*.json
+swashrl
+*.exe
+
+src/
+docs/
+assets/
+.github/
+
+save/
+
+.gitmodules
+*.txt
+*.TXT
+*.html

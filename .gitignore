@@ -1,0 +1,19 @@
+# git ignore file for the gh-pages branch on the SwashRL repo
+
+*~
+
+.dub
+*.json
+swashrl
+*.exe
+
+src/
+assets/
+.github/
+
+save/
+
+.gitmodules
+*.txt
+*.md
+*.MD

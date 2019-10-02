@@ -30,6 +30,12 @@ a brief description of their function:
    not modify the documentation in this branch; instead merge to `master` and
    modify the documentation there.
 
+ * [`gh-pages`](https://github.com/swashdev/SwashRL/tree/gh-pages)  
+   This is an orphan branch which is used to host SwashRL's GitHub Pages site.
+   Obviously, you shouldn't be pushing any code files here.  If you are not
+   on GitHub, you might not see this branch, because it's only relevant to
+   GitHub Pages.
+
  * [`branch-readme`](https://github.com/swashdev/SwashRL/tree/branch-readme)  
    This is an orphan branch which is used to hold this readme file.  This
    branch should only ever be updated in order to update this readme file.

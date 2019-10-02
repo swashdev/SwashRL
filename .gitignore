@@ -2,6 +2,13 @@
 
 *~
 
+# we're going to ignore most of the source code files in this branch; the
+# reason I want to do it like this is that if the source code files still
+# exist in the local directory we can compile autodoc comments into the
+# docs/ folder to create HTML files which can then be put on the website, so
+# we'll have code documentation online.  This works better than simply
+# having the repository delete the files when we are in this branch.
+
 .dub
 *.json
 swashrl
@@ -15,5 +22,6 @@ save/
 
 .gitmodules
 *.txt
+*.TXT
 *.md
 *.MD

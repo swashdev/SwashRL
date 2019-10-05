@@ -15,7 +15,6 @@ swashrl
 *.exe
 
 src/
-assets/
 .github/
 
 save/

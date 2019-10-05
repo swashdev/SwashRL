@@ -1,3 +1,6 @@
+title: SwashRL
+description: >
+  A small, independent, free/libre and open-source Roguelike game by Philip
+  Pavlick.
 theme: jekyll-theme-dinky
-include: ['_pages']
 show_downloads: false

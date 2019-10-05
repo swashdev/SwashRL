@@ -23,5 +23,3 @@ save/
 .gitmodules
 *.txt
 *.TXT
-*.md
-*.MD

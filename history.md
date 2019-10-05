@@ -2,6 +2,7 @@
 layout: default
 title: History
 description: A brief history of the SwashRL project, from conception to present day.
+permalink: /history/
 ---
 
 Prehistory

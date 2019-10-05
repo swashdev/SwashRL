@@ -1,0 +1,9 @@
+---
+layout: default
+---
+
+<time>{{ page.date | date: "%b %-d, %Y" }}</time> | {% if page.author %}{{page.author}}{% else %}Philip Pavlick{% endif %}{% if page.meta %} | {{page.meta}}{% endif %}
+
+<hr />
+
+{{ content }}

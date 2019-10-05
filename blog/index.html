@@ -7,7 +7,7 @@ permalink: /blog/
 {% for post in site.posts %}
   <hr />
   <h3><a href="{{ post.url | prepend: site.baseurl }}">{% if post.title %}{{ post.title }}{% else %}Post for <time>{{ post.date | date: "%Y-%M-%d"}}</time>{% endif %}</a></h3>
-  <time>{{ post.date | date: "%b %-d, %Y" }}</time>
+  <time>{{ post.date | date: "%b %-d, %Y" }}</time> | {% if post.author %}{{post.author}}{% else %}Philip Pavlick{% endif %}
   {% if post.description %}
     <p>
       <small>{{ post.description }}</small>

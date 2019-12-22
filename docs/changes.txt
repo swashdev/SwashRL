@@ -1,5 +1,27 @@
 SwashRL official changelog
 
+VERSION 0.031 Christmas Update
+Finalized 2019-12-21 23:02 CST
+
+  Added:
+   - The player will now receive a free "festive hat" item if they start a new
+     game during the month of December.
+   - The player will now receive appropriate season's greetings on New Year's
+     Eve/Day (12-31 to 01-01), Hanami (04-08), October (10-31), and Christmas
+     Eve/Day (12-24 to 12-25).
+
+  Changed:
+   - The function which draws the player in the curses and SDL terminal
+     interfaces will now draw them in the color of the "festive hat" if they
+     are wearing one, except the colors will be inverted in order to better
+     highlight the player's position.
+
+  Fixed:
+   - A bug which caused items to fit into inappropriate equipment slots has
+     been fixed.  The bug was caused by the item's equipment flag being
+     cast to a boolean before being checked, rather than the result of
+     the check being cast.
+
 VERSION 0.031
 Finalized 2019-12-21 19:52 CST
 

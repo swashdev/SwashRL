@@ -117,41 +117,41 @@ bool check_equip( Item i, uint s )
   switch( s )
   {
     case INVENT_QUIVER:
-      return cast(bool)i.type & ITEM_WEAPON_MISSILE;
+      return cast(bool)(i.type & ITEM_WEAPON_MISSILE);
 
     case INVENT_HELMET:
-      return cast(bool)i.equip & EQUIP_HELMET;
+      return cast(bool)(i.equip & EQUIP_HELMET);
 
     case INVENT_CUIRASS:
       // the "cuirass" item slot can accept either cuirasses or shields (the
       // player straps a shield to their back)
-      return (i.equip & EQUIP_CUIRASS) || (i.equip & EQUIP_SHIELD);
+      return cast(bool)(i.equip & EQUIP_CUIRASS) || cast(bool)(i.equip & EQUIP_SHIELD);
 
     case INVENT_PAULDRONS:
-      return cast(bool)i.equip & EQUIP_PAULDRONS;
+      return cast(bool)(i.equip & EQUIP_PAULDRONS);
 
     case INVENT_BRACERS:
-      return cast(bool)i.equip & EQUIP_BRACERS;
+      return cast(bool)(i.equip & EQUIP_BRACERS);
 
     case INVENT_RINGL:
       // rings are obviously ambidexterous
     case INVENT_RINGR:
-      return cast(bool)i.equip & EQUIP_JEWELERY_RING;
+      return cast(bool)(i.equip & EQUIP_JEWELERY_RING);
 
     case INVENT_NECKLACE:
-      return cast(bool)i.equip & EQUIP_JEWELERY_NECK;
+      return cast(bool)(i.equip & EQUIP_JEWELERY_NECK);
 
     case INVENT_GREAVES:
-      return cast(bool)i.equip & EQUIP_GREAVES;
+      return cast(bool)(i.equip & EQUIP_GREAVES);
 
     case INVENT_KILT:
-      return cast(bool)i.equip & EQUIP_KILT;
+      return cast(bool)(i.equip & EQUIP_KILT);
 
     case INVENT_FEET:
-      return cast(bool)i.equip & EQUIP_FEET;
+      return cast(bool)(i.equip & EQUIP_FEET);
 
     case INVENT_TAIL:
-      return cast(bool)i.equip & EQUIP_TAIL;
+      return cast(bool)(i.equip & EQUIP_TAIL);
 
     default:
       return false;

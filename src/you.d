@@ -121,5 +121,18 @@ Player init_player( ubyte y, ubyte x )
 
   u.fly  = 0;
   u.swim = 0;
+
+  import std.datetime.systime;
+  import std.datetime.date;
+  // if it is December, the player character starts with a "festive hat"
+  if( Clock.currTime().month == Month.dec )
+  {
+    Item hat = { sym:Symbol(']', Color( CLR_RED, false ) ),
+                 type:ITEM_ARMOR, equip:EQUIP_HELMET,
+                 addd:0, addm:0,
+                 name:"festive hat" };
+    u.inventory.items[INVENT_HELMET] = hat;
+  }
+  
   return u;
 }

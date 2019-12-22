@@ -35,6 +35,9 @@ import std.stdio : writefln;
 import std.ascii : toLower;
 import std.file;
 
+import std.datetime.systime;
+import std.datetime : Month;
+
 static Map Current_map;
 static uint Current_level;
 static SwashIO IO;
@@ -63,6 +66,42 @@ static SwashIO IO;
 string sp_version()
 {
   return format( "%.3f-%s", VERSION, COMMIT );
+}
+
+// Greet the player according to the current date
+string greet_player()
+{
+  SysTime current_time = Clock.currTime();
+  Month month = current_time.month;
+  ubyte date  = current_time.day;
+
+  // New Year's Eve/Day
+  if((month == Month.dec && date == 31) || (month == Month.jan && date == 1))
+    return "Happy New Year!  ";
+
+  // Christmas (and Christmas Eve)
+  if( month == Month.dec && (date == 24 || date == 25) )
+    return "Merry Christmas!  ";
+
+  // Halloween
+  if( month == Month.oct && date == 31 )
+    return "Happy Halloween!  ";
+
+  // Hanami (Cherry Blossom Festival, in this case set as Hanamatsuri, the
+  // date of Buddha's birthday)
+  if( month == Month.apr && date == 8 )
+    return "Happy Hanami!  ";
+
+  // Test date greeting (I coded this feature on 2019-12-21, so on that date
+  // give the player this test output to make sure it's working
+debug
+{
+  if( month == Month.dec && date == 21 )
+    return "Happy date that I coded this stupid feature!  ";
+}
+
+  // Default return:
+  return "";
 }
 
 /++
@@ -402,7 +441,7 @@ Try compiling with dub build -b debug" );
   IO.clear_message_line();
 
   // Greet the player
-  message( "Welcome back to SwashRL!" );
+  message( "%sWelcome back to SwashRL!", greet_player() );
   IO.read_messages();
   while( u.hp > 0 )
   {

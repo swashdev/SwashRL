@@ -767,7 +767,19 @@ discard_swap:
    +   u = The `Player` to be displayed
    +/
   final void display_player( Player u )
-  { display( u.y + 1, u.x, u.sym, true );
+  {
+    // if the player is wearing a "festive hat," display them in a special
+    // color
+    if( u.inventory.items[INVENT_HELMET].name == "festive hat" )
+    {
+      // get the foreground color of the hat...
+      uint hat_fg = u.inventory.items[INVENT_HELMET].sym.color.fg;
+      // make an inverted version of the hat's color...
+      Color hat_color = Color( hat_fg, true );
+      // same as the original display function, but with the new hat color
+      display( u.y + 1, u.x, symdata( u.sym.ch, hat_color ), true );
+    }
+    else  display( u.y + 1, u.x, u.sym, true );
   }
 
   /++

@@ -1,5 +1,10 @@
 SwashRL official changelog
 
+VERSION 0.031
+
+  Changed:
+   - Rooms in the map are now connected randomly.
+
 VERSION 0.030-1
 Finalized 2019-09-01 16:53 CST
  A minor release correcting an error made while copying and pasting the

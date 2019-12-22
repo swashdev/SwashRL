@@ -1,7 +1,7 @@
 SwashRL
 =======
 
-Readme file, last updated 2019-09-27 00:11 CST  
+Readme file, last updated 2019-12-21 19:08 CST
 Contact the maintainer: <swashdev@pm.me>
 
 ---
@@ -159,7 +159,7 @@ to comply with, as noted in [the acknowledgement file].
 
 For all of your change logging needs, see [changes.txt].  For those
 interested, there's also a more in-depth history of the project being recorded
-in [history.txt].
+[on the website].
 
 ## Contributing
 
@@ -215,7 +215,7 @@ THIS LETTER.
 [global.d]: src/global.d
 [dub.json]: dub.json
 [changes.txt]: docs/changes.txt
-[history.txt]: docs/history.txt
+[on the website]: https://swash.link/history/
 [DmD]: https://dlang.org/download.html
 [dub]: https://code.dlang.org/download
 [the git website]: https://git-scm.com/

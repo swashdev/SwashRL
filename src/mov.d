@@ -532,8 +532,30 @@ bool pickup( Monst* mn, Item i )
  +/
 Item put_down( Monst* mn, int index = -1 )
 {
+  Item ret = No_item;
+
+  // The easiest case is if `index` is too large to be in the array:
+  if( index >= mn.inventory.items.length )  return No_item;
+
+  // If `index` is positive, we simply remove that item and return it:
+  if( index >= 0 )
+  {
+    ret = mn.inventory.items[index];
+    mn.inventory.items[index] = No_item;
+    return ret;
+  }
+
+  // If `index` is negative, we first check to see if the monster is the
+  // player.  If it is not, return no item.
+  if( !is_you( mn ) )  return No_item;
+
+  // If it *is* the player, we must display the equipment screen so that the
+  // player may select an item to be dropped:
+  int i = index;
+
   message( "Sorry, this function doesn't do anything yet." );
-  return No_item;
+  
+  return ret;
 }
 
 /++

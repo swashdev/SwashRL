@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2015-2020 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -738,15 +738,16 @@ discard_swap:
     put_line( 10, 1, "e to manage equipment"         );
     put_line( 11, 1, "i for inventory"               );
     put_line( 12, 1, ", to pick up an item"          );
-    put_line( 13, 1, "P to read message history"     );
-    put_line( 14, 1, "SPACE clears the message line" );
+    put_line( 13, 1, "d to drop an item (or p to put down an item, on Dvorak" );
+    put_line( 14, 1, "P to read message history"     );
+    put_line( 15, 1, "SPACE clears the message line" );
 
-    put_line( 16, 1, "? this help screen"         );
-    put_line( 17, 1, "Q Quit"                     );
-    put_line( 18, 1, "v check the version number" );
-    put_line( 19, 1, "@ change keyboard layout"   );
+    put_line( 17, 1, "? this help screen"         );
+    put_line( 18, 1, "Q Quit"                     );
+    put_line( 19, 1, "v check the version number" );
+    put_line( 20, 1, "@ change keyboard layout"   );
 
-    put_line( 21, 1, "Press any key to continue..." );
+    put_line( 22, 1, "Press any key to continue..." );
 
     refresh_screen();
 

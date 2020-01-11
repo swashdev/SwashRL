@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2015-2020 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -366,6 +366,12 @@ uint umove( Player* u, Map* m, uint dir )
     }
     return 0;
   }
+
+  if( dir == MOVE_DROP )
+  {
+    Item it = put_down( u );
+  }
+
   byte dy, dx;
   get_dydx( dir, &dy, &dx );
   bool cardinal = dy == 0 || dx == 0;
@@ -507,6 +513,27 @@ bool pickup( Monst* mn, Item i )
   }
 
   return false;
+}
+
+/++
+ + Causes a monster to try to put down or "drop" an `Item` at the given
+ + `index`.
+ +
+ + If `index` is negative, this function will return an empty item, unless
+ + `mn` is the player, in which case it will display the equipment screen in
+ + order for the player to select an item to drop.
+ +
+ + This function will remove the `Item` at `index` from the monster's
+ + inventory, if it is a valid item, and return that `Item` so that it can be
+ + dropped into the game world.
+ +
+ + Returns:
+ +   An `Item` which has been removed from `mn`'s inventory, or `No_item`.
+ +/
+Item put_down( Monst* mn, int index = -1 )
+{
+  message( "Sorry, this function doesn't do anything yet." );
+  return No_item;
 }
 
 /++

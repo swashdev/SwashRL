@@ -547,7 +547,7 @@ Item put_down( Monst* mn, int index = -1 )
 
   // If `index` is negative, we first check to see if the monster is the
   // player.  If it is not, return no item.
-  if( !is_you( mn ) )  return No_item;
+  if( !is_you( *mn ) )  return No_item;
 
   // If it *is* the player, we must display the equipment screen so that the
   // player may select an item to be dropped:

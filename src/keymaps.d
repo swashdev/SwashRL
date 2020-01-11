@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2015-2020 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -78,7 +78,7 @@ class InvalidKeymapException : Exception
 uint[char] keymap( string keylist = "" )
 {
   // The standard keymap, which is being overwritten
-  char[] kl = "ykuhlbjn.ie,P S".dup;
+  char[] kl = "ykuhlbjn.ie,dP S".dup;
 
   // Check to make sure that the keylist will not overwrite any reserved
   // commands
@@ -137,13 +137,14 @@ uint[char] keymap( string keylist = "" )
   ret[ kl[ 9] ] = MOVE_INVENTORY;
   ret[ kl[10] ] = MOVE_EQUIPMENT;
   ret[ kl[11] ] = MOVE_GET;
+  ret[ kl[12] ] = MOVE_DROP;
 
   // Message management
-  ret[ kl[12] ] = MOVE_MESS_DISPLAY;
-  ret[ kl[13] ] = MOVE_MESS_CLEAR;
+  ret[ kl[13] ] = MOVE_MESS_DISPLAY;
+  ret[ kl[14] ] = MOVE_MESS_CLEAR;
 
   // Game management
-  ret[ kl[14] ] = MOVE_SAVE;
+  ret[ kl[15] ] = MOVE_SAVE;
 
 version( none )
 {

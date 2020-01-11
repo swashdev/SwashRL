@@ -534,10 +534,14 @@ Item put_down( Monst* mn, int index = -1 )
 {
   Item ret = No_item;
 
-  // The easiest case is if `index` is too large to be in the array:
-  if( index >= mn.inventory.items.length )  return No_item;
+  // If the given index is negative, and the monster is *not* the player,
+  // we've received an invalid instruction, so we return a placeholder:
+  if( index < 0 && !is_you( *mn ) )  return No_item;
 
-  // If `index` is positive, we simply remove that item and return it:
+  // If the `index` is too large to be in the array, we return a placeholder:
+  if( index >= 40 )  return No_item;
+
+  // If `index` is non-negative, we simply remove that item and return it:
   if( index >= 0 )
   {
     ret = mn.inventory.items[index];
@@ -545,12 +549,9 @@ Item put_down( Monst* mn, int index = -1 )
     return ret;
   }
 
-  // If `index` is negative, we first check to see if the monster is the
-  // player.  If it is not, return no item.
-  if( !is_you( *mn ) )  return No_item;
-
-  // If it *is* the player, we must display the equipment screen so that the
-  // player may select an item to be dropped:
+  // The only remaining possibility is that `index` is negative *and* the
+  // monster is the player, so we continue to the equipment screen, where we
+  // will allow the player to select an item to be dropped:
   int i = index;
 
   message( "Sorry, this function doesn't do anything yet." );

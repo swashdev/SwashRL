@@ -738,7 +738,7 @@ discard_swap:
     put_line( 10, 1, "e to manage equipment"         );
     put_line( 11, 1, "i for inventory"               );
     put_line( 12, 1, ", to pick up an item"          );
-    put_line( 13, 1, "d to drop an item (or p to put down an item, on Dvorak" );
+    put_line( 13, 1, "d to drop an item (or p to put down an item, on Dvorak)" );
     put_line( 14, 1, "P to read message history"     );
     put_line( 15, 1, "SPACE clears the message line" );
 

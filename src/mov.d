@@ -367,11 +367,6 @@ uint umove( Player* u, Map* m, uint dir )
     return 0;
   }
 
-  if( dir == MOVE_DROP )
-  {
-    Item it = put_down( u );
-  }
-
   byte dy, dx;
   get_dydx( dir, &dy, &dx );
   bool cardinal = dy == 0 || dx == 0;

@@ -519,9 +519,8 @@ bool pickup( Monst* mn, Item i )
  + Causes a monster to try to put down or "drop" an `Item` at the given
  + `index`.
  +
- + If `index` is negative, this function will return an empty item, unless
- + `mn` is the player, in which case it will display the equipment screen in
- + order for the player to select an item to drop.
+ + If `index` is negative, or is greater than the possible index for a
+ + monster's inventory (40), this function will return an empty item.
  +
  + This function will remove the `Item` at `index` from the monster's
  + inventory, if it is a valid item, and return that `Item` so that it can be
@@ -530,32 +529,18 @@ bool pickup( Monst* mn, Item i )
  + Returns:
  +   An `Item` which has been removed from `mn`'s inventory, or `No_item`.
  +/
-Item put_down( Monst* mn, int index = -1 )
+Item m_drop_item( Monst* mn, int index )
 {
   Item ret = No_item;
 
-  // If the given index is negative, and the monster is *not* the player,
-  // we've received an invalid instruction, so we return a placeholder:
-  if( index < 0 && !is_you( *mn ) )  return No_item;
+  // If the given index is invalid, return a placeholder item.  Note that 40
+  // is the maximum number of slots in a monster's inventory (14 equipment
+  // slots and 26 items in the bag)
+  if( index < 0 || index >= 40 )  return No_item;
 
-  // If the `index` is too large to be in the array, we return a placeholder:
-  if( index >= 40 )  return No_item;
-
-  // If `index` is non-negative, we simply remove that item and return it:
-  if( index >= 0 )
-  {
-    ret = mn.inventory.items[index];
-    mn.inventory.items[index] = No_item;
-    return ret;
-  }
-
-  // The only remaining possibility is that `index` is negative *and* the
-  // monster is the player, so we continue to the equipment screen, where we
-  // will allow the player to select an item to be dropped:
-  int i = index;
-
-  message( "Sorry, this function doesn't do anything yet." );
-  
+  // Otherwise, we simply remove that item and return it:
+  ret = mn.inventory.items[index];
+  mn.inventory.items[index] = No_item;
   return ret;
 }
 

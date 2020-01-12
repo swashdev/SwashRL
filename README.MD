@@ -1,7 +1,7 @@
 SwashRL
 =======
 
-Readme file, last updated 2019-12-21 19:08 CST
+Readme file, last updated 2020-01-02 21:12 CST  
 Contact the maintainer: <swashdev@pm.me>
 
 ---
@@ -32,10 +32,6 @@ document can be found at the bottom.
 * [License Agreement](#license-agreement)
 
 * [Supported Systems](#supported-systems)
-
-* [Known Bugs](#known-bugs)
-
-  * [Not Bugs](#not-bugs)
 
 * [Compiling](#compiling)
 
@@ -68,17 +64,6 @@ have access to.
 If you'd like to become a volunteer maintainer for SwashRL on your system,
 [contact me] and I might be able to add you to the GitHub repository as a
 collaborator.
-
-## Known Bugs
-
-To submit a bug fix or report a possible solution, leave an Issue or a Pull
-Request on [our GitHub page].
-
- * The [recursive shadowcasting algorithm] used in SwashRL very rarely
-   illuminates map tiles which fall well outside of the player's line-of-sight
-   and may even be behind walls.
-
-[recursive shadowcasting algorithm]: src/fov.d
 
 ## Compiling
 

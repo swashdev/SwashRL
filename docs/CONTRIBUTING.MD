@@ -1,7 +1,7 @@
 SwashRL Guidelines for Contributors
 ===================================
 
-Version 1.0.2.  Last updated 2018-08-25 07:26 EST
+Version 1.0.3.  Last updated 2020-01-02 20:52 CST
 
 ---
 
@@ -35,7 +35,8 @@ document can be found at the bottom.
 If you'd like to contribute, but you don't know where to get started, check
 the [Readme] and the [docs folder].  In the docs folder you'll find a
 [to-do list] which lists all of the things that we're currently working on in
-order from highest priority to lowest priority.
+order from highest priority to lowest priority, as well as a [list of known
+bugs].
 
 You should also check the [Issues page] on [our GitHub], where you will find
 open Issues that you can take a stab at fixing yourself, and the
@@ -169,6 +170,7 @@ of consistency and you'll be fine.
 [Readme]: ../README.MD
 [docs folder]: ../docs
 [to-do list]: ../docs/to-do.txt
+[list of known bugs]: ../docs/bugs.txt
 [docs/license]: ../docs/license
 [thanks.txt]: ../thanks.txt
 [our GitHub]: https://github.com/swashdev/SwashRL

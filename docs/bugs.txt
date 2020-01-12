@@ -1,0 +1,11 @@
+SwashRL Known Bugs file
+
+To submit a bug fix or report a possible solution, leave an Issue or a Pull
+Request on our GitHub page at https://github.com/swashdev/SwashRL/issues
+
+Last updated 2020-01-02 20:53 CST
+
+ * The recursive shadowcasting algorithm used in SwashRL very rarely
+   illuminates map tiles which fall well outside of the player's line-of-sight
+   and may even be behind walls.
+   The recursive shadowcasting algorithm is contained in `src/fov.d`

@@ -3,6 +3,8 @@ Implement appropriate item stats (attack & defense modifiers, &c)
 Implement appropriate item behaviors (parrying, thrusting, &c)
 Implement stat generator
 Implement skills
+ - Balance proposal: Skills level up slower if the player doesn't rest between
+   level-ups
 Stat up some monsters
 Implement improved dungeon generator
 Implement dungeon hazards (pits, traps, &c)

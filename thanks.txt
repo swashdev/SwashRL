@@ -7,6 +7,11 @@ SwashRL is dedicated:
   To my family, who have been supportive above and beyond the call of duty and
   kept me in their prayers when I needed them most
 
+  To Alec Holowka (1983-10-30 - 2019-08-31) A victim of the stigmatization of
+  the independent gaming space and the video game industry in general,
+  betrayed by former colleagues and abandoned by those he called his friends.
+  Rest in peace--you will be missed.
+
 Special thanks to the following "Honorary Dev Team Members," who contributed
 significant help to the SwashRL source code:
 

@@ -31,8 +31,8 @@
 
 import global;
 
-/// An exception used to catch when the programmer has accidentally
-/// overwritten one of the reserved key commands: Q, ?, v, and @
+// An exception used to catch when the programmer has accidentally
+// overwritten one of the reserved key commands: Q, ?, v, and @
 class InvalidKeymapException : Exception
 {
   this( string msg, string file = __FILE__, size_t line = __LINE__ )
@@ -44,36 +44,7 @@ class InvalidKeymapException : Exception
 // Keymap initializer function //
 /////////////////////////////////
 
-/++
- + Initializes a keymap
- +
- + This function takes in a `string` which represents the list of commands as
- + keypresses.  If `keylist` isn't long enough to fill the keymap, the
- + remaining keys are left as standard.  The order of the commands is the same
- + as in moves.d.
- +
- + Keymaps are actually associative arrays of integers indexed by chars.
- + Each char represents a keypress, and each integer represents an action
- + which is passed into the movement functions.
- +
- + Certain keys are not handled by keymaps, because they are reserved
- + commands.  'Q' is reserved for quit, '?' is reserved for help, 'v' is
- + reserved for checking the version number, and '@' is reserved for changing
- + the currently-selected keymap.
- +
- + See_Also:
- +   <a href="#Keymaps">Keymaps</a>
- +
- + Throws:
- +   InvalidKeymapException, if the keymap represented by keylist attempts to
- +   overwrite a reserved keypress or defines one keypress twice
- +
- + Params:
- +   keylist = A string representing a series of keypresses to be mapped
- +
- + Returns:
- +   An associative array `uint[char]` representing a keymap
- +/
+// Initializes a keymap from a list of key inputs.
 uint[char] keymap( string keylist = "" )
 {
   // The standard keymap, which is being overwritten
@@ -175,40 +146,11 @@ version( none )
 // Keymaps //
 /////////////
 
-/++
- + The global list of labels for keymaps
- +
- + This list defines the names of the keymaps stored in `Keymaps` and is used
- + in `main` for the "Control scheme swapped to %s" and "You are currently
- + using the %s keyboard layout" messages.
- +
- + This array is populated at runtime in `main`.
- +
- + The `Keymap_labels` are defined in the same order as `Keymaps`; i.e., the
- + label for `Keymaps[0]` is `Keymap_labels[0]`, &c.
- +
- + <strong>Important</strong>:  It is absolutely vital that `Keymap_labels` be
- + <em>at least</em> the same length as `Keymaps`, otherwise the above
- + messages will cause a range exception.
- +
- + See_Also:
- +   <a href="#Keymaps">Keymaps</a>
- +/
+// A list of labels used to describe keymaps when selecting them.
 static string[] Keymap_labels;
 
-/++
- + The global list of keymaps
- +
- + This static array defines all of the available keymaps.
- +
- + This array is populated at runtime in `main`.
- +
- + See_Also:
- +   <a href="#keymap">keymap</a>, <a href="#Keymap_labels">Keymap_labels</a>
- +/
+// The global list of keymaps.
 static uint[char][] Keymaps;
 
-/++
- + The index in `Keymaps` of the keymap that is currently in use by the player
- +/
+// The index of the control scheme currently in use in `Keymaps`
 static uint Current_keymap = 0;

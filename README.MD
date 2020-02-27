@@ -30,6 +30,12 @@ a brief description of their function:
    not modify the documentation in this branch; instead merge to `master` and
    modify the documentation there.
 
+ * [`spring-cleaning`](https://github.com/swashdev/SwashRL/tree/spring-cleaning)
+   This is a special branch originally created towards the end of February
+   2020 to facilitate a radical cleanup and restructuring of SwashRL's code
+   base and make it compliant with an updated style guide.  Don't use this
+   branch for normal code edits.
+
  * [`gh-pages`](https://github.com/swashdev/SwashRL/tree/gh-pages)  
    This is an orphan branch which is used to host SwashRL's GitHub Pages site.
    Obviously, you shouldn't be pushing any code files here.  If you are not

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2015-2020 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,9 +26,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import global;
+// inven.d: Defines the `Inven` struct, used to store inventories
 
-// defines the `Inven' struct, used for Inventories
+import global;
 
 /++
  + The inventory

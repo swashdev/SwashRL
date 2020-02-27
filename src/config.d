@@ -26,8 +26,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-// This is the configuration file for Spelunk!.  It defines flags which affect
-// how your copy of Spelunk! will compile.
+// This is the configuration file for SwashRL.  It defines flags which affect
+// how your copy of SwashRL will compile.
 
 // SECTION 0: ////////////////////////////////////////////////////////////////
 // Instructions for the compiler                                            //
@@ -94,7 +94,7 @@ enum TILE_WIDTH = 8;
 enum HILITE_PLAYER = true;
 
 // SECTION 2: ////////////////////////////////////////////////////////////////
-// Spelunk! configuration                                                   //
+// SwashRL configuration                                                    //
 //////////////////////////////////////////////////////////////////////////////
 
 // The number of messages to store in the message buffer

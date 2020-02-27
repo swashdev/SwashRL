@@ -36,34 +36,29 @@
 // SwashRL version control & configuration                                  //
 //////////////////////////////////////////////////////////////////////////////
 
-/++
- + The name of the compiled game
- +
- + If you're using the source code for a derivative software product, change
- + this value to the name of your game to change all references to SwashRL.
- +/
+/* The name of the compiled game
+ *
+ * If you're using the source code for a derivative software product, change
+ * this value to the name of your game to change all references to SwashRL.
+ */
 enum NAME = "SwashRL";
 
-/++
- + The version number
- +
- + In the current version numbering system, the first number is the release
- + number and the second is the three-digit revision number.  This number
- + is stored as a floating-point number.
- +/
+/* The version number
+ *
+ * In the current version numbering system, the first number is the release
+ * number and the second is the three-digit revision number.  This number
+ * is stored as a floating-point number.
+ */
 enum VERSION = 0.031;
 
-/++
- + The commit ID
- +
- + This string value represents the first seven digits of the commit number
- + that the git repository was in when SwashRL was compiled.  This acts as
- + the "patch number" for that version of the program.
- +
- + This value will be declared as "HOMEMOD" if `INCLUDE_COMMIT` is `false`
- +
- + See_Also: <a href="#VERSION">VERSION</a>
- +/
+/* The commit ID
+ *
+ * This string value represents the first seven digits of the commit number
+ * that the git repository was in when SwashRL was compiled.  This acts as
+ * the "patch number" for that version of the program.
+ *
+ * This value will be declared as "HOMEMOD" if `INCLUDE_COMMIT` is `false`
+ */
 static if( INCLUDE_COMMIT )
 {
 import std.string : split;
@@ -98,8 +93,6 @@ public import sys;
 // `SPELUNK_CURSES' evaluates to `true' if either ncurses or pdcurses is being
 // used and `false' otherwise.
 
-/// This value is used by some `static if` statements to determine whether or
-/// not curses is available for the program to use.
 version( ncurses )
 {
   public import deimos.ncurses.curses;
@@ -115,8 +108,9 @@ else
   enum CURSES_ENABLED = false;
 }
 
-/// This value is used by some `static if` statements to determine whether or
-/// not SDL2 is available for the program to use.
+// This value is used by some `static if` statements to determine whether or
+// not SDL2 is available for the program to use.
+
 version( sdl )
 {
   public import derelict.sdl2.sdl, derelict.sdl2.ttf;
@@ -131,35 +125,29 @@ else
 // SwashRL final setup                                                      //
 //////////////////////////////////////////////////////////////////////////////
 
-/// Used to determine the height of the map.
-/// 22 is recommended.
+// Used to determine the height of the map.  22 is recommended.
 enum MAP_Y = 22;
 
-/// Used to determine the width of the map.
-/// 80 is recommended.
+// Used to determine the width of the map.  80 is recommended.
 enum MAP_X = 80;
 
-/// Used by some `for` loops as a maximum value for zero-counted arrays.
-/// Always equal to `MAP_Y - 1`.
+// Used by some `for` loops as a maximum value for zero-counted arrays.
 enum MAP_y = MAP_Y - 1;
 
-/// Used by some `for` loops as a maximum value for zero-counted arrays.
-/// Always equal to `MAP_X - 1`.
+// Used by some `for` loops as a maximum value for zero-counted arrays.
 enum MAP_x = MAP_X - 1;
 
-/// The number of tiles on the map.  Always equal to `MAP_Y * MAP_X`.
+// The number of tiles on the map.
 enum NUMTILES = MAP_Y * MAP_X;
 
-/++
- + The number of reserved lines at the top of the display.
- +
- + The message buffer appears at the top of the display.  The number of lines
- + it takes up is listed here as `RESERVED_LINES`.  Map display functions use
- + this value to offset the y coordinate of the draw functions.
- +/
+// The number of reserved lines at the top of the display.
+//
+// The message buffer appears at the top of the display.  The number of lines
+// it takes up is listed here as `RESERVED_LINES`.  Map display functions use
+// this value to offset the y coordinate of the draw functions.
 enum RESERVED_LINES = MESSAGE_BUFFER_LINES;
 
-/// An alias for `RESERVED_LINES`
+// An alias for `RESERVED_LINES`
 enum Y_OFFSET = RESERVED_LINES;
 
 // include the utility file
@@ -168,9 +156,6 @@ public import util;
 // SECTION 4: ////////////////////////////////////////////////////////////////
 // Global inclusion of all header files not yet included                    //
 //////////////////////////////////////////////////////////////////////////////
-
-// include the rest of SwashRL's files in the order appointed in
-// notes/include
 
 public import cheats;
 public import dice;

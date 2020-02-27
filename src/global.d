@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2015-2020 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,6 +26,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+// global.d:
 // This is the global file for SwashRL.  It will public import config.d and
 // util.d for you and process the data in both of these files to configure
 // how SwashRL will compile.  THIS FILE SHOULD BE IMPORTED AT THE TOP OF

@@ -88,11 +88,12 @@ public import sys;
 
 // public import the necessary version of curses
 
-// which version of curses we import is determined by a `version' check as
+// Which version of curses we import is determined by a `version' check as
 // defined in ``dub.json''.  Building with the `pdcurses' configuration will
 // import pdcurses, `ncurses' will import ncurses.  The `version' given by
 // those configurations has the same name as the configuration itself.
-// `SPELUNK_CURSES' evaluates to `true' if either ncurses or pdcurses is being
+
+// `CURSES_ENABLED' evaluates to `true' if either ncurses or pdcurses is being
 // used and `false' otherwise.
 
 version( ncurses )
@@ -152,6 +153,7 @@ enum NUMTILES = MAP_Y * MAP_X;
 enum RESERVED_LINES = MESSAGE_BUFFER_LINES;
 
 // An alias for `RESERVED_LINES`
+// TODO: Try to render this alias unnecessary.
 enum Y_OFFSET = RESERVED_LINES;
 
 // include the utility file

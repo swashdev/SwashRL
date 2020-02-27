@@ -31,9 +31,7 @@
 public import global;
 import std.random;
 
-/++
- + Generates an empty `Map`
- +/
+// Generates an empty `Map`
 Map empty_Map()
 {
   Map m;
@@ -51,28 +49,10 @@ Map empty_Map()
   return m;
 }
 
-/++
- + Randomly generates a new `Map`
- +
- + This function will generate a new dungeon level.  This is accomplished by
- + splitting the `Map` into nine sectors, placing a `Room` within each sector,
- + and then randomly connecting them with corridors.
- +
- + Currently, the function is written to guarantee that there will always be a
- + path which connects all of the Rooms, but there are no checks to prevent
- + the Rooms from overlapping.
- +
- + If `FOLIAGE` is `true`, this function will also `grow_mold` in the Map
- + before returning it.
- +
- + See_Also:
- +   <a href="#add_corridor_y">add_corridor_y</a>,
- +   <a href="#add_corridor_x">add_corridor_x</a>,
- +   <a href="#add_room">add_room</a>
- +
- + Returns:
- +   A `Map` with Rooms and corridors randomly generated
- +/
+// Randomly generates a new Map.
+// In the future, this function will take in an enum which specifies a map
+// generation algogrithm, but for the moment it only uses the Simple Roguelike
+// algorithm.
 Map generate_new_map()
 {
   Map m = gen_simple_roguelike( FOLIAGE );
@@ -80,22 +60,7 @@ Map generate_new_map()
   return m;
 }
 
-/++
- + Generates a simple, Rogue-like level
- +
- + This is the simplest of the dungeon generator algorithms, and uses a simple
- + version of the map generation algorithm that Rogue used, for a very
- + traditional-feeling level.
- +
- + Origin:  http://www.roguebasin.com/index.php?title=Simple_Rogue_levels
- +
- + Params:
- +   mold = If `true`, generates mold on the generated map.  Has no effect if
- +          `FOLIAGE` is set to `false` at compile time.
- +
- + Returns:
- +   A `Map` representing a generated level.
- +/
+// Generates a new Map using SwashRL's Simple Roguelike algorithm.
 Map gen_simple_roguelike( bool mold = true )
 {
   // The `Map` to be returned
@@ -237,22 +202,10 @@ static if( FOLIAGE )
 version( none )
 {
 
-/++
- + Get coordinates for an appropriate wall from the given `Map`
- +
- + This function gets coordinates of a wall appropriate for map-generation
- + algorithms.  Because the map is mostly composed of walls, this function
- + is used to randomly select coordinates and then check that the selected
- + coordinate is a wall _and_ is adjacent to a non-wall (preferably floor)
- + coordinate.
- +
- + Params:
- +   m = The `Map` that we are searching for an appropriate wall
- +   y = A pointer to the y coordinate that will be generated for the selected
- +       wall.
- +   x = A pointer to the x coordinate that will be generated for the selected
- +       wall.
- +/
+// Get coordinates for a wall which is appropriate to add a random map element
+// to in Mike Anderson's dungeon generation algorithm.
+// For more information, see here:
+// http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm
 void select_random_adjacent_wall( Map m, byte* y, byte* x )
 {
 
@@ -354,23 +307,9 @@ did_not_get_adjacent_wall:
 
 } // void select_random_adjacent_wall( Map, byte*, byte* )
 
-/++
- + Generates a `Map` using Mike Anderson's algorithm
- +
- + This is a rooms-and-corridors map generator algorithm taken from
- + RogueBasin.  The algorithm was written by Mike Anderson and implemented for
- + SwashRL in D by Philip Pavlick.
- +
- + Origin:
- +   http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm
- +
- + Params:
- +   mold = If `true`, grows mold on the generated level.  Has no effect if
- +          `FOLIAGE` is `false` at compile time.
- +
- + Returns:
- +   A `Map` level generated using Anderson's algorithm.
- +/
+// Generates a random map using Mike Anderson's dungeon generation algorithm.
+// For more information, see here:
+// http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm
 Map gen_anderson( bool mold = true )
 {
 

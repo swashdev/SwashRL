@@ -31,11 +31,19 @@
 
 import global;
 
+// SECTION 1: ////////////////////////////////////////////////////////////////
+// Rooms                                                                    //
+//////////////////////////////////////////////////////////////////////////////
+
 // A `struct' used to store `Room's for the Map generation code
 struct Room
 {
   int x1, y1, x2, y2;
 }
+
+// SECTION 2: ////////////////////////////////////////////////////////////////
+// Maps                                                                     //
+//////////////////////////////////////////////////////////////////////////////
 
 // A struct which stores map data
 struct Map
@@ -48,6 +56,8 @@ struct Map
 
   ubyte[2] player_start;
 }
+
+// Map manipulation functions for Monsters ///////////////////////////////////
 
 // Add a monster to the given map
 void add_mon( Map* mp, Monst mn )

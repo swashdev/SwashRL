@@ -81,8 +81,10 @@ public import config;
 public import sys;
 
 // SECTION 2: ////////////////////////////////////////////////////////////////
-// curses configuration                                                     //
+// Display configuration                                                    //
 //////////////////////////////////////////////////////////////////////////////
+
+// curses configuration //////////////////////////////////////////////////////
 
 // public import the necessary version of curses
 
@@ -107,6 +109,8 @@ else
 {
   enum CURSES_ENABLED = false;
 }
+
+// SDL configuration /////////////////////////////////////////////////////////
 
 // This value is used by some `static if` statements to determine whether or
 // not SDL2 is available for the program to use.

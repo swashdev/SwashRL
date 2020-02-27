@@ -54,7 +54,8 @@ enum REVERSED_WALLS = true;
 
 // Color settings ////////////////////////////////////////////////////////////
 
-// Enables color.
+// Enables color.  This setting will also enable the FOLIAGE and BLOOD
+// settings, defined below, if they are set to `true`.
 enum COLOR = true;
 
 // Enables foliage.  Foliage grows randomly in dungeons and has no practical

@@ -38,8 +38,8 @@ import global;
 // A simple struct which defines an `Inven`tory.
 struct Inven
 {
-  // all `Items' carried in this inventory; 14 "inventory slots" for the
-  // various body parts, plus 26 for the "bag" (to be implemented)
+  // all `Items' carried in this inventory; 14 "equipment slots" for the
+  // various body parts, plus 26 "inventory slots" for the "bag"
   Item[40] items; 
   uint quiver_count;
   uint coins;

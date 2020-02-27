@@ -49,6 +49,9 @@ struct Inven
 
 // Special array indeces in the `items' array which correspond to the
 // equipment slots seen on the equipment screen
+// TODO: Mark these appropriately as equipment slots rather than inventory
+// slots (maybe we should separate the equipment screen code from the
+// inventory screen code?)
 enum INVENT_WEAPON    =  0;
 enum INVENT_OFFHAND   =  1;
 enum INVENT_QUIVER    =  2;

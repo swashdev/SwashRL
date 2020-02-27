@@ -71,9 +71,11 @@ enum TEXT_EFFECTS = true;
 
 // SDL-only options //
 
-// A path to a font file to use for the map
+// A path to a font file to use for the map.  For a bolder font, delete this
+// line and uncomment the one which follows.
 enum FONT = "assets/fonts/DejaVuSansMono.ttf";
 //enum FONT = "assets/fonts/DejaVuSansMono-Bold.ttf";
+
 // A path to a font file to use for the message buffer, status bar, and other
 // messages
 enum MESSAGE_FONT = "assets/fonts/DejaVuSansMono-Bold.ttf";

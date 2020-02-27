@@ -37,22 +37,16 @@ struct Room
   int x1, y1, x2, y2;
 }
 
-// Defines a struct ``Map'' which stores Map data, including Map Tiles and
-// Monsters and Items on the Map
-
 // A struct which stores map data
 struct Map
 {
   Tile[MAP_X][MAP_Y]   t; // `t'iles
   Monst[]              m; // 'm'onsters
   Item[MAP_X][MAP_Y]   i; // 'i'tems
-
-  Room[12] r;
-
-  bool[MAP_X][MAP_Y] v; // 'v'isibility
+  Room[12]             r; // 'r'ooms
+  bool[MAP_X][MAP_Y]   v; // 'v'isibility
 
   ubyte[2] player_start;
-
 }
 
 // Add a monster to the given map

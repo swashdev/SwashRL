@@ -26,7 +26,7 @@
  */
 
 /* This source code has been modified from its original Doryen library
- * implementation to work in Spelunk! - Philip Pavlick
+ * implementation to work in SwashRL - Philip Pavlick
  */
 
 import global;

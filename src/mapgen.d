@@ -33,6 +33,12 @@ import std.random;
 
 import global;
 
+// SECTION 1: ////////////////////////////////////////////////////////////////
+// Configuration Variables                                                  //
+//////////////////////////////////////////////////////////////////////////////
+
+// Room configuration ////////////////////////////////////////////////////////
+
 // Universal size configs for rooms:
 enum MIN_ROOM_X =  4, MIN_ROOM_Y = 4;
 enum MAX_ROOM_X = 18, MAX_ROOM_Y = 8;
@@ -41,10 +47,16 @@ enum MAX_ROOM_X = 18, MAX_ROOM_Y = 8;
 enum MIN_HALL_X = 2, MAX_HALL_X = 76;
 enum MIN_HALL_Y = 2, MAX_HALL_Y = 18;
 
+// Map sector coordinates ////////////////////////////////////////////////////
+
 const int[4][8] SECTORS =
 [ [1, 19,  1,  9], [21, 37,  1,  9], [39, 55,  1,  9], [57, 77,  1,  9],
   [1, 19, 11, 19], [21, 37, 11, 19], [39, 55, 11, 19], [57, 77, 11, 19]
 ];
+
+// SECTION 2: ////////////////////////////////////////////////////////////////
+// Map Element Generation Functions                                         //
+//////////////////////////////////////////////////////////////////////////////
 
 // Generates a random room
 Room random_Room()
@@ -79,6 +91,12 @@ void add_corridor( Map* m, int start_x, int start_y, int end_x, int end_y )
     add_corridor_x( end_y,   start_x, end_x, m );
   }
 }
+
+// SECTION 3: ////////////////////////////////////////////////////////////////
+// Map Digging Functions                                                    //
+//////////////////////////////////////////////////////////////////////////////
+
+// Corridor Digging Functions ////////////////////////////////////////////////
 
 // Carves a vertical (north/south) cooridor into the given map using the given
 // start- and end-points.
@@ -156,6 +174,8 @@ bool add_corridor_x( uint y, uint x1, uint x2, Map* m )
   return true;
 } // bool add_corridor_x( uint, uint, uint, Map* )
 
+// Room Digging Functions ////////////////////////////////////////////////////
+
 // Carves a room into the given map using the given coordinates
 bool add_room( uint y1, uint x1, uint y2, uint x2, Map* m )
 {
@@ -184,6 +204,10 @@ bool add_room( Room r, Map* m )
 {
   return add_room( r.y1, r.x1, r.y2, r.x2, m );
 } // bool add_room( Room, Map* )
+
+// SECTION 4: ////////////////////////////////////////////////////////////////
+// Decorative Map Beautifying Functions                                     //
+//////////////////////////////////////////////////////////////////////////////
 
 static if( FOLIAGE )
 {
@@ -270,6 +294,10 @@ void grow_mold( Map* m )
 
 debug
 {
+
+// SECTION 5: ////////////////////////////////////////////////////////////////
+// The Test Map (debug only)                                                //
+//////////////////////////////////////////////////////////////////////////////
 
 // Generates the standard test map
 Map test_map()

@@ -26,9 +26,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-// Defines functions related to control schemes, referred to herein as
-// "keymaps," and global variables used to define control schemes for the
-// current build.
+// keymaps.d: defines structures called "keymaps" used to store control
+// schemes as well as functions used to define them
 
 import global;
 

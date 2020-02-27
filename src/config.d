@@ -88,9 +88,9 @@ enum TILE_HEIGHT = 16;
 // The width to use for each tile in pixels
 enum TILE_WIDTH = 8;
 
-// Whether to highlight the player in the game display.  This only has an
-// effect on the SDL virtual terminal display, as the curses terminal
-// highlights the player using the cursor.
+// Whether to highlight the player in the game display, as would normally
+// happen in a curses terminal when the cursor hovers over the player's
+// location.
 enum HILITE_PLAYER = true;
 
 // SECTION 2: ////////////////////////////////////////////////////////////////

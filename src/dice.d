@@ -33,6 +33,10 @@ import global;
 
 import core.stdc.time;
 
+// SECTION 1: ////////////////////////////////////////////////////////////////
+// Structures Used to Perform Dicerolls                                     //
+//////////////////////////////////////////////////////////////////////////////
+
 // Stores data for dice rolls.
 struct Dicebag
 {
@@ -60,12 +64,16 @@ Dicebag Dice( uint d, int m, int f, int c )
   return r;
 }
 
+// SECTION 2: ////////////////////////////////////////////////////////////////
+// Random Number Generators                                                 //
+//////////////////////////////////////////////////////////////////////////////
+
 import std.random, std.datetime;
 
 // Hi, my name is Lucky, and I'll be your random number generator today.
 static Random Lucky;
 
-// rng maintenance //
+// Random Number Generator Settings & Maintenance ////////////////////////////
 
 // Sets the seed for the random number generator `Lucky`.
 void set_seed( int s )
@@ -77,14 +85,18 @@ void seed()
 { Lucky = Random( cast(int)core.stdc.time.time(null) );
 }
 
-// boolean dice
+// SECTION 3: ////////////////////////////////////////////////////////////////
+// Functions to Represent Dicerolls                                         //
+//////////////////////////////////////////////////////////////////////////////
+
+// Boolean Dice //////////////////////////////////////////////////////////////
 
 // Gets a random boolean from a simulated coin toss.
 bool flip()
 { return cast(bool)uniform( 0, 2, Lucky );
 }
 
-// the standard six-sided die //
+// The Standard Six-Sided Die ////////////////////////////////////////////////
 
 // The standard die in SwashRL is the d6, which is generated here as a
 // uniform distribution between 1 and 6 and returned as a `uint`.
@@ -96,6 +108,8 @@ int d()
 int dm( int mod )
 { return (d() + mod);
 }
+
+// Other Standard Role-Playing Dice //////////////////////////////////////////
 
 // Roll a "traditional" d10 numbered from 0 to 9.
 int td10()
@@ -124,6 +138,8 @@ int d100()
   return (t * 10) + u;
 } 
 
+// Non-Standard Dice /////////////////////////////////////////////////////////
+
 // Yes, two-sided dice exist in real life.
 int d2()
 { return uniform( 1, 3 );
@@ -143,6 +159,10 @@ int dn( int s )
   } 
   return uniform( 1, s + 1, Lucky );
 } 
+
+// SECTION 4: ////////////////////////////////////////////////////////////////
+// Functions Representing Full or "Extended" Dicerolls                      //
+//////////////////////////////////////////////////////////////////////////////
 
 // Roll a given number of six-sided dice and add the given modifier.
 int roll( uint num, int mod )
@@ -181,6 +201,8 @@ int roll_x( uint num, int mod, uint floor, uint ceiling )
 int roll_bag( Dicebag dice )
 { return roll_x( dice.dice, dice.modifier, dice.floor, dice.ceiling );
 }
+
+// Functions Representing Simple Difficulty Checks ///////////////////////////
 
 // Quickly do a difficulty check.
 bool quick_check( uint num, int mod, uint difficulty )

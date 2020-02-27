@@ -30,14 +30,7 @@
 
 import global;
 
-/++
- + The inventory
- +
- + This struct defines an inventory.  It contains an array of 40 `items` (14
- + for equipment slots followed by 26 more for a "bag"), a counter for the
- + number of items in the quiver (`quiver_count`), and the number of `coins`
- + in the inventory.
- +/
+// A simple struct which defines an `Inven`tory.
 struct Inven
 {
   // all `Items' carried in this inventory; 14 "inventory slots" for the
@@ -68,40 +61,15 @@ enum INVENT_LAST_SLOT = INVENT_TAIL;
 // Marks the first slot of the "bag":
 enum INVENT_BAG = INVENT_LAST_SLOT + 1;
 
-/**
- * Checks if the player or other monster has a free grasp
- *
- * Params:
- *   tory  The `Inven`tory to check
- * Returns:
- *   `true` if either `INVENT_WEAPON` or `INVENT_OFFHAND` are empty.
- *   `false` otherwise.
- */
+// Checks if the player or other monster has a free grasp.
+// Note that this function doesn't require a monster, just its inventory.
 bool check_grasp( Inven tory )
 {
   return !Item_here( tory.items[INVENT_WEAPON] )
       || !Item_here( tory.items[INVENT_OFFHAND] );
 }
 
-/++
- + Checks a given item against a given inventory equipment slot
- +
- + This function checks the given `Item` `i`'s equipment type against a given
- + equipment slot `s`.  The function returns `true` if the item can go in the
- + given inventory slot.
- +
- + The function will always return `true` if `s` represents one of the
- + character's hands (`INVENT_WEAPON` for the "weapon-hand" or
- + `INVENT_OFFHAND` for the "off-hand"), because any item can be carried in
- + one's hands.
- +
- + Params:
- +   i = an `Item` to be checked
- +   s = the index of the equipment slot to be checked
- +
- + Returns:
- +   `true` if i can be equipped in equipment slot s, `false` otherwise
- +/
+// Checks if a given item fits into the given equipment slot (see iflags.d)
 bool check_equip( Item i, uint s )
 {
   // an empty item can go in any slot (obviously)

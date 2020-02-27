@@ -26,7 +26,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-// inven.d: Defines the `Inven` struct, used to store inventories
+// inven.d: structures, functions, and constants related to inventory
+// management
 
 import global;
 

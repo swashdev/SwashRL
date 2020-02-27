@@ -52,6 +52,8 @@ enum SMILEY = '@';
 // of terminals I tested with it)
 enum REVERSED_WALLS = true;
 
+// Color settings ////////////////////////////////////////////////////////////
+
 // Enables color.
 enum COLOR = true;
 
@@ -63,13 +65,13 @@ enum FOLIAGE = true;
 // hit.  This has no practical effect other than turning map tiles red.
 enum BLOOD = true;
 
-// Curses-only options: //
+// Curses-specific options ///////////////////////////////////////////////////
 
 // Enables special effects like the highlighted player and reversed walls.
 // Only works if your curses standard uses these effects (it probably does).
 enum TEXT_EFFECTS = true;
 
-// SDL-only options //
+// SDL-specific options //////////////////////////////////////////////////////
 
 // A path to a font file to use for the map.  For a bolder font, delete this
 // line and uncomment the one which follows.

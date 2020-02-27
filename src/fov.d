@@ -69,34 +69,9 @@ static int[][] mult = [
   [1,0,0,1,-1,0,0,-1]
 ];
 
-/++
- + Recursively calculates field-of-vision in a sector of the given map
- +
- + This function is used by `TCOD_map_compute_fov_recursive_shadowcasting`
- + to do the number-crunching for the recursive shadowcasting algorithm.  Its
- + job is to calculate the field-of-vision in a sector and recursively
- + generate new sectors in order to cast shadows realistically.
- +
- + This function has been changed from its original version to work with
- + SwashRL.
- +
- + <b>Note</b>:  I haven't bothered listing the parameters for this function
- + because to be honest I don't fully understand everything that it does.
- + That's why I took someone else's implementation instead of coding one up
- + myself.
- +
- + Authors:
- +   Bjorn Bergstrom, Jice, Mingos, rmtew
- +
- + Origin:
- +   libtcod
- +
- + License:
- +   BSD 3-clause
- +
- + See_Also:
- +   <a href="http://www.roguebasin.com/index.php?title=FOV_using_recursive_shadowcasting">Roguebasin:  FOV using recursive shadowcasting</a>
- +/
+// Recursively calculates field-of-vision in a sector of the given map.
+// For more information, see:
+// http://www.roguebasin.com/index.php?title=FOV_using_recursive_shadowcasting
 void cast_light( Map* to_display, int cx, int cy, int row, float start,
                  float end, int radius, int r2, int xx, int xy, int yx,
                  int yy, int id, bool light_walls)
@@ -165,38 +140,9 @@ void cast_light( Map* to_display, int cx, int cy, int row, float start,
   }
 }
 
-/++
- + Calculates field-of-vision using the Recursive Shadowcasting algorithm
- +
- + This function modifies the given map to update the visibility of each tile
- + using Bjorn Bergstrom's recursive shadowcasting algorithm.
- +
- + This function has been changed from its original version to work with
- + SwashRL.
- +
- + Authors:
- +   Bjorn Bergstrom, Jice, Mingos, rmtew
- +
- + Origin:
- +   libtcod
- +
- + License:
- +   BSD 3-clause
- +
- + See_Also:
- +   <a href="http://www.roguebasin.com/index.php?title=FOV_using_recursive_shadowcasting">Roguebasin:  FOV using recursive shadowcasting</a>
- +
- + Params:
- +   to_display  = A pointer to the map whose field-of-vision data is to be
- +                 modified
- +   player_x    = The starting x coordinate for the field-of-vision
- +                 calculation
- +   player_y    = The starting y coordinate for the field-of-vision
- +                 calculation
- +   max_radius  = The maximum radius to calculate field-of-vision for; `0`
- +                 means infinite
- +   light_walls = Whether or not to illuminate walls
- +/
+// Calculates field-of-vision using the Recursive Shadowcasting algorithm.
+// For more information, see:
+// http://www.roguebasin.com/index.php?title=FOV_using_recursive_shadowcasting
 void TCOD_map_compute_fov_recursive_shadowcasting(
     Map* to_display, int player_x, int player_y, int max_radius,
     bool light_walls)
@@ -227,24 +173,9 @@ void TCOD_map_compute_fov_recursive_shadowcasting(
   to_display.v[player_y][player_x] = true;
 }
 
-/++
- + A shortcut for the recursive shadowcasting functions
- +
- + This function was added specifically for SwashRL to quickly do the call to
- + `TCOD_map_compute_fov_recursive_shadowcasting` that would most frequently
- + be required.
- +
- + This function takes in a pointer to a `map` and the coordinates of the
- + viewer and modifies the `map` data to update the viewer's field-of-view.
- +
- + Params:
- +   to_display = A pointer to the map whose field-of-vision is to be
- +                calculated and updated
- +   viewer_x   = The x coordinate of the start point for field-of-vision
- +                calculation
- +   viewer_y   = The y coordinate of the start point for field-of-vision
- +                calculation
- +/
+// This function was added specifically for SwashRL to quickly do the call to
+// `TCOD_map_compute_fov_recursive_shadowcasting` that would most frequently
+// be required.
 void calc_visible( Map* to_display, uint viewer_x, uint viewer_y )
 {
   TCOD_map_compute_fov_recursive_shadowcasting(

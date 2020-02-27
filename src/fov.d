@@ -55,6 +55,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+// fov.d: Defines functions and variables related to field-of-vision
+// calculations.
+
 import global;
 
 import std.math: sqrt;

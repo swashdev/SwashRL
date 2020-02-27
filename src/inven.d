@@ -31,6 +31,10 @@
 
 import global;
 
+// SECTION 1: ////////////////////////////////////////////////////////////////
+// The Inventory Structure                                                  //
+//////////////////////////////////////////////////////////////////////////////
+
 // A simple struct which defines an `Inven`tory.
 struct Inven
 {
@@ -41,8 +45,10 @@ struct Inven
   uint coins;
 }
 
+// Indexes of Equipment Slots ////////////////////////////////////////////////
+
 // Special array indeces in the `items' array which correspond to the
-// specific Inventory slots seen on the Inventory screen
+// equipment slots seen on the equipment screen
 enum INVENT_WEAPON    =  0;
 enum INVENT_OFFHAND   =  1;
 enum INVENT_QUIVER    =  2;
@@ -58,9 +64,15 @@ enum INVENT_KILT      = 11;
 enum INVENT_FEET      = 12;
 enum INVENT_TAIL      = 13;
 
+// Marks the last equipment slot:
 enum INVENT_LAST_SLOT = INVENT_TAIL;
+
 // Marks the first slot of the "bag":
 enum INVENT_BAG = INVENT_LAST_SLOT + 1;
+
+// SECTION 2: ////////////////////////////////////////////////////////////////
+// Inventory Management Functions                                           //
+//////////////////////////////////////////////////////////////////////////////
 
 // Checks if the player or other monster has a free grasp.
 // Note that this function doesn't require a monster, just its inventory.

@@ -35,8 +35,11 @@ struct Item
 {
   Symbol sym;
   string name;
+  // what `type` of item this is and, if applicable, what `equip`ment slot it
+  // goes into
   uint type, equip;
-  /* modifiers to the player's dice rolls */
+  // modifiers to the player's dice rolls: `addd` adds dice, `addm` adds
+  // modifiers
   int addd, addm;
 }
 

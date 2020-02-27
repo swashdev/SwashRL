@@ -28,6 +28,9 @@
 
 // iflags.d: Flags which define item properties & behavior
 
+// A generic placeholder value indicating either that there is no item here
+// or that a certain property about an item (e.g. equipment slot) is not
+// applicable.
 enum NO_ITEM = 0x0;
 
 // equip areas (for armor)

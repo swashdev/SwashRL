@@ -71,6 +71,7 @@ bool check_grasp( Inven tory )
 }
 
 // Checks if a given item fits into the given equipment slot (see iflags.d)
+// TODO: See if you can move this to a more appropriate file like item.d
 bool check_equip( Item i, uint s )
 {
   // an empty item can go in any slot (obviously)

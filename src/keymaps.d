@@ -31,6 +31,10 @@
 
 import global;
 
+// SECTION 1: ////////////////////////////////////////////////////////////////
+// Exceptions                                                               //
+//////////////////////////////////////////////////////////////////////////////
+
 // An exception used to catch when the programmer has accidentally
 // overwritten one of the reserved key commands: Q, ?, v, and @
 class InvalidKeymapException : Exception
@@ -40,9 +44,9 @@ class InvalidKeymapException : Exception
   }
 }
 
-/////////////////////////////////
-// Keymap initializer function //
-/////////////////////////////////
+// SECTION 2: ////////////////////////////////////////////////////////////////
+// Keymap initializer function                                              //
+//////////////////////////////////////////////////////////////////////////////
 
 // Initializes a keymap from a list of key inputs.
 uint[char] keymap( string keylist = "" )
@@ -142,9 +146,9 @@ version( none )
 
 } // int[char] keymap( string )
 
-/////////////
-// Keymaps //
-/////////////
+// SECTION 3: ////////////////////////////////////////////////////////////////
+// Static variables used to store keymaps                                   //
+//////////////////////////////////////////////////////////////////////////////
 
 // A list of labels used to describe keymaps when selecting them.
 static string[] Keymap_labels;

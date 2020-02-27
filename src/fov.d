@@ -62,6 +62,11 @@ import global;
 
 import std.math: sqrt;
 
+// Arrays of integers used by the recursive shadowcasting algorithm.  I'll be
+// totally honest here, I (Philip Pavlick) have no idea what these do, but
+// they work.  For more information, see the link to the original recursive
+// shadowcasting article provided in the comment lines for the functions
+// below.
 static int[][] mult = [
   [1,0,0,-1,-1,0,0,1],
   [0,1,-1,0,0,-1,1,0],

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2015-2020 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,8 +28,8 @@
 
 import global;
 
-// the `symbol' struct, used to store information about symbols in the
-// game.
+// sym.d: defines structures used to store data for symbols used to represent
+// in-game objects like items, monsters, map tiles, &c
 
 /++
  + A struct used to store symbols

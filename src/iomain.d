@@ -30,17 +30,11 @@
 
 import global;
 
-/++
- + This interface is the skeleton for all of the different display modes.
- +
- + The various input/output modules for SwashRL are stored in classes which
- + inherit from this interface.  The interface itself defines certain
- + functions which are universal to all of the other modules.
- +
- + See_Also:
- +   <a href="iocurses.html">CursesIO</a>,
- +   <a href="ioterm.html">SDLTerminalIO</a>
- +/
+// This interface is the skeleton for all of the different display modes.
+//
+// The various input/output modules for SwashRL are stored in classes which
+// inherit from this interface.  The interface itself defines certain
+// functions which are universal to all of the other modules.
 interface SwashIO
 {
 
@@ -48,48 +42,28 @@ interface SwashIO
   // Setup & Cleanup //
   /////////////////////
 
-  /++
-   + Performs final cleanup functions for the input/output module, to close
-   + the display before exiting the program.
-   +/
+  // Performs final cleanup functions for the input/output module, to close
+  // the display before exiting the program.
   void cleanup();
 
-  /++
-   + Used to determine if the "close window" button has been pressed.
-   +
-   + This is only useful for the SDL interfaces, because the curses interface
-   + works in the terminal.
-   +
-   + The function is used to instruct the mainloop to close the program in the
-   + event that the player is trapped in an input loop.
-   +/
+  // Used to determine if the "close window" button has been pressed.
+  //
+  // This is only useful for the SDL interfaces, because the curses interface
+  // works in the terminal.
+  //
+  // The function is used to instruct the mainloop to close the program in the
+  // event that the player is trapped in an input loop.
   bool window_closed();
 
   ///////////
   // Input //
   ///////////
 
-  /// Gets a character input from the user and returns it
+  // Gets a character input from the user and returns it.
   char get_key();
 
-  /++
-   + Outputs a question to the user and returns a `char` result.
-   +
-   + This function is designed to function similarly to the old computer
-   + terminal prompts which would ask a yes/no question and then take in a y
-   + or an n for input.
-   +
-   + If assume_lower is `true`, the function will convert the input into a
-   + lowercase letter.  This should be used sparingly.
-   +
-   + Params:
-   +   question     = The question to be output to the user
-   +   options      = Possible answers for the user to give
-   +   assume_lower = Whether or not to convert user input to lowercase
-   +
-   + Returns:
-   +   A `char` from options which the user has selected
-   +/
+  // Outputs a question to the user and returns a `char` result based on their
+  // answer.
   char ask( string question, char[] options = ['y', 'n'],
             bool assume_lower = false );
 
@@ -97,100 +71,39 @@ interface SwashIO
   // Output //
   ////////////
 
-  /// Clears the screen
+  // Clears the screen.
   void clear_screen();
 
-  /// Refreshes the screen to reflect the changes made by the below `display`
-  /// functions
+  // Refreshes the screen to reflect the changes made by the below `display`
+  // functions.
   void refresh_screen();
 
-  /++
-   + Outputs a text character at the given coordinates with a certain color
-   +
-   + This is the basic "put charater here" function typical of a Roguelike
-   + game.  The default color value `CLR_NONE` will cause the function to use
-   + the "default color," usually gray.
-   +
-   + See_Also:
-   +   <a href="#SwashIO.put_line">put_line</a>,
-   +   <a href="#SwashIO.display">display</a>
-   +
-   + Params:
-   +   y     = The y coordinate to output c at
-   +   x     = The x coordinate to output c at
-   +   c     = The character to be output at (x, y)
-   +   color = The color to use when outputting c
-   +/
+  // Outputs a text character at the given coordinates.
   void put_char( uint y, uint x, char c,
                  Color color = Color( CLR_NONE, false ) );
 
-  /++
-   + The central display function
-   +
-   + This function displays a given `symbol` at the given coordinates.
-   +
-   + Because the `symbol` struct contains more information than a char, this
-   + function is more flexible than `put_char` and can even be used for full
-   + sprite graphics versions of SwashRL.
-   +
-   + If `center` is true, the program will make it a point to reposition the
-   + cursor at (x, y) after drawing.  This is only useful for the curses
-   + interfaces.
-   +
-   + See_Also:
-   +   <a href="#SwashIO.put_char">put_char</a>
-   +
-   + Params:
-   +   y      = The y coordinate to output s at
-   +   x      = The x coordinate to output s at
-   +   s      = The `symbol` to be drawn at (x, y)
-   +   center = Whether or not to explicitly recenter the cursor on top of the
-   +            drawn cursor
-   +/
+  // The central display function: displays a given symbol at the given
+  // coordinates.  Equivalent to `mvputch` in curses.
   void display( uint y, uint x, Symbol s, bool center = true );
 
-  /// Clears the current message off the message line
+  // Clears the current message off the message line.
   void clear_message_line();
 
-  /// Reads the player all of their messages one at a time
+  // Outputs all of the messages in the message queue.
   void read_messages();
 
-  /// Gives the player a menu containing their message history.
+  // Gives the player a menu containing their message history.
   void read_message_history();
 
-  /++
-   + Refreshes the status bar
-   +
-   + This function is used to update the status bar after every turn, to
-   + reflect changes to the player's stats.
-   +
-   + Params:
-   +   u = The `Player` whose stats are to be drawn to the status bar
-   +/
+  // Refreshes the status bar.
   void refresh_status_bar( Player* u );
 
   /////////////////////
   // Final Functions //
   /////////////////////
 
-  /++
-   + Takes in a `char` input from the player and returns a movement flag
-   + appropriate to the input
-   +
-   + This function uses `get_key` to take in an input from the player and then
-   + checks to see if it is a valid input command.  If it is, it returns a
-   + `uint` representing a movement flag as defined in moves.d.
-   +
-   + If the command is not contained in `Current_keymap` and is not one of the
-   + reserved standard commands, `MOVE_UNKNOWN` is returned to tell the
-   + mainloop to display a quick help message.
-   +
-   + See_Also:
-   +   <a href="#SwashIO.get_key">get_key</a>
-   +
-   + Returns:
-   +   A `uint` movement flag, defined in moves.d
-   +/
+  // Takes in a `char` input from the player and returns a movement flag
+  // appropriate to the input.
   final uint get_command()
   {
     char c = get_key();
@@ -250,29 +163,8 @@ interface SwashIO
 
   } // int get_command
 
-  /++
-   + Display the inventory screen and allow the user to remove items from
-   + their bag.
-   +
-   + This function will use `display_inventory` to draw the inventory screen
-   + and then take in user inputs to remove items from the bag and place them
-   + into an open hand on the equipment screen.
-   +
-   + Because this function needs to be able to draw the equipment screen in
-   + order to output error messages, it is given the ability to inform the
-   + `control_inventory` function not to re-draw the equipment screen.  It
-   + will return `true` if the equipment screen should be re-drawn after the
-   + player is finished managing their inventory.
-   +
-   + See_Also:  SwashIO.control_inventory
-   +
-   + Params:
-   +   u  A pointer to the `Player` whose inventory is being managed.
-   +
-   + Returns:
-   +   `true` if the calling function should redraw the equipment screen;
-   +   `false` otherwise.
-   +/
+  // Display the inventory screen and allow the user to move items from their
+  // bag into an equipment slot.
   final bool manage_inventory( Player* u )
   {
     import std.ascii: toLower;
@@ -388,41 +280,8 @@ interface SwashIO
 
   } // final bool manage_inventory( Player* )
 
-  /++
-   + Controls the equipment screen
-   +
-   + This function outputs the equipment screen and allows the player to
-   + manipulate their equipment and inventory through it.
-   +
-   + The specific details of how this function works are actually somewhat
-   + complicated and boring, but the jist of it is that each equipment slot
-   + is associated with an array index, which is given a line and a letter
-   + on the equipment screen.  When the player enters a key that matches that
-   + letter, that array index is "grabbed," and a second keypress will place
-   + that item on a new equipment slot, swapping it with a second item if
-   + necessary.
-   +
-   + This function will also perform checks using the `check_equip` function
-   + to ensure that the player does not place an inventory item on an
-   + inappropriate slot; for example, wearing a cuirass as a helmet.
-   +
-   + <strong>This function can kill the player if they commit seppukku on the
-   + equipment screen.</strong>
-   +
-   + Each time the player moves an inventory item from one equipment slot to
-   + another, a turn passes in the game.  Swapping two inventory items is
-   + counted as two turns.  The more items the player moves around, the more
-   + turns they will skip after the equipment screen is closed.
-   +
-   + See_Also:  SwashIO.manage_inventory
-   +
-   + Params:
-   +   u = The `Player` whose inventory is being controlled
-   +
-   + Returns:
-   +   A number of turns, as a `uint`, to be passed to the mainloop which the
-   +   player will skip after this function finishes.
-   +/
+  // Controls the equipment screen and returns the number of turns spent based
+  // on how many items are swapped around.
   final uint manage_equipment( Player* u )
   {
     import std.ascii: toLower;
@@ -700,18 +559,8 @@ discard_swap:
     return manage_equipment( u );
   }
 
-  /++
-   + Prints a `string` at the given coordinates
-   +
-   + This function has essentially the same function as `put_char`, except
-   + that it works to print a string.  It also doesn't take in a color value,
-   + as this is not the intended use of the function.
-   +
-   + Params:
-   +   y    = The y coordinate to print the message at
-   +   x    = The x coordinate to print the message at
-   +   args = Format arguments from which the message is generated
-   +/
+  // Prints a string at the given coordinates.  Equivalent to `mvprint` in
+  // curses.
   final void put_line( T... )( uint y, uint x, T args )
   {
     import std.string: format;
@@ -722,7 +571,7 @@ discard_swap:
     }
   }
 
-  /// Displays the "help" screen and waits for the player to clear it
+  // Displays the "help" screen and waits for the player to clear it.
   final void help_screen()
   {
     clear_screen();
@@ -755,18 +604,7 @@ discard_swap:
     get_key();
   } // void help_screen()
 
-  /++
-   + Uses `display` to draw the player
-   +
-   + This function doesn't require coordinate inputs, because the `Player`
-   + struct contains its own coordinates.
-   +
-   + See_Also:
-   +   <a href="#SwashIO.display">display</a>
-   +
-   + Params:
-   +   u = The `Player` to be displayed
-   +/
+  // Uses `display` to draw the player.
   final void display_player( Player u )
   {
     // if the player is wearing a "festive hat," display them in a special
@@ -783,39 +621,12 @@ discard_swap:
     else  display( u.y + 1, u.x, u.sym, true );
   }
 
-  /++
-   + Uses `display` to draw the given monster
-   +
-   + This function doesn't require coordinate inputs, because the `Monst`
-   + struct contains its own coordinates.
-   +
-   + <b>Note</b>:  This function <em>can not</em> check field-of-vision.
-   +
-   + See_Also:
-   +   <a href="#SwashIO.display">display</a>
-   +
-   + Params:
-   +   m = The `Monst` to be displayed
-   +/
+  // Uses `display` to draw the given monster.
   final void display_mon( Monst m )
   { display( m.y + 1, m.x, m.sym );
   }
 
-  /++
-   + Uses `display_mon` to display all monsters on the given map
-   +
-   + This function gets all of the monsters from the input `map` and draws
-   + <em>all of them</em>.
-   +
-   + Monsters that are not within the field-of-vision are not displayed.
-   +
-   + See_Also:
-   +   <a href="#SwashIO.display">display</a>,
-   +   <a href="#SwashIO.display_mon">display_mon</a>
-   +
-   + Params:
-   +   to_display = The map whose monsters we want to display
-   +/
+  // Uses `display_mon` to display all monsters on the given map.
   final void display_map_mons( Map to_display )
   {
     size_t d = to_display.m.length;
@@ -831,23 +642,7 @@ discard_swap:
     } /* foreach( c; 0 .. d ) */
   }
 
-  /++
-   + Uses `display` to draw all of the map tiles and items on the given map
-   +
-   + Color values and coordinates are taken from the `Map` struct that is
-   + passed into this function.
-   +
-   + Map tiles and items which are outside the field-of-view are not
-   + displayed, but map tiles which have already been seen by the player will
-   + be displayed with a shadow.
-   +
-   + See_Also:
-   +   <a href="#SwashIO.display">display</a>
-   +
-   + Params:
-   +   to_display = The map from which map `Tile`s and `Item`s are to be
-   +                displayed
-   +/
+  // Uses `display` to draw all of the map tiles and items on the given map.
   final void display_map( Map to_display )
   {
     foreach( y; 0 .. MAP_Y )
@@ -910,69 +705,23 @@ else
     } /* foreach( y; 0 .. MAP_Y ) */
   }
 
-  /++
-   + Uses `display_map` and `display_map_mons` to display all map tiles,
-   + items, and monsters.
-   +
-   + See_Also:
-   +   <a href="#SwashIO.display_map">display_map</a>,
-   +   <a href="#SwashIO.display_map_mons">display_map_mons</a>
-   +
-   + Params:
-   +   to_display = The map from which the monsters, tiles, and items are
-   +                taken to be displayed
-   +/
+  // Uses `display_map` and `display_map_mons` to display all map tiles,
+  // items, and monsters.
   final void display_map_all( Map to_display )
   {
     display_map( to_display );
     display_map_mons( to_display );
   }
 
-  /++
-   + Uses `display_map_all` and `display_player` to draw the full display
-   + including the map, items, monsters, and player
-   +
-   + See_Also:
-   +   <a href="#SwashIO.display_map_all">display_map_all</a>,
-   +   <a href="#SwashIO.display_player">display_player</a>
-   +
-   + Params:
-   +   to_display = The map from which the monsters, tiles, and items are
-   +                taken to be displayed
-   +   u          = The `player` character to be displayed
-   +/
+  // Uses `display_map_all` and `display_player` to draw the full play area
+  // including the map, items, monsters, and player.
   final void display_map_and_player( Map to_display, Player u )
   {
     display_map_all( to_display );
     display_player( u );
   }
 
-  /++
-   + Displays the equipment screen
-   +
-   + This is the key function used to display the equipment screen.  It draws
-   + The screen as a list of slots each marked with a letter indicating which
-   + key the player should push in order to interact with that equipment slot.
-   +
-   + If `grabbed` is given as a non-negative integer, that line will be marked
-   + as having been "grabbed" by the player, usually for the purposes of
-   + moving it to a new inventory slot or swapping two items.
-   +
-   + If `msg` is given as a non-empty string, that message will be displayed
-   + below the equipment screen.  This is normally done for error messages
-   + such as "there is no item there" or "you can not equip a %s there."  Note
-   + that this function will not format `msg` for you; if formatting must be
-   + done, it must be done before the string is passed into this function.
-   +
-   + See_Also: SwashIO.display_inventory
-   +
-   + Params:
-   +   u       A pointer to the `Player` whose inventory we are displaying.
-   +   grabbed An integer indicating which equipment slot has been "grabbed"
-   +           by the player prior to the screen being drawn.
-   +   msg     A message to be displayed to the player after drawing the
-   +           equipment screen.
-   +/
+  // Displays the equipment screen.
   final void display_equipment_screen( Player* u, int grabbed = -1,
                                        string msg = "" )
   {
@@ -1039,21 +788,7 @@ else
 
   } // final void display_equipment_screen( Player*(, int, string) )
 
-  /++
-   + Displays the inventory screen
-   +
-   + This function displays the player's inventory screen by placing each
-   + `Item` in the "bag slots" of its `Inventory` on a line with a character
-   + next to it to indicate what key the user should press to interact with
-   + that item.
-   +
-   + The inventory is not to be confused with the equipment screen.
-   +
-   + See_Also: SwashIO.display_equipment_screen
-   +
-   + Params:
-   +  u  A pointer to the `Player` whose inventory is being displayed.
-   +/
+  // Displays the inventory screen.
   final void display_inventory( Player* u )
   {
 

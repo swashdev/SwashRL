@@ -30,6 +30,10 @@
 
 import global;
 
+// SECTION 0: ////////////////////////////////////////////////////////////////
+// Not The Mainloop                                                         //
+//////////////////////////////////////////////////////////////////////////////
+
 import std.string;
 import std.getopt;
 import std.stdio : writeln;
@@ -40,9 +44,32 @@ import std.file;
 import std.datetime.systime;
 import std.datetime : Month;
 
+// Global Values & Configuration /////////////////////////////////////////////
+
 static Map Current_map;
 static uint Current_level;
 static SwashIO IO;
+
+// An enum representing valid values for `SDL_Mode`.
+enum SDL_MODES { none, terminal, full };
+
+// Used to determine how the SDL interface will behave, or if it will be
+// foregone in favor of the curses interface.
+static SDL_MODES SDL_Mode = SDL_ENABLED ? SDL_MODES.terminal : SDL_MODES.none;
+
+// These functions all act as shortcuts for the phrase
+// `SDL_Mode == SDL_MODES.*`
+bool SDL_none()
+{ return SDL_Mode == SDL_MODES.none;
+}
+bool SDL_terminal()
+{ return SDL_Mode == SDL_MODES.terminal;
+}
+bool SDL_full()
+{ return SDL_terminal();
+}
+
+// Utility Functions for Main ////////////////////////////////////////////////
 
 // Returns the version number as a string.
 string sp_version()
@@ -86,34 +113,26 @@ debug
   return "";
 }
 
-// An enum representing valid values for `SDL_Mode`.
-enum SDL_MODES { none, terminal, full };
-
-// Used to determine how the SDL interface will behave, or if it will be
-// foregone in favor of the curses interface.
-static SDL_MODES SDL_Mode = SDL_ENABLED ? SDL_MODES.terminal : SDL_MODES.none;
-
-// These functions all act as shortcuts for the phrase
-// `SDL_Mode == SDL_MODES.*`
-bool SDL_none()
-{ return SDL_Mode == SDL_MODES.none;
-}
-bool SDL_terminal()
-{ return SDL_Mode == SDL_MODES.terminal;
-}
-bool SDL_full()
-{ return SDL_terminal();
-}
-
-// Main:
 int main( string[] args )
 {
+
+// SECTION 1: ////////////////////////////////////////////////////////////////
+// Initialization                                                           //
+//////////////////////////////////////////////////////////////////////////////
+
   bool disp_version = false;
   string saved_lev;
 
   bool gen_map = false;
 
-  // use getopt to get command-line arguments
+  uint moved = 0;
+  int mv = 5;
+
+  // Command-Line Arguments //////////////////////////////////////////////////
+
+  // Get the name of the executable:
+  string Name = args[0];
+
   auto clarguments = getopt( args,
     // v, display the version number and then exit
     "v",        &disp_version,
@@ -138,9 +157,6 @@ int main( string[] args )
     "spispopd", &Noclip,
     "eoa",      &No_shadows
   );
-
-  // Get the name of the executable:
-  string Name = args[0];
 
   if( clarguments.helpWanted )
   {
@@ -175,6 +191,8 @@ You are running %s version %s",
 
   //clear_messages();
 
+  // Activate Cheat / Debug Modes ////////////////////////////////////////////
+
   // If all we're doing is a quick mapgen, turn on the Silent Cartographer and
   // ignore the rest.
   if( gen_map )  No_shadows = true;
@@ -199,7 +217,7 @@ You are running %s version %s",
 
   } // else from `if( gen_map )`
 
-  seed();
+  // Initialize Input / Output ///////////////////////////////////////////////
 
   // Check to make sure the SDL_Mode does not conflict with the way SwashRL
   // was compiled:
@@ -233,6 +251,12 @@ version( sdl )
   }
 }
 
+  // Initialize Random Number Generator //////////////////////////////////////
+
+  seed();
+
+  // Map Generator ///////////////////////////////////////////////////////////
+
   // Do the sample mapgen:
   if( gen_map )  Current_map = generate_new_map();
   else
@@ -263,9 +287,10 @@ Try compiling with dub build -b debug" );
 
   } // else from `if( gen_map )`
 
+  // Initialize Keymaps //////////////////////////////////////////////////////
+
   try
   {
-    // Initialize keymaps
     Keymaps = [ keymap(), keymap( "ftgdnxhb.ie,pP S" ) ];
     Keymap_labels = ["Standard", "Dvorak"];
   }
@@ -278,7 +303,8 @@ Try compiling with dub build -b debug" );
   // Assign default keymap
   Current_keymap = 0;
 
-  // Initialize the player
+  // Initialize the Player ///////////////////////////////////////////////////
+
   Monst u = init_player( Current_map.player_start[0],
                          Current_map.player_start[1] );
 
@@ -288,7 +314,8 @@ Try compiling with dub build -b debug" );
   { u.sym = symdata( SMILEY, Color( CLR_WHITE, HILITE_PLAYER ) );
   }
 
-  // Initialize the fog of war
+  // Initialize Field-of-Vision //////////////////////////////////////////////
+
   if( !No_shadows )
   { calc_visible( &Current_map, u.x, u.y );
   }
@@ -304,8 +331,7 @@ Try compiling with dub build -b debug" );
     }
   }
 
-  uint moved = 0;
-  int mv = 5;
+  // Initial Display /////////////////////////////////////////////////////////
 
   // If we're just doing a map gen, there's no need to display anything else
   if( gen_map )
@@ -328,17 +354,28 @@ Try compiling with dub build -b debug" );
   // Fill in the message line
   IO.clear_message_line();
 
-  // Greet the player
+  // Greet the Player ////////////////////////////////////////////////////////
+
   message( "%sWelcome back to SwashRL!", greet_player() );
   IO.read_messages();
+
+// Section 2: ////////////////////////////////////////////////////////////////
+// The Main Loop                                                            //
+//////////////////////////////////////////////////////////////////////////////
+
   while( u.hp > 0 )
   {
+
+    // Input /////////////////////////////////////////////////////////////////
+
     if( IO.window_closed() ) goto abrupt_quit;
 
     moved = 0;
     mv = IO.get_command();
 
     if( IO.window_closed() ) goto abrupt_quit;
+
+    // The Player's Turn(s) //////////////////////////////////////////////////
 
     switch( mv )
     {
@@ -439,6 +476,9 @@ Try compiling with dub build -b debug" );
         }
         break;
     }
+
+    // The Monsters' Turn(s) /////////////////////////////////////////////////
+
     if( moved > 0 )
     {
       while( moved > 0 )
@@ -452,22 +492,39 @@ Try compiling with dub build -b debug" );
       IO.refresh_status_bar( &u );
       IO.display_map_and_player( Current_map, u );
     }
+
+    // Check Messages ////////////////////////////////////////////////////////
+
     if( !Messages.empty() )
     { IO.read_messages();
     }
+
+    // Refresh the Player ////////////////////////////////////////////////////
+
     if( u.hp > 0 )
     { IO.display_player( u );
     }
     else
     { break;
     }
+
+    // Refresh the Display ///////////////////////////////////////////////////
+
     IO.refresh_screen();
   }
+
+// SECTION 3: ////////////////////////////////////////////////////////////////
+// Closing the Program                                                      //
+//////////////////////////////////////////////////////////////////////////////
+
+  // Handle Player Death /////////////////////////////////////////////////////
 
 playerdied:
 
   IO.display( u.y + 1, u.x, symdata( SMILEY, Color( CLR_DARKGRAY, false ) ),
               true );
+
+  // Say Goodbye /////////////////////////////////////////////////////////////
 
 playerquit:
 
@@ -478,6 +535,8 @@ playerquit:
   // Wait for the user to press any key and then close the graphical mode and
   // quit the program.
   IO.get_key();
+
+  // Final Cleanup ///////////////////////////////////////////////////////////
 
 skip_main:
 abrupt_quit:

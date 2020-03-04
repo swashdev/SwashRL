@@ -32,6 +32,10 @@
 import global;
 import std.string : format;
 
+// SECTION 1: ////////////////////////////////////////////////////////////////
+// Monster Generation Templates                                             //
+//////////////////////////////////////////////////////////////////////////////
+
 // A struct containing data used to generate monsters from a template.
 struct Mon
 {
@@ -57,6 +61,10 @@ Mon mondat( char isym, string iname, uint ifly, uint iswim,
   return mn;
 }
 
+// SECTION 2: ////////////////////////////////////////////////////////////////
+// Monster Data                                                             //
+//////////////////////////////////////////////////////////////////////////////
+
 // A struct used to store `Monst`er data.  Note that, unlike with items,
 // monsters store their own map coordinates.
 struct Monst
@@ -69,30 +77,6 @@ struct Monst
   Dicebag attack_roll;
   ubyte x, y;
   Inven inventory;
-}
-
-// Generates a monster at the given coordinates, using the given `Mon`
-// template
-Monst monster_at( Mon mn, ubyte x, ubyte y )
-{
-  Monst mon = { sym:mn.sym, name:mn.name, fly:mn.fly, swim:mn.swim,
-                hp:roll( mn.hit_dice.dice, mn.hit_dice.modifier ),
-                attack_roll:mn.attack_roll,
-                x:x, y:y
-              };
-
-  foreach( count; 0 .. 40 )
-  { mon.inventory.items[count] = No_item;
-  }
-
-  return mon;
-}
-
-// Generates a monster using the given `Mon` template.  Note that this
-// function will place the monster at coordinates (0,0), which is an invalid
-// location in the current SwashRL maps.
-Monst monster( Mon mn )
-{ return monster_at( mn, 0, 0 );
 }
 
 // Generates a new `Monst` at the given coordinates.
@@ -126,6 +110,36 @@ Monst new_monst( char isym, string iname, uint ifly, uint iswim,
                        0, 0
                      );
 }
+
+// Generating Monsters from Templates ////////////////////////////////////////
+
+// Generates a monster at the given coordinates, using the given `Mon`
+// template.
+Monst monster_at( Mon mn, ubyte x, ubyte y )
+{
+  Monst mon = { sym:mn.sym, name:mn.name, fly:mn.fly, swim:mn.swim,
+                hp:roll( mn.hit_dice.dice, mn.hit_dice.modifier ),
+                attack_roll:mn.attack_roll,
+                x:x, y:y
+              };
+
+  foreach( count; 0 .. 40 )
+  { mon.inventory.items[count] = No_item;
+  }
+
+  return mon;
+} 
+
+// Generates a monster using the given `Mon` template.  Note that this
+// function will place the monster at coordinates (0,0), which is an invalid
+// location in the current SwashRL maps.
+Monst monster( Mon mn )
+{ return monster_at( mn, 0, 0 );
+}
+
+// SECTION 3: ////////////////////////////////////////////////////////////////
+// Accessing Monster Data                                                   //
+//////////////////////////////////////////////////////////////////////////////
 
 // Returns the monster's name.  If the monster is identified as the player,
 // returns "you".  This function is used for formatting messages.

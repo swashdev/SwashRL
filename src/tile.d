@@ -33,27 +33,25 @@ import global;
 // A struct for storing map tile data.
 struct Tile
 {
-  // the tile's symbol--this can be easily overwritten by functions intended
-  // to change the properties of the tile
+  // The symbol used to represent this map tile.
   Symbol sym;
   
-  // attribute booleans
-  // block_cardinal_movement and block_diagonal_movement do exactly what it
-  // says on the tin.  The reason these are separated is because we need
-  // some tiles to block only diagonal movement (like doors).
+  // Cardinal and diagonal movement are blocked separately beacuse some map
+  // tiles like doors only block diagonal movement.
   bool block_cardinal_movement;
   bool block_diagonal_movement;
 
-  // blocks *all* vision going through the tile
+  // Disable seeing through this tile.
   bool block_vision;
 
-  // determine if the tile is lit
+  // Determines if the tile is illuminated.
   bool lit;
 
-  // determine if the player has seen this tile before
+  // Determine if the player has seen this tile (in NetHack this is called
+  // "memory.")
   bool seen;
 
-  // a bitmask to determine if there are any hazards on this tile; use this
+  // A bitmask to determine if there are any hazards on this tile; use this
   // carefully, as some hazards might conflict (can't have a pit and a pool of
   // water on the same tile!)
   // note: this flag could potentially be used for other special tiles, not

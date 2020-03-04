@@ -35,6 +35,10 @@ import std.format;
 import std.file;
 import std.exception : basicExceptionCtors;
 
+// SECTION 0: ////////////////////////////////////////////////////////////////
+// Exceptions & Error Handling                                              //
+//////////////////////////////////////////////////////////////////////////////
+
 // An exception for invalid save file access.
 class SaveFileException : Exception
 {
@@ -62,33 +66,9 @@ void level_file_error( T... )( string dungeon_file, T args )
     dungeon_file, format( args ) ) );
 }
 
-// Opens a level from a file.
-File open_level( T... )( T args )
-{
-  string path = format( "save/lev/%s.lev", format( args ) );
-
-  // Check if the file exists; if it doesn't, throw an exception
-  if( !exists( path ) )
-  { level_file_error( path, "File does not exist." );
-  }
-
-  if( !isFile( path ) )
-  { level_file_error( path, "This is a directory or symlink, not a file" );
-  }
-
-  File ret;
-
-  try
-  {
-    ret = File( path, "r" );
-  }
-  catch( FileException e )
-  {
-    level_file_error( path, e.msg );
-  }
-
-  return ret;
-}
+// SECTION 1: ////////////////////////////////////////////////////////////////
+// Saving to a File                                                         //
+//////////////////////////////////////////////////////////////////////////////
 
 // Saves a level to a file.
 void save_level( T... )( Map m, Player u, T args )
@@ -285,6 +265,39 @@ void save_level( T... )( Map m, Player u, T args )
   // We're done.
   fil.close();
 } // save_level( map, player, uint )
+
+// SECTION 2: ////////////////////////////////////////////////////////////////
+// Loading from a Saved File                                                //
+//////////////////////////////////////////////////////////////////////////////
+
+// Opens a level from a file.
+// DEPRECATED?  I'm not sure.  Future me, investigate XXX
+File open_level( T... )( T args )
+{
+  string path = format( "save/lev/%s.lev", format( args ) );
+
+  // Check if the file exists; if it doesn't, throw an exception
+  if( !exists( path ) )
+  { level_file_error( path, "File does not exist." );
+  }
+
+  if( !isFile( path ) )
+  { level_file_error( path, "This is a directory or symlink, not a file" );
+  }
+
+  File ret;
+
+  try
+  {
+    ret = File( path, "r" );
+  }
+  catch( FileException e )
+  {
+    level_file_error( path, e.msg );
+  }
+
+  return ret;
+}
 
 // Get a saved level from a file.
 Map level_from_file( string file_label )

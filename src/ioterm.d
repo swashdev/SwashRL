@@ -39,6 +39,10 @@ import std.string : toStringz;
 import std.format;
 import std.ascii : toLower;
 
+// SECTION 0: ////////////////////////////////////////////////////////////////
+// Exceptions & Error Handling                                              //
+//////////////////////////////////////////////////////////////////////////////
+
 // An exception used for catching errors when initializing or working with
 // SDL.
 class SDLException : Exception
@@ -58,6 +62,10 @@ void sdl_error( string error = "" )
 // terminal" display.  See iomain.d for the SwashIO interface.
 class SDLTerminalIO : SwashIO
 {
+
+// SECTION 1: ////////////////////////////////////////////////////////////////
+// Setup & Cleanup                                                          //
+//////////////////////////////////////////////////////////////////////////////
 
   // The SDL window itself.
   SDL_Window* window;
@@ -82,10 +90,6 @@ class SDLTerminalIO : SwashIO
   enum tile_height = TILE_HEIGHT;
 
   bool close_button_pressed = false;
-
-  /////////////////////
-  // Setup & Cleanup //
-  /////////////////////
 
   // This constructor will initialize the SDL window.
   this()
@@ -149,11 +153,6 @@ class SDLTerminalIO : SwashIO
     }
   }
 
-  // Used to determine if the "close window" button has been pressed.
-  bool window_closed()
-  { return close_button_pressed;
-  }
-
   // Final clearing of the display before the game is closed.
   void cleanup()
   {
@@ -169,9 +168,14 @@ class SDLTerminalIO : SwashIO
     SDL_Quit();
   }
 
-  //////////////////////////////////
-  // SDL-specific setup functions //
-  //////////////////////////////////
+  // Used to determine if the "close window" button has been pressed.
+  bool window_closed()
+  { return close_button_pressed;
+  }
+
+// SECTION 2: ////////////////////////////////////////////////////////////////
+// SDL Utility Functions                                                    //
+//////////////////////////////////////////////////////////////////////////////
 
   // The following code was cannibalized from Elronnd's SmugglerRL project:
 
@@ -306,9 +310,9 @@ class SDLTerminalIO : SwashIO
     } // switch( color )
   } // SDL_Color to_SDL_Color( ubyte )
 
-  ///////////
-  // Input //
-  ///////////
+// SECTION 3: ////////////////////////////////////////////////////////////////
+// Input                                                                    //
+//////////////////////////////////////////////////////////////////////////////
 
   // Gets a character input from the user and returns it.
   char get_key()
@@ -382,9 +386,31 @@ class SDLTerminalIO : SwashIO
     }
   }
 
-  ////////////
-  // Output //
-  ////////////
+// SECTION 4: ////////////////////////////////////////////////////////////////
+// Output                                                                   //
+//////////////////////////////////////////////////////////////////////////////
+
+  // General Output //////////////////////////////////////////////////////////
+
+  // Clears the screen.
+  void clear_screen()
+  {
+    SDL_SetRenderTarget( renderer, frame_buffer );
+    SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+    SDL_RenderClear( renderer );
+  }
+
+  // Refreshes the screen to reflect the changes made by the below output
+  // functions. (cannibalized from SmugglerRL)
+  void refresh_screen()
+  {
+    // Set the `renderer' back on the screen itself to copy the contents of
+    // `frame_buffer' to the buffer before blitting everything
+    SDL_SetRenderTarget( renderer, null );
+    SDL_RenderCopy( renderer, frame_buffer, null, null );
+
+    SDL_RenderPresent( renderer );
+  }
 
   // Outputs a text character at the given coordinates.
   void put_char( uint y, uint x, char c,
@@ -452,6 +478,31 @@ class SDLTerminalIO : SwashIO
     // (end cannibalized code)
   }
 
+  // The central `display' function.  Displays a given `symbol' at given
+  // coordinates.  The `center` parameter has no effect in SDL.
+  void display( uint y, uint x, Symbol s, bool center = true )
+  {
+    put_char( y, x, s.ch,
+              COLOR ? s.color : Color( CLR_GRAY, s.color.reverse ) );
+  }
+
+  // The Message Line ////////////////////////////////////////////////////////
+
+  // Cover the message line with a black rectangle.
+  void clear_message_line()
+  {
+    SDL_Rect rect;
+    rect.y = rect.x = 0;
+    rect.w = tile_width * MAP_X;
+    rect.h = tile_height;
+
+    SDL_SetRenderTarget( renderer, frame_buffer );
+
+    SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+
+    SDL_RenderFillRect( renderer, &rect );
+  }
+
   // Reads the player all of their messages one at a time
   void read_messages()
   {
@@ -510,6 +561,8 @@ class SDLTerminalIO : SwashIO
     cur_tileset = tileset;
   }
 
+  // The Status Bar //////////////////////////////////////////////////////////
+
   // Refreshes the status bar
   void refresh_status_bar( Player* u )
   {
@@ -530,49 +583,6 @@ class SDLTerminalIO : SwashIO
     // We're done displaying messages, so set the current tileset back to the
     // default `tileset':
     cur_tileset = tileset;
-  }
-
-  // Refreshes the screen to reflect the changes made by the below output
-  // functions. (cannibalized from SmugglerRL)
-  void refresh_screen()
-  {
-    // Set the `renderer' back on the screen itself to copy the contents of
-    // `frame_buffer' to the buffer before blitting everything
-    SDL_SetRenderTarget( renderer, null );
-    SDL_RenderCopy( renderer, frame_buffer, null, null );
-
-    SDL_RenderPresent( renderer );
-  }
-
-  // Clears the screen.
-  void clear_screen()
-  {
-    SDL_SetRenderTarget( renderer, frame_buffer );
-    SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
-    SDL_RenderClear( renderer );
-  }
-
-  // Cover the message line with a black rectangle.
-  void clear_message_line()
-  {
-    SDL_Rect rect;
-    rect.y = rect.x = 0;
-    rect.w = tile_width * MAP_X;
-    rect.h = tile_height;
-
-    SDL_SetRenderTarget( renderer, frame_buffer );
-
-    SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
-
-    SDL_RenderFillRect( renderer, &rect );
-  }
-
-  // The central `display' function.  Displays a given `symbol' at given
-  // coordinates.  The `center` parameter has no effect in SDL.
-  void display( uint y, uint x, Symbol s, bool center = true )
-  {
-    put_char( y, x, s.ch,
-              COLOR ? s.color : Color( CLR_GRAY, s.color.reverse ) );
   }
 } // class SDLTerminalIO
 

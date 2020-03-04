@@ -26,6 +26,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+// main.d: The mainfile for the computer game SwashRL.
+
 import global;
 
 import std.string;

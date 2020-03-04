@@ -43,9 +43,9 @@ import std.string : format;
 class CursesIO : SwashIO
 {
 
-  //////////////////
-  // Constructors //
-  //////////////////
+// SECTION 1: ////////////////////////////////////////////////////////////////
+// Setup & Cleanup                                                          //
+//////////////////////////////////////////////////////////////////////////////
 
   // This constructor will initialize the curses window.
   this( ubyte screen_size_vertical = 24, ubyte screen_size_horizontal = 80 )
@@ -78,10 +78,6 @@ static if( COLOR )
 }
   }
 
-  /////////////////////
-  // Setup & Cleanup //
-  /////////////////////
-
   // Close the curses window.
   void cleanup()
   { endwin();
@@ -93,51 +89,9 @@ static if( COLOR )
   { return false;
   }
 
-  ///////////
-  // Input //
-  ///////////
-
-  // Gets a character input from the user and returns it.
-  char get_key()
-  { return cast(char)getch();
-  }
-
-  // Outputs a question to the user and returns a `char` result based on their
-  // answer.
-  char ask( string question, char[] options = ['y', 'n'],
-            bool assume_lower = false )
-  {
-    clear_message_line();
-    char[] q = (question ~ " [").dup;
-    foreach( c; 0 .. options.length )
-    {
-      q ~= options[c];
-      if( c + 1 < options.length )
-      { q ~= '/';
-      }
-    }
-    q ~= ']';
-
-    put_line( 0, 0, q );
-    refresh_screen();
-
-    char answer = '\0';
-
-    while( true )
-    {
-      answer = get_key();
-
-      if( assume_lower ) answer = toLower( answer );
-
-      foreach( c; 0 .. options.length )
-      { if( answer == options[c] ) return answer;
-      }
-    }
-  }
-
-  ////////////
-  // Output //
-  ////////////
+// SECTION 2: ////////////////////////////////////////////////////////////////
+// Curses Utility Functions                                                 //
+//////////////////////////////////////////////////////////////////////////////
 
   // Takes in a color flag and returns a curses-style `attr_t' representing
   // that color.
@@ -201,6 +155,65 @@ static if( COLOR )
     } // switch( color )
   } // attr_t get_color( ubyte color )
 
+// SECTION 3: ////////////////////////////////////////////////////////////////
+// Input                                                                    //
+//////////////////////////////////////////////////////////////////////////////
+
+  // Gets a character input from the user and returns it.
+  char get_key()
+  { return cast(char)getch();
+  }
+
+  // Outputs a question to the user and returns a `char` result based on their
+  // answer.
+  char ask( string question, char[] options = ['y', 'n'],
+            bool assume_lower = false )
+  {
+    clear_message_line();
+    char[] q = (question ~ " [").dup;
+    foreach( c; 0 .. options.length )
+    {
+      q ~= options[c];
+      if( c + 1 < options.length )
+      { q ~= '/';
+      }
+    }
+    q ~= ']';
+
+    put_line( 0, 0, q );
+    refresh_screen();
+
+    char answer = '\0';
+
+    while( true )
+    {
+      answer = get_key();
+
+      if( assume_lower ) answer = toLower( answer );
+
+      foreach( c; 0 .. options.length )
+      { if( answer == options[c] ) return answer;
+      }
+    }
+  }
+
+// SECTION 4: ////////////////////////////////////////////////////////////////
+// Output                                                                   //
+//////////////////////////////////////////////////////////////////////////////
+
+  // General Output //////////////////////////////////////////////////////////
+
+  // Clears the screen.
+  void clear_screen()
+  { clear();
+  }
+
+  // Refreshes the screen to reflect the changes made by the below `display`
+  // functions.
+  void refresh_screen()
+  { refresh();
+  }
+
   // Outputs a text character at the given coordinates.
   void put_char( uint y, uint x, char c,
                  Color color = Color( CLR_NONE, false ) )
@@ -229,12 +242,37 @@ static if( COLOR )
 }
   }
 
+  // The central display function.  If `center` is true, the cursor will be
+  // moved over the place where the symbol was output.
+  void display( uint y, uint x, Symbol s, bool center = false )
+  {
+    put_char( y, x, s.ch,
+              COLOR ? s.color : Color( CLR_GRAY, s.color.reverse ) );
+
+    if( center )
+    { move( y, x );
+    }
+  }
+
   // Prints a string at the given coordinates.
   void put_line( T... )( uint y, uint x, T args )
   {
     import std.string : toStringz;
     string output = format( args );
     mvprintw( y, x, toStringz( output ) );
+  }
+
+  // The Message Line ////////////////////////////////////////////////////////
+
+  // Clears the current message off the message line.
+  void clear_message_line()
+  {
+    foreach( y; 0 .. MESSAGE_BUFFER_LINES )
+    {
+      foreach( x; 0 .. MAP_X )
+      { put_char( y, x, ' ' );
+      }
+    }
   }
 
   // Outputs all of the messages in the message queue.
@@ -279,6 +317,8 @@ static if( COLOR )
     clear_message_line();
   }
 
+  // The Status Bar //////////////////////////////////////////////////////////
+
   // Refreshes the status bar.
   void refresh_status_bar( Player* u )
   {
@@ -291,40 +331,6 @@ static if( COLOR )
     }
     put_line( 1 + MAP_Y, 0, "HP: %d    Attack: %ud %c %u",
               hp, dice, mod >= 0 ? '+' : '-', mod * ((-1) * mod < 0) );
-  }
-
-  // Refreshes the screen to reflect the changes made by the below `display`
-  // functions.
-  void refresh_screen()
-  { refresh();
-  }
-
-  // Clears the screen.
-  void clear_screen()
-  { clear();
-  }
-
-  // Clears the current message off the message line.
-  void clear_message_line()
-  {
-    foreach( y; 0 .. MESSAGE_BUFFER_LINES )
-    {
-      foreach( x; 0 .. MAP_X )
-      { put_char( y, x, ' ' );
-      }
-    }
-  }
-
-  // The central display function.  If `center` is true, the cursor will be
-  // moved over the place where the symbol was output.
-  void display( uint y, uint x, Symbol s, bool center = false )
-  {
-    put_char( y, x, s.ch,
-              COLOR ? s.color : Color( CLR_GRAY, s.color.reverse ) );
-
-    if( center )
-    { move( y, x );
-    }
   }
 
 } // class CursesIO

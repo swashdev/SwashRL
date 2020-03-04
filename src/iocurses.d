@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2015-2020 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-// Defines the interface for functions related to program output for the
-// curses interface.
+// iocurses.d: defines the interface for functions related to program output
+// for the curses interface.
 
 version( curses )
 {
@@ -38,15 +38,8 @@ import std.string : toStringz;
 import std.ascii : toLower;
 import std.string : format;
 
-/++
- + This class contains functions for the curses display
- +
- + These functions should all be cross-compatible between pdcurses and ncurses
- + since they don't do anything fancy or complicated.
- +
- + See_Also:
- +   <a href="iomain.html">SwashIO</a>
- +/
+// This class contains functions for the curses display.  See iomain.d for the
+// SwashIO interface.
 class CursesIO : SwashIO
 {
 
@@ -54,14 +47,7 @@ class CursesIO : SwashIO
   // Constructors //
   //////////////////
 
-  /++
-   + The constructor for the CursesIO class
-   +
-   + The parameters don't actually do anything, but are placeholder values to
-   + make the SwashIO() constructor work with both CursesIO and SDLTerminalIO.
-   +
-   + If `COLOR` is turned on, curses color pairs will be defined here.
-   +/
+  // This constructor will initialize the curses window.
   this( ubyte screen_size_vertical = 24, ubyte screen_size_horizontal = 80 )
   {
     // Initializing curses
@@ -96,31 +82,13 @@ static if( COLOR )
   // Setup & Cleanup //
   /////////////////////
 
-  /++
-   + Performs final cleanup functions for the input/output module, to close
-   + the display before exiting the program.
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.cleanup">SwashIO.cleanup</a>
-   +/
+  // Close the curses window.
   void cleanup()
   { endwin();
   }
 
-  /++
-   + Used to determine if the "close window" button has been pressed.
-   +
-   + This function has no purpose for the curses interface because the curses
-   + interface is run from the terminal.  This function only exists because
-   + it's necessary for the `SwashIO` class to contain it in order for the
-   + `SDLTerminalIO` class to use it in the mainloop.
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.window_closed">SwashIO.window_closed</a>
-   +
-   + Returns:
-   +   `false`
-   +/
+  // This function has no practical purpose and is only required because the
+  // SwashIO interface must define it for SDL compatibility.
   bool window_closed()
   { return false;
   }
@@ -129,22 +97,13 @@ static if( COLOR )
   // Input //
   ///////////
 
-  /++
-   + Gets a character input from the user and returns it
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.get_key">SwashIO.get_key</a>
-   +/
+  // Gets a character input from the user and returns it.
   char get_key()
   { return cast(char)getch();
   }
 
-  /++
-   + Outputs a question to the user and returns a `char` result.
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.ask">SwashIO.ask</a>
-   +/
+  // Outputs a question to the user and returns a `char` result based on their
+  // answer.
   char ask( string question, char[] options = ['y', 'n'],
             bool assume_lower = false )
   {
@@ -180,24 +139,8 @@ static if( COLOR )
   // Output //
   ////////////
 
-  // Takes in a `color' and returns a curses-style `attr_t' representing that
-  // color
-  /++
-   + Takes in a color value and returns a curses-style `attr_t`
-   +
-   + This function converts the color flags defined in color.d to a
-   + `COLOR_PAIR` that curses can use.
-   +
-   + See_Also:
-   +   <a href="ioterm.html#SDLTerminalIO.to_SDL_Color">SDLTerminalIO.to_SDL_Color</a>
-   +
-   + Params:
-   +   color = The color to be converted
-   +
-   + Returns:
-   +   An `attr_t` which can be used to activate colors in the curses
-   +   interface
-   +/
+  // Takes in a color flag and returns a curses-style `attr_t' representing
+  // that color.
   attr_t get_color( uint color )
   {
     switch( color )
@@ -258,12 +201,7 @@ static if( COLOR )
     } // switch( color )
   } // attr_t get_color( ubyte color )
 
-  /++
-   + Outputs a text character at the given coordinates with a certain color
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.put_char">SwashIO.put_char</a>
-   +/
+  // Outputs a text character at the given coordinates.
   void put_char( uint y, uint x, char c,
                  Color color = Color( CLR_NONE, false ) )
   {
@@ -291,12 +229,7 @@ static if( COLOR )
 }
   }
 
-  /++
-   + Prints a `string` at the given coordinates
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.put_line">SwashIO.put_line</a>
-   +/
+  // Prints a string at the given coordinates.
   void put_line( T... )( uint y, uint x, T args )
   {
     import std.string : toStringz;
@@ -304,12 +237,7 @@ static if( COLOR )
     mvprintw( y, x, toStringz( output ) );
   }
 
-  /++
-   + Reads the player all of their messages one at a time
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.read_messages">SwashIO.read_messages</a>
-   +/
+  // Outputs all of the messages in the message queue.
   void read_messages()
   {
     while( !Messages.empty() )
@@ -325,13 +253,7 @@ static if( COLOR )
     }
   }
 
-  // 
-  /++
-   + Gives the player a menu containing their message history.
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.read_message_history">SwashIO.read_message_history</a>
-   +/
+  // Gives the player a menu containing their message history.
   void read_message_history()
   {
     clear_screen();
@@ -357,12 +279,7 @@ static if( COLOR )
     clear_message_line();
   }
 
-  /++
-   + Refreshes the status bar
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.refresh_status_bar">SwashIO.refresh_status_bar</a>
-   +/
+  // Refreshes the status bar.
   void refresh_status_bar( Player* u )
   {
     int hp = u.hp;
@@ -376,33 +293,18 @@ static if( COLOR )
               hp, dice, mod >= 0 ? '+' : '-', mod * ((-1) * mod < 0) );
   }
 
-  /++
-   + Refreshes the screen to reflect the changes made by the below `display`
-   + functions
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.refresh_screen">SwashIO.refresh_screen</a>
-   +/
+  // Refreshes the screen to reflect the changes made by the below `display`
+  // functions.
   void refresh_screen()
   { refresh();
   }
 
-  /++
-   + Clears the screen
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.clear_screen">SwashIO.clear_screen</a>
-   +/
+  // Clears the screen.
   void clear_screen()
   { clear();
   }
 
-  /++
-   + Clears the current message off the message line
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.clear_message_line">SwashIO.clear_message_line</a>
-   +/
+  // Clears the current message off the message line.
   void clear_message_line()
   {
     foreach( y; 0 .. MESSAGE_BUFFER_LINES )
@@ -413,12 +315,8 @@ static if( COLOR )
     }
   }
 
-  /++
-   + The central display function
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.display">SwashIO.display</a>
-   +/
+  // The central display function.  If `center` is true, the cursor will be
+  // moved over the place where the symbol was output.
   void display( uint y, uint x, Symbol s, bool center = false )
   {
     put_char( y, x, s.ch,

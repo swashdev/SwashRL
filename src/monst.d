@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2015-2020 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-// Defines structs and functions related to monsters and monster generation
-// data
+// monst.d: defines structs and functions related to monsters and monster
+// generation
 
 import global;
 import std.string : format;

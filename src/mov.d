@@ -27,8 +27,6 @@
  */
 
 // mov.d:  Functions related to player and monster movement
-// TODO:  Allow the player to be represented by a `monst` to allow some of
-// these functions to be deprecated
 
 import global;
 

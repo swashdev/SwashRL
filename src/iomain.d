@@ -38,9 +38,9 @@ import global;
 interface SwashIO
 {
 
-  /////////////////////
-  // Setup & Cleanup //
-  /////////////////////
+// SECTION 1: ////////////////////////////////////////////////////////////////
+// Setup & Cleanup                                                          //
+//////////////////////////////////////////////////////////////////////////////
 
   // Performs final cleanup functions for the input/output module, to close
   // the display before exiting the program.
@@ -55,9 +55,9 @@ interface SwashIO
   // event that the player is trapped in an input loop.
   bool window_closed();
 
-  ///////////
-  // Input //
-  ///////////
+// SECTION 2: ////////////////////////////////////////////////////////////////
+// Input                                                                    //
+//////////////////////////////////////////////////////////////////////////////
 
   // Gets a character input from the user and returns it.
   char get_key();
@@ -67,9 +67,11 @@ interface SwashIO
   char ask( string question, char[] options = ['y', 'n'],
             bool assume_lower = false );
 
-  ////////////
-  // Output //
-  ////////////
+// SECTION 3: ////////////////////////////////////////////////////////////////
+// Output                                                                   //
+//////////////////////////////////////////////////////////////////////////////
+
+  // General Output //////////////////////////////////////////////////////////
 
   // Clears the screen.
   void clear_screen();
@@ -86,6 +88,8 @@ interface SwashIO
   // coordinates.  Equivalent to `mvputch` in curses.
   void display( uint y, uint x, Symbol s, bool center = true );
 
+  // The Message Line ////////////////////////////////////////////////////////
+
   // Clears the current message off the message line.
   void clear_message_line();
 
@@ -95,12 +99,16 @@ interface SwashIO
   // Gives the player a menu containing their message history.
   void read_message_history();
 
+  // The Status Bar //////////////////////////////////////////////////////////
+
   // Refreshes the status bar.
   void refresh_status_bar( Player* u );
 
-  /////////////////////
-  // Final Functions //
-  /////////////////////
+// SECTION 4: ////////////////////////////////////////////////////////////////
+// Global Input Functions                                                   //
+//////////////////////////////////////////////////////////////////////////////
+
+  // Player Movement / Commands //////////////////////////////////////////////
 
   // Takes in a `char` input from the player and returns a movement flag
   // appropriate to the input.
@@ -162,6 +170,8 @@ interface SwashIO
     return MOVE_UNKNOWN;
 
   } // int get_command
+
+  // Inventory / Equipment Screen ////////////////////////////////////////////
 
   // Display the inventory screen and allow the user to move items from their
   // bag into an equipment slot.
@@ -559,6 +569,12 @@ discard_swap:
     return manage_equipment( u );
   }
 
+// SECTION 5: ////////////////////////////////////////////////////////////////
+// Global Output Functions                                                  //
+//////////////////////////////////////////////////////////////////////////////
+
+  // General Output //////////////////////////////////////////////////////////
+
   // Prints a string at the given coordinates.  Equivalent to `mvprint` in
   // curses.
   final void put_line( T... )( uint y, uint x, T args )
@@ -570,6 +586,8 @@ discard_swap:
     { put_char( y, x + c, output[c] );
     }
   }
+
+  // The Help Screen /////////////////////////////////////////////////////////
 
   // Displays the "help" screen and waits for the player to clear it.
   final void help_screen()
@@ -603,6 +621,8 @@ discard_swap:
     // wait for the player to clear the screen
     get_key();
   } // void help_screen()
+
+  // Map Output //////////////////////////////////////////////////////////////
 
   // Uses `display` to draw the player.
   final void display_player( Player u )
@@ -721,6 +741,8 @@ else
     display_player( u );
   }
 
+  // The Inventory / Equipment Screens ///////////////////////////////////////
+
   // Displays the equipment screen.
   final void display_equipment_screen( Player* u, int grabbed = -1,
                                        string msg = "" )
@@ -814,6 +836,10 @@ else
   } // final void display_inventory( Player* )
 
 } // interface SwashIO
+
+// SECTION 6: ////////////////////////////////////////////////////////////////
+// Importing Further IO Files                                               //
+//////////////////////////////////////////////////////////////////////////////
 
 // Import the classes which expand on this template depending on what display
 // outputs have been compiled:

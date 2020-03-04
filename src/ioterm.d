@@ -39,87 +39,55 @@ import std.string : toStringz;
 import std.format;
 import std.ascii : toLower;
 
-/// An exception used for catching errors when initializing or working with
-/// SDL:
+// An exception used for catching errors when initializing or working with
+// SDL.
 class SDLException : Exception
 {
   import std.exception : basicExceptionCtors;
   mixin basicExceptionCtors;
 }
 
-/++
- + Generates an SDLException
- +
- + This function throws an SDLException with the given error message.
- +
- + The actual output message will always be "Error: (1).  SDL says: (2)",
- + where (1) is error and (2) is an error message acquired from SDL itself.
- +
- + Throws:
- +   SDLException
- +
- + Params:
- +   error = The error message to be given to the exception
- +/
+// Generates an SDLException.
 void sdl_error( string error = "" )
 {
   throw new SDLException( format( "Error: %s.  SDL says: ", error,
                           fromStringz( SDL_GetError() ) ) );
 }
 
-/++
- + This class contains functions and other members for the SDL "virtual
- + terminal" display.
- +
- + See_Also:
- +   <a href="iomain.html">SwashIO</a>
- +/
+// This class contains functions and other members for the SDL "virtual
+// terminal" display.  See iomain.d for the SwashIO interface.
 class SDLTerminalIO : SwashIO
 {
 
-  /// The SDL window itself
+  // The SDL window itself.
   SDL_Window* window;
-  /// A renderer used to render textures onto the SDL window
+  // A renderer used to render textures onto the SDL window.
   SDL_Renderer* renderer;
 
-  /// The default tileset for drawing the map &c:
+  // The default tileset for drawing the map &c.
   SDL_Texture*[] tileset;
-  /// The special tileset for drawing the message line, status bar, and other
-  /// "messages":
+  // The special tileset for drawing the message line, status bar, and other
+  // "messages".
   SDL_Texture*[] message_font;
 
-  /// Which of the above two tilesets we are currently using
+  // Which of the above two tilesets we are currently using.
   SDL_Texture*[] cur_tileset;
 
-  /// This texture is used as a backup of the frame buffer, to prevent errors
-  /// when SDL's "back" and "front" frame buffers are swapped by the
-  /// `refresh_screen` function
+  // This texture is used as a backup of the frame buffer, to prevent errors
+  // when SDL's "back" and "front" frame buffers are swapped by the
+  // `refresh_screen` function.
   SDL_Texture* frame_buffer;
 
-  /// The width of the tiles in the SDL display.  Always equal to
-  /// `TILE_WIDTH`.
   enum tile_width = TILE_WIDTH;
-  /// The height of the tiles in the SDL display.  Always equal to
-  /// `TILE_HEIGHT`.
   enum tile_height = TILE_HEIGHT;
 
-  /// Used to determine if the SDL window's "close" button has been pressed.
   bool close_button_pressed = false;
 
   /////////////////////
   // Setup & Cleanup //
   /////////////////////
 
-  /++
-   + The standard constructor for the `SDLTerminalIO` object
-   +
-   + This constructor will initialize the SDL window with width
-   + (80 * `tile_width`) and height (24 * `tile_height`), and initialize the
-   + two fonts used by the SDL display to draw to the terminal.
-   +
-   + Unlike the CursesIO constructor, this constructor does not define colors,
-   + because SDL colors are defined in color.d
-   +/
+  // This constructor will initialize the SDL window.
   this()
   {
     // Load SDL:
@@ -181,34 +149,12 @@ class SDLTerminalIO : SwashIO
     }
   }
 
-  /++
-   + Used to determine if the "close window" button has been pressed.
-   +
-   + If the player presses the "close" button on the SDL window while
-   + `get_key` is running, `close_button_pressed` will be set to `true`.
-   + This function returns the value of `close_button_pressed` to instruct
-   + the mainloop to exit the program immediately.  This is done to allow
-   + players who are somehow trapped in an input loop to close the window
-   + without having to kill the process.
-   +
-   + Returns:
-   +   The value of the `bool` variable `close_button_pressed`
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.window_closed">SwashIO.window_closed</a>
-   +/
+  // Used to determine if the "close window" button has been pressed.
   bool window_closed()
   { return close_button_pressed;
   }
 
-  // Final clearing of the display before the game is closed
-  /++
-   + Performs final cleanup functions for the input/output module, to close
-   + the display before exiting the program.
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.cleanup">SwashIO.cleanup</a>
-   +/
+  // Final clearing of the display before the game is closed.
   void cleanup()
   {
     // Destroy all textures in the tileset (cannibalized from SmugglerRL):
@@ -229,21 +175,7 @@ class SDLTerminalIO : SwashIO
 
   // The following code was cannibalized from Elronnd's SmugglerRL project:
 
-  /++
-   + Loads fonts into an `SDL_Texture` pointer represented by `target`.
-   +
-   + Authors:
-   +   Elronnd
-   +
-   + Origin:
-   +   SmugglerRL
-   +
-   + License:
-   +   BSD 3-clause
-   +
-   + Returns:
-   +   `true` if successful, `false` otherwise.
-   +/
+  // Loads fonts into an `SDL_Texture` pointer represented by `target`.
   private bool loadfont( string fpath, uint height,
                          ref SDL_Texture*[] target )
   {
@@ -292,18 +224,7 @@ class SDLTerminalIO : SwashIO
     return true;
   }
 
-  /++
-   + Gets the maximum x coordinate for the SDL virtual terminal
-   +
-   + Authors:
-   +   Elronnd
-   +
-   + Origin:
-   +   SmugglerRL
-   +
-   + License:
-   +   BSD 3-clause
-   +/
+  // Gets the maximum x coordinate for the SDL virtual terminal.
   uint max_x()
   {
     SDL_DisplayMode dm;
@@ -311,18 +232,7 @@ class SDLTerminalIO : SwashIO
     return dm.w / tile_width;
   }
 
-  /++
-   + Gets the maximum y coordinate for the SDL virtual terminal
-   +
-   + Authors:
-   +   Elronnd
-   +
-   + Origin:
-   +   SmugglerRL
-   +
-   + License:
-   +   BSD 3-clause
-   +/
+  // Gets the maximum y coordinate for the SDL virtual terminal.
   uint max_y()
   {
     SDL_DisplayMode dm;
@@ -332,21 +242,7 @@ class SDLTerminalIO : SwashIO
 
   // (end cannibalized code)
 
-  /++
-   + Takes in a color index and returns an SDL color
-   +
-   + This function converts the color flags defined in color.d to an
-   + `SDL_Color` that SDL can use when outputting textures.
-   +
-   + See_Also:
-   +   <a href="iocurses.html#CursesIO.get_color">CursesIO.get_color</a>
-   +
-   + Params:
-   +   color = The color to be converted
-   +
-   + Returns:
-   +   An `SDL_Color` which can be used by SDL to color textures
-   +/
+  // Takes in a color flag and returns an SDL color.
   SDL_Color to_SDL_Color( uint color )
   {
 
@@ -414,12 +310,7 @@ class SDLTerminalIO : SwashIO
   // Input //
   ///////////
 
-  /++
-   + Gets a character input from the user and returns it
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.get_key">SwashIO.get_key</a>
-   +/
+  // Gets a character input from the user and returns it.
   char get_key()
   {
     // The following code was cannibalized from Elronnd's SmugglerRL project:
@@ -454,12 +345,6 @@ class SDLTerminalIO : SwashIO
   }
 
   // Outputs a question to the user and returns a char result
-  /++
-   + Outputs a question to the user and returns a `char` result.
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.ask">SwashIO.ask</a>
-   +/
   char ask( string question, char[] options = ['y', 'n'],
             bool assume_lower = false )
   {
@@ -501,12 +386,7 @@ class SDLTerminalIO : SwashIO
   // Output //
   ////////////
 
-  /++
-   + Outputs a text character at the given coordinates with a certain color
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.put_char">SwashIO.put_char</a>
-   +/
+  // Outputs a text character at the given coordinates.
   void put_char( uint y, uint x, char c,
                  Color color = Color( CLR_NONE, false ) )
   {
@@ -573,12 +453,6 @@ class SDLTerminalIO : SwashIO
   }
 
   // Reads the player all of their messages one at a time
-  /++
-   + Reads the player all of their messages one at a time
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.read_messages">SwashIO.read_messages</a>
-   +/
   void read_messages()
   {
     // Because we're writing to the message line, set the current tileset to
@@ -603,12 +477,6 @@ class SDLTerminalIO : SwashIO
   }
 
   // Gives the player a menu containing their message history.
-  /++
-   + Gives the player a menu containing their message history.
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.read_message_history">SwashIO.read_message_history</a>
-   +/
   void read_message_history()
   {
     clear_screen();
@@ -643,12 +511,6 @@ class SDLTerminalIO : SwashIO
   }
 
   // Refreshes the status bar
-  /++
-   + Refreshes the status bar
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.refresh_status_bar">SwashIO.refresh_status_bar</a>
-   +/
   void refresh_status_bar( Player* u )
   {
     int hp = u.hp;
@@ -671,14 +533,7 @@ class SDLTerminalIO : SwashIO
   }
 
   // Refreshes the screen to reflect the changes made by the below output
-  // functions (cannibalized from SmugglerRL)
-  /++
-   + Refreshes the screen to reflect the changes made by the `display`
-   + functions
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.refresh_screen">SwashIO.refresh_screen</a>
-   +/
+  // functions. (cannibalized from SmugglerRL)
   void refresh_screen()
   {
     // Set the `renderer' back on the screen itself to copy the contents of
@@ -689,12 +544,7 @@ class SDLTerminalIO : SwashIO
     SDL_RenderPresent( renderer );
   }
 
-  /++
-   + Clears the screen
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.clear_screen">SwashIO.clear_screen</a>
-   +/
+  // Clears the screen.
   void clear_screen()
   {
     SDL_SetRenderTarget( renderer, frame_buffer );
@@ -702,13 +552,7 @@ class SDLTerminalIO : SwashIO
     SDL_RenderClear( renderer );
   }
 
-  // Cover the message line with a black rectangle
-  /++
-   + Clears the current message off the message line
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.clear_message_line">SwashIO.clear_message_line</a>
-   +/
+  // Cover the message line with a black rectangle.
   void clear_message_line()
   {
     SDL_Rect rect;
@@ -724,15 +568,7 @@ class SDLTerminalIO : SwashIO
   }
 
   // The central `display' function.  Displays a given `symbol' at given
-  // coordinates.  If `center', the cursor will be centered over the symbol
-  // after drawing, rather than passing to the right of it as is standard in
-  // curses.
-  /++
-   + The central display function
-   +
-   + See_Also:
-   +   <a href="iomain.html#SwashIO.display">SwashIO.display</a>
-   +/
+  // coordinates.  The `center` parameter has no effect in SDL.
   void display( uint y, uint x, Symbol s, bool center = true )
   {
     put_char( y, x, s.ch,

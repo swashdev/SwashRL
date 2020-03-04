@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2015-2020 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,65 +30,15 @@
 
 import global;
 
-/++
- + The player struct
- +
- + Deprecated:
- +   The player character is now a `Monst` as of development version 0.028.
- +   This is done to allow monsters to behave more like the player, and to
- +   reduce the amount of special-casing that must be done when calculating
- +   how monsters react to the environment versus the player.
- +
- +   Use the `Monst` struct to generate the player, and simply keep that
- +   `Monst` separate from the monster containers in maps to separate the
- +   player from monsters.
- +
- + Date:  2018-09-01
- +/
+// As of version 0.028, the "Player" is just an alias for a regular monster
 alias Player = Monst;
 
-/++
- + Returns `true` if the given monster is you
- +
- + This function checks if the given `Monst`'s `name` is `"spelunker"`, and
- + returns `true` if it is so.  This function is used to distinguish the
- + player character from other monsters.
- +
- + Date:  2018-09-01
- +
- + Params:
- +   u = The `Monst`er to be checked
- +
- + Returns:
- +   u.name == "spelunker"
- +/
+// Returns "true" if the given monster is you.
 bool is_you( Monst u )
 { return u.name == "spelunker";
 }
 
-/++
- + Initializes the `Player`
- +
- + This function does initial setup for the player character and places him or
- + her at the coordinates (x, y).
- +
- + The player's hit dice are defined and rolled here, and the inventory is set
- + (to a bunch of empty items).  The player's symbol is also defined in this
- + function, as are his or her attack dice.
- +
- + The coordinates input into this function are checked against `MAP_X` and
- + `MAP_Y`, and if the function attempts to initialize the player outside this
- + boundary it is fixed.
- +
- + Date:  2018-09-01
- +
- + Params:
- +   y = The player's initial y coordinate
- +   x = The player's initial x coordinate
- +
- + Returns:
- +   The `Player`
- +/
+// Initializes the player character and places it at the given coordinates.
 Player init_player( ubyte y, ubyte x )
 {
   Player u;

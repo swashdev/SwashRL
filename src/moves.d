@@ -26,7 +26,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-// Defines a number of indexes representing in-game commands.
+// moves.d: defines a number of indexes representing in-game commands.
 
 // Standard movement
 enum MOVE_NW = 7;

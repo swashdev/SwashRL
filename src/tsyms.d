@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2015-2020 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,8 +28,7 @@
 
 import global;
 
-// declare symbols for dungeon Tiles--see ``sym.d'' for declaration of the
-// `Symbol' struct and `symdata' function.
+// tsyms.d: defines the symbols for standard dungeon tiles.
 
 static const Symbol SYM_FLOOR  = symdata( '.', Color( CLR_GRAY, false ) );
 static const Symbol SYM_WALL   = symdata( '#',

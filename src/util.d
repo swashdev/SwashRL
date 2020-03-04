@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2015-2020 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,20 +31,7 @@
 import global;
 import std.stdio : File;
 
-/++
- + Quickly checks if a number is within a certain range
- +
- + This function is used to quickly check if a certain value is within a
- + given range.  It returns `true` if floor &lt;= n &lt;= ceil.
- +
- + Params:
- +   n     = The `n`umber to be checked
- +   floor = The lowest acceptable value for n
- +   ceil  = The highest acceptable value for n
- +
- + Returns:
- +   `true` if `floor <= n <= ceil`, `false` otherwise
- +/
+// Quickly check if a number is within a certain range.
 bool within_minmax( int n, int floor, int ceil )
 {
   if( floor <= n && n <= ceil && floor <= ceil )
@@ -53,24 +40,7 @@ bool within_minmax( int n, int floor, int ceil )
   return false;
 }
 
-/++
- + Changes a number to be within a certain range
- +
- + This number is used to convert a given number n to a certain range.  It
- + does this by checking n against the floor and `ceil`ing of that range, and
- + alters n if necessary to be within that range.
- +
- + Params:
- +   n     = The `n`umber to be checked
- +   floor = The lowest acceptable value for n
- +   ceil  = The highest acceptable value for n
- +
- + Returns:
- +   n, if `floor < n < ceil`; $(LF)
- +   floor, if `n <= floor`; $(LF)
- +   ceil, if `n >= ceil`; $(LF)
- +   Return value is an `int`
- +/
+// Changes a number to be within a certain range.
 int minmax( int n, int floor, int ceil )
 {
   if( floor == ceil )
@@ -82,16 +52,7 @@ int minmax( int n, int floor, int ceil )
   return floor > n ? floor : ceil < n ? ceil : n;
 }
 
-/++
- + Reads a line from a file and strips the newline off the end
- +
- + Params:
- +     fil = The file to be read
- +
- + Returns:
- +     A `string` representing the line read from fil, not including the
- +     newline
- +/
+// Reads a line from a file and strips the newline off the end.
 string strip_line( File fil )
 {
   char[] line = fil.readln().dup;

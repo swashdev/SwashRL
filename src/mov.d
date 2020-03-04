@@ -30,6 +30,30 @@
 
 import global;
 
+// SECTION 0: ////////////////////////////////////////////////////////////////
+// Useful flags for monster movement                                        //
+//////////////////////////////////////////////////////////////////////////////
+
+// Colission detection:
+enum FLOOR_HERE = 0;
+enum WALL_HERE  = 1;
+enum WATER_HERE = 2;
+enum MOVEMENT_IMPOSSIBLE = 3;
+
+// Whether or not the monster can fly:
+enum CAN_NOT_FLY = 0;
+enum CAN_FLY     = 1;
+enum IS_FLYING   = 2;
+
+// Whether or not the monster can swim:
+enum CAN_NOT_SWIM  = 0;
+enum CAN_SWIM      = 1;
+enum CAN_ONLY_SWIM = 2;
+
+// SECTION 1: ////////////////////////////////////////////////////////////////
+// Translating Movement to Data                                             //
+//////////////////////////////////////////////////////////////////////////////
+
 // Takes a movement flag and gives the change in y and x coordinates which
 // indicate the given direction, if any.
 void get_dydx( uint dir, byte* dy, byte* dx )
@@ -76,79 +100,9 @@ void get_dydx( uint dir, byte* dy, byte* dx )
   }
 }
 
-// Causes a monster to attack another monster.
-void mattack( Monst* m, Monst* u )
-{
-  int dic = m.attack_roll.dice + m.inventory.items[INVENT_WEAPON].addd;
-  int mod = m.attack_roll.modifier  + m.inventory.items[INVENT_WEAPON].addm;
-  int atk = roll_x( dic, mod, m.attack_roll.floor, m.attack_roll.ceiling );
-
-  if( atk > 0 )
-  {
-    if( is_you( *u ) && Degreelessness )
-    {
-      message( "The puny %s's feeble attack does nothing!", m.name );
-    }
-    else if( is_you( *m ) && Infinite_weapon )
-    {
-      u.hp = 0;
-      message( "The %s explodes from the force of your attack!", u.name );
-
-static if( BLOOD )
-{
-      // Spread viscera everywhere:
-      import main : Current_map;
-      int k = u.x, j = u.y;
-      foreach( c; 0 .. 10 )
-      {
-        byte dk, dj;
-        get_dydx( cast(ubyte)td10(), &dj, &dk );
-        Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
-      }
-}
-
-    } // else if( is_you( m ) && Infinite_weapon )
-    else
-    {
-      u.hp -= atk;
-      message( "%s attack%s %s!", The_monst( *m ),
-               is_you( *m ) ? "" : "s", the_monst( *u ) );
-static if( BLOOD )
-{
-      import main : Current_map;
-      int k = u.x, j = u.y;
-      // The player bleeds...
-      Current_map.t[j][k].hazard |= SPECIAL_BLOOD;
-      foreach( c; d() .. atk )
-      {
-        byte dk, dj;
-        get_dydx( cast(ubyte)td10(), &dj, &dk );
-        Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
-      }
-}
-
-      if( u.hp <= 0 )  message( "%s %s slain!", The_monst( *u ),
-                                is_you( *u ) ? "are" : "is" );
-    } // else from if( is_you( m ) && Infinite_weapon )
-  } // if( atk > 0 )
-  else
-  { message( "%s barely miss%s %s!", The_monst( *m ),
-             is_you( *m ) ? "" : "es", the_monst( *u ) );
-  }
-}
-
-enum FLOOR_HERE = 0;
-enum WALL_HERE  = 1;
-enum WATER_HERE = 2;
-enum MOVEMENT_IMPOSSIBLE = 3;
-
-enum CAN_NOT_FLY = 0;
-enum CAN_FLY     = 1;
-enum IS_FLYING   = 2;
-
-enum CAN_NOT_SWIM  = 0;
-enum CAN_SWIM      = 1;
-enum CAN_ONLY_SWIM = 2;
+// SECTION 2: ////////////////////////////////////////////////////////////////
+// Monster Movement                                                         //
+//////////////////////////////////////////////////////////////////////////////
 
 // Moves a given monster on the given map.
 void mmove( Monst* mn, Map* m, byte idy, byte idx, Player* u )
@@ -222,6 +176,10 @@ void mmove( Monst* mn, Map* m, byte idy, byte idx, Player* u )
   }
 }
 
+// SECTION 3: ////////////////////////////////////////////////////////////////
+// Monster AI                                                               //
+//////////////////////////////////////////////////////////////////////////////
+
 // Tells the given monster to make their move.
 void monst_ai( Map* m, uint index, Player* u )
 {
@@ -238,6 +196,94 @@ void monst_ai( Map* m, uint index, Player* u )
     dy =  1;
   mmove( mn, m, dy, dx, u );
 }
+
+// Sends an instruction to all of the monsters on the given map to make their
+// move.
+void map_move_all_monsters( Map* m, Player* u )
+{
+  if( m.m.length == 0 )
+  { return;
+  }
+
+  foreach( mn; 0 .. cast(uint)m.m.length )
+  {
+    if( m.m[mn].hp > 0 )
+    { monst_ai( m, mn, u );
+    }
+    else
+    { remove_mon( m, mn );
+    }
+  }
+}
+
+// SECTION 4: ////////////////////////////////////////////////////////////////
+// Attacking                                                                //
+//////////////////////////////////////////////////////////////////////////////
+
+// Causes a monster to attack another monster.
+void mattack( Monst* m, Monst* u )
+{
+  int dic = m.attack_roll.dice + m.inventory.items[INVENT_WEAPON].addd;
+  int mod = m.attack_roll.modifier  + m.inventory.items[INVENT_WEAPON].addm;
+  int atk = roll_x( dic, mod, m.attack_roll.floor, m.attack_roll.ceiling );
+
+  if( atk > 0 )
+  {
+    if( is_you( *u ) && Degreelessness )
+    {
+      message( "The puny %s's feeble attack does nothing!", m.name );
+    }
+    else if( is_you( *m ) && Infinite_weapon )
+    {
+      u.hp = 0;
+      message( "The %s explodes from the force of your attack!", u.name );
+
+static if( BLOOD )
+{
+      // Spread viscera everywhere:
+      import main : Current_map;
+      int k = u.x, j = u.y;
+      foreach( c; 0 .. 10 )
+      {
+        byte dk, dj;
+        get_dydx( cast(ubyte)td10(), &dj, &dk );
+        Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
+      }
+}
+
+    } // else if( is_you( m ) && Infinite_weapon )
+    else
+    {
+      u.hp -= atk;
+      message( "%s attack%s %s!", The_monst( *m ),
+               is_you( *m ) ? "" : "s", the_monst( *u ) );
+static if( BLOOD )
+{
+      import main : Current_map;
+      int k = u.x, j = u.y;
+      // The player bleeds...
+      Current_map.t[j][k].hazard |= SPECIAL_BLOOD;
+      foreach( c; d() .. atk )
+      {
+        byte dk, dj;
+        get_dydx( cast(ubyte)td10(), &dj, &dk );
+        Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
+      }
+}
+
+      if( u.hp <= 0 )  message( "%s %s slain!", The_monst( *u ),
+                                is_you( *u ) ? "are" : "is" );
+    } // else from if( is_you( m ) && Infinite_weapon )
+  } // if( atk > 0 )
+  else
+  { message( "%s barely miss%s %s!", The_monst( *m ),
+             is_you( *m ) ? "" : "es", the_monst( *u ) );
+  }
+}
+
+// SECTION 5: ////////////////////////////////////////////////////////////////
+// Player Movement                                                          //
+//////////////////////////////////////////////////////////////////////////////
 
 // Causes the player to make a move based on the given movement flag.
 uint umove( Player* u, Map* m, uint dir )
@@ -315,6 +361,10 @@ message( "You step into the water and are pulled down by your equipment..." );
   return 1;
 }
 
+// SECTION 6: ////////////////////////////////////////////////////////////////
+// Miscellaneous Monster/Player Actions                                     //
+//////////////////////////////////////////////////////////////////////////////
+
 // Causes a monster to try to pick up a given item.
 bool pickup( Monst* mn, Item i )
 {
@@ -388,23 +438,4 @@ Item m_drop_item( Monst* mn, int index )
   ret = mn.inventory.items[index];
   mn.inventory.items[index] = No_item;
   return ret;
-}
-
-// Sends an instruction to all of the monsters on the given map to make their
-// move.
-void map_move_all_monsters( Map* m, Player* u )
-{
-  if( m.m.length == 0 )
-  { return;
-  }
-
-  foreach( mn; 0 .. cast(uint)m.m.length )
-  {
-    if( m.m[mn].hp > 0 )
-    { monst_ai( m, mn, u );
-    }
-    else
-    { remove_mon( m, mn );
-    }
-  }
 }

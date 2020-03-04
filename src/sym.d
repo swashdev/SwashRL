@@ -31,18 +31,7 @@ import global;
 // sym.d: defines structures used to store data for symbols used to represent
 // in-game objects like items, monsters, map tiles, &c
 
-/++
- + A struct used to store symbols
- +
- + This is the base symbol struct, used to store information governing
- + symbols.  As it currently exists, it only works for the curses and SDL
- + terminal interfaces, but in the future it can be expanded to also use
- + images for a full graphical version of the game.
- +
- + This struct contains a `char`, `ch`, which represents what character is
- + used to represent the symbol in text-based displays; and a `Color` called
- + `color` which is used to determine the color that `ch` is drawn in.
- +/
+// A struct used to store symbols.
 struct Symbol
 {
   char ch;
@@ -53,24 +42,8 @@ struct Symbol
   // images (possibly including sprites in the future)
 }
 
-/++
- + Generates a new `Symbol`
- +
- + This function is a simple constructor for a `Symbol`.
- +
- + Deprecated:
- +   This function has exactly the same function and parameters as D's
- +   generic struct constructor, so use that instead.
- +
- + Params:
- +   character = The `char` used to represent the `Symbol` in text-based
- +               displays
- +   color     = A `Color` used to determine what color character will be
- +               drawn in
- +
- + Returns:
- +   A `Symbol` containing character and color
- +/
+// Generates a new symbol.
+// DEPRECATED: Use D's built-in struct constructors instead.
 Symbol symdata( char character, Color color )
 {
 

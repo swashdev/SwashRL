@@ -102,7 +102,7 @@ string greet_player()
     return "Happy Hanami!  ";
 
   // Test date greeting (I coded this feature on 2019-12-21, so on that date
-  // give the player this test output to make sure it's working
+  // give the player this test output to make sure it's working)
 debug
 {
   if( month == Month.dec && date == 21 )
@@ -189,8 +189,6 @@ You are running %s version %s",
     return 1;
   }
 
-  //clear_messages();
-
   // Activate Cheat / Debug Modes ////////////////////////////////////////////
 
   // If all we're doing is a quick mapgen, turn on the Silent Cartographer and
@@ -221,35 +219,35 @@ You are running %s version %s",
 
   // Check to make sure the SDL_Mode does not conflict with the way SwashRL
   // was compiled:
-  if( !CURSES_ENABLED && SDL_none() )
-  { SDL_Mode = SDL_MODES.terminal;
-  }
-  if( !SDL_ENABLED && !SDL_none() )
-  { SDL_Mode = SDL_MODES.none;
+  if( !CURSES_ENABLED && SDL_none() )  SDL_Mode = SDL_MODES.terminal;
+
+  if( !SDL_ENABLED && !SDL_none() ) SDL_Mode = SDL_MODES.none;
   }
 
 version( curses )
 {
-  if( SDL_none() )
-  {
-    IO = new CursesIO();
-  }
+
+  if( SDL_none() )  IO = new CursesIO();
+
 }
 version( sdl )
 {
+
   try
   {
-    if( SDL_terminal() )
-    {
-      IO = new SDLTerminalIO();
-    }
+
+    if( SDL_terminal() )  IO = new SDLTerminalIO();
+
   }
   catch( SDLException e )
   {
+
     writeln( e.msg );
     return 21;
+
   }
-}
+
+} // version( sdl )
 
   // Initialize Random Number Generator //////////////////////////////////////
 
@@ -257,31 +255,38 @@ version( sdl )
 
   // Map Generator ///////////////////////////////////////////////////////////
 
-  // Do the sample mapgen:
+  // If we're just doing a sample map generation, do that now.
   if( gen_map )  Current_map = generate_new_map();
+
   else
   {
 
-    // Assign initial map
+    // Check if we're loading a map from a saved file.
     if( saved_lev.length > 0 )
-    { Current_map = level_from_file( saved_lev );
+    {
+      Current_map = level_from_file( saved_lev );
     }
     else
     {
+      // Check if we're using the test map.
       if( Use_test_map )
       {
    debug
         Current_map = test_map();
    else
    {
+
         writeln( "The test map is only available for debug builds of the game.
 Try compiling with dub build -b debug" );
         return 31;
+
    }
       }
       else
-      { Current_map = generate_new_map();
-      }
+      {
+        Current_map = generate_new_map();
+      } // else from if( Use_test_map )
+
     } // else from if( saved_lev.length > 0 )
     Current_level = 0;
 
@@ -308,17 +313,17 @@ Try compiling with dub build -b debug" );
   Monst u = init_player( Current_map.player_start[0],
                          Current_map.player_start[1] );
 
-  // if the game is configured to highlight the player, and the SDL terminal
+  // If the game is configured to highlight the player, and the SDL terminal
   // is being used, highlight the player.
   if( SDL_terminal() )
-  { u.sym = symdata( SMILEY, Color( CLR_WHITE, HILITE_PLAYER ) );
+  {
+     u.sym = symdata( SMILEY, Color( CLR_WHITE, HILITE_PLAYER ) );
   }
 
   // Initialize Field-of-Vision //////////////////////////////////////////////
 
-  if( !No_shadows )
-  { calc_visible( &Current_map, u.x, u.y );
-  }
+  if( !No_shadows )  calc_visible( &Current_map, u.x, u.y );
+
   // If fog of war has been disabled, set all tiles to visible.
   else
   {
@@ -380,70 +385,90 @@ Try compiling with dub build -b debug" );
     switch( mv )
     {
       case MOVE_UNKNOWN:
+
          message( "Command not recognized.  Press ? for help." );
+
          break;
 
       // display help
       case MOVE_HELP:
+
          IO.help_screen();
+
          message( "You are currently using the %s keyboard layout.",
                   Keymap_labels[ Current_keymap ] );
+
          IO.refresh_status_bar( &u );
          IO.display_map_and_player( Current_map, u );
+
          break;
 
       // save and quit
       case MOVE_SAVE:
+
         if( 'y' == IO.ask( "Really save?", ['y', 'n'], true ) )
         {
           save_level( Current_map, u, "save0" );
           goto playerquit;
         }
+
         break;
 
       // quit
       case MOVE_QUIT:
+
         if( 'y' == IO.ask( "Really quit?", ['y', 'n'], true ) )
-        { goto playerquit;
+        {
+          goto playerquit;
         }
+
         break;
 
       // display version information
       case MOVE_GETVERSION:
+
         message( "%s, version %s", NAME, sp_version() );
+
         break;
 
       case MOVE_ALTKEYS:
-        if( Current_keymap >= Keymaps.length - 1 )
-        { Current_keymap = 0;
-        }
-        else
-        { Current_keymap++;
-        }
+
+        if( Current_keymap >= Keymaps.length - 1 )  Current_keymap = 0;
+        else  Current_keymap++;
+
         message( "Control scheme swapped to %s", Keymap_labels[Current_keymap]
                );
+
         break;
 
       // print the message buffer
       case MOVE_MESS_DISPLAY:
+
         IO.read_message_history();
+
         IO.refresh_status_bar( &u );
         IO.display_map_all( Current_map );
+
         break;
 
       // clear the message line
       case MOVE_MESS_CLEAR:
+
         IO.clear_message_line();
+
         break;
 
       // wait
       case MOVE_WAIT:
+
         message( "You bide your time." );
         moved = 1;
+
         break;
 
       // display the inventory screen
       case MOVE_INVENTORY:
+
         // If the player's inventory is empty, don't waste their time.
         if( !Item_here( u.inventory.items[INVENT_BAG] ) )
         {
@@ -460,20 +485,24 @@ Try compiling with dub build -b debug" );
 
       // inventory management
       case MOVE_EQUIPMENT:
+
         moved = IO.manage_equipment( &u );
+
         // we must redraw the screen after the equipment screen is cleared
         IO.refresh_status_bar( &u );
         IO.display_map_and_player( Current_map, u );
+
         break;
 
       // all other commands go to umove
       default:
+
         IO.clear_message_line();
         IO.display( u.y + 1, u.x, Current_map.t[u.y][u.x].sym );
+
         moved = umove( &u, &Current_map, cast(ubyte)mv );
-        if( u.hp <= 0 )
-        { goto playerdied;
-        }
+
+        if( u.hp <= 0 )  goto playerdied;
         break;
     }
 
@@ -486,32 +515,28 @@ Try compiling with dub build -b debug" );
         map_move_all_monsters( &Current_map, &u );
         moved--;
       }
-      if( !No_shadows )
-      { calc_visible( &Current_map, u.x, u.y );
-      }
+
+      if( !No_shadows )  calc_visible( &Current_map, u.x, u.y );
+
       IO.refresh_status_bar( &u );
       IO.display_map_and_player( Current_map, u );
-    }
+
+    } // if( moved > 0 )
 
     // Check Messages ////////////////////////////////////////////////////////
 
-    if( !Messages.empty() )
-    { IO.read_messages();
-    }
+    if( !Messages.empty() )  IO.read_messages();
 
     // Refresh the Player ////////////////////////////////////////////////////
 
-    if( u.hp > 0 )
-    { IO.display_player( u );
-    }
-    else
-    { break;
-    }
+    if( u.hp > 0 )  IO.display_player( u );
+    else  break; // end the mainloop if the player is dead
 
     // Refresh the Display ///////////////////////////////////////////////////
 
     IO.refresh_screen();
-  }
+
+  } // while( u.hp > 0 )
 
 // SECTION 3: ////////////////////////////////////////////////////////////////
 // Closing the Program                                                      //
@@ -521,6 +546,7 @@ Try compiling with dub build -b debug" );
 
 playerdied:
 
+  // Display a grayed-out player:
   IO.display( u.y + 1, u.x, symdata( SMILEY, Color( CLR_DARKGRAY, false ) ),
               true );
 
@@ -529,6 +555,7 @@ playerdied:
 playerquit:
 
   message( "See you later..." );
+
   // view all the messages that you got just before you died
   IO.read_messages();
 

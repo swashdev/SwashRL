@@ -198,25 +198,51 @@ static if( CURSES_ENABLED )
 
   } /* this( Color, Color? ) */
 
-  // Initialize a new color pair by taking an existing color pair and making
-  // it "bright"
-  public static Color_Pair brighten( Color_Pair original_pair,
-                                     int sdl_red, int sdl_green, int sdl_blue,
-                                     int sdl_opacity = 255 )
+  // Initialize a new color pair by "brightening" the existing color pair.
+  // By default, the SDL color codes will double unless new color codes are
+  // input as parameters.
+  public Color_Pair brighten( int sdl_red = -1, int sdl_green = -1,
+                              int sdl_blue = -1, int sdl_opacity = 255 )
   {
 
-    Color_Pair new_pair = original_pair;
+    Color_Pair new_pair = this;
 
     new_pair.set_bright( true );
 
 static if( SDL_ENABLED )
 {
-    new_pair.set_sdl_pair( sdl_red, sdl_green, sdl_blue, sdl_opacity );
-}
+    // Attempt to intelligently double the color values for every color which
+    // has not been specified.
+
+    int new_red = sdl_red, new_green = sdl_green, new_blue = sdl_blue;
+
+    Color new_foreground_color = foreground;
+    SDL_Color new_foreground = foreground.get_sdl_color();
+
+    if( new_red < 0 )
+    {
+      new_red = new_foreground.r * 2;
+    }
+
+    if( new_green < 0 )
+    {
+      new_green = new_foreground.g * 2;
+    }
+
+    if( new_blue < 0 )
+    {
+      new_blue = new_foreground.b * 2;
+    }
+
+    new_foreground_color.set_sdl_color( new_red, new_green, new_blue,
+                                        sdl_opacity );
+
+    new_pair.set_foreground( new_foreground_color );
+} /* static if( SDL_ENABLED ) */
 
     return new_pair;
 
-  } /* public static Color_Pair brighten( Color_Pair, int, int, int, int? ) */
+  } /* public Color_Pair brighten( int?, int?, int?, int? ) */
 
   // Initialize a new color pair by inverting the existing color pair.
   public Color_Pair invert()

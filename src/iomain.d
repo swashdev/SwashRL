@@ -82,7 +82,7 @@ interface SwashIO
 
   // Outputs a text character at the given coordinates.
   void put_char( uint y, uint x, char c,
-                 Color color = Color( CLR_NONE, false ) );
+                 Color_Pair color = Colors.Gray );
 
   // The central display function: displays a given symbol at the given
   // coordinates.  Equivalent to `mvputch` in curses.
@@ -631,10 +631,10 @@ discard_swap:
     // color
     if( u.inventory.items[INVENT_HELMET].name == "festive hat" )
     {
-      // get the foreground color of the hat...
-      uint hat_fg = u.inventory.items[INVENT_HELMET].sym.color.fg;
+      // get the color of the hat...
+      Color_Pair hat_color = u.inventory.items[INVENT_HELMET].sym.color;
       // make an inverted version of the hat's color...
-      Color hat_color = Color( hat_fg, true );
+      hat_color = hat_color.invert();
       // same as the original display function, but with the new hat color
       display( u.y + 1, u.x, symdata( u.sym.ch, hat_color ), true );
     }
@@ -681,7 +681,12 @@ static if( COLOR )
           {
             if( !(to_display.t[y][x].hazard & HAZARD_WATER ) )
             {
-              output.color.fg = CLR_GREEN;
+              if( to_display.t[y][x].sym.color.get_inverted() )
+              { output.color = Colors.Green.invert();
+              }
+              else
+              { output.color = Colors.Green;
+              }
             }
           }
   }
@@ -693,7 +698,12 @@ static if( COLOR )
           {
             if( !(to_display.t[y][x].hazard & HAZARD_WATER) )
             {
-              output.color.fg = CLR_RED;
+              if( to_dispay.t[y][x].sym.color.get_inverted() )
+              { output.color = Colors.Red.invert();
+              }
+              else
+              { output.color = Colors.Red;
+              }
             }
           }
  }
@@ -711,7 +721,7 @@ else
 {
           if( to_display.t[y][x].seen )
           {
-            output.color.fg = CLR_DARKGRAY; 
+            output.color = Colors.Dark_Gray;
           }
           else
           {

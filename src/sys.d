@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2015-2020 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,17 +31,9 @@
 // particular system or configuration has been dropped, add a relevant warning
 // here.
 
-version( Windows )
-{
-  pragma( msg, "Compiling for Windows" );
-}
-else version( linux )
+version( linux )
 {
   pragma( msg, "Compiling for Linux" );
-}
-else version( FreeBSD )
-{
-  pragma( msg, "Compiling for FreeBSD" );
 }
 else
 {

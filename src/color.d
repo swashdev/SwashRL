@@ -58,7 +58,7 @@ struct Color
   bool reverse;
 }
 
-/// A "default" color used if no color is specified during a function call.
+// A "default" color used if no color is specified during a function call.
 enum CLR_DEFAULT = Color( CLR_GRAY, false );
 
 ///////////////////

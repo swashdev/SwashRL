@@ -45,7 +45,8 @@ struct Item
 
 // A generic placeholder Item used to signal an empty equipment slot or a
 // floor tile which does not have an Item on it.
-Item No_item = { sym:Symbol('\0', CLR_DEFAULT), name:"NO ITEM", addd:0, addm:0 };
+Item No_item = { sym:Symbol('\0', Colors.Gray), name:"NO ITEM", addd:0,
+                 addm:0 };
 
 
 // Quickly check if the given item is valid.

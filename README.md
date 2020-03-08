@@ -1,7 +1,7 @@
 SwashRL
 =======
 
-Readme file, last updated 2020-01-02 21:12 CST  
+Readme file, last updated 2020-03-07 21:14 CST  
 Contact the maintainer: <swashdev@pm.me>
 
 ---
@@ -189,13 +189,13 @@ THIS LETTER.
 * <https://www.doctorsopposingcircumcision.org/>
 
 [our GitHub page]: https://github.com/swashdev/SwashRL
-[the BSD 3-clause "New" or "Revised" License]: LICENSE.TXT
-[the BSD 3-clause License]: LICENSE.TXT
+[the BSD 3-clause "New" or "Revised" License]: LICENSE.txt
+[the BSD 3-clause License]: LICENSE.txt
 [the third-party file]: 3rdparty.txt
 [the acknowledgement file]: 3rdparty.txt
 [an issue]: https://github.com/swashdev/SwashRL/issues/2
 [contact me]: mailto:swashdev@pm.me
-[contribution guidelines]: docs/CONTRIBUTING.MD
+[contribution guidelines]: docs/CONTRIBUTING.md
 [config.d]: src/config.d
 [global.d]: src/global.d
 [dub.json]: dub.json

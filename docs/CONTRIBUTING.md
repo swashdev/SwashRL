@@ -1,7 +1,7 @@
 SwashRL Guidelines for Contributors
 ===================================
 
-Version 1.0.3.  Last updated 2020-01-02 20:52 CST
+Version 1.0.3.  Last updated 2020-03-07 21:14 CST
 
 ---
 
@@ -165,9 +165,9 @@ make it easier for you to keep track of your own code.
 As a rule of thumb, just try to make your code look like our code for the sake
 of consistency and you'll be fine.
 
-[the SwashRL license]: ../LICENSE.TXT
+[the SwashRL license]: ../LICENSE.txt
 [the third-party licenses file]: ../3rdparty.txt
-[Readme]: ../README.MD
+[Readme]: ../README.md
 [docs folder]: ../docs
 [to-do list]: ../docs/to-do.txt
 [list of known bugs]: ../docs/bugs.txt

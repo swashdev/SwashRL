@@ -222,7 +222,6 @@ You are running %s version %s",
   if( !CURSES_ENABLED && SDL_none() )  SDL_Mode = SDL_MODES.terminal;
 
   if( !SDL_ENABLED && !SDL_none() ) SDL_Mode = SDL_MODES.none;
-  }
 
 version( curses )
 {

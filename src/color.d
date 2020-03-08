@@ -107,7 +107,7 @@ class Color_Pair
   // here, in the color pair, because the bright colors are created by
   // applying the "bold" attribute to an existing color pair.  This does not
   // apply to SDL.
-  private bool bold = false;
+  private bool bold = false, inverted = false;
 
   public bool get_bright()
   { return bold;
@@ -115,6 +115,14 @@ class Color_Pair
 
   public void set_bright( bool bright )
   { bold = bright;
+  }
+
+  public bool get_inverted()
+  { return inverted;
+  }
+
+  public bool set_inverted( bool reversed )
+  { inverted = reversed;
   }
 
 static if( CURSES_ENABLED )
@@ -209,5 +217,21 @@ static if( SDL_ENABLED )
     return new_pair;
 
   } /* public static Color_Pair brighten( Color_Pair, int, int, int, int? ) */
+
+  // Initialize a new color pair by inverting the existing color pair.
+  public Color_Pair invert()
+  {
+    Color_Pair new_pair = this;
+
+    Color new_foreground = new_pair.get_background();
+    Color new_background = new_pair.get_foreground();
+
+    new_pair.set_foreground( new_foreground );
+    new_pair.set_background( new_background );
+
+    new_pair.set_inverted( true );
+
+    return new_pair;
+  } /* public Color_Pair invert() */
 
 } /* class Color_Pair */

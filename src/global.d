@@ -166,6 +166,7 @@ public import util;
 public import cheats;
 public import dice;
 public import color;
+public import colors;
 public import sym;
 public import tsyms;
 public import tflags;

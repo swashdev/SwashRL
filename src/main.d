@@ -261,6 +261,10 @@ version( sdl )
   init_tile_symbols();
   init_terrain();
 
+  // Initialize the `No_item` placeholder ////////////////////////////////////
+
+  No_item = Item( symdata( '\0', CLR_GRAY ), "NO ITEM", 0, 0, 0, 0 );
+
   // Map Generator ///////////////////////////////////////////////////////////
 
   // If we're just doing a sample map generation, do that now.

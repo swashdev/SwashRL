@@ -121,7 +121,7 @@ class Color_Pair
   { return inverted;
   }
 
-  public bool set_inverted( bool reversed )
+  public void set_inverted( bool reversed )
   { inverted = reversed;
   }
 

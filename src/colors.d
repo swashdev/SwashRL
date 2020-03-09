@@ -82,14 +82,14 @@ enum CURSES_GRAY    = 7;
 
 // Define the standard set of colors.
 
-static Color CLR_DARK    = Color( CURSES_DARK,     64,  64,  64 );
-static Color CLR_RED     = Color( CURSES_RED,     128,   0,   0 );
-static Color CLR_GREEN   = Color( CURSES_GREEN,     0, 128,   0 );
-static Color CLR_BLUE    = Color( CURSES_BLUE,      0,   0, 255 );
-static Color CLR_BROWN   = Color( CURSES_BROWN,   150,  75,   0 );
-static Color CLR_MAGENTA = Color( CURSES_MAGENTA, 128,   0, 128 );
-static Color CLR_CYAN    = Color( CURSES_CYAN,      0, 128, 128 );
-static Color CLR_GRAY    = Color( CURSES_GRAY,    162, 162, 162 );
+enum Color CLR_DARK    = Color( CURSES_DARK,     64,  64,  64 );
+enum Color CLR_RED     = Color( CURSES_RED,     128,   0,   0 );
+enum Color CLR_GREEN   = Color( CURSES_GREEN,     0, 128,   0 );
+enum Color CLR_BLUE    = Color( CURSES_BLUE,      0,   0, 255 );
+enum Color CLR_BROWN   = Color( CURSES_BROWN,   150,  75,   0 );
+enum Color CLR_MAGENTA = Color( CURSES_MAGENTA, 128,   0, 128 );
+enum Color CLR_CYAN    = Color( CURSES_CYAN,      0, 128, 128 );
+enum Color CLR_GRAY    = Color( CURSES_GRAY,    162, 162, 162 );
 
 // SECTION 2: ////////////////////////////////////////////////////////////////
 // Color Pairs                                                              //
@@ -97,14 +97,14 @@ static Color CLR_GRAY    = Color( CURSES_GRAY,    162, 162, 162 );
 
 // Define the standard color pairs.
 
-static Color_Pair PAIR_DARK    = Color_Pair( CLR_DARK    );
-static Color_Pair PAIR_RED     = Color_Pair( CLR_RED     );
-static Color_Pair PAIR_GREEN   = Color_Pair( CLR_GREEN   );
-static Color_Pair PAIR_BLUE    = Color_Pair( CLR_BLUE    );
-static Color_Pair PAIR_BROWN   = Color_Pair( CLR_BROWN   );
-static Color_Pair PAIR_MAGENTA = Color_Pair( CLR_MAGENTA );
-static Color_Pair PAIR_CYAN    = Color_Pair( PAIR_CYAN   );
-static Color_Pair PAIR_GRAY    = Color_Pair( PAIR_GRAY   );
+enum Color_Pair PAIR_DARK    = Color_Pair( CLR_DARK    );
+enum Color_Pair PAIR_RED     = Color_Pair( CLR_RED     );
+enum Color_Pair PAIR_GREEN   = Color_Pair( CLR_GREEN   );
+enum Color_Pair PAIR_BLUE    = Color_Pair( CLR_BLUE    );
+enum Color_Pair PAIR_BROWN   = Color_Pair( CLR_BROWN   );
+enum Color_Pair PAIR_MAGENTA = Color_Pair( CLR_MAGENTA );
+enum Color_Pair PAIR_CYAN    = Color_Pair( PAIR_CYAN   );
+enum Color_Pair PAIR_GRAY    = Color_Pair( PAIR_GRAY   );
 
 // SECTION 3: ////////////////////////////////////////////////////////////////
 // The Full Color Set                                                       //

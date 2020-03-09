@@ -128,8 +128,8 @@ bool add_corridor_y( uint x, uint y1, uint y2, Map* m )
   foreach( y; sta .. (end + 1) )
   {
     // Do not destroy water by carving
-    if( m.t[y][x] != Terrain.water )
-    { m.t[y][x] = Terrain.floor;
+    if( m.t[y][x] != TERRAIN_WATER )
+    { m.t[y][x] = TERRAIN_FLOOR;
     }
   }
 
@@ -166,8 +166,8 @@ bool add_corridor_x( uint y, uint x1, uint x2, Map* m )
   foreach( x; sta .. (end + 1) )
   {
     // Do not destroy water by carving
-    if( m.t[y][x] != Terrain.water )
-    { m.t[y][x] = Terrain.floor;
+    if( m.t[y][x] != TERRAIN_WATER )
+    { m.t[y][x] = TERRAIN_FLOOR;
     }
   }
 
@@ -192,7 +192,7 @@ bool add_room( uint y1, uint x1, uint y2, uint x2, Map* m )
   {
     foreach( index_x; x1 .. (x2 + 1) )
     {
-      m.t[index_y][index_x] = Terrain.floor;
+      m.t[index_y][index_x] = TERRAIN_FLOOR;
     }
   }
 
@@ -313,20 +313,20 @@ Map test_map()
       nu.i[y][x] = No_item;
       if( y == 0 || y == MAP_y || x == 0 || x == MAP_x )
       {
-        nu.t[y][x] = Terrain.wall;
+        nu.t[y][x] = TERRAIN_WALL;
       }
       else
       {
         if( (y < 13 && y > 9) && ((x > 19 && x < 24) || (x < 61 && x > 56)) )
-        { nu.t[y][x] = Terrain.wall;
+        { nu.t[y][x] = TERRAIN_WALL;
         }
         else
         {
           if( (y < 13 && y > 9) && (x > 30 && x < 50) )
-          { nu.t[y][x] = Terrain.water;
+          { nu.t[y][x] = TERRAIN_WATER;
           }
           else
-          { nu.t[y][x] = Terrain.floor;
+          { nu.t[y][x] = TERRAIN_FLOOR;
           }
         } /* else from if( (y < 13 && y > 9) ... */
       } /* else from if( y == 0 || y == MAP_y ... */

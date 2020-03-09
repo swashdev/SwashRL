@@ -256,6 +256,11 @@ version( sdl )
 
   init_colors();
 
+  // Initialize Standard Terrain Elements ////////////////////////////////////
+
+  init_tile_symbols();
+  init_terrain();
+
   // Map Generator ///////////////////////////////////////////////////////////
 
   // If we're just doing a sample map generation, do that now.

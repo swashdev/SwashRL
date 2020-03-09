@@ -40,7 +40,7 @@ Map empty_Map()
     foreach( x; 0 .. MAP_X )
     {
       m.i[y][x] = No_item;
-      m.t[y][x] = Terrain.wall;
+      m.t[y][x] = TERRAIN_WALL;
     }
   }
 

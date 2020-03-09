@@ -30,9 +30,25 @@ import global;
 
 // tsyms.d: defines the symbols for standard dungeon tiles.
 
-static const Symbol SYM_FLOOR  = symdata( '.', CLR_GRAY      );
-static const Symbol SYM_WALL   = symdata( '#', CLR_GRAY      );
-static const Symbol SYM_STALA  = symdata( 'V', CLR_GRAY      );
-static const Symbol SYM_DOOR   = symdata( '+', CLR_BROWN     );
-static const Symbol SYM_WATER  = symdata( '}', CLR_LITE_BLUE );
-static const Symbol SYM_SHADOW = symdata( ' ', CLR_BLUE      );
+static Symbol SYM_FLOOR;
+static Symbol SYM_WALL;
+static Symbol SYM_STALA;
+static Symbol SYM_DOOR;
+static Symbol SYM_WATER;
+static Symbol SYM_SHADOW;
+
+void init_tile_symbols()
+{
+  SYM_FLOOR  = symdata( '.', CLR_GRAY      );
+  SYM_WALL   = symdata( '#', CLR_GRAY      );
+  SYM_STALA  = symdata( 'V', CLR_GRAY      );
+  SYM_DOOR   = symdata( '+', CLR_BROWN     );
+  SYM_WATER  = symdata( '}', CLR_LITE_BLUE );
+  SYM_SHADOW = symdata( ' ', CLR_BLACK     );
+
+static if( REVERSED_WALLS )
+{
+  SYM_WALL.color = SYM_WALL.color.invert();
+}
+
+} /* void init_tile_symbols() */

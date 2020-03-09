@@ -61,9 +61,17 @@ struct Tile
 }
 
 // A collection of standard terrain elements.
-enum Terrain {
-  floor = Tile( SYM_FLOOR, false, false, false, true, false, 0            ),
-  wall  = Tile( SYM_WALL,  true,  true,  true,  true, false, 0            ),
-  water = Tile( SYM_WATER, false, false, false, true, false, HAZARD_WATER ),
-  door  = Tile( SYM_DOOR,  false, true,  true,  true, false, 0            )
-}
+static Tile TERRAIN_FLOOR,
+            TERRAIN_WALL,
+            TERRAIN_WATER,
+            TERRAIN_DOOR;
+
+// Initialize the standard terrain elements.
+void init_terrain()
+{
+  TERRAIN_FLOOR = Tile( SYM_FLOOR, false, false, false, true, false, 0 );
+  TERRAIN_WALL  = Tile( SYM_WALL,  true,  true,  true,  true, false, 0 );
+  TERRAIN_WATER = Tile( SYM_WATER, false, false, false, true, false,
+                        HAZARD_WATER );
+  TERRAIN_DOOR  = Tile( SYM_DOOR,  false, true,  true,  true, false, 0 );
+} /* void init_terrain() */

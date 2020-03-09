@@ -246,70 +246,6 @@ class SDLTerminalIO : SwashIO
 
   // (end cannibalized code)
 
-  // Takes in a color flag and returns an SDL color.
-  SDL_Color to_SDL_Color( uint color )
-  {
-
-    // Unfortunately this is one of those cases where we just have to use a
-    // Switch Statement From Hell.
-    switch( color )
-    {
-      case CLR_DARKGRAY:
-        return SDL_DARKGRAY;
-
-      case CLR_RED:
-        return SDL_RED;
-
-      case CLR_GREEN:
-        return SDL_GREEN;
-
-      case CLR_BROWN:
-        return SDL_BROWN;
-
-      case CLR_BLUE:
-        // We don't use dark blue because it blends in with the black
-        // background too much.
-        goto case CLR_LITEBLUE;
-
-      case CLR_MAGENTA:
-        return SDL_MAGENTA;
-
-      case CLR_CYAN:
-        return SDL_CYAN;
-
-      case CLR_GRAY:
-        return SDL_GRAY;
-
-      case CLR_BLACK:
-        return SDL_BLACK;
-
-      case CLR_LITERED:
-        return SDL_LITERED;
-
-      case CLR_LITEGREEN:
-        return SDL_LITEGREEN;
-
-      case CLR_YELLOW:
-        return SDL_YELLOW;
-
-      case CLR_LITEBLUE:
-        return SDL_BLUE;
-
-      case CLR_LITEMAGENTA:
-        return SDL_LITEMAGENTA;
-
-      case CLR_LITECYAN:
-        return SDL_LITECYAN;
- 
-      case CLR_WHITE:
-        return SDL_WHITE;
-
-      // If we don't get a valid color, default to the "standard color"
-      default:
-        goto case CLR_GRAY;
-    } // switch( color )
-  } // SDL_Color to_SDL_Color( ubyte )
-
 // SECTION 3: ////////////////////////////////////////////////////////////////
 // Input                                                                    //
 //////////////////////////////////////////////////////////////////////////////
@@ -413,8 +349,7 @@ class SDLTerminalIO : SwashIO
   }
 
   // Outputs a text character at the given coordinates.
-  void put_char( uint y, uint x, char c,
-                 Color color = Color( CLR_NONE, false ) )
+  void put_char( uint y, uint x, char c, Color_Pair color = Colors.Gray )
   {
 
     // Tell the renderer to draw to our own `frame_buffer' rather than the
@@ -431,7 +366,7 @@ class SDLTerminalIO : SwashIO
     if( cur_tileset[c] is null )
     {
       renderedchar = cur_tileset['?'];
-      co = Color( CLR_LITERED, true );
+      co = Colors.Red.invert();
     }
     else
     { renderedchar = cur_tileset[c];
@@ -448,19 +383,8 @@ class SDLTerminalIO : SwashIO
     tile.h = tile_height;
 
     // The color of the foreground and background, respectively
-    SDL_Color fg, bg;
-
-    // Assign `fg' and `bg' appropriately
-    if( co.reverse )
-    {
-      fg = SDL_BLACK;
-      bg = to_SDL_Color( co.fg );
-    }
-    else
-    {
-      fg = to_SDL_Color( co.fg );
-      bg = SDL_BLACK;
-    }
+    SDL_Color fg = co.foreground.get_sdl_color(),
+              bg = co.background.get_sdl_color();
 
     // Fill in the background first:
     SDL_SetRenderDrawColor( renderer, bg.r, bg.g, bg.b, 255 );
@@ -482,8 +406,7 @@ class SDLTerminalIO : SwashIO
   // coordinates.  The `center` parameter has no effect in SDL.
   void display( uint y, uint x, Symbol s, bool center = true )
   {
-    put_char( y, x, s.ch,
-              COLOR ? s.color : Color( CLR_GRAY, s.color.reverse ) );
+    put_char( y, x, s.ch, s.color );
   }
 
   // The Message Line ////////////////////////////////////////////////////////

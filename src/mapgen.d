@@ -342,7 +342,7 @@ static if( FOLIAGE )
 
   Monst goobling = new_monst_at( 'g', "goobling", 0, 0, 2, 2, 0, 10, 2, 0, 2,
                                  1000, 60, 20 );
-  goobling.sym.color = Colors.Dark_Gray;
+  goobling.sym.color = CLR_DARK_GRAY;
 
   add_mon( &nu, goobling );
 
@@ -358,7 +358,7 @@ static if( false ) /* never */
 
   // a test Item "old sword" which grants a +2 bonus to the player's
   // attack roll
-  Item old_sword = { sym:symdata( '(', Colors.Gray ),
+  Item old_sword = { sym:symdata( '(', CLR_GRAY ),
                      name:"old sword",
                      type:ITEM_WEAPON, equip:EQUIP_NO_ARMOR,
                      addd:0, addm:2 };

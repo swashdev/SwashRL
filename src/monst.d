@@ -53,7 +53,7 @@ Mon mondat( char isym, string iname, uint ifly, uint iswim,
             uint hit_dice, int hit_modifier, int hit_min, int hit_max,
             uint at_dice, int at_modifier, int at_min, int at_max )
 {
-  Mon mn = { sym:symdata( isym, Colors.Gray ), name:iname, fly:ifly,
+  Mon mn = { sym:symdata( isym, CLR_GRAY ), name:iname, fly:ifly,
              swim:iswim,
              hit_dice:Dice( hit_dice, hit_modifier, hit_min, hit_max ),
              attack_roll:Dice( at_dice, at_modifier, at_min, at_max )
@@ -86,7 +86,7 @@ Monst new_monst_at( char isym, string iname, uint ifly, uint iswim,
                     uint at_dice, int at_mod, int at_min, int at_max,
                     ubyte x, ubyte y )
 {
-  Monst mon = { sym:symdata( isym, Colors.Gray ), name:iname,
+  Monst mon = { sym:symdata( isym, CLR_GRAY ), name:iname,
                 fly:ifly, swim:iswim,
                 hp:roll( hit_dice, hit_mod ),
                 attack_roll:Dice( at_dice, at_mod, at_min, at_max ),

@@ -61,8 +61,8 @@ static if( SDL_ENABLED )
   { return sdl_color;
   }
 
-  public void set_sdl_color( int sdl_red = 162, int sdl_blue = 162,
-                             int sdl_red = 162, int sdl_opacity = 255 )
+  public void set_sdl_color( ubyte sdl_red = 162, ubyte sdl_blue = 162,
+                             ubyte sdl_red = 162, ubyte sdl_opacity = 255 )
   { sdl_color = SDL_Color( sdl_red, sdl_blue, sdl_red, sdl_opacity );
   }
 
@@ -76,8 +76,8 @@ static if( SDL_ENABLED )
   // Initialize a `Color` object by specifying the curses color code and the
   // RGB values for an SDL color.  As an additional option, the opacity value
   // has also been included, but should only be used sparingly.
-  this( short curses_color_code, int sdl_red, int sdl_blue, int sdl_green,
-        int sdl_opacity = 255 )
+  this( short curses_color_code, ubyte sdl_red, ubyte sdl_blue,
+        ubyte sdl_green, ubyte sdl_opacity = 255 )
   {
 
 static if( CURSES_ENABLED )
@@ -201,8 +201,8 @@ static if( CURSES_ENABLED )
   // Initialize a new color pair by "brightening" the existing color pair.
   // By default, the SDL color codes will double unless new color codes are
   // input as parameters.
-  public Color_Pair brighten( int sdl_red = -1, int sdl_green = -1,
-                              int sdl_blue = -1, int sdl_opacity = 255 )
+  public Color_Pair brighten( ubyte sdl_red = 0, ubyte sdl_green = 0,
+                              ubyte sdl_blue = 0, ubyte sdl_opacity = 255 )
   {
 
     Color_Pair new_pair = this;

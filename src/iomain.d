@@ -82,7 +82,7 @@ interface SwashIO
 
   // Outputs a text character at the given coordinates.
   void put_char( uint y, uint x, char c,
-                 Color_Pair color = Colors.Gray );
+                 Color_Pair color = CLR_GRAY );
 
   // The central display function: displays a given symbol at the given
   // coordinates.  Equivalent to `mvputch` in curses.
@@ -682,10 +682,10 @@ static if( COLOR )
             if( !(to_display.t[y][x].hazard & HAZARD_WATER ) )
             {
               if( to_display.t[y][x].sym.color.get_inverted() )
-              { output.color = Colors.Green.invert();
+              { output.color = CLR_GREEN.invert();
               }
               else
-              { output.color = Colors.Green;
+              { output.color = CLR_GREEN;
               }
             }
           }
@@ -699,10 +699,10 @@ static if( COLOR )
             if( !(to_display.t[y][x].hazard & HAZARD_WATER) )
             {
               if( to_dispay.t[y][x].sym.color.get_inverted() )
-              { output.color = Colors.Red.invert();
+              { output.color = CLR_RED.invert();
               }
               else
-              { output.color = Colors.Red;
+              { output.color = CLR_RED;
               }
             }
           }
@@ -721,7 +721,7 @@ else
 {
           if( to_display.t[y][x].seen )
           {
-            output.color = Colors.Dark_Gray;
+            output.color = CLR_DARK_GRAY;
           }
           else
           {

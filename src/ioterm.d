@@ -349,7 +349,7 @@ class SDLTerminalIO : SwashIO
   }
 
   // Outputs a text character at the given coordinates.
-  void put_char( uint y, uint x, char c, Color_Pair color = Colors.Gray )
+  void put_char( uint y, uint x, char c, Color_Pair color = CLR_GRAY )
   {
 
     // Tell the renderer to draw to our own `frame_buffer' rather than the
@@ -366,7 +366,7 @@ class SDLTerminalIO : SwashIO
     if( cur_tileset[c] is null )
     {
       renderedchar = cur_tileset['?'];
-      co = Colors.Red.invert();
+      co = CLR_RED.invert();
     }
     else
     { renderedchar = cur_tileset[c];

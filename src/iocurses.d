@@ -83,7 +83,7 @@ static if( COLOR )
 
   // Takes in a color flag and returns a curses-style `attr_t' representing
   // that color.
-  attr_t get_color( Color_Pair color = Colors.Gray )
+  attr_t get_color( Color_Pair color = CLR_GRAY )
   {
     return COLOR_PAIR( color.get_color_pair() );
   } // attr_t get_color( Color_Pair? )
@@ -149,7 +149,7 @@ static if( COLOR )
 
   // Outputs a text character at the given coordinates.
   void put_char( uint y, uint x, char c,
-                 Color_Pair color = Colors.Gray )
+                 Color_Pair color = CLR_GRAY )
   {
 static if( TEXT_EFFECTS )
 {
@@ -168,16 +168,12 @@ static if( TEXT_EFFECTS )
 }
 static if( COLOR )
 {
-    if( color.fg != CLR_NONE )
-    { attron( get_color( color ) );
-    }
+    attron( get_color( color ) );
 }
     mvaddch( y, x, c );
 static if( COLOR )
 {
-    if( color.fg != CLR_NONE )
-    { attroff( get_color( color ) );
-    }
+    attroff( get_color( color ) );
 }
   }
 

@@ -252,6 +252,10 @@ version( sdl )
 
   seed();
 
+  // Initialize Standard Colors //////////////////////////////////////////////
+
+  init_colors();
+
   // Map Generator ///////////////////////////////////////////////////////////
 
   // If we're just doing a sample map generation, do that now.

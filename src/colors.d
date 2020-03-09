@@ -80,63 +80,58 @@ enum CURSES_GRAY    = 7;
 // Colors                                                                   //
 //////////////////////////////////////////////////////////////////////////////
 
-// Define the standard set of colors.
+static Color_Pair CLR_DARK_GRAY,
+                  CLR_RED,
+                  CLR_GREEN,
+                  CLR_BLUE,
+                  CLR_BROWN,
+                  CLR_MAGENTA,
+                  CLR_CYAN,
+                  CLR_GRAY,
+                  CLR_BLACK,
+                  CLR_LITE_RED,
+                  CLR_LITE_GREEN,
+                  CLR_LITE_BLUE,
+                  CLR_YELLOW,
+                  CLR_PINK,
+                  CLR_LITE_CYAN,
+                  CLR_WHITE;
 
-enum Color CLR_DARK    = new Color( CURSES_DARK,     64,  64,  64 );
-enum Color CLR_RED     = new Color( CURSES_RED,     128,   0,   0 );
-enum Color CLR_GREEN   = new Color( CURSES_GREEN,     0, 128,   0 );
-enum Color CLR_BLUE    = new Color( CURSES_BLUE,      0,   0, 255 );
-enum Color CLR_BROWN   = new Color( CURSES_BROWN,   150,  75,   0 );
-enum Color CLR_MAGENTA = new Color( CURSES_MAGENTA, 128,   0, 128 );
-enum Color CLR_CYAN    = new Color( CURSES_CYAN,      0, 128, 128 );
-enum Color CLR_GRAY    = new Color( CURSES_GRAY,    162, 162, 162 );
-
-// SECTION 2: ////////////////////////////////////////////////////////////////
-// Color Pairs                                                              //
-//////////////////////////////////////////////////////////////////////////////
-
-// Define the standard color pairs.
-
-enum Color_Pair PAIR_DARK    = new Color_Pair( CLR_DARK    );
-enum Color_Pair PAIR_RED     = new Color_Pair( CLR_RED     );
-enum Color_Pair PAIR_GREEN   = new Color_Pair( CLR_GREEN   );
-enum Color_Pair PAIR_BLUE    = new Color_Pair( CLR_BLUE    );
-enum Color_Pair PAIR_BROWN   = new Color_Pair( CLR_BROWN   );
-enum Color_Pair PAIR_MAGENTA = new Color_Pair( CLR_MAGENTA );
-enum Color_Pair PAIR_CYAN    = new Color_Pair( CLR_CYAN    );
-enum Color_Pair PAIR_GRAY    = new Color_Pair( CLR_GRAY    );
-
-// SECTION 3: ////////////////////////////////////////////////////////////////
-// The Full Color Set                                                       //
-//////////////////////////////////////////////////////////////////////////////
-
-// We're going to put all of the color pairs into an enum named `Colors` so
-// we can easily access them later.
-
-enum Colors
+// Initialize the global color pairs.
+void init_colors()
 {
-  Dark_Gray = PAIR_DARK,
-  Red       = PAIR_RED,
-  Green     = PAIR_GREEN,
-  Blue      = PAIR_BLUE,
-  Brown     = PAIR_BROWN,
-  Magenta   = PAIR_MAGENTA,
-  Cyan      = PAIR_CYAN,
-  Gray      = PAIR_GRAY,
 
-// Bright Colors /////////////////////////////////////////////////////////////
+  Color C_DARK_GRAY = new Color( CURSES_DARK,     64,  64,  64 );
+  Color C_RED       = new Color( CURSES_RED,     128,   0,   0 );
+  Color C_GREEN     = new Color( CURSES_GREEN,     0, 128,   0 );
+  Color C_BLUE      = new Color( CURSES_BLUE,      0,   0, 255 );
+  Color C_BROWN     = new Color( CURSES_BROWN,   150,  75,   0 );
+  Color C_MAGENTA   = new Color( CURSES_MAGENTA, 128,   0, 128 );
+  Color C_CYAN      = new Color( CURSES_CYAN,      0, 128, 128 );
+  Color C_GRAY      = new Color( CURSES_GRAY,    162, 162, 162 );
+
+  CLR_DARK_GRAY = new Color_Pair( C_DARK_GRAY );
+  CLR_RED       = new Color_Pair( C_RED       );
+  CLR_GREEN     = new Color_Pair( C_GREEN     );
+  CLR_BLUE      = new Color_Pair( C_BLUE      );
+  CLR_BROWN     = new Color_Pair( C_BROWN     );
+  CLR_MAGENTA   = new Color_Pair( C_MAGENTA   );
+  CLR_CYAN      = new Color_Pair( C_CYAN      );
+  CLR_GRAY      = new Color_Pair( C_GRAY      );
+
+  // Bright Colors ///////////////////////////////////////////////////////////
 
   // Because of the way that curses works, "bright" colors can't be defined in
   // the same way the standard colors were, because curses relies on color
   // pairs.  Instead we're going to "brighten" the existing color pairs.
 
-  Black      = PAIR_DARK.brighten(      0,   0,   0 ),
-  Lite_Red   = PAIR_RED.brighten(     255,   0,   0 ),
-  Lite_Green = PAIR_GREEN.brighten(     0, 255,   0 ),
-  Lite_Blue  = PAIR_BLUE.brighten(      0,   0, 255 ),
-  Yellow     = PAIR_BROWN.brighten(   255, 255,   0 ),
-  Pink       = PAIR_MAGENTA.brighten( 255,   0, 255 ),
-  Lite_Cyan  = PAIR_CYAN.brighten(      0, 255, 255 ),
-  White      = PAIR_GRAY.brighten(    255, 255, 255 )
+  CLR_BLACK      = CLR_DARK_GRAY.brighten(   0,   0,   0 );
+  CLR_LITE_RED   = CLR_RED.brighten(       255,   0,   0 );
+  CLR_LITE_GREEN = CLR_GREEN.brighten(       0, 255,   0 );
+  CLR_LITE_BLUE  = CLR_BLUE.brighten(        0,   0, 255 );
+  CLR_YELLOW     = CLR_BROWN.brighten(     255, 255,   0 );
+  CLR_PINK       = CLR_MAGENTA.brighten(   255,   0, 255 );
+  CLR_LITE_CYAN  = CLR_CYAN.brighten(        0, 255, 255 );
+  CLR_WHITE      = CLR_GRAY.brighten(      255, 255, 255 );
 
-} /* enum Colors */
+} /* void init_colors() */

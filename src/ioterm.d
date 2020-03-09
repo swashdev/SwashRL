@@ -360,7 +360,7 @@ class SDLTerminalIO : SwashIO
 
     SDL_Texture* renderedchar;
 
-    Color co = color;
+    Color_Pair co = color;
 
     // null means there's no glyph, so fall back on a backup character
     if( cur_tileset[c] is null )
@@ -383,8 +383,8 @@ class SDLTerminalIO : SwashIO
     tile.h = tile_height;
 
     // The color of the foreground and background, respectively
-    SDL_Color fg = co.foreground.get_sdl_color(),
-              bg = co.background.get_sdl_color();
+    SDL_Color fg = co.get_foreground().get_sdl_color(),
+              bg = co.get_background().get_sdl_color();
 
     // Fill in the background first:
     SDL_SetRenderDrawColor( renderer, bg.r, bg.g, bg.b, 255 );

@@ -222,9 +222,9 @@ else
     Color new_foreground_color = foreground;
     SDL_Color new_foreground = foreground.get_sdl_color();
 
-    sdl_red = new_foreground.r * 2;
-    sdl_green = new_foreground.g * 2;
-    sdl_blue = new_foreground.b * 2;
+    sdl_red   = cast(ubyte)(new_foreground.r * 2);
+    sdl_green = cast(ubyte)(new_foreground.g * 2);
+    sdl_blue  = cast(ubyte)(new_foreground.b * 2);
 
     // Correct for integer overloads.
     if( sdl_red < new_foreground.r )

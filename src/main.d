@@ -562,8 +562,8 @@ Try compiling with dub build -b debug" );
 playerdied:
 
   // Display a grayed-out player:
-  IO.display( u.y + 1, u.x, symdata( SMILEY, Color( CLR_DARKGRAY, false ) ),
-              true );
+  u.sym.color = CLR_DARK_GRAY;
+  IO.display_player( u );
 
   // Say Goodbye /////////////////////////////////////////////////////////////
 

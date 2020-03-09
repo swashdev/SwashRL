@@ -29,6 +29,8 @@
 // colors.d: Defines colors and color pairs used by SwashRL.  See color.d for
 // the `Color` and `Color_Pair` classes.
 
+import global;
+
 // SECTION 0: ////////////////////////////////////////////////////////////////
 // Color Indexes                                                            //
 //////////////////////////////////////////////////////////////////////////////

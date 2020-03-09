@@ -329,7 +329,10 @@ Try compiling with dub build -b debug" );
   // is being used, highlight the player.
   if( SDL_terminal() )
   {
-     u.sym = symdata( SMILEY, Color( CLR_WHITE, HILITE_PLAYER ) );
+     if( HILITE_PLAYER )
+     {
+       u.sym.color = u.sym.color.invert();
+     }
   }
 
   // Initialize Field-of-Vision //////////////////////////////////////////////

@@ -698,7 +698,7 @@ static if( COLOR )
           {
             if( !(to_display.t[y][x].hazard & HAZARD_WATER) )
             {
-              if( to_dispay.t[y][x].sym.color.get_inverted() )
+              if( to_display.t[y][x].sym.color.get_inverted() )
               { output.color = CLR_RED.invert();
               }
               else

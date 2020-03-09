@@ -113,14 +113,14 @@ static Color_Pair PAIR_GRAY    = Color_Pair( PAIR_GRAY   );
 
 enum Colors
 {
-  Dark_Gray = PAIR_DARK;
-  Red       = PAIR_RED;
-  Green     = PAIR_GREEN;
-  Blue      = PAIR_BLUE;
-  Brown     = PAIR_BROWN;
-  Magenta   = PAIR_MAGENTA;
-  Cyan      = PAIR_CYAN;
-  Gray      = PAIR_GRAY;
+  Dark_Gray = PAIR_DARK,
+  Red       = PAIR_RED,
+  Green     = PAIR_GREEN,
+  Blue      = PAIR_BLUE,
+  Brown     = PAIR_BROWN,
+  Magenta   = PAIR_MAGENTA,
+  Cyan      = PAIR_CYAN,
+  Gray      = PAIR_GRAY,
 
 // Bright Colors /////////////////////////////////////////////////////////////
 
@@ -128,13 +128,13 @@ enum Colors
   // the same way the standard colors were, because curses relies on color
   // pairs.  Instead we're going to "brighten" the existing color pairs.
 
-  Black      = PAIR_DARK.brighten(      0,   0,   0 );
-  Lite_Red   = PAIR_RED.brighten(     255,   0,   0 );
-  Lite_Green = PAIR_GREEN.brighten(     0, 255,   0 );
-  Lite_Blue  = PAIR_BLUE.brighten(      0,   0, 255 );
-  Yellow     = PAIR_BROWN.brighten(   255, 255,   0 );
-  Pink       = PAIR_MAGENTA.brighten( 255,   0, 255 );
-  Lite_Cyan  = PAIR_CYAN.brighten(      0, 255, 255 );
-  White      = PAIR_GRAY.brighten(    255, 255, 255 );
+  Black      = PAIR_DARK.brighten(      0,   0,   0 ),
+  Lite_Red   = PAIR_RED.brighten(     255,   0,   0 ),
+  Lite_Green = PAIR_GREEN.brighten(     0, 255,   0 ),
+  Lite_Blue  = PAIR_BLUE.brighten(      0,   0, 255 ),
+  Yellow     = PAIR_BROWN.brighten(   255, 255,   0 ),
+  Pink       = PAIR_MAGENTA.brighten( 255,   0, 255 ),
+  Lite_Cyan  = PAIR_CYAN.brighten(      0, 255, 255 ),
+  White      = PAIR_GRAY.brighten(    255, 255, 255 )
 
 } /* enum Colors */

@@ -178,7 +178,7 @@ else
   // Initialize a `Color_Pair` using an existing `Color` (or two if we want to
   // specify a background other than black).
   this( Color foreground_color,
-        Color background_color = Color( 0, 0, 0, 0 ) )
+        Color background_color = new Color( 0, 0, 0, 0 ) )
   {
     foreground = foreground_color;
     background = background_color;

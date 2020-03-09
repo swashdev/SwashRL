@@ -125,9 +125,6 @@ class Color_Pair
   { inverted = reversed;
   }
 
-static if( CURSES_ENABLED )
-{
-
   // Because curses refers to color pairs by an index, we need to store what
   // the most recent index was, as well as the index of the current color
   // pair.  Note that if `last_color_pair` is 0, that means that no color
@@ -144,8 +141,6 @@ static if( CURSES_ENABLED )
   public short get_color_pair()
   { return curses_color_pair;
   }
-
-} /* static if( CURSES_ENABLED ) */
 
   public static bool color_pairs_defined()
   {
@@ -183,13 +178,13 @@ else
     foreground = foreground_color;
     background = background_color;
 
-static if( CURSES_ENABLED )
-{
-
     // Initialize a curses color pair and then store the resulting index in
     // `curses_color_pair`.
     last_color_pair++;
     curses_color_pair = last_color_pair;
+
+static if( CURSES_ENABLED )
+{
 
     init_pair( curses_color_pair, foreground.get_curses_color(),
                background.get_curses_color() );

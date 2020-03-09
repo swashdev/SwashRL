@@ -63,18 +63,6 @@ class CursesIO : SwashIO
 static if( COLOR )
 {
     start_color();
-
-    short black = CURSES_BLACK;
-
-    // Initialize color pairs:
-    init_pair( 1, CURSES_BLACK  , black );
-    init_pair( 2, CURSES_RED    , black );
-    init_pair( 3, CURSES_GREEN  , black );
-    init_pair( 4, CURSES_BROWN  , black );
-    init_pair( 5, CURSES_BLUE   , black );
-    init_pair( 6, CURSES_MAGENTA, black );
-    init_pair( 7, CURSES_CYAN   , black );
-    init_pair( 8, CURSES_GRAY   , black );
 }
   }
 
@@ -95,65 +83,10 @@ static if( COLOR )
 
   // Takes in a color flag and returns a curses-style `attr_t' representing
   // that color.
-  attr_t get_color( uint color )
+  attr_t get_color( Color_Pair color = Colors.Gray )
   {
-    switch( color )
-    {
-      case CLR_BLACK:
-        return COLOR_PAIR( 1 );
-
-      case CLR_RED:
-        return COLOR_PAIR( 2 );
-
-      case CLR_GREEN:
-        return COLOR_PAIR( 3 );
-
-      case CLR_BROWN:
-        return COLOR_PAIR( 4 );
-
-      case CLR_BLUE:
-        // We don't use dark blue because it blends in with the black
-        // background too much.
-        goto case CLR_LITEBLUE;
-
-      case CLR_MAGENTA:
-        return COLOR_PAIR( 6 );
-
-      case CLR_CYAN:
-        return COLOR_PAIR( 7 );
-
-      case CLR_GRAY:
-        return COLOR_PAIR( 8 );
-
-      case CLR_DARKGRAY:
-        return COLOR_PAIR( 1 ) | A_BOLD;
-
-      case CLR_LITERED:
-        return COLOR_PAIR( 2 ) | A_BOLD;
-
-      case CLR_LITEGREEN:
-        return COLOR_PAIR( 3 ) | A_BOLD;
-
-      case CLR_YELLOW:
-        return COLOR_PAIR( 4 ) | A_BOLD;
-
-      case CLR_LITEBLUE:
-        return COLOR_PAIR( 5 ) | A_BOLD;
-
-      case CLR_LITEMAGENTA:
-        return COLOR_PAIR( 6 ) | A_BOLD;
-
-      case CLR_LITECYAN:
-        return COLOR_PAIR( 7 ) | A_BOLD;
-
-      case CLR_WHITE:
-        return COLOR_PAIR( 8 ) | A_BOLD;
-
-      // If we don't get a valid color, default to the "standard color"
-      default:
-        goto case CLR_GRAY;
-    } // switch( color )
-  } // attr_t get_color( ubyte color )
+    return COLOR_PAIR( color.get_color_pair() );
+  } // attr_t get_color( Color_Pair? )
 
 // SECTION 3: ////////////////////////////////////////////////////////////////
 // Input                                                                    //
@@ -216,11 +149,17 @@ static if( COLOR )
 
   // Outputs a text character at the given coordinates.
   void put_char( uint y, uint x, char c,
-                 Color color = Color( CLR_NONE, false ) )
+                 Color_Pair color = Colors.Gray )
   {
 static if( TEXT_EFFECTS )
 {
-    if( color.reverse )
+    if( color.get_bright() )
+    { attron( A_BOLD );
+    }
+    else
+    { attroff( A_BOLD );
+    }
+    if( color.get_inverted() )
     { attron( A_REVERSE );
     }
     else
@@ -230,14 +169,14 @@ static if( TEXT_EFFECTS )
 static if( COLOR )
 {
     if( color.fg != CLR_NONE )
-    { attron( get_color( color.fg ) );
+    { attron( get_color( color ) );
     }
 }
     mvaddch( y, x, c );
 static if( COLOR )
 {
     if( color.fg != CLR_NONE )
-    { attroff( get_color( color.fg ) );
+    { attroff( get_color( color ) );
     }
 }
   }
@@ -246,8 +185,7 @@ static if( COLOR )
   // moved over the place where the symbol was output.
   void display( uint y, uint x, Symbol s, bool center = false )
   {
-    put_char( y, x, s.ch,
-              COLOR ? s.color : Color( CLR_GRAY, s.color.reverse ) );
+    put_char( y, x, s.ch, s.color );
 
     if( center )
     { move( y, x );

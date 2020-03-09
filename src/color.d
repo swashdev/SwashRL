@@ -61,9 +61,9 @@ static if( SDL_ENABLED )
   { return sdl_color;
   }
 
-  public void set_sdl_color( ubyte sdl_red = 162, ubyte sdl_blue = 162,
-                             ubyte sdl_red = 162, ubyte sdl_opacity = 255 )
-  { sdl_color = SDL_Color( sdl_red, sdl_blue, sdl_red, sdl_opacity );
+  public void set_sdl_color( ubyte sdl_red = 162, ubyte sdl_green = 162,
+                             ubyte sdl_blue = 162, ubyte sdl_opacity = 255 )
+  { sdl_color = SDL_Color( sdl_red, sdl_green, sdl_blue, sdl_opacity );
   }
 
   public void set_sdl_color( SDL_Color sdl_color_object )

@@ -97,6 +97,8 @@ static Color_Pair CLR_DARK_GRAY,
                   CLR_LITE_CYAN,
                   CLR_WHITE;
 
+static Color_Pair*[short] Curses_Color_Pairs;
+
 // Initialize the global color pairs.
 void init_colors()
 {
@@ -110,14 +112,26 @@ void init_colors()
   Color C_CYAN      = new Color( CURSES_CYAN,      0, 128, 128 );
   Color C_GRAY      = new Color( CURSES_GRAY,    162, 162, 162 );
 
-  CLR_DARK_GRAY = new Color_Pair( C_DARK_GRAY );
-  CLR_RED       = new Color_Pair( C_RED       );
-  CLR_GREEN     = new Color_Pair( C_GREEN     );
-  CLR_BLUE      = new Color_Pair( C_BLUE      );
-  CLR_BROWN     = new Color_Pair( C_BROWN     );
-  CLR_MAGENTA   = new Color_Pair( C_MAGENTA   );
-  CLR_CYAN      = new Color_Pair( C_CYAN      );
-  CLR_GRAY      = new Color_Pair( C_GRAY      );
+  CLR_DARK_GRAY = new Color_Pair( C_DARK_GRAY ); // 1
+  CLR_RED       = new Color_Pair( C_RED       ); // 2
+  CLR_GREEN     = new Color_Pair( C_GREEN     ); // 3
+  CLR_BLUE      = new Color_Pair( C_BLUE      ); // 4
+  CLR_BROWN     = new Color_Pair( C_BROWN     ); // 5
+  CLR_MAGENTA   = new Color_Pair( C_MAGENTA   ); // 6
+  CLR_CYAN      = new Color_Pair( C_CYAN      ); // 7
+  CLR_GRAY      = new Color_Pair( C_GRAY      ); // 8
+
+  // Fill in `Curses_Color_Pairs` with the color pair values of the above
+  // standard color pairs.  Note that 0 is unnecessary since none of our
+  // colors can override that color pair in curses anyway.
+  Curses_Color_Pairs[1] = &CLR_DARK_GRAY;
+  Curses_Color_Pairs[2] = &CLR_RED;
+  Curses_Color_Pairs[3] = &CLR_GREEN;
+  Curses_Color_Pairs[4] = &CLR_BLUE;
+  Curses_Color_Pairs[5] = &CLR_BROWN;
+  Curses_Color_Pairs[6] = &CLR_MAGENTA;
+  Curses_Color_Pairs[7] = &CLR_CYAN;
+  Curses_Color_Pairs[8] = &CLR_GRAY;
 
   // Bright Colors ///////////////////////////////////////////////////////////
 

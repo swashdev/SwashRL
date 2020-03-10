@@ -37,9 +37,8 @@ closest.
    [`release-*` branches](#Production-Branches) also branch from `stable`.
 
  * [`dev`](https://github.com/swashdev/SwashRL/tree/dev)  
-   This is the branch used when modifying code files.  This branch should only
-   be merged to `master` when the code is stable and has been tagged for a
-   release.  When working on a new feature, create a
+   This is the branch used when modifying code files.  Merge this branch to
+   `stable` when the code is stable.  When working on a new feature, create a
    [`feature-*` branch](#Production-Branches) off of `dev` and merge back when
    the feature is complete.
 

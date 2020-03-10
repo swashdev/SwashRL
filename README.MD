@@ -17,28 +17,74 @@ following locations:
 ### Public Branches
 
 What follows is a list of branches which currently exist in the repository and
-a brief description of their function:
+a brief description of their function.  Branches are listed in order of
+proximity to the `master` branch; however, note that
+[`hotfix-*` and `release-*` branches](#Production-Branches) will be the
+closest.
 
  * [`master`](https://github.com/swashdev/SwashRL/tree/master)  
    This is the central branch for the project and is meant to contain the most
    recent stable or "release" versions of the code and the most up-to-date
-   documentation.  Commits which modify the source code should not push
-   directly to `master` excepting commits which modify the autodoc comments in
-   the source code files.
+   documentation.  Only merge to `master` if code is stable and ready for
+   release.  Tagged commits will always come from `master`.
+   [`hotfix-*` branches](#Production-Branches) should branch from `master`.
+
+ * [`stable`](https://github.com/swashdev/SwashRL/tree/stable)  
+   This branch is used to hold stable versions of the code.  While it is not
+   intended as a release branch, it is helpful to think of `stable` as a good
+   place to put "nightly release" builds.  When you need to modify some code,
+   merge `stable` into `dev` and work from there.
+   [`release-*` branches](#Production-Branches) also branch from `stable`.
 
  * [`dev`](https://github.com/swashdev/SwashRL/tree/dev)  
    This is the branch used when modifying code files.  This branch should only
-   be merged to `master` when the code is stable and ready for a release.  Do
-   not modify the documentation in this branch; instead merge to `master` and
-   modify the documentation there.
+   be merged to `master` when the code is stable and has been tagged for a
+   release.  When working on a new feature, create a
+   [`feature-*` branch](#Production-Branches) off of `dev` and merge back when
+   the feature is complete.
 
  * [`spring-cleaning`](https://github.com/swashdev/SwashRL/tree/spring-cleaning)  
    This is a special branch originally created towards the end of February
    2020 to facilitate a radical cleanup and restructuring of SwashRL's code
-   base and make it compliant with an updated style guide.  Don't use this
-   branch for normal code edits.
+   base and make it compliant with an updated style guide.  It is essentially
+   equivalent to a `feature-*` branch in scope, except that it is not working
+   on any particular feature and is publically available for peer review.  Any
+   time a "spring cleaning" project is done, it will be merged into `dev`.
 
-#### Special Branches
+### Production Branches
+
+These are private branches used when working on individual copies of the
+source code, except that some of them may be pushed to a public repo
+temporarily in order to collaborate on preparation for an upcoming release or
+if assistance is needed.  As above, the branches are listed according to how
+close they are to the `master` branch.
+
+ * `hotfix-*`
+   These branches are used to quickly fix bugs in `master` release versions of
+   SwashRL.  These branches should be very short-lived; larger bugfixes will
+   have to happen in `dev`.  Name the branch according to what the version
+   number will be after the hotfix is complete, e.g. `hotfix-0.31.1`.  Do not
+   merge `hotfix-*` branches to `master` until they are ready for release.
+
+ * `release-*`
+   These are release branches, branches off of `stable` which are used to set
+   the repository up for a release version of the software.  Merges to
+   `master` should come from `release-*` branches.  Name the branch according
+   to what the version number will be after the release is complete, e.g.
+   `release-0.32.0`.
+
+ * `feature-*`  
+   Whenever you are working on adding a new feature, merge `dev` into a
+   feature branch in a private repository.  The naming convention should give
+   away what its intended feature is; for example, `feature-colors` was used
+   for an overhaul of the color storage system in SwashRL's display code.  All
+   of the work done in this branch should go toward working on that particular
+   feature, not bug fixes in the existing source code.
+
+### Special Branches
+
+These branches are public, but are not related an a fundamental level to the
+production of source code.
 
  * [`gh-pages`](https://github.com/swashdev/SwashRL/tree/gh-pages)  
    This is an orphan branch which is used to host SwashRL's GitHub Pages site.

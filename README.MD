@@ -14,6 +14,8 @@ following locations:
 
  * [repo.or.cz](https://repo.or.cz/SwashRL.git)
 
+### Public Branches
+
 What follows is a list of branches which currently exist in the repository and
 a brief description of their function:
 
@@ -35,6 +37,8 @@ a brief description of their function:
    2020 to facilitate a radical cleanup and restructuring of SwashRL's code
    base and make it compliant with an updated style guide.  Don't use this
    branch for normal code edits.
+
+#### Special Branches
 
  * [`gh-pages`](https://github.com/swashdev/SwashRL/tree/gh-pages)  
    This is an orphan branch which is used to host SwashRL's GitHub Pages site.

@@ -115,14 +115,16 @@ void save_level( T... )( Map m, Player u, T args )
       char ch = s.ch;
       fil.writeln( ch );
 
-      // Each symbol has a Color...
-      Color c = s.color;
+      // Each symbol has a Color_Pair...
+      Color_Pair c = s.color;
 
-      uint fg = c.fg;
-      fil.writeln( fg );
+      // Each Color_Pair has a short and two booleans...
+      short curses_color_pair = c.get_color_pair();
+      bool bold = c.get_bright(), inverted = c.get_inverted();
 
-      bool reverse = c.reverse;
-      fil.writeln( reverse );
+      fil.writeln( curses_color_pair );
+      fil.writeln( bold );
+      fil.writeln( inverted );
 
       // Each tile also has a series of booleans:
       bool block_c = t.block_cardinal_movement,
@@ -170,13 +172,14 @@ void save_level( T... )( Map m, Player u, T args )
       char ch = s.ch;
       fil.writeln( ch );
 
-      Color c = s.color;
+      Color_Pair c = s.color;
 
-      uint fg = c.fg;
-      fil.writeln( fg );
+      short curses_color_pair = c.get_color_pair();
+      bool bold = c.get_bright(), inverted = c.get_inverted();
 
-      bool reverse = c.reverse;
-      fil.writeln( reverse );
+      fil.writeln( curses_color_pair );
+      fil.writeln( bold );
+      fil.writeln( inverted );
 
       // Each item has a name...
       string name = i.name;
@@ -215,13 +218,14 @@ void save_level( T... )( Map m, Player u, T args )
     char ch = s.ch;
     fil.writeln( ch );
 
-    Color c = s.color;
+    Color_Pair c = s.color;
 
-    uint fg = c.fg;
-    fil.writeln( fg );
+    short curses_color_pair = c.get_color_pair();
+    bool bold = c.get_bright(), inverted = c.get_inverted();
 
-    bool reverse = c.reverse;
-    fil.writeln( reverse );
+    fil.writeln( curses_color_pair );
+    fil.writeln( bold );
+    fil.writeln( inverted );
 
     // Every monster has a string...
     string name = mn.name;
@@ -327,17 +331,22 @@ Map level_from_file( string file_label )
       Tile t;
 
       char ch = '?';
-      uint fg = CLR_LITERED;
-      bool reversed = 1;
+      short curses_color_pair = 0;
+      bool reversed = 1, bold = 1;
 
 
       ch = to!char( strip_line( fil ) );
-      fg = to!uint( strip_line( fil ) );
+      curses_color_pair = to!short( strip_line( fil ) );
+      bold = to!bool( strip_line( fil ) );
       reversed = to!bool( strip_line( fil ) );
 
       t.sym.ch = ch;
-      t.sym.color.fg = fg;
-      t.sym.color.reverse = reversed;
+      
+      Color_Pair cpair = *Curses_Color_Pairs[curses_color_pair];
+      if( bold ) cpair = cpair.brighten();
+      if( reversed ) cpair = cpair.invert();
+
+      t.sym.color = cpair;
 
       bool block_c = 1, block_d = 1, block_v = 1, lit = 0, seen = 0;
 
@@ -388,15 +397,21 @@ Map level_from_file( string file_label )
 
       Item i;
 
-      uint fg = CLR_LITERED;
-      bool reversed = 1;
+      short curses_color_pair = 0;
+      bool reversed = 1, bold = 1;
 
-      fg = to!uint( strip_line( fil ) );
+
+      curses_color_pair = to!short( strip_line( fil ) );
+      bold = to!bool( strip_line( fil ) );
       reversed = to!bool( strip_line( fil ) );
 
       i.sym.ch = ch;
-      i.sym.color.fg = fg;
-      i.sym.color.reverse = reversed;
+      
+      Color_Pair cpair = *Curses_Color_Pairs[curses_color_pair];
+      if( bold ) cpair = cpair.brighten();
+      if( reversed ) cpair = cpair.invert();
+
+      i.sym.color = cpair;
 
       string name = strip_line( fil );
 
@@ -446,15 +461,20 @@ Map level_from_file( string file_label )
 
     Monst mn;
 
-    uint fg = CLR_LITERED;
-    bool reversed = 1;
+    short curses_color_pair = 0;
+    bool reversed = 1, bold = 1;
 
-    fg = to!uint( strip_line( fil ) );
+    curses_color_pair = to!short( strip_line( fil ) );
+    bold = to!bool( strip_line( fil ) );
     reversed = to!bool( strip_line( fil ) );
 
     mn.sym.ch = ch;
-    mn.sym.color.fg = fg;
-    mn.sym.color.reverse = reversed;
+      
+    Color_Pair cpair = *Curses_Color_Pairs[curses_color_pair];
+    if( bold ) cpair = cpair.brighten();
+    if( reversed ) cpair = cpair.invert();
+
+    mn.sym.color = cpair;
 
     string name = strip_line( fil );
  

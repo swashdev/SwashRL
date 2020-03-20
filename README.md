@@ -1,7 +1,7 @@
 SwashRL
 =======
 
-Readme file, last updated 2020-03-07 21:14 CST  
+Readme file, last updated 2020-03-20 18:36 CST  
 Contact the maintainer: <swashdev@pm.me>
 
 ---
@@ -34,6 +34,8 @@ document can be found at the bottom.
 * [Supported Systems](#supported-systems)
 
 * [Compiling](#compiling)
+
+  * [Accessibility Options](#accessibility-options)
 
   * [Compiling for Derivatives](#compiling-for-derivatives)
 
@@ -109,6 +111,32 @@ you can get the up-to-date source repository from
 [our GitHub page].
 
 For more information about git, check out [the git website].
+
+### Accessibility Options
+
+At compile-time, certain features can be activated which allow for greater
+accessibility in the program.
+
+#### Dyslexia-Friendly Font
+
+For the benefit of dyslexic users who find the default font difficult to
+read, the [OpenDyslexic] Mono font has been included.  If configured to do
+so, SwashRL will use this font for all SDL interfaces.  The font will also
+be increased slightly in size to make it easier to read.
+
+The easiest way to compile the program with this font activated is to add the
+following line to the [dub.json] file:
+
+> `"versions": ["dyslexia"],
+
+_Do not place this line inside one of the configuration sets_; it is better
+to add it to the cluster of settings at the top of the file, so that the
+dyslexia-friendly fonts will be compiled for all versions of the software.
+Don't forget the comma!
+
+If you would like to fine-tune this configuration option, you can instead
+edit the `FONT` and `MESSAGE\_FONT` variables in [config.d] and adjust the
+font size with the `TILE\_WIDTH` and `TILE\_HEIGHT` options.
 
 ### Compiling for Derivatives
 
@@ -198,6 +226,7 @@ THIS LETTER.
 [contribution guidelines]: docs/CONTRIBUTING.md
 [config.d]: src/config.d
 [global.d]: src/global.d
+[OpenDyslexic]: https://opendyslexic.org/
 [dub.json]: dub.json
 [changes.txt]: docs/changes.txt
 [on the website]: https://swash.link/history/

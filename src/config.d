@@ -74,28 +74,42 @@ enum TEXT_EFFECTS = true;
 
 // SDL-specific options //////////////////////////////////////////////////////
 
+// Options specific to builds designed for dyslexic users. (experimental)
+version( dyslexia )
+{
+
 // A path to a font file to use for the map.  To use a different font, delete
 // this line and uncomment one of the alternatives, or write in the path to
 // a font which you would prefer.
-enum FONT = "assets/fonts/DejaVuSansMono.ttf";
-
-//enum FONT = "assets/fonts/DejaVuSansMono-Bold.ttf";
-
-// A font designed for dyslexic users. (experimental)
-//enum FONT = "assets/fonts/OpenDyslexicMono-Regular.otf";
+enum FONT = "assets/fonts/OpenDyslexicMono-Regular.otf";
 
 // A path to a font file to use for the message buffer, status bar, and other
 // messages.  By default, a bolder font is used because this has been
 // determined to be more readable.
-enum MESSAGE_FONT = "assets/fonts/DejaVuSansMono-Bold.ttf";
-
-// A font designed for dyslexic users. (experimental)
-//enum MESSAGE_FONT = "assets/fonts/OpenDyslexicMono-Regular.otf";
+enum MESSAGE_FONT = "assets/fonts/OpenDyslexicMono-Regular.otf";
 
 // The height to use for each tile in pixels
-enum TILE_HEIGHT = 16;
+enum TILE_HEIGHT = 18;
 // The width to use for each tile in pixels
-enum TILE_WIDTH = 8;
+enum TILE_WIDTH = 10;
+
+} // version( dyslexia )
+
+else
+{
+
+enum FONT = "assets/fonts/DejaVuSansMono.ttf";
+
+// An alternative, bolder font suggested for users who find the default
+// font difficult to read.
+//enum FONT = "assets/fonts/DejaVuSansMono-Bold.ttf";
+
+enum MESSAGE_FONT = "assets/fonts/DejaVuSansMono-Bold.ttf";
+
+enum TILE_HEIGHT = 16;
+enum TILE_WIDTH  = 8;
+
+} // else from version( dyslexia )
 
 // Whether to highlight the player in the game display, as would normally
 // happen in a curses terminal when the cursor hovers over the player's

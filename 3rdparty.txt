@@ -10,6 +10,15 @@ included with the DejaVu license notice.
 
 The DejaVu fonts license can be found in ``docs/license/dejavu.txt''
 
+  -- OpenDyslexic Fonts ------------------------------------------------------
+
+OpenDyslexic Mono, a freeware / open-source font designed for dyslexic users,
+is included in the ``assets/fonts'' folder as an experimental alternative font
+for the SDL interfaces to SwashRL.  The OpenDyslexic font family is licensed
+under the SIL Open Font License, version 1.1.
+
+The OpenDyslexic fonts license can be found in ``docs/license/dyslexic.txt''
+
   -- the Doryen library, aka libtcod -----------------------------------------
 
 The source file ``src/fov.d'' uses modified versions of functions taken

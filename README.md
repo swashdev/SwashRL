@@ -127,7 +127,7 @@ be increased slightly in size to make it easier to read.
 The easiest way to compile the program with this font activated is to add the
 following line to the [dub.json] file:
 
-> `"versions": ["dyslexia"],
+> `"versions": ["dyslexia"],`
 
 _Do not place this line inside one of the configuration sets_; it is better
 to add it to the cluster of settings at the top of the file, so that the

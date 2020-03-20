@@ -1,5 +1,13 @@
 SwashRL official changelog
 
+VERSION 0.32
+
+  Added:
+   - The OpenDyslexic Mono font, used to create a more readable interface for
+     dyslexic users, has been added.
+   - A `dyslexia` version has been declared which causes the OpenDyslexic Mono
+     font to be used instead of DejaVu Sans Mono.
+
 VERSION 0.031 Christmas Update
 Finalized 2019-12-21 23:02 CST
 

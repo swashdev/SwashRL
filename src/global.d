@@ -180,6 +180,7 @@ public import mapgen;
 public import mapalgo;
 public import fov;
 public import msg;
+public import fonts;
 public import iomain;
 public import iocurses;
 public import ioterm;

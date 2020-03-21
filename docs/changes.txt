@@ -8,6 +8,11 @@ VERSION 0.32
    - A `dyslexia` version has been declared which causes the OpenDyslexic Mono
      font to be used instead of DejaVu Sans Mono.
 
+  Changed:
+   - Default fonts for the SDL terminal interface are now defined in an enum
+     named TileSet, which stores structs containing the filepath to a font
+     file and the ideal height and weight for that font.
+
 VERSION 0.031 Christmas Update
 Finalized 2019-12-21 23:02 CST
 

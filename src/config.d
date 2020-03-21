@@ -77,7 +77,7 @@ enum TEXT_EFFECTS = true;
 version( sdl )
 {
 
-import fonts.d;
+import fonts;
 
 // Options specific to builds designed for dyslexic users. (experimental)
 version( dyslexia )

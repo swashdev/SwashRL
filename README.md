@@ -1,10 +1,12 @@
 SwashRL
 =======
 
-Readme file, last updated 2020-03-20 18:36 CST  
+Readme file, last updated 2020-03-20 19:29 CST  
 Contact the maintainer: <swashdev@pm.me>
 
 ---
+
+![A typical game of SwashRL on startup](docs/images/screenshot.png)
 
 SwashRL is a Roguelike game currently in the early development phases.  The
 actual "game" part is not yet functional, as it's still in need of a few
@@ -123,6 +125,8 @@ For the benefit of dyslexic users who find the default font difficult to
 read, the [OpenDyslexic] Mono font has been included.  If configured to do
 so, SwashRL will use this font for all SDL interfaces.  The font will also
 be increased slightly in size to make it easier to read.
+
+![A screenshot showing SwashRL using the OpenDyslexic Mono font](docs/images/screenshot-opendyslexic.png)
 
 The easiest way to compile the program with this font activated is to add the
 following line to the [dub.json] file:

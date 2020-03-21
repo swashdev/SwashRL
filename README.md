@@ -135,8 +135,8 @@ dyslexia-friendly fonts will be compiled for all versions of the software.
 Don't forget the comma!
 
 If you would like to fine-tune this configuration option, you can instead
-edit the `FONT` and `MESSAGE\_FONT` variables in [config.d] and adjust the
-font size with the `TILE\_WIDTH` and `TILE\_HEIGHT` options.
+edit the `FONT` and `MESSAGE_FONT` variables in [config.d] and adjust the
+font size with the `TILE_WIDTH` and `TILE_HEIGHT` options.
 
 ### Compiling for Derivatives
 

@@ -79,6 +79,11 @@ enum TEXT_EFFECTS = true;
 // characters in the SDL display.
 enum DYSLEXIA = false;
 
+// Set this to `true` to use a bolder font for the message line & status bar
+// in the SDL terminal interface.  This may be a bit more readable than the
+// standard font for these purposes.
+enum BOLD_MESSAGE_FONT = true;
+
 // Whether to highlight the player in the game display, as would normally
 // happen in a curses terminal when the cursor hovers over the player's
 // location.

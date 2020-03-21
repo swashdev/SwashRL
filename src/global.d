@@ -128,7 +128,7 @@ version( sdl )
   else
   {
     enum FONT         = TileSet.standard;
-    enum MESSAGE_FONT = TileSet.bold;
+    enum MESSAGE_FONT = BOLD_MESSAGE_FONT ? TileSet.bold : TileSet.standard;
   }
 }
 else

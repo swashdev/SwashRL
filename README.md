@@ -1,7 +1,7 @@
 SwashRL
 =======
 
-Readme file, last updated 2020-03-20 19:29 CST  
+Readme file, last updated 2020-03-20 21:09 CST  
 Contact the maintainer: <swashdev@pm.me>
 
 ---
@@ -128,18 +128,11 @@ be increased slightly in size to make it easier to read.
 
 ![A screenshot showing SwashRL using the OpenDyslexic Mono font](docs/images/screenshot-opendyslexic.png)
 
-The easiest way to compile the program with this font activated is to add the
-following line to the [dub.json] file:
-
-> `"versions": ["dyslexia"],`
-
-_Do not place this line inside one of the configuration sets_; it is better
-to add it to the cluster of settings at the top of the file, so that the
-dyslexia-friendly fonts will be compiled for all versions of the software.
-Don't forget the comma!
+The easiest way to compile the program with this font activated is to set the
+`DYSLEXIA` variable in [config.d] to `true`.
 
 If you would like to fine-tune this configuration option, you can instead
-edit the `FONT` and `MESSAGE_FONT` variables in [config.d] and adjust the
+edit the `FONT` and `MESSAGE_FONT` variables in [global.d] and adjust the
 font size with the `TILE_WIDTH` and `TILE_HEIGHT` options.
 
 ### Compiling for Derivatives

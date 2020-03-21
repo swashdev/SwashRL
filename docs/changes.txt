@@ -4,9 +4,8 @@ VERSION 0.32
 
   Added:
    - The OpenDyslexic Mono font, used to create a more readable interface for
-     dyslexic users, has been added.
-   - A `dyslexia` version has been declared which causes the OpenDyslexic Mono
-     font to be used instead of DejaVu Sans Mono.
+     dyslexic users, has been added.  It is activated by the DYSLEXIA option
+     in config.d
 
   Changed:
    - Default fonts for the SDL terminal interface are now defined in an enum

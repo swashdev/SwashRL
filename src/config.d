@@ -98,7 +98,7 @@ enum MESSAGE_FONT = TileSet.dyslexic;
 else
 {
 
-enum FONT = TileSet.default;
+enum FONT = TileSet.standard;
 
 // An alternative, bolder font suggested for users who find the default
 // font difficult to read.

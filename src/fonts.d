@@ -46,7 +46,7 @@ struct FontDef
 // A list of fonts which SwashRL can be configured to use by default.
 enum TileSet
 {
-    default  = FontDef( "assets/fonts/DejaVuSansMono.ttf",           16,  8 ),
+    standard = FontDef( "assets/fonts/DejaVuSansMono.ttf",           16,  8 ),
     bold     = FontDef( "assets/fonts/DejaVuSansMono-Bold.ttf",      16,  8 ),
     dyslexic = FontDef( "assets/fonts/OpenDyslexicMono-Regular.ttf", 18, 10 )
 }

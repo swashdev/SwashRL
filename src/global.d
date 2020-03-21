@@ -113,13 +113,23 @@ else
 
 // SDL configuration /////////////////////////////////////////////////////////
 
-// This value is used by some `static if` statements to determine whether or
-// not SDL2 is available for the program to use.
-
 version( sdl )
 {
-  public import derelict.sdl2.sdl, derelict.sdl2.ttf;
   enum SDL_ENABLED = true;
+
+  public import derelict.sdl2.sdl, derelict.sdl2.ttf;
+  public import fonts;
+
+  static if( DYSLEXIA )
+  {
+    enum FONT         = TileSet.dyslexic;
+    enum MESSAGE_FONT = TileSet.dyslexic;
+  }
+  else
+  {
+    enum FONT         = TileSet.standard;
+    enum MESSAGE_FONT = TileSet.bold;
+  }
 }
 else
 {
@@ -180,7 +190,6 @@ public import mapgen;
 public import mapalgo;
 public import fov;
 public import msg;
-public import fonts;
 public import iomain;
 public import iocurses;
 public import ioterm;

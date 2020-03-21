@@ -74,41 +74,10 @@ enum TEXT_EFFECTS = true;
 
 // SDL-specific options //////////////////////////////////////////////////////
 
-version( sdl )
-{
-
-import fonts;
-
-// Options specific to builds designed for dyslexic users. (experimental)
-version( dyslexia )
-{
-
-// A path to a font file to use for the map.  To use a different font, delete
-// this line and uncomment one of the alternatives, or write in the path to
-// a font which you would prefer.
-enum FONT = TileSet.dyslexic;
-
-// A path to a font file to use for the message buffer, status bar, and other
-// messages.  By default, a bolder font is used because this has been
-// determined to be more readable.
-enum MESSAGE_FONT = TileSet.dyslexic;
-
-} // version( dyslexia )
-
-else
-{
-
-enum FONT = TileSet.standard;
-
-// An alternative, bolder font suggested for users who find the default
-// font difficult to read.
-//enum FONT = "assets/fonts/DejaVuSansMono-Bold.ttf";
-
-enum MESSAGE_FONT = TileSet.bold;
-
-} // else from version( dyslexia )
-
-} // version( sdl )
+// Set this to `true` to use the OpenDyslexic font rather than the standard
+// fonts.  This should make it easier for dyslexic players to differentiate
+// characters in the SDL display.
+enum DYSLEXIA = false;
 
 // Whether to highlight the player in the game display, as would normally
 // happen in a curses terminal when the cursor hovers over the player's

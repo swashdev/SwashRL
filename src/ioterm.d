@@ -86,8 +86,8 @@ class SDLTerminalIO : SwashIO
   // `refresh_screen` function.
   SDL_Texture* frame_buffer;
 
-  enum tile_width = TILE_WIDTH;
-  enum tile_height = TILE_HEIGHT;
+  uint tile_width;
+  uint tile_height;
 
   bool close_button_pressed = false;
 
@@ -97,6 +97,24 @@ class SDLTerminalIO : SwashIO
     // Load SDL:
     DerelictSDL2.load();
     DerelictSDL2ttf.load();
+
+    // Set tile height & width.
+    if( FONT.tile_height > MESSAGE_FONT.tile_height )
+    {
+      tile_height = FONT.tile_height;
+    }
+    else
+    {
+      tile_height = MESSAGE_FONT.tile_height;
+    }
+    if( FONT.tile_width > MESSAGE_FONT.tile_width )
+    {
+      tile_width = FONT.tile_width;
+    }
+    else
+    {
+      tile_width = MESSAGE_FONT.tile_width;
+    }
 
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
     { sdl_error( "Could not initialize SDL" );
@@ -130,14 +148,13 @@ class SDLTerminalIO : SwashIO
           SDL_RENDERER_ACCELERATED );
 
         // Load the default font
-        if( !loadfont( FONT, tile_height,
-                       tileset ) )
-        { sdl_error( "Could not import " ~ FONT );
+        if( !loadfont( FONT.filepath, tile_height, tileset ) )
+        { sdl_error( "Could not import " ~ FONT.filepath );
         }
 
         // Load the message font
-        if( !loadfont( MESSAGE_FONT, tile_height, message_font ) )
-        { sdl_error( "Could not import " ~ MESSAGE_FONT );
+        if( !loadfont( MESSAGE_FONT.filepath, tile_height, message_font ) )
+        { sdl_error( "Could not import " ~ MESSAGE_FONT.filepath );
         }
 
         // Set the current font to default

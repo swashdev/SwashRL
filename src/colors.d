@@ -103,14 +103,23 @@ static Color_Pair*[short] Curses_Color_Pairs;
 void init_colors()
 {
 
-  Color C_DARK_GRAY = new Color( CURSES_DARK,     64,  64,  64 );
-  Color C_RED       = new Color( CURSES_RED,     128,   0,   0 );
-  Color C_GREEN     = new Color( CURSES_GREEN,     0, 128,   0 );
-  Color C_BLUE      = new Color( CURSES_BLUE,      0,   0, 255 );
-  Color C_BROWN     = new Color( CURSES_BROWN,   150,  75,   0 );
-  Color C_MAGENTA   = new Color( CURSES_MAGENTA, 128,   0, 128 );
-  Color C_CYAN      = new Color( CURSES_CYAN,      0, 128, 128 );
-  Color C_GRAY      = new Color( CURSES_GRAY,    162, 162, 162 );
+  Color C_DARK_GRAY  = new Color( CURSES_DARK,     64,  64,  64 );
+  Color C_RED        = new Color( CURSES_RED,     128,   0,   0 );
+  Color C_GREEN      = new Color( CURSES_GREEN,     0, 128,   0 );
+  Color C_BLUE       = new Color( CURSES_BLUE,      0,   0, 255 );
+  Color C_BROWN      = new Color( CURSES_BROWN,   150,  75,   0 );
+  Color C_MAGENTA    = new Color( CURSES_MAGENTA, 128,   0, 128 );
+  Color C_CYAN       = new Color( CURSES_CYAN,      0, 128, 128 );
+  Color C_GRAY       = new Color( CURSES_GRAY,    162, 162, 162 );
+
+  Color C_BLACK      = new Color( CURSES_DARK,      0,   0,   0 );
+  Color C_LITE_RED   = new Color( CURSES_RED,     255,   0,   0 );
+  Color C_LITE_GREEN = new Color( CURSES_GREEN,     0, 255,   0 );
+  Color C_LITE_BLUE  = new Color( CURSES_BLUE,      0,   0, 255 );
+  Color C_YELLOW     = new Color( CURSES_BROWN,   255, 255,   0 );
+  Color C_PINK       = new Color( CURSES_MAGENTA, 255,   0, 255 );
+  Color C_LITE_CYAN  = new Color( CURSES_CYAN,      0, 255, 255 );
+  Color C_WHITE      = new Color( CURSES_GRAY,    255, 255, 255 );
 
   CLR_DARK_GRAY = new Color_Pair( C_DARK_GRAY ); // 1
   CLR_RED       = new Color_Pair( C_RED       ); // 2
@@ -120,6 +129,10 @@ void init_colors()
   CLR_MAGENTA   = new Color_Pair( C_MAGENTA   ); // 6
   CLR_CYAN      = new Color_Pair( C_CYAN      ); // 7
   CLR_GRAY      = new Color_Pair( C_GRAY      ); // 8
+
+  // Special case: CLR_BLUE will always be bright, to avoid being too dark on
+  // standard terminal screens
+  CLR_BLUE.set_bright( true );
 
   // Fill in `Curses_Color_Pairs` with the color pair values of the above
   // standard color pairs.  Note that 0 is unnecessary since none of our
@@ -137,15 +150,17 @@ void init_colors()
 
   // Because of the way that curses works, "bright" colors can't be defined in
   // the same way the standard colors were, because curses relies on color
-  // pairs.  Instead we're going to "brighten" the existing color pairs.
+  // pairs.  Instead we're going to use the extended constructor to tell the
+  // class to point to one of the existing color pairs above and then apply
+  // the "bright" tag.
 
-  CLR_BLACK      = CLR_DARK_GRAY.brighten(   0,   0,   0 );
-  CLR_LITE_RED   = CLR_RED.brighten(       255,   0,   0 );
-  CLR_LITE_GREEN = CLR_GREEN.brighten(       0, 255,   0 );
-  CLR_LITE_BLUE  = CLR_BLUE.brighten(        0,   0, 255 );
-  CLR_YELLOW     = CLR_BROWN.brighten(     255, 255,   0 );
-  CLR_PINK       = CLR_MAGENTA.brighten(   255,   0, 255 );
-  CLR_LITE_CYAN  = CLR_CYAN.brighten(        0, 255, 255 );
-  CLR_WHITE      = CLR_GRAY.brighten(      255, 255, 255 );
+  CLR_BLACK      = new Color_Pair( C_BLACK,      C_BLACK, 1, true );
+  CLR_LITE_RED   = new Color_Pair( C_LITE_RED,   C_BLACK, 2, true );
+  CLR_LITE_GREEN = new Color_Pair( C_LITE_GREEN, C_BLACK, 3, true );
+  CLR_LITE_BLUE  = new Color_Pair( C_LITE_BLUE,  C_BLACK, 4, true );
+  CLR_YELLOW     = new Color_Pair( C_YELLOW,     C_BLACK, 5, true );
+  CLR_PINK       = new Color_Pair( C_PINK,       C_BLACK, 6, true );
+  CLR_LITE_CYAN  = new Color_Pair( C_LITE_CYAN,  C_BLACK, 7, true );
+  CLR_WHITE      = new Color_Pair( C_WHITE,      C_BLACK, 8, true );
 
 } /* void init_colors() */

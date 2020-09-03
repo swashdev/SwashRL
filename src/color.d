@@ -172,24 +172,38 @@ else
 
   // Initialize a `Color_Pair` using an existing `Color` (or two if we want to
   // specify a background other than black).
+  // If `existing_curses_color_pair` is <= 1, define a new color pair.
+  // Otherwise, use an existing one.
   this( Color foreground_color,
-        Color background_color = new Color( 0, 0, 0, 0 ) )
+        Color background_color = new Color( 0, 0, 0, 0 ),
+        short existing_curses_color_pair = 0, bool is_bright = false )
   {
     foreground = foreground_color;
     background = background_color;
 
-    // Initialize a curses color pair and then store the resulting index in
-    // `curses_color_pair`.
-    last_color_pair++;
-    curses_color_pair = last_color_pair;
+    if( existing_curses_color_pair > 0
+        && existing_curses_color_pair <= last_color_pair )
+    {
+      curses_color_pair = existing_curses_color_pair;
+    }
+    else
+    {
+      // Initialize a curses color pair and then store the resulting index in
+      // `curses_color_pair`.
+      last_color_pair++;
+      curses_color_pair = last_color_pair;
 
 static if( CURSES_ENABLED )
 {
 
-    init_pair( curses_color_pair, foreground.get_curses_color(),
-               background.get_curses_color() );
+      init_pair( curses_color_pair, foreground.get_curses_color(),
+                 background.get_curses_color() );
 
 } /* static if( CURSES_ENABLED ) */
+
+    } /* else from if( existing_curses_color_pair > 0 ) */
+
+    set_bright( is_bright );
 
   } /* this( Color, Color? ) */
 

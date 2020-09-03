@@ -176,7 +176,8 @@ else
   // Otherwise, use an existing one.
   this( Color foreground_color,
         Color background_color = new Color( 0, 0, 0, 0 ),
-        short existing_curses_color_pair = 0, bool is_bright = false )
+        short existing_curses_color_pair = 0,
+	bool is_bright = false, bool is_reversed = false )
   {
     foreground = foreground_color;
     background = background_color;
@@ -204,6 +205,7 @@ static if( CURSES_ENABLED )
     } /* else from if( existing_curses_color_pair > 0 ) */
 
     set_bright( is_bright );
+    set_inverted( is_reversed );
 
   } /* this( Color, Color? ) */
 

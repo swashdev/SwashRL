@@ -209,6 +209,20 @@ static if( CURSES_ENABLED )
 
   } /* this( Color, Color? ) */
 
+  // Initialize a `Color_Pair` using an existing `Color`.  This constructor
+  // will always use the default black background color.
+  // If `existing_curses_color_pair` is <= 1, define a new color pair.
+  // Otherwise, use an existing one.
+  // `is_bright` & `is_reversed` set if the color pair will be boldened or
+  // inverted, respectively.  Default for both is `false`
+  this( Color foreground_color,
+        short existing_curses_color_pair = 0,
+	bool is_bright = false, bool is_reversed = false )
+  {
+    this = Color_Pair( foreground_color, new Color( 0, 0, 0, 0 ),
+                       existing_curses_color_pair, is_bright, is_reversed );
+  } /* this( Color, short?, bool?, bool? ) */
+
   // Initialize a new color pair by "brightening" the existing color pair.
   // By default, the SDL color codes will double unless new color codes are
   // input as parameters.

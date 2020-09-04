@@ -325,16 +325,6 @@ Try compiling with dub build -b debug" );
   Monst u = init_player( Current_map.player_start[0],
                          Current_map.player_start[1] );
 
-  // If the game is configured to highlight the player, and the SDL terminal
-  // is being used, highlight the player.
-  if( SDL_terminal() )
-  {
-     if( HILITE_PLAYER )
-     {
-       u.sym.color = u.sym.color.invert();
-     }
-  }
-
   // Initialize Field-of-Vision //////////////////////////////////////////////
 
   if( !No_shadows )  calc_visible( &Current_map, u.x, u.y );

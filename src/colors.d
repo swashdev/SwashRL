@@ -150,18 +150,6 @@ void init_colors()
   // indicate that a character has been defined improperly.
   CLR_ERROR     = new Color_Pair( C_GRAY, C_RED, 0, true, false ); // 9
 
-  // Fill in `Curses_Color_Pairs` with the color pair values of the above
-  // standard color pairs.  Note that 0 is unnecessary since none of our
-  // colors can override that color pair in curses anyway.
-  Curses_Color_Pairs[1] = &CLR_BLACK;
-  Curses_Color_Pairs[2] = &CLR_RED;
-  Curses_Color_Pairs[3] = &CLR_GREEN;
-  Curses_Color_Pairs[4] = &CLR_BLUE;
-  Curses_Color_Pairs[5] = &CLR_BROWN;
-  Curses_Color_Pairs[6] = &CLR_MAGENTA;
-  Curses_Color_Pairs[7] = &CLR_CYAN;
-  Curses_Color_Pairs[8] = &CLR_GRAY;
-
   // Bright Colors ///////////////////////////////////////////////////////////
 
   // Because of the way that curses works, "bright" colors can't be defined in
@@ -213,4 +201,24 @@ void init_colors()
   // The "festive hat" the player receives during the month of December causes
   // them to appear in a white-on-red color scheme.
   CLR_FESTIVE_PLAYER = new Color_Pair( C_WHITE, C_RED, 0, true,   false );
+  // this will be color pair 10
+
+// SECTION 2: ////////////////////////////////////////////////////////////////
+// Stored Color Pairs                                                       //
+//////////////////////////////////////////////////////////////////////////////
+
+  // Fill in `Curses_Color_Pairs` with the color pair values of the above
+  // standard color pairs.  Note that 0 is unnecessary since none of our
+  // colors can override that color pair in curses anyway.
+  Curses_Color_Pairs[ 1] = &CLR_BLACK;
+  Curses_Color_Pairs[ 2] = &CLR_RED;
+  Curses_Color_Pairs[ 3] = &CLR_GREEN;
+  Curses_Color_Pairs[ 4] = &CLR_BLUE;
+  Curses_Color_Pairs[ 5] = &CLR_BROWN;
+  Curses_Color_Pairs[ 6] = &CLR_MAGENTA;
+  Curses_Color_Pairs[ 7] = &CLR_CYAN;
+  Curses_Color_Pairs[ 8] = &CLR_GRAY;
+  Curses_Color_Pairs[ 9] = &CLR_ERROR;
+  Curses_Color_Pairs[10] = &CLR_FESTIVE_PLAYER;
+
 } /* void init_colors() */

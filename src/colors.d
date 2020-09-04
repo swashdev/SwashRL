@@ -88,6 +88,7 @@ static Color_Pair CLR_DARK_GRAY,
                   CLR_MAGENTA,
                   CLR_CYAN,
                   CLR_GRAY,
+                  CLR_ERROR,
                   CLR_BLACK,
                   CLR_LITE_RED,
                   CLR_LITE_GREEN,
@@ -138,6 +139,10 @@ void init_colors()
   // Special case: CLR_BLUE will always be bright, to avoid being too dark on
   // standard terminal screens
   CLR_BLUE.set_bright( true );
+
+  // CLR_ERROR is a special color pair used by the SDL terminal interface to
+  // indicate that a character has been defined improperly.
+  CLR_ERROR     = new Color_Pair( C_GRAY, C_RED, 0, true, false ) // 9
 
   // Fill in `Curses_Color_Pairs` with the color pair values of the above
   // standard color pairs.  Note that 0 is unnecessary since none of our

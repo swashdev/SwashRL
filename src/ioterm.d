@@ -366,7 +366,7 @@ class SDLTerminalIO : SwashIO
     if( cur_tileset[c] is null )
     {
       renderedchar = cur_tileset['?'];
-      co = CLR_RED.invert();
+      co = CLR_ERROR;
     }
     else
     { renderedchar = cur_tileset[c];

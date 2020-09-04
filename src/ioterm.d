@@ -382,9 +382,19 @@ class SDLTerminalIO : SwashIO
     tile.w = tile_width;
     tile.h = tile_height;
 
-    // The color of the foreground and background, respectively
-    SDL_Color fg = co.get_foreground().get_sdl_color(),
-              bg = co.get_background().get_sdl_color();
+    // The color of the foreground and background, respectively.  Swap these
+    // if the color is inverted.
+    SDL_Color fg, bg;
+    if( !co.get_inverted() )
+    {
+      fg = co.get_foreground().get_sdl_color();
+      bg = co.get_background().get_sdl_color();
+    }
+    else
+    {
+      bg = co.get_foreground().get_sdl_color();
+      fg = co.get_background().get_sdl_color();
+    }
 
     // Fill in the background first:
     SDL_SetRenderDrawColor( renderer, bg.r, bg.g, bg.b, 255 );

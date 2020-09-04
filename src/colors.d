@@ -142,7 +142,7 @@ void init_colors()
 
   // CLR_ERROR is a special color pair used by the SDL terminal interface to
   // indicate that a character has been defined improperly.
-  CLR_ERROR     = new Color_Pair( C_GRAY, C_RED, 0, true, false ) // 9
+  CLR_ERROR     = new Color_Pair( C_GRAY, C_RED, 0, true, false ); // 9
 
   // Fill in `Curses_Color_Pairs` with the color pair values of the above
   // standard color pairs.  Note that 0 is unnecessary since none of our

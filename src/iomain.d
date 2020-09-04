@@ -682,10 +682,10 @@ static if( COLOR )
             if( !(to_display.t[y][x].hazard & HAZARD_WATER ) )
             {
               if( to_display.t[y][x].sym.color.get_inverted() )
-              { output.color = CLR_GREEN.invert();
+              { output.color = CLR_MOLD_WALL;
               }
               else
-              { output.color = CLR_GREEN;
+              { output.color = CLR_MOLD;
               }
             }
           }

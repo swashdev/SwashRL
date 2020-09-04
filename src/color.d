@@ -207,7 +207,7 @@ static if( CURSES_ENABLED )
     set_bright( is_bright );
     set_inverted( is_reversed );
 
-  } /* this( Color, Color? ) */
+  } /* this( Color, Color?, short?, bool?, bool? ) */
 
   // Initialize a `Color_Pair` using an existing `Color`.  This constructor
   // will always use the default black background color.

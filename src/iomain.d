@@ -721,7 +721,12 @@ else
 {
           if( to_display.t[y][x].seen )
           {
-            output.color = CLR_DARK_GRAY;
+            if( to_display.t[y][x].sym.color.get_inverted() )
+            { output.color = CLR_SHADOW_WALL;
+            }
+            else
+            { output.color = CLR_SHADOW;
+            }
           }
           else
           {

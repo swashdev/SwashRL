@@ -101,7 +101,9 @@ static Color_Pair CLR_DARK_GRAY,
                   CLR_MOLD,
                   CLR_MOLD_WALL,
                   CLR_BLOOD,
-                  CLR_BLOOD_WALL;
+                  CLR_BLOOD_WALL,
+                  CLR_SHADOW,
+                  CLR_SHADOW_WALL;
 
 static Color_Pair*[short] Curses_Color_Pairs;
 
@@ -182,16 +184,21 @@ void init_colors()
 
   // `CLR_WALL` is a reversed version of `CLR_GRAY`, unless `REVERSED_WALLS`
   // is disabled
-  CLR_WALL       = new Color_Pair( C_GRAY,       8, false, REVERSED_WALLS );
+  CLR_WALL        = new Color_Pair( C_GRAY,      8, false, REVERSED_WALLS );
 
   // `CLR_MOLD` & `CLR_MOLD_WALL` define the colors of the mold patches which
   // generate naturally in the dungeon.  Like `CLR_WALL`, `CLR_MOLD_WALL` is
   // only inverted if `REVERSED_WALLS` is true.
-  CLR_MOLD       = new Color_Pair( C_GREEN,      3, false, false );
-  CLR_MOLD_WALL  = new Color_Pair( C_GREEN,      3, false, REVERSED_WALLS );
+  CLR_MOLD        = new Color_Pair( C_GREEN,     3, false, false );
+  CLR_MOLD_WALL   = new Color_Pair( C_GREEN,     3, false, REVERSED_WALLS );
 
   // `CLR_BLOOD` & `CLR_BLOOD_WALL` define the color of blood smears that
   // generate during combat.
-  CLR_BLOOD      = new Color_Pair( C_RED,        2, false, false );
-  CLR_BLOOD_WALL = new Color_Pair( C_RED,        2, false, REVERSED_WALLS );
+  CLR_BLOOD       = new Color_Pair( C_RED,       2, false, false );
+  CLR_BLOOD_WALL  = new Color_Pair( C_RED,       2, false, REVERSED_WALLS );
+
+  // `CLR_SHADOW` & `CLR_SHADOW_WALL` define the colors for map features which
+  // are no longer in the player's line-of-sight.
+  CLR_SHADOW      = new Color_Pair( C_DARK_GRAY, 1, true,  false );
+  CLR_SHADOW_WALL = new Color_Pair( C_DARK_GRAY, 1, true,  REVERSED_WALLS );
 } /* void init_colors() */

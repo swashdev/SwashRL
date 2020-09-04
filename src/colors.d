@@ -96,7 +96,9 @@ static Color_Pair CLR_DARK_GRAY,
                   CLR_PINK,
                   CLR_LITE_CYAN,
                   CLR_WHITE,
-                  CLR_WALL;
+                  CLR_WALL,
+                  CLR_MOLD,
+                  CLR_MOLD_WALL;
 
 static Color_Pair*[short] Curses_Color_Pairs;
 
@@ -174,5 +176,11 @@ void init_colors()
   // `CLR_WALL` is a reversed version of `CLR_GRAY`, unless `REVERSED_WALLS`
   // is disabled
   CLR_WALL       = new Color_Pair( C_GRAY,       8, false, REVERSED_WALLS );
+
+  // `CLR_MOLD` & `CLR_MOLD_WALL` define the colors of the mold patches which
+  // generate naturally in the dungeon.  Like `CLR_WALL`, `CLR_MOLD_WALL` is
+  // only inverted if `REVERSED_WALLS` is true.
+  CLR_MOLD       = new Color_Pair( C_GREEN,      3, false, false );
+  CLR_MOLD_WALL  = new Color_Pair( C_GREEN,      3, false, REVERSED_WALLS );
 
 } /* void init_colors() */

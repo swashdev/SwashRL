@@ -111,7 +111,7 @@ static Color_Pair*[short] Curses_Color_Pairs;
 void init_colors()
 {
 
-  Color C_BLACK      = new Color( CURSES_BLACK,    64,  64,  64 );
+  Color C_BLACK      = new Color( CURSES_BLACK,     0,   0,   0 );
   Color C_RED        = new Color( CURSES_RED,     128,   0,   0 );
   Color C_GREEN      = new Color( CURSES_GREEN,     0, 128,   0 );
   Color C_BLUE       = new Color( CURSES_BLUE,      0,   0, 255 );
@@ -120,7 +120,7 @@ void init_colors()
   Color C_CYAN       = new Color( CURSES_CYAN,      0, 128, 128 );
   Color C_GRAY       = new Color( CURSES_GRAY,    162, 162, 162 );
 
-  Color C_DARK_GRAY  = new Color( CURSES_BLACK,     0,   0,   0 );
+  Color C_DARK_GRAY  = new Color( CURSES_BLACK,    64,  64,  64 );
   Color C_LITE_RED   = new Color( CURSES_RED,     255,   0,   0 );
   Color C_LITE_GREEN = new Color( CURSES_GREEN,     0, 255,   0 );
   Color C_LITE_BLUE  = new Color( CURSES_BLUE,      0,   0, 255 );
@@ -149,7 +149,7 @@ void init_colors()
   // Fill in `Curses_Color_Pairs` with the color pair values of the above
   // standard color pairs.  Note that 0 is unnecessary since none of our
   // colors can override that color pair in curses anyway.
-  Curses_Color_Pairs[1] = &CLR_DARK_GRAY;
+  Curses_Color_Pairs[1] = &CLR_BLACK;
   Curses_Color_Pairs[2] = &CLR_RED;
   Curses_Color_Pairs[3] = &CLR_GREEN;
   Curses_Color_Pairs[4] = &CLR_BLUE;
@@ -166,7 +166,7 @@ void init_colors()
   // class to point to one of the existing color pairs above and then apply
   // the "bright" tag.
 
-  CLR_DARK_GRAY  = new Color_Pair( C_BLACK,      1, true );
+  CLR_DARK_GRAY  = new Color_Pair( C_DARK_GRAY,  1, true );
   CLR_LITE_RED   = new Color_Pair( C_LITE_RED,   2, true );
   CLR_LITE_GREEN = new Color_Pair( C_LITE_GREEN, 3, true );
   CLR_LITE_BLUE  = new Color_Pair( C_LITE_BLUE,  4, true );

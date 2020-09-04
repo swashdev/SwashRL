@@ -219,9 +219,17 @@ static if( CURSES_ENABLED )
         short existing_curses_color_pair = 0,
 	bool is_bright = false, bool is_reversed = false )
   {
-    this = Color_Pair( foreground_color, new Color( 0, 0, 0, 0 ),
-                       existing_curses_color_pair, is_bright, is_reversed );
+    this( foreground_color, new Color( 0, 0, 0, 0 ),
+          existing_curses_color_pair, is_bright, is_reversed );
   } /* this( Color, short?, bool?, bool? ) */
+
+  // Initialize a `Color_Pair` using an existing `Color`.
+  // All other options, such as background color and text effects, will remain
+  // at their defaults.
+  this( Color foreground_color )
+  {
+    this( foreground_color, new Color( 0, 0, 0, 0 ), 0, false, false );
+  } /* this( Color ) */
 
   // Initialize a new color pair by "brightening" the existing color pair.
   // By default, the SDL color codes will double unless new color codes are

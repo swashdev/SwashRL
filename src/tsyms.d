@@ -40,15 +40,10 @@ static Symbol SYM_SHADOW;
 void init_tile_symbols()
 {
   SYM_FLOOR  = symdata( '.', CLR_GRAY      );
-  SYM_WALL   = symdata( '#', CLR_GRAY      );
+  SYM_WALL   = symdata( '#', CLR_WALL      );
   SYM_STALA  = symdata( 'V', CLR_GRAY      );
   SYM_DOOR   = symdata( '+', CLR_BROWN     );
   SYM_WATER  = symdata( '}', CLR_LITE_BLUE );
   SYM_SHADOW = symdata( ' ', CLR_BLACK     );
-
-static if( REVERSED_WALLS )
-{
-  SYM_WALL.color = SYM_WALL.color.invert();
-}
 
 } /* void init_tile_symbols() */

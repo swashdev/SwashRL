@@ -95,7 +95,8 @@ static Color_Pair CLR_DARK_GRAY,
                   CLR_YELLOW,
                   CLR_PINK,
                   CLR_LITE_CYAN,
-                  CLR_WHITE;
+                  CLR_WHITE,
+                  CLR_WALL;
 
 static Color_Pair*[short] Curses_Color_Pairs;
 
@@ -162,5 +163,16 @@ void init_colors()
   CLR_PINK       = new Color_Pair( C_PINK,       6, true );
   CLR_LITE_CYAN  = new Color_Pair( C_LITE_CYAN,  7, true );
   CLR_WHITE      = new Color_Pair( C_WHITE,      8, true );
+
+  // Special Colors //////////////////////////////////////////////////////////
+
+  // These are special colors which either build on top of the existing colors
+  // above to create a special effect (such as an inverted color pair for
+  // walls) or create a unique color combination (such as white-on red for the
+  // festive hat)
+
+  // `CLR_WALL` is a reversed version of `CLR_GRAY`, unless `REVERSED_WALLS`
+  // is disabled
+  CLR_WALL       = new Color_Pair( C_GRAY,       8, false, REVERSED_WALLS );
 
 } /* void init_colors() */

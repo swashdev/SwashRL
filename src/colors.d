@@ -50,7 +50,7 @@ import global;
 version( curses )
 {
 
-enum CURSES_DARK        =  COLOR_BLACK;
+enum CURSES_BLACK       =  COLOR_BLACK;
 enum CURSES_RED         =  COLOR_RED;
 enum CURSES_GREEN       =  COLOR_GREEN;
 enum CURSES_BROWN       =  COLOR_YELLOW;
@@ -65,7 +65,7 @@ else
 
 // NOTE: these placeholder values are taken from the pdcurses source code
 
-enum CURSES_DARK    = 0;
+enum CURSES_BLACK   = 0;
 enum CURSES_RED     = 1;
 enum CURSES_GREEN   = 2;
 enum CURSES_BLUE    = 4;
@@ -108,7 +108,7 @@ static Color_Pair*[short] Curses_Color_Pairs;
 void init_colors()
 {
 
-  Color C_DARK_GRAY  = new Color( CURSES_DARK,     64,  64,  64 );
+  Color C_BLACK      = new Color( CURSES_BLACK,    64,  64,  64 );
   Color C_RED        = new Color( CURSES_RED,     128,   0,   0 );
   Color C_GREEN      = new Color( CURSES_GREEN,     0, 128,   0 );
   Color C_BLUE       = new Color( CURSES_BLUE,      0,   0, 255 );
@@ -117,7 +117,7 @@ void init_colors()
   Color C_CYAN       = new Color( CURSES_CYAN,      0, 128, 128 );
   Color C_GRAY       = new Color( CURSES_GRAY,    162, 162, 162 );
 
-  Color C_BLACK      = new Color( CURSES_DARK,      0,   0,   0 );
+  Color C_DARK_GRAY  = new Color( CURSES_BLACK,     0,   0,   0 );
   Color C_LITE_RED   = new Color( CURSES_RED,     255,   0,   0 );
   Color C_LITE_GREEN = new Color( CURSES_GREEN,     0, 255,   0 );
   Color C_LITE_BLUE  = new Color( CURSES_BLUE,      0,   0, 255 );
@@ -126,14 +126,14 @@ void init_colors()
   Color C_LITE_CYAN  = new Color( CURSES_CYAN,      0, 255, 255 );
   Color C_WHITE      = new Color( CURSES_GRAY,    255, 255, 255 );
 
-  CLR_DARK_GRAY = new Color_Pair( C_DARK_GRAY ); // 1
-  CLR_RED       = new Color_Pair( C_RED       ); // 2
-  CLR_GREEN     = new Color_Pair( C_GREEN     ); // 3
-  CLR_BLUE      = new Color_Pair( C_BLUE      ); // 4
-  CLR_BROWN     = new Color_Pair( C_BROWN     ); // 5
-  CLR_MAGENTA   = new Color_Pair( C_MAGENTA   ); // 6
-  CLR_CYAN      = new Color_Pair( C_CYAN      ); // 7
-  CLR_GRAY      = new Color_Pair( C_GRAY      ); // 8
+  CLR_BLACK     = new Color_Pair( C_BLACK   ); // 1
+  CLR_RED       = new Color_Pair( C_RED     ); // 2
+  CLR_GREEN     = new Color_Pair( C_GREEN   ); // 3
+  CLR_BLUE      = new Color_Pair( C_BLUE    ); // 4
+  CLR_BROWN     = new Color_Pair( C_BROWN   ); // 5
+  CLR_MAGENTA   = new Color_Pair( C_MAGENTA ); // 6
+  CLR_CYAN      = new Color_Pair( C_CYAN    ); // 7
+  CLR_GRAY      = new Color_Pair( C_GRAY    ); // 8
 
   // Special case: CLR_BLUE will always be bright, to avoid being too dark on
   // standard terminal screens
@@ -159,7 +159,7 @@ void init_colors()
   // class to point to one of the existing color pairs above and then apply
   // the "bright" tag.
 
-  CLR_BLACK      = new Color_Pair( C_BLACK,      1, true );
+  CLR_DARK_GRAY  = new Color_Pair( C_BLACK,      1, true );
   CLR_LITE_RED   = new Color_Pair( C_LITE_RED,   2, true );
   CLR_LITE_GREEN = new Color_Pair( C_LITE_GREEN, 3, true );
   CLR_LITE_BLUE  = new Color_Pair( C_LITE_BLUE,  4, true );

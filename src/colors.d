@@ -187,6 +187,6 @@ void init_colors()
 
   // `CLR_BLOOD` & `CLR_BLOOD_WALL` define the color of blood smears that
   // generate during combat.
-  CLR_BLOOD      = new Color_Pair( C_RED,        1, false, false );
-  CLR_BLOOD_WALL = new Color_Pair( C_RED,        1, false, REVERSED_WALLS ); 
+  CLR_BLOOD      = new Color_Pair( C_RED,        2, false, false );
+  CLR_BLOOD_WALL = new Color_Pair( C_RED,        2, false, REVERSED_WALLS );
 } /* void init_colors() */

@@ -699,10 +699,10 @@ static if( COLOR )
             if( !(to_display.t[y][x].hazard & HAZARD_WATER) )
             {
               if( to_display.t[y][x].sym.color.get_inverted() )
-              { output.color = CLR_RED.invert();
+              { output.color = CLR_BLOOD_WALL;
               }
               else
-              { output.color = CLR_RED;
+              { output.color = CLR_BLOOD;
               }
             }
           }

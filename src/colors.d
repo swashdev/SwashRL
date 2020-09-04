@@ -98,7 +98,9 @@ static Color_Pair CLR_DARK_GRAY,
                   CLR_WHITE,
                   CLR_WALL,
                   CLR_MOLD,
-                  CLR_MOLD_WALL;
+                  CLR_MOLD_WALL,
+                  CLR_BLOOD,
+                  CLR_BLOOD_WALL;
 
 static Color_Pair*[short] Curses_Color_Pairs;
 
@@ -183,4 +185,8 @@ void init_colors()
   CLR_MOLD       = new Color_Pair( C_GREEN,      3, false, false );
   CLR_MOLD_WALL  = new Color_Pair( C_GREEN,      3, false, REVERSED_WALLS );
 
+  // `CLR_BLOOD` & `CLR_BLOOD_WALL` define the color of blood smears that
+  // generate during combat.
+  CLR_BLOOD      = new Color_Pair( C_RED,        1, false, false );
+  CLR_BLOOD_WALL = new Color_Pair( C_RED,        1, false, REVERSED_WALLS ); 
 } /* void init_colors() */

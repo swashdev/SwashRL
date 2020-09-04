@@ -154,13 +154,13 @@ void init_colors()
   // class to point to one of the existing color pairs above and then apply
   // the "bright" tag.
 
-  CLR_BLACK      = new Color_Pair( C_BLACK,      C_BLACK, 1, true );
-  CLR_LITE_RED   = new Color_Pair( C_LITE_RED,   C_BLACK, 2, true );
-  CLR_LITE_GREEN = new Color_Pair( C_LITE_GREEN, C_BLACK, 3, true );
-  CLR_LITE_BLUE  = new Color_Pair( C_LITE_BLUE,  C_BLACK, 4, true );
-  CLR_YELLOW     = new Color_Pair( C_YELLOW,     C_BLACK, 5, true );
-  CLR_PINK       = new Color_Pair( C_PINK,       C_BLACK, 6, true );
-  CLR_LITE_CYAN  = new Color_Pair( C_LITE_CYAN,  C_BLACK, 7, true );
-  CLR_WHITE      = new Color_Pair( C_WHITE,      C_BLACK, 8, true );
+  CLR_BLACK      = new Color_Pair( C_BLACK,      1, true );
+  CLR_LITE_RED   = new Color_Pair( C_LITE_RED,   2, true );
+  CLR_LITE_GREEN = new Color_Pair( C_LITE_GREEN, 3, true );
+  CLR_LITE_BLUE  = new Color_Pair( C_LITE_BLUE,  4, true );
+  CLR_YELLOW     = new Color_Pair( C_YELLOW,     5, true );
+  CLR_PINK       = new Color_Pair( C_PINK,       6, true );
+  CLR_LITE_CYAN  = new Color_Pair( C_LITE_CYAN,  7, true );
+  CLR_WHITE      = new Color_Pair( C_WHITE,      8, true );
 
 } /* void init_colors() */

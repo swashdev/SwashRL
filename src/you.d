@@ -59,7 +59,7 @@ Player init_player( ubyte y, ubyte x )
   else
   { u.y = 1;
   }
-  u.sym = symdata( SMILEY, CLR_WHITE );
+  u.sym = symdata( SMILEY, CLR_PLAYER );
   u.hp = roll( 3, 2 );
 
   foreach( count; 0 .. 40 )

@@ -97,14 +97,15 @@ static Color_Pair CLR_DARK_GRAY,
                   CLR_PINK,
                   CLR_LITE_CYAN,
                   CLR_WHITE,
+                  CLR_PLAYER,
+                  CLR_FESTIVE_PLAYER,
                   CLR_WALL,
                   CLR_MOLD,
                   CLR_MOLD_WALL,
                   CLR_BLOOD,
                   CLR_BLOOD_WALL,
                   CLR_SHADOW,
-                  CLR_SHADOW_WALL,
-                  CLR_FESTIVE_PLAYER;
+                  CLR_SHADOW_WALL;
 
 static Color_Pair*[short] Curses_Color_Pairs;
 
@@ -129,6 +130,8 @@ void init_colors()
   Color C_PINK       = new Color( CURSES_MAGENTA, 255,   0, 255 );
   Color C_LITE_CYAN  = new Color( CURSES_CYAN,      0, 255, 255 );
   Color C_WHITE      = new Color( CURSES_GRAY,    255, 255, 255 );
+
+  Color C_PLAYER     = new Color( CURSES_GRAY,    255, 128,   0 );
 
   CLR_BLACK     = new Color_Pair( C_BLACK   ); // 1
   CLR_RED       = new Color_Pair( C_RED     ); // 2
@@ -202,6 +205,10 @@ void init_colors()
   // are no longer in the player's line-of-sight.
   CLR_SHADOW      = new Color_Pair( C_DARK_GRAY, 1, true,  false );
   CLR_SHADOW_WALL = new Color_Pair( C_DARK_GRAY, 1, true,  REVERSED_WALLS );
+
+  // The player is displayed in a unique orange color to make them stand out.
+  // On the curses interface, they are instead displayed in white.
+  CLR_PLAYER      = new Color_Pair( C_PLAYER,    8, true,  false );
 
   // The "festive hat" the player receives during the month of December causes
   // them to appear in a white-on-red color scheme.

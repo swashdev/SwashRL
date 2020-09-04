@@ -631,12 +631,7 @@ discard_swap:
     // color
     if( u.inventory.items[INVENT_HELMET].name == "festive hat" )
     {
-      // get the color of the hat...
-      Color_Pair hat_color = u.inventory.items[INVENT_HELMET].sym.color;
-      // make an inverted version of the hat's color...
-      hat_color = hat_color.invert();
-      // same as the original display function, but with the new hat color
-      display( u.y + 1, u.x, symdata( u.sym.ch, hat_color ), true );
+      display( u.y + 1, u.x, symdata( u.sym.ch, CLR_FESTIVE_PLAYER ), true );
     }
     else  display( u.y + 1, u.x, u.sym, true );
   }

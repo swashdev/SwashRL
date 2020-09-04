@@ -103,7 +103,8 @@ static Color_Pair CLR_DARK_GRAY,
                   CLR_BLOOD,
                   CLR_BLOOD_WALL,
                   CLR_SHADOW,
-                  CLR_SHADOW_WALL;
+                  CLR_SHADOW_WALL,
+                  CLR_FESTIVE_PLAYER;
 
 static Color_Pair*[short] Curses_Color_Pairs;
 
@@ -201,4 +202,8 @@ void init_colors()
   // are no longer in the player's line-of-sight.
   CLR_SHADOW      = new Color_Pair( C_DARK_GRAY, 1, true,  false );
   CLR_SHADOW_WALL = new Color_Pair( C_DARK_GRAY, 1, true,  REVERSED_WALLS );
+
+  // The "festive hat" the player receives during the month of December causes
+  // them to appear in a white-on-red color scheme.
+  CLR_FESTIVE_PLAYER = new Color_Pair( C_WHITE, C_RED, 0, true,   false );
 } /* void init_colors() */

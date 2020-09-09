@@ -5,6 +5,79 @@ description: A brief history of the SwashRL project, from conception to present 
 permalink: /history/
 ---
 
+Table of Contents
+-----------------
+
+* [Prehistory]
+* [Slumbering Dragon]
+* [FORRNIF]
+* [Spelunk!]
+* * [The First Public git Repository]
+* * [The Translation into D]
+* [SwashRL]
+* * [SDL Support]
+
+[Jump to the current version](#0031-christmas-update)
+
+[Prehistory]: #prehistory
+[Slumbering Dragon]: #slumbering-dragon
+[FORRNIF]: #forrnif
+[Spelunk!]: #spelunk
+[SwashRL]: #swashrl
+
+[The First Public git Repository]: #0019
+[The Translation into D]: #0022
+[SDL Support]: #0024
+
+[0.map]: #0map
+[0.0.0]: #0map
+[0.move]: #0move
+[0.0.1]: #0move
+[0.colission]: #0colission
+[0.0.2]: #0colission
+[0.hazards]: #0hazards
+[0.0.3]: #0hazards
+[0.text-effects]: #0text-effects
+[0.0.4]: #0text-effects
+[0.monster-display]: #0monster-display
+[0.0.5]: #0monster-display
+[0.monster-colission]: #0monster-colission
+[0.0.6]: #0monster-colission
+[0.monster-fight]: #0monster-fight
+[0.0.7]: #0monster-fight
+[0.monster-move]: #0monster-move
+[0.0.8]: #0monster-move
+[0.monster-move-chase]: #0monster-move-chase
+[0.0.9]: #0monster-move-chase
+[0.monster-move-fly]: #0monster-move-fly
+[0.0.10]: #0monster-move-fly
+[0.0.11]: #0011
+[0.0.12]: #0012
+[0.0.13]: #0013
+[0.0.14]: #0014
+[0.0.15]: #0015
+[0.0.16]: #0016
+[0.017]: #0017
+[0.018]: #0018
+[0.019]: #0019
+[0.020]: #0020
+[0.021]: #0021
+[0.021-1]: #0021-1
+[0.022]: #0022
+[0.023]: #0023
+[0.024]: #0024
+[0.025]: #0025
+[0.026]: #0026
+[0.027]: #0027
+[0.028]: #0028
+[0.029]: #0029
+[0.029-1]: #0029-1
+[0.030]: #0030
+[0.030-1]: #0030-1
+[0.031]: #0031
+[0.031 Christmas Update]: #0031-christmas-update
+[0.031-christmas-update]: #0031-christmas-update
+
 Prehistory
 ----------
 

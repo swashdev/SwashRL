@@ -19,6 +19,8 @@ Table of Contents
 
 [Jump to the current version](#0031-christmas-update)
 
+[Back to top]: #history
+
 [Prehistory]: #prehistory
 [Slumbering Dragon]: #slumbering-dragon
 [FORRNIF]: #forrnif
@@ -123,6 +125,8 @@ Apart from the ability to quit the program, there was no user interaction.
 The test map has changed over time as new game features has been implemented,
 but its general layout has remained largely the same.
 
+[Back to top]
+
 ### 0.move
 
 2015-08-24 14:10 EST
@@ -132,6 +136,8 @@ traditional HJKLYUBN movement keys.  Due to a lack of collision detection, it
 is possible to move outside the boundaries of the map and cause the game to
 crash due to an array index exception.
 
+[Back to top]
+
 ### 0.colission
 
 2015-08-24 20:14 EST
@@ -140,11 +146,15 @@ Collision detection implemented: Walking into a wall produces the message
 "Ouch!  You walk straight into a wall!".  The typo in the version name is
 accurate to the actual label I gave this version of the program.
 
+[Back to top]
+
 ### 0.hazards
 
 2015-08-24 21:29 EST
 
 The first hazard is implemented: If the player steps in the water, they die.
+
+[Back to top]
 
 ### 0.text-effects
 
@@ -155,6 +165,8 @@ I believe this is also the update where I started using the "dim" effect to
 draw the player character in a darker color after they die, which still exists
 in the curses interface at time of writing.
 
+[Back to top]
+
 ### 0.monster-display
 
 2015-08-30 14:44 EST
@@ -162,12 +174,16 @@ in the curses interface at time of writing.
 The first monster (a goobling) is implemented.  It is displayed on the map but
 does not interact with anything.
 
+[Back to top]
+
 ### 0.monster-colission
 
 2015-08-30 19:56 EST
 
 The player now collides with monsters, producing the message "You bump into a
 *%s*.  It doesn't look too pleased."
+
+[Back to top]
 
 ### 0.monster-fight
 
@@ -182,6 +198,8 @@ This was the first version of Slumbering Dragon to have Windows support; if
 the `WINDOWS` flag was set, the program would compile with pdcurses rather
 than ncurses.  
 
+[Back to top]
+
 ### 0.monster-move
 
 2015-09-03 21:43 EST
@@ -189,12 +207,16 @@ than ncurses.
 Monster movement first implemented:  Monsters will move in a random direction
 every turn.
 
+[Back to top]
+
 ### 0.monster-move-chase
 
 2015-09-04 12:13 EST
 
 Monsters now move toward the player and kind of navigate around obstacles.
 They can also attack without the player having to attack them first.
+
+[Back to top]
 
 ### 0.monster-move-fly
 
@@ -206,6 +228,8 @@ through obstacles.
 There was an attrocious bug in this version which caused the movement
 functions to attempt to gather tile data from monsters on the map, which meant
 that despite being finalized this version couldn't even compile.
+
+[Back to top]
 
 FORRNIF
 -------
@@ -229,12 +253,16 @@ more easily.
 Change-logging starts for the first time, with proper version numbers
 retroactively added to the Slumbering Dragon versions.
 
+[Back to top]
+
 ### 0.0.12
 
 2016-12-27 17:14 EST
 
 Monsters collide with each other for the first time, instead of multiple
 monsters "stacking" on the same space.
+
+[Back to top]
 
 ### 0.0.13
 
@@ -244,6 +272,8 @@ Random number generator, hit dice, and attack rolls implemented.  This update
 established the practice of using a random number generator to simulate actual
 die rolls rather than using arbitrary ranges like most Roguelikes do, still in
 effect at time of writing.
+
+[Back to top]
 
 ### 0.0.14
 
@@ -259,6 +289,8 @@ issues with the C standard's implementation of string formatting the message
 buffer didn't start to work right until version [0.017](#0017) and proper
 message formatting wouldn't be successfully implemented until version
 [0.022](#0022).
+
+[Back to top]
 
 Spelunk!
 --------
@@ -291,6 +323,8 @@ This is also the first version which enforced system compatibility, in the
 sense that the Windows version would refuse to compile with ncurses because
 ncurses is POSIX-exclusive.
 
+[Back to top]
+
 ### 0.0.16
 
 2017-01-20 23:04 EST
@@ -298,6 +332,8 @@ ncurses is POSIX-exclusive.
 After much futzing around I believed I had solved the problem of messages not
 buffering properly.  Unfortunately I was wrong and the only thing I managed to
 do with this update was break text effects.
+
+[Back to top]
 
 ### 0.017
 
@@ -324,6 +360,8 @@ ID as a "Patch number."
 The "history" file is started, with the intention of providing a more in-depth
 look at the development process behind Spelunk!
 
+[Back to top]
+
 ### 0.018
 
 2017-01-29 22:28 EST
@@ -340,6 +378,8 @@ effects are not.  For some reason, all of the color pairs defined in this
 update were lost upon storage and were never recovered, so colors were not
 again implemented until version 0.025.
 
+[Back to top]
+
 ## 0.019
 
 2017-02-22 22:04 EST
@@ -355,6 +395,8 @@ major game mechanics to work.
 The code is imported into a
 [git repository](https://github.com/swashdev/SwashRL), with more loose version
 control being done.
+
+[Back to top]
 
 ### 0.020
 
@@ -375,6 +417,8 @@ Despite quite a lot of huffing and puffing on my part, this was the version of
 the source code in which I, begrudgingly, agreed that running into a wall
 should not count as a turn.
 
+[Back to top]
+
 ### 0.020-1
 
 2017-03-05 21:55 EST
@@ -384,6 +428,8 @@ The first "in-between" version number.  The
 Bergstrom's reverse shadowcasting algorithm is implemented, replacing my
 pathetic attempt from version 0.020, making this the first version of the game
 to use third-party licensed source code.
+
+[Back to top]
 
 ### 0.021
 
@@ -405,6 +451,8 @@ Additionally, work on the inventory system begins.
 at this point in anticipation of major overhauls to the code for version
 0.022.
 
+[Back to top]
+
 ### 0.022
 
 2017-12-05 21:45 EST
@@ -424,6 +472,8 @@ longest-standing bugs in the source code at the time.
 
 Additionally, the source code now uses the `dub` package manager to handle
 dependencies.
+
+[Back to top]
 
 ### 0.023
 
@@ -468,6 +518,8 @@ and to implement a rudimentary (read: caveman-like) level generator.
 "Community Documentation," such as a Guideline for Contributors and
 GitHub-specific Issue and Pull Request templates, are added.
 
+[Back to top]
+
 ### 0.025
 
 2018-08-10 03:29 EST
@@ -485,6 +537,8 @@ By this point, the game would generate a random level when launched, so the
 `--test-map` command line option was added to debug builds to allow access to
 the test map.
 
+[Back to top]
+
 ### 0.026
 
 2018-08-19 04:53 EST
@@ -498,6 +552,8 @@ the "close window" button is pressed, as an emergency shutdown feature
 implemented just in case the game gets stuck in an infinite loop when waiting
 for a keypress.
 
+[Back to top]
+
 ### 0.027
 
 2018-08-19 07:19 EST
@@ -507,6 +563,8 @@ the Python version of Crawl back in 2012.  Blood is also implemented for the
 first time.  These don't really have any effect of gameplay as yet, and are
 essentially small changes made to make the environment look more alive and
 dynamic.
+
+[Back to top]
 
 ### 0.028
 
@@ -533,6 +591,8 @@ typical Major.Minor.Patch version number system that many software projects
 use, but also allowing us to easily identify which specific commit caused a
 bug if an error is reported.
 
+[Back to top]
+
 ### 0.029
 
 2019-01-28 17:54 CST
@@ -545,12 +605,16 @@ functions with different keypresses, allowing the user to more quickly check
 the contents of their bag or equipment slots.  This also drastically reduces
 the amount of spaghetti code in the program.
 
+[Back to top]
+
 ### 0.029-1
 
 2019-01-29 13:10 CST
 
 A minor release correcting small errors in the documentation from version
 0.029 and moving some of the code around in `iomain.d` for consistency.
+
+[Back to top]
 
 ### 0.030
 
@@ -564,6 +628,8 @@ The code is re-licensed under the BSD 3-clause license, the most permissive
 license I can release it under while still being compatible with the
 third-party code included with SwashRL.
 
+[Back to top]
+
 ### 0.030-1
 
 2019-09-01 16:53 CST
@@ -573,6 +639,8 @@ pasting the license notice into the repository and the source code files
 within:  When I copied and pasted the BSD 3-clause license I neglected to
 check if any alterations had been made to the warranty and liability
 disclaimer.  As it happens there were, so this revision fixes that.
+
+[Back to top]
 
 ### 0.031
 
@@ -586,6 +654,8 @@ that they were generated.  This update fixes that.
 
 Revision 0.031 came after yet another substantial delay between releases and
 ultimately was finalized just so that more work could get done.
+
+[Back to top]
 
 ### 0.031 Christmas Update
 
@@ -608,3 +678,5 @@ This is the first official release of the game, besides the "in-between"
 versions 0.020-1, 0.029-1, and 0.030-1, which did not increment the version
 number; instead, this is simply an official update to version 0.031, referred
 to in the repository as `v0.031-christmas-update`
+
+[Back to top]

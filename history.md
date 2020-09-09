@@ -19,7 +19,7 @@ Table of Contents
 
 [Jump to the current version](#0031-christmas-update)
 
-[Back to top]: #history
+[Back to top]: #table-of-contents
 
 [Prehistory]: #prehistory
 [Slumbering Dragon]: #slumbering-dragon

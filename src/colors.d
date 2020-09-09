@@ -80,34 +80,38 @@ enum CURSES_GRAY    = 7;
 // Colors                                                                   //
 //////////////////////////////////////////////////////////////////////////////
 
-static Color_Pair CLR_DARK_GRAY,
-                  CLR_RED,
-                  CLR_GREEN,
-                  CLR_BLUE,
-                  CLR_BROWN,
-                  CLR_MAGENTA,
-                  CLR_CYAN,
-                  CLR_GRAY,
-                  CLR_ERROR,
-                  CLR_BLACK,
-                  CLR_LITE_RED,
-                  CLR_LITE_GREEN,
-                  CLR_LITE_BLUE,
-                  CLR_YELLOW,
-                  CLR_PINK,
-                  CLR_LITE_CYAN,
-                  CLR_WHITE,
-                  CLR_PLAYER,
-                  CLR_FESTIVE_PLAYER,
-                  CLR_WALL,
-                  CLR_MOLD,
-                  CLR_MOLD_WALL,
-                  CLR_BLOOD,
-                  CLR_BLOOD_WALL,
-                  CLR_SHADOW,
-                  CLR_SHADOW_WALL;
+enum Colors : size_t
+{
+  Default         =  0,
+  Black           =  1,
+  Red             =  2,
+  Green           =  3,
+  Blue            =  4,
+  Brown           =  5,
+  Magenta         =  6,
+  Cyan            =  7,
+  Gray            =  8,
+  Dark_Gray       =  9,
+  Lite_Red        = 10,
+  Lite_Green      = 11,
+  Lite_Blue       = 12,
+  Yellow          = 13,
+  Pink            = 14,
+  Lite_Cyan       = 15,
+  White           = 16,
+  Error           = 17,
+  Player          = 18,
+  Festive_Player  = 19,
+  Wall            = 20,
+  Mold            = 21,
+  Mold_Wall       = 22,
+  Blood           = 23,
+  Blood_Wall      = 24,
+  Fov_Shadow      = 25,
+  Fov_Shadow_Wall = 26
+}
 
-static Color_Pair*[short] Curses_Color_Pairs;
+static Color_Pair[] CLR;
 
 // Initialize the global color pairs.
 void init_colors()
@@ -133,22 +137,19 @@ void init_colors()
 
   Color C_PLAYER     = new Color( CURSES_GRAY,    255, 128,   0 );
 
-  CLR_BLACK     = new Color_Pair( C_BLACK   ); // 1
-  CLR_RED       = new Color_Pair( C_RED     ); // 2
-  CLR_GREEN     = new Color_Pair( C_GREEN   ); // 3
-  CLR_BLUE      = new Color_Pair( C_BLUE    ); // 4
-  CLR_BROWN     = new Color_Pair( C_BROWN   ); // 5
-  CLR_MAGENTA   = new Color_Pair( C_MAGENTA ); // 6
-  CLR_CYAN      = new Color_Pair( C_CYAN    ); // 7
-  CLR_GRAY      = new Color_Pair( C_GRAY    ); // 8
+  CLR[Colors.Default]   = new Color_Pair( C_GRAY    ); // 0
+  CLR[Colors.Black]     = new Color_Pair( C_BLACK   ); // 1
+  CLR[Colors.Red]       = new Color_Pair( C_RED     ); // 2
+  CLR[Colors.Green]     = new Color_Pair( C_GREEN   ); // 3
+  CLR[Colors.Blue]      = new Color_Pair( C_BLUE    ); // 4
+  CLR[Colors.Brown]     = new Color_Pair( C_BROWN   ); // 5
+  CLR[Colors.Magenta]   = new Color_Pair( C_MAGENTA ); // 6
+  CLR[Colors.Cyan]      = new Color_Pair( C_CYAN    ); // 7
+  CLR[Colors.Gray]      = new Color_Pair( C_GRAY    ); // 8
 
   // Special case: CLR_BLUE will always be bright, to avoid being too dark on
   // standard terminal screens
-  CLR_BLUE.set_bright( true );
-
-  // CLR_ERROR is a special color pair used by the SDL terminal interface to
-  // indicate that a character has been defined improperly.
-  CLR_ERROR     = new Color_Pair( C_GRAY, C_RED, 0, true, false ); // 9
+  CLR[Colors.Blue].set_bright( true );
 
   // Bright Colors ///////////////////////////////////////////////////////////
 
@@ -158,14 +159,14 @@ void init_colors()
   // class to point to one of the existing color pairs above and then apply
   // the "bright" tag.
 
-  CLR_DARK_GRAY  = new Color_Pair( C_DARK_GRAY,  1, true );
-  CLR_LITE_RED   = new Color_Pair( C_LITE_RED,   2, true );
-  CLR_LITE_GREEN = new Color_Pair( C_LITE_GREEN, 3, true );
-  CLR_LITE_BLUE  = new Color_Pair( C_LITE_BLUE,  4, true );
-  CLR_YELLOW     = new Color_Pair( C_YELLOW,     5, true );
-  CLR_PINK       = new Color_Pair( C_PINK,       6, true );
-  CLR_LITE_CYAN  = new Color_Pair( C_LITE_CYAN,  7, true );
-  CLR_WHITE      = new Color_Pair( C_WHITE,      8, true );
+  CLR[Colors.Dark_Gray]  = new Color_Pair( C_DARK_GRAY,  1, true ); //  9
+  CLR[Colors.Lite_Red]   = new Color_Pair( C_LITE_RED,   2, true ); // 10
+  CLR[Colors.Lite_Green] = new Color_Pair( C_LITE_GREEN, 3, true ); // 11
+  CLR[Colors.Lite_Blue]  = new Color_Pair( C_LITE_BLUE,  4, true ); // 12
+  CLR[Colors.Yellow]     = new Color_Pair( C_YELLOW,     5, true ); // 13
+  CLR[Colors.Pink]       = new Color_Pair( C_PINK,       6, true ); // 14
+  CLR[Colors.Lite_Cyan]  = new Color_Pair( C_LITE_CYAN,  7, true ); // 15
+  CLR[Colors.White]      = new Color_Pair( C_WHITE,      8, true ); // 16
 
   // Special Colors //////////////////////////////////////////////////////////
 
@@ -174,33 +175,37 @@ void init_colors()
   // walls) or create a unique color combination (such as white-on red for the
   // festive hat)
 
+  // CLR_ERROR is a special color pair used by the SDL terminal interface to
+  // indicate that a character has been defined improperly.
+  CLR[Colors.Error] = new Color_Pair( C_GRAY, C_RED, 0, true, false ); // 17
+
   // `CLR_WALL` is a reversed version of `CLR_GRAY`, unless `REVERSED_WALLS`
   // is disabled
-  CLR_WALL        = new Color_Pair( C_GRAY,      8, false, REVERSED_WALLS );
+  CLR[Colors.Wall]  = new Color_Pair( C_GRAY,      8, false, REVERSED_WALLS );
 
   // `CLR_MOLD` & `CLR_MOLD_WALL` define the colors of the mold patches which
   // generate naturally in the dungeon.  Like `CLR_WALL`, `CLR_MOLD_WALL` is
   // only inverted if `REVERSED_WALLS` is true.
-  CLR_MOLD        = new Color_Pair( C_GREEN,     3, false, false );
-  CLR_MOLD_WALL   = new Color_Pair( C_GREEN,     3, false, REVERSED_WALLS );
+  CLR[Colors.Mold]        = new Color_Pair( C_GREEN,     3, false, false );
+  CLR[Colors.Mold_Wall]   = new Color_Pair( C_GREEN,     3, false, REVERSED_WALLS );
 
   // `CLR_BLOOD` & `CLR_BLOOD_WALL` define the color of blood smears that
   // generate during combat.
-  CLR_BLOOD       = new Color_Pair( C_RED,       2, false, false );
-  CLR_BLOOD_WALL  = new Color_Pair( C_RED,       2, false, REVERSED_WALLS );
+  CLR[Colors.Blood]       = new Color_Pair( C_RED,       2, false, false );
+  CLR[Colors.Blood_Wall]  = new Color_Pair( C_RED,       2, false, REVERSED_WALLS );
 
   // `CLR_SHADOW` & `CLR_SHADOW_WALL` define the colors for map features which
   // are no longer in the player's line-of-sight.
-  CLR_SHADOW      = new Color_Pair( C_DARK_GRAY, 1, true,  false );
-  CLR_SHADOW_WALL = new Color_Pair( C_DARK_GRAY, 1, true,  REVERSED_WALLS );
+  CLR[Colors.Fov_Shadow]      = new Color_Pair( C_DARK_GRAY, 1, true,  false );
+  CLR[Colors.Fov_Shadow_Wall] = new Color_Pair( C_DARK_GRAY, 1, true,  REVERSED_WALLS );
 
   // The player is displayed in a unique orange color to make them stand out.
   // On the curses interface, they are instead displayed in white.
-  CLR_PLAYER      = new Color_Pair( C_PLAYER,    8, true,  false );
+  CLR[Colors.Player]      = new Color_Pair( C_PLAYER,    8, true,  false );
 
   // The "festive hat" the player receives during the month of December causes
   // them to appear in a white-on-red color scheme.
-  CLR_FESTIVE_PLAYER = new Color_Pair( C_WHITE, C_RED, 0, true,   false );
+  CLR[Colors.Festive_Player] = new Color_Pair( C_WHITE, C_RED, 0, true,   false );
   // this will be color pair 10
 
 // SECTION 2: ////////////////////////////////////////////////////////////////

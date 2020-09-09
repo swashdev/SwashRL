@@ -234,10 +234,10 @@ that despite being finalized this version couldn't even compile.
 FORRNIF
 -------
 
-After version 0.monster-move-fly, later rebranded to version 0.0.10, I started
-to take the project very seriously.  I changed the name to FORRNIF and started
-typing up ambitious design documents involving a huge fantasy world with a
-complex history.  Unfortunately 2016 was a very bad time for me and
+After version [0.monster-move-fly], later rebranded to version 0.0.10, I
+started to take the project very seriously.  I changed the name to FORRNIF and
+started typing up ambitious design documents involving a huge fantasy world
+with a complex history.  Unfortunately 2016 was a very bad time for me and
 development stalled for over a year.
 
 ### 0.0.11
@@ -286,16 +286,15 @@ message line.
 This is also the first update in which messages are buffered and then
 displayed after every turn instead of in the middle of the turn, but due to
 issues with the C standard's implementation of string formatting the message
-buffer didn't start to work right until version [0.017](#0017) and proper
-message formatting wouldn't be successfully implemented until version
-[0.022](#0022).
+buffer didn't start to work right until version [0.017] and proper message
+formatting wouldn't be successfully implemented until version [0.022].
 
 [Back to top]
 
 Spelunk!
 --------
 
-After the release of version 0.0.14 it became obvious that trying to turn
+After the release of version [0.0.14] it became obvious that trying to turn
 Slumbering Dragon into a huge fantasy epic was just going to overwhelm me, so
 instead I decided to vastly simplify the project and turn it into a more
 casual game.  Rather than a sprawling RPG, Spelunk! was to be a more generic
@@ -354,7 +353,7 @@ and never spoken of again.
 
 Note the new version numbering system; this made it easier to change and
 output the version number in C.  From here on out, the code was numbered as
-Release.Revision until version [0.028](#0028), which added the git commit
+Release.Revision until version [0.028], which added the git commit
 ID as a "Patch number."
 
 The "history" file is started, with the intention of providing a more in-depth
@@ -376,7 +375,7 @@ Color pairs defined, although color itself is not yet a focus of the project.
 Some of the code is edited slightly so that color can not be enabled if text
 effects are not.  For some reason, all of the color pairs defined in this
 update were lost upon storage and were never recovered, so colors were not
-again implemented until version 0.025.
+again implemented until version [0.025].
 
 [Back to top]
 
@@ -426,8 +425,8 @@ should not count as a turn.
 The first "in-between" version number.  The
 [libtcod](http://roguecentral.org/doryen/libtcod/) implementation of Bjorn
 Bergstrom's reverse shadowcasting algorithm is implemented, replacing my
-pathetic attempt from version 0.020, making this the first version of the game
-to use third-party licensed source code.
+pathetic attempt from version [0.020], making this the first version of the
+game to use third-party licensed source code.
 
 [Back to top]
 
@@ -449,7 +448,7 @@ Additionally, work on the inventory system begins.
 
 [The git repository was reset](https://github.com/swashdev/SwashRL/blob/ce6d653ee3f0e8a083aceca6aa1374f30da3b55d/gitreset.txt)
 at this point in anticipation of major overhauls to the code for version
-0.022.
+[0.022].
 
 [Back to top]
 
@@ -479,7 +478,7 @@ dependencies.
 
 2017-12-05 22:30 EST
 
-An update to 0.022 which actually compiles this time.
+An update to [0.022] which actually compiles this time.
 
 SwashRL
 -------
@@ -647,7 +646,7 @@ disclaimer.  As it happens there were, so this revision fixes that.
 2019-12-21 19:52 CST
 
 A minor release correcting a bug in the map generator introduced in
-revision 0.030.  Originally the rooms in the maps were supposed to be
+revision [0.030].  Originally the rooms in the maps were supposed to be
 connected in random order, but I forgot to randomize the indexes of the rooms
 before connecting them, so they would always be connected in the same order
 that they were generated.  This update fixes that.
@@ -675,8 +674,8 @@ As a side-effect, this release also fixed an error where items would be
 allowed in inappropriate item slots.
 
 This is the first official release of the game, besides the "in-between"
-versions 0.020-1, 0.029-1, and 0.030-1, which did not increment the version
-number; instead, this is simply an official update to version 0.031, referred
-to in the repository as `v0.031-christmas-update`
+versions [0.020-1], [0.029-1], and [0.030-1], which did not increment the
+version number; instead, this is simply an official update to version [0.031],
+referred to in the repository as `v0.031-christmas-update`
 
 [Back to top]

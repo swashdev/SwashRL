@@ -12,10 +12,10 @@ Table of Contents
 * [Slumbering Dragon]
 * [FORRNIF]
 * [Spelunk!]
-* * [The First Public git Repository]
-* * [The Translation into D]
+  * [The First Public git Repository]
+  * [The Translation into D]
 * [SwashRL]
-* * [SDL Support]
+  * [SDL Support]
 
 [Jump to the current version](#0031-christmas-update)
 

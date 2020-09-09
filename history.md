@@ -183,9 +183,9 @@ message line.
 This is also the first update in which messages are buffered and then
 displayed after every turn instead of in the middle of the turn, but due to
 issues with the C standard's implementation of string formatting the message
-buffer didn't start to work right until version [0.017](#0.017) and proper
+buffer didn't start to work right until version [0.017](#0017) and proper
 message formatting wouldn't be successfully implemented until version
-[0.022](#0.022).
+[0.022](#0022).
 
 Spelunk!
 --------
@@ -245,7 +245,7 @@ and never spoken of again.
 
 Note the new version numbering system; this made it easier to change and
 output the version number in C.  From here on out, the code was numbered as
-Release.Revision until version [0.028](#0.028), which added the git commit
+Release.Revision until version [0.028](#0028), which added the git commit
 ID as a "Patch number."
 
 The "history" file is started, with the intention of providing a more in-depth

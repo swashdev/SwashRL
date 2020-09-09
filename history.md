@@ -63,8 +63,8 @@ Table of Contents
 [0.018]: #0018
 [0.019]: #0019
 [0.020]: #0020
+[0.020-1]: #0020-1
 [0.021]: #0021
-[0.021-1]: #0021-1
 [0.022]: #0022
 [0.023]: #0023
 [0.024]: #0024
@@ -611,7 +611,7 @@ the amount of spaghetti code in the program.
 2019-01-29 13:10 CST
 
 A minor release correcting small errors in the documentation from version
-0.029 and moving some of the code around in `iomain.d` for consistency.
+[0.029] and moving some of the code around in `iomain.d` for consistency.
 
 [Back to top]
 

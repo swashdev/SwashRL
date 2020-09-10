@@ -137,7 +137,7 @@ void init_colors()
 
   Color C_PLAYER     = new Color( CURSES_GRAY,    255, 128,   0 );
 
-  CLR[Colors.Default]   = new Color_Pair( C_GRAY    ); // 0
+  CLR[Colors.Default]   = new Color_Pair( C_GRAY, 0 ); // 0
   CLR[Colors.Black]     = new Color_Pair( C_BLACK   ); // 1
   CLR[Colors.Red]       = new Color_Pair( C_RED     ); // 2
   CLR[Colors.Green]     = new Color_Pair( C_GREEN   ); // 3
@@ -177,7 +177,7 @@ void init_colors()
 
   // CLR_ERROR is a special color pair used by the SDL terminal interface to
   // indicate that a character has been defined improperly.
-  CLR[Colors.Error] = new Color_Pair( C_GRAY, C_RED, 0, true, false ); // 17
+  CLR[Colors.Error] = new Color_Pair( C_GRAY, C_RED, -1, true, false ); // 17
 
   // `CLR_WALL` is a reversed version of `CLR_GRAY`, unless `REVERSED_WALLS`
   // is disabled
@@ -209,7 +209,7 @@ void init_colors()
   // The "festive hat" the player receives during the month of December causes
   // them to appear in a white-on-red color scheme.
   CLR[Colors.Festive_Player] =
-      new Color_Pair( C_WHITE, C_RED, 0, true, false );
+      new Color_Pair( C_WHITE, C_RED, -1, true, false );
   // this will be color pair 10
 
 } /* void init_colors() */

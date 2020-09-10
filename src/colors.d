@@ -186,44 +186,30 @@ void init_colors()
   // `CLR_MOLD` & `CLR_MOLD_WALL` define the colors of the mold patches which
   // generate naturally in the dungeon.  Like `CLR_WALL`, `CLR_MOLD_WALL` is
   // only inverted if `REVERSED_WALLS` is true.
-  CLR[Colors.Mold]        = new Color_Pair( C_GREEN,     3, false, false );
-  CLR[Colors.Mold_Wall]   = new Color_Pair( C_GREEN,     3, false, REVERSED_WALLS );
+  CLR[Colors.Mold] = new Color_Pair( C_GREEN,     3, false, false );
+  CLR[Colors.Mold_Wall] =
+      new Color_Pair( C_GREEN, 3, false, REVERSED_WALLS );
 
   // `CLR_BLOOD` & `CLR_BLOOD_WALL` define the color of blood smears that
   // generate during combat.
-  CLR[Colors.Blood]       = new Color_Pair( C_RED,       2, false, false );
-  CLR[Colors.Blood_Wall]  = new Color_Pair( C_RED,       2, false, REVERSED_WALLS );
+  CLR[Colors.Blood] = new Color_Pair( C_RED,       2, false, false );
+  CLR[Colors.Blood_Wall] =
+      new Color_Pair( C_RED,       2, false, REVERSED_WALLS );
 
   // `CLR_SHADOW` & `CLR_SHADOW_WALL` define the colors for map features which
   // are no longer in the player's line-of-sight.
-  CLR[Colors.Fov_Shadow]      = new Color_Pair( C_DARK_GRAY, 1, true,  false );
-  CLR[Colors.Fov_Shadow_Wall] = new Color_Pair( C_DARK_GRAY, 1, true,  REVERSED_WALLS );
+  CLR[Colors.Fov_Shadow] = new Color_Pair( C_DARK_GRAY, 1, true,  false );
+  CLR[Colors.Fov_Shadow_Wall] =
+      new Color_Pair( C_DARK_GRAY, 1, true,  REVERSED_WALLS );
 
   // The player is displayed in a unique orange color to make them stand out.
   // On the curses interface, they are instead displayed in white.
-  CLR[Colors.Player]      = new Color_Pair( C_PLAYER,    8, true,  false );
+  CLR[Colors.Player] = new Color_Pair( C_PLAYER, 8, true,  false );
 
   // The "festive hat" the player receives during the month of December causes
   // them to appear in a white-on-red color scheme.
-  CLR[Colors.Festive_Player] = new Color_Pair( C_WHITE, C_RED, 0, true,   false );
+  CLR[Colors.Festive_Player] =
+      new Color_Pair( C_WHITE, C_RED, 0, true, false );
   // this will be color pair 10
-
-// SECTION 2: ////////////////////////////////////////////////////////////////
-// Stored Color Pairs                                                       //
-//////////////////////////////////////////////////////////////////////////////
-
-  // Fill in `Curses_Color_Pairs` with the color pair values of the above
-  // standard color pairs.  Note that 0 is unnecessary since none of our
-  // colors can override that color pair in curses anyway.
-  Curses_Color_Pairs[ 1] = &CLR_BLACK;
-  Curses_Color_Pairs[ 2] = &CLR_RED;
-  Curses_Color_Pairs[ 3] = &CLR_GREEN;
-  Curses_Color_Pairs[ 4] = &CLR_BLUE;
-  Curses_Color_Pairs[ 5] = &CLR_BROWN;
-  Curses_Color_Pairs[ 6] = &CLR_MAGENTA;
-  Curses_Color_Pairs[ 7] = &CLR_CYAN;
-  Curses_Color_Pairs[ 8] = &CLR_GRAY;
-  Curses_Color_Pairs[ 9] = &CLR_ERROR;
-  Curses_Color_Pairs[10] = &CLR_FESTIVE_PLAYER;
 
 } /* void init_colors() */

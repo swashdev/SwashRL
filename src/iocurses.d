@@ -170,12 +170,12 @@ static if( TEXT_EFFECTS )
 }
 static if( COLOR )
 {
-    attron( color_pair.get_color_pair() );
+    attron( COLOR_PAIR( color_pair.get_color_pair() ) );
 }
     mvaddch( y, x, c );
 static if( COLOR )
 {
-    attroff( color_pair.get_color_pair() );
+    attroff( COLOR_PAIR( color_pair.get_color_pair() ) );
 }
   }
 

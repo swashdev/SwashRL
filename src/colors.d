@@ -103,12 +103,22 @@ enum Colors
   Player,
   Festive_Player,
   Wall,
+  Water,
+  Lava,
   Mold,
   Mold_Wall,
   Blood,
   Blood_Wall,
   Fov_Shadow,
-  Fov_Shadow_Wall
+  Fov_Shadow_Wall,
+  Copper,
+  Silver,
+  Gold,
+  Roentgenium,
+  Paper,
+  Money,
+  Royal,
+  Holy
 }
 
 static Color_Pair[Colors.max + 1] CLR;
@@ -120,7 +130,7 @@ void init_colors()
   Color C_BLACK      = new Color( CURSES_BLACK,     0,   0,   0 );
   Color C_RED        = new Color( CURSES_RED,     128,   0,   0 );
   Color C_GREEN      = new Color( CURSES_GREEN,     0, 128,   0 );
-  Color C_BLUE       = new Color( CURSES_BLUE,      0,   0, 255 );
+  Color C_BLUE       = new Color( CURSES_BLUE,      0,   0, 128 );
   Color C_BROWN      = new Color( CURSES_BROWN,   150,  75,   0 );
   Color C_MAGENTA    = new Color( CURSES_MAGENTA, 128,   0, 128 );
   Color C_CYAN       = new Color( CURSES_CYAN,      0, 128, 128 );
@@ -135,7 +145,22 @@ void init_colors()
   Color C_LITE_CYAN  = new Color( CURSES_CYAN,      0, 255, 255 );
   Color C_WHITE      = new Color( CURSES_GRAY,    255, 255, 255 );
 
+  // The player's color, orange for SDL terminal interface but white for
+  // curses (because the light red color in curses doesn't look right)
   Color C_PLAYER     = new Color( CURSES_GRAY,    255, 128,   0 );
+
+  // "Royal" purple, aka Tyrian purple
+  Color C_ROYAL      = new Color( CURSES_MAGENTA, 102,   2,  60 );
+
+  // Ultramarine, a reference to lapis lazuli, often used in important
+  // religious artwork
+  Color C_HOLY       = new Color( CURSES_BLUE,     18,  10, 143 );
+
+  // Copper, Silver, Gold, and Roentgennium: The "coinage metals"
+  Color C_COPPER     = new Color( CURSES_BROWN,   184, 115,  51 );
+  Color C_SILVER     = new Color( CURSES_GRAY,    192, 192, 192 );
+  Color C_GOLD       = new Color( CURSES_BROWN,   255, 215,   0 );
+  Color C_ROENTGENIUM = new Color( CURSES_BLACK,   132, 132, 130 );
 
   CLR[Colors.Default]   = new Color_Pair( C_GRAY, 0 ); // 0
   CLR[Colors.Black]     = new Color_Pair( C_BLACK   ); // 1
@@ -146,10 +171,6 @@ void init_colors()
   CLR[Colors.Magenta]   = new Color_Pair( C_MAGENTA ); // 6
   CLR[Colors.Cyan]      = new Color_Pair( C_CYAN    ); // 7
   CLR[Colors.Gray]      = new Color_Pair( C_GRAY    ); // 8
-
-  // Special case: CLR_BLUE will always be bright, to avoid being too dark on
-  // standard terminal screens
-  CLR[Colors.Blue].set_bright( true );
 
   // Bright Colors ///////////////////////////////////////////////////////////
 
@@ -177,11 +198,26 @@ void init_colors()
 
   // CLR_ERROR is a special color pair used by the SDL terminal interface to
   // indicate that a character has been defined improperly.
-  CLR[Colors.Error] = new Color_Pair( C_GRAY, C_RED, -1, true, false ); // 17
+  CLR[Colors.Error] = new Color_Pair( C_GRAY, C_RED, -1, true, false );
+
+  // The player is displayed in a unique orange color to make them stand out.
+  // On the curses interface, they are instead displayed in white.
+  CLR[Colors.Player] = new Color_Pair( C_PLAYER, 8, true,  false );
+
+  // The "festive hat" the player receives during the month of December causes
+  // them to appear in a white-on-red color scheme.
+  CLR[Colors.Festive_Player] =
+      new Color_Pair( C_WHITE, C_RED, -1, true, false );
 
   // `CLR_WALL` is a reversed version of `CLR_GRAY`, unless `REVERSED_WALLS`
   // is disabled
   CLR[Colors.Wall]  = new Color_Pair( C_GRAY,      8, false, REVERSED_WALLS );
+
+  // The "Water" color scheme is for dangerous bodies of water.
+  CLR[Colors.Water] = new Color_Pair( C_LITE_BLUE, C_BLUE, -1, true, false );
+
+  // The "Lava" color scheme is used for lava pits.
+  CLR[Colors.Lava] = new Color_Pair( C_YELLOW, C_RED, -1, true, false );
 
   // `CLR_MOLD` & `CLR_MOLD_WALL` define the colors of the mold patches which
   // generate naturally in the dungeon.  Like `CLR_WALL`, `CLR_MOLD_WALL` is
@@ -202,14 +238,29 @@ void init_colors()
   CLR[Colors.Fov_Shadow_Wall] =
       new Color_Pair( C_DARK_GRAY, 1, true,  REVERSED_WALLS );
 
-  // The player is displayed in a unique orange color to make them stand out.
-  // On the curses interface, they are instead displayed in white.
-  CLR[Colors.Player] = new Color_Pair( C_PLAYER, 8, true,  false );
+  // The group 11 chemicals are often referred to as "coinage metals," owing
+  // to their popularity as coinage metals in the real world.  The stand-out,
+  // roentgenium, has yet to be encountered in nature and has unknown chemical
+  // properties, but is predicted to be a silvery color and is included in
+  // here essentially as a pun.  Its color is "old silver," to distinguish it
+  // from silver and suggest that it is impure.
+  CLR[Colors.Copper] = new Color_Pair( C_COPPER, 5, false, false );
+  CLR[Colors.Silver] = new Color_Pair( C_SILVER, 8, false, false );
+  CLR[Colors.Gold]   = new Color_Pair( C_GOLD,   5, true,  false );
+  CLR[Colors.Roentgenium] = new Color_Pair( C_ROENTGENIUM, 1, true, false );
 
-  // The "festive hat" the player receives during the month of December causes
-  // them to appear in a white-on-red color scheme.
-  CLR[Colors.Festive_Player] =
-      new Color_Pair( C_WHITE, C_RED, -1, true, false );
-  // this will be color pair 10
+  // The "Money" color is used for bank notes, and the "Paper" color is used
+  // for regular notes :-p
+  CLR[Colors.Paper] = new Color_Pair( C_WHITE, C_BLACK,  8, true, true );
+  CLR[Colors.Money] = new Color_Pair( C_WHITE, C_GREEN, -1, true, false );
+
+  // "Royal" colors are used to mark members of the nobility and may be used
+  // for banners in royal courts.
+  CLR[Colors.Royal] = new Color_Pair( C_YELLOW, C_ROYAL, -1, true, false );
+
+  // Lapis lazuli was a blue pigment so coveted in the ancient world that it
+  // was only used for the most important artworks, which is why it was often
+  // used for religious pieces.
+  CLR[Colors.Holy] = new Color_Pair( C_WHITE, C_HOLY, -1, true, false );
 
 } /* void init_colors() */

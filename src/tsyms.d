@@ -43,7 +43,7 @@ void init_tile_symbols()
   SYM_WALL   = symdata( '#', Colors.Wall      );
   SYM_STALA  = symdata( 'V', Colors.Gray      );
   SYM_DOOR   = symdata( '+', Colors.Brown     );
-  SYM_WATER  = symdata( '}', Colors.Lite_Blue );
+  SYM_WATER  = symdata( '}', Colors.Water     );
   SYM_SHADOW = symdata( ' ', Colors.Black     );
 
 } /* void init_tile_symbols() */

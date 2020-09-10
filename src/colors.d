@@ -35,13 +35,6 @@ import global;
 // Color Indexes                                                            //
 //////////////////////////////////////////////////////////////////////////////
 
-// Because curses defines color pairs according to index values, we must
-// record them here or find useful substitutes.
-
-///////////////////////////////
-// Curses color pair indexes //
-///////////////////////////////
-
 // Indexes used to label color pairs for curses.  These enums refer directly
 // to the standard curses color enums, but label them specifically as
 // `CURSES_*` in order to disambiguate them from the SDL colors in the source
@@ -77,8 +70,11 @@ enum CURSES_GRAY    = 7;
 }
 
 // SECTION 1: ////////////////////////////////////////////////////////////////
-// Colors                                                                   //
+// Color Pairs                                                              //
 //////////////////////////////////////////////////////////////////////////////
+
+// The colors enum stores the names of the color pairs that SwashRL is able to
+// use for the curses and SDL terminal interfaces.
 
 enum Colors
 {
@@ -121,7 +117,12 @@ enum Colors
   Holy
 }
 
+// The CLR array stores the `Color_Pair` objects used to define the color
+// arrays for the curses and SDL terminal interfaces.
+
 static Color_Pair[Colors.max + 1] CLR;
+
+// Defining Color Pairs //////////////////////////////////////////////////////
 
 // Initialize the global color pairs.
 void init_colors()

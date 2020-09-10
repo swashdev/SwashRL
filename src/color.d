@@ -172,17 +172,17 @@ else
 
   // Initialize a `Color_Pair` using an existing `Color` (or two if we want to
   // specify a background other than black).
-  // If `existing_curses_color_pair` is <= 1, define a new color pair.
+  // If `existing_curses_color_pair` is < 0, define a new color pair.
   // Otherwise, use an existing one.
   this( Color foreground_color,
         Color background_color = new Color( 0, 0, 0, 0 ),
-        short existing_curses_color_pair = 0,
+        short existing_curses_color_pair = -1,
 	bool is_bright = false, bool is_reversed = false )
   {
     foreground = foreground_color;
     background = background_color;
 
-    if( existing_curses_color_pair > 0
+    if( existing_curses_color_pair >= 0
         && existing_curses_color_pair <= last_color_pair )
     {
       curses_color_pair = existing_curses_color_pair;
@@ -211,12 +211,12 @@ static if( CURSES_ENABLED )
 
   // Initialize a `Color_Pair` using an existing `Color`.  This constructor
   // will always use the default black background color.
-  // If `existing_curses_color_pair` is <= 1, define a new color pair.
+  // If `existing_curses_color_pair` is < 0, define a new color pair.
   // Otherwise, use an existing one.
   // `is_bright` & `is_reversed` set if the color pair will be boldened or
   // inverted, respectively.  Default for both is `false`
   this( Color foreground_color,
-        short existing_curses_color_pair = 0,
+        short existing_curses_color_pair = -1,
 	bool is_bright = false, bool is_reversed = false )
   {
     this( foreground_color, new Color( 0, 0, 0, 0 ),
@@ -228,7 +228,7 @@ static if( CURSES_ENABLED )
   // at their defaults.
   this( Color foreground_color )
   {
-    this( foreground_color, new Color( 0, 0, 0, 0 ), 0, false, false );
+    this( foreground_color, new Color( 0, 0, 0, 0 ), -1, false, false );
   } /* this( Color ) */
 
 } /* class Color_Pair */

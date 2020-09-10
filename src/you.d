@@ -59,7 +59,7 @@ Player init_player( ubyte y, ubyte x )
   else
   { u.y = 1;
   }
-  u.sym = symdata( SMILEY, CLR_PLAYER );
+  u.sym = symdata( SMILEY, Colors.Player );
   u.hp = roll( 3, 2 );
 
   foreach( count; 0 .. 40 )
@@ -77,7 +77,7 @@ Player init_player( ubyte y, ubyte x )
   // if it is December, the player character starts with a "festive hat"
   if( Clock.currTime().month == Month.dec )
   {
-    Item hat = { sym:Symbol(']', CLR_RED ),
+    Item hat = { sym:Symbol(']', Colors.Red ),
                  type:ITEM_ARMOR, equip:EQUIP_HELMET,
                  addd:0, addm:0,
                  name:"festive hat" };

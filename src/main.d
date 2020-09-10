@@ -263,7 +263,7 @@ version( sdl )
 
   // Initialize the `No_item` placeholder ////////////////////////////////////
 
-  No_item = Item( symdata( '\0', CLR_GRAY ), "NO ITEM", 0, 0, 0, 0 );
+  No_item = Item( symdata( '\0', Colors.Error ), "NO ITEM", 0, 0, 0, 0 );
 
   // Map Generator ///////////////////////////////////////////////////////////
 
@@ -552,7 +552,7 @@ Try compiling with dub build -b debug" );
 playerdied:
 
   // Display a grayed-out player:
-  u.sym.color = CLR_DARK_GRAY;
+  u.sym.color = Colors.Dark_Gray;
   IO.display_player( u );
 
   // Say Goodbye /////////////////////////////////////////////////////////////

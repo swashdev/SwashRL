@@ -39,11 +39,11 @@ static Symbol SYM_SHADOW;
 
 void init_tile_symbols()
 {
-  SYM_FLOOR  = symdata( '.', CLR_GRAY      );
-  SYM_WALL   = symdata( '#', CLR_WALL      );
-  SYM_STALA  = symdata( 'V', CLR_GRAY      );
-  SYM_DOOR   = symdata( '+', CLR_BROWN     );
-  SYM_WATER  = symdata( '}', CLR_LITE_BLUE );
-  SYM_SHADOW = symdata( ' ', CLR_BLACK     );
+  SYM_FLOOR  = symdata( '.', Colors.Gray      );
+  SYM_WALL   = symdata( '#', Colors.Wall      );
+  SYM_STALA  = symdata( 'V', Colors.Gray      );
+  SYM_DOOR   = symdata( '+', Colors.Brown     );
+  SYM_WATER  = symdata( '}', Colors.Lite_Blue );
+  SYM_SHADOW = symdata( ' ', Colors.Black     );
 
 } /* void init_tile_symbols() */

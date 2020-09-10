@@ -83,10 +83,10 @@ static if( COLOR )
 
   // Takes in a color flag and returns a curses-style `attr_t' representing
   // that color.
-  attr_t get_color( Color_Pair color = CLR_GRAY )
+  attr_t get_color( Colors color = Colors.Default )
   {
-    return COLOR_PAIR( color.get_color_pair() );
-  } // attr_t get_color( Color_Pair? )
+    return COLOR_PAIR( CLR[color].get_color_pair() );
+  } // attr_t get_color( Colors? )
 
 // SECTION 3: ////////////////////////////////////////////////////////////////
 // Input                                                                    //
@@ -148,18 +148,20 @@ static if( COLOR )
   }
 
   // Outputs a text character at the given coordinates.
-  void put_char( uint y, uint x, char c,
-                 Color_Pair color = CLR_GRAY )
+  void put_char( uint y, uint x, char c, Colors color = Colors.Default )
   {
+
+    Color_Pair color_pair = CLR[color];
+    
 static if( TEXT_EFFECTS )
 {
-    if( color.get_bright() )
+    if( color_pair.get_bright() )
     { attron( A_BOLD );
     }
     else
     { attroff( A_BOLD );
     }
-    if( color.get_inverted() )
+    if( color_pair.get_inverted() )
     { attron( A_REVERSE );
     }
     else
@@ -168,12 +170,12 @@ static if( TEXT_EFFECTS )
 }
 static if( COLOR )
 {
-    attron( get_color( color ) );
+    attron( color_pair.get_color_pair() );
 }
     mvaddch( y, x, c );
 static if( COLOR )
 {
-    attroff( get_color( color ) );
+    attroff( color_pair.get_color_pair() );
 }
   }
 

@@ -349,7 +349,7 @@ class SDLTerminalIO : SwashIO
   }
 
   // Outputs a text character at the given coordinates.
-  void put_char( uint y, uint x, char c, Color_Pair color = CLR_GRAY )
+  void put_char( uint y, uint x, char c, Colors color = Colors.Default )
   {
 
     // Tell the renderer to draw to our own `frame_buffer' rather than the
@@ -360,13 +360,13 @@ class SDLTerminalIO : SwashIO
 
     SDL_Texture* renderedchar;
 
-    Color_Pair co = color;
+    Color_Pair co = CLR[color];
 
     // null means there's no glyph, so fall back on a backup character
     if( cur_tileset[c] is null )
     {
       renderedchar = cur_tileset['?'];
-      co = CLR_ERROR;
+      co = CLR[Colors.Error];
     }
     else
     { renderedchar = cur_tileset[c];

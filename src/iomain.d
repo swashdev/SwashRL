@@ -82,7 +82,7 @@ interface SwashIO
 
   // Outputs a text character at the given coordinates.
   void put_char( uint y, uint x, char c,
-                 Color_Pair color = CLR_GRAY );
+                 Colors color = Colors.Default );
 
   // The central display function: displays a given symbol at the given
   // coordinates.  Equivalent to `mvputch` in curses.
@@ -631,7 +631,7 @@ discard_swap:
     // color
     if( u.inventory.items[INVENT_HELMET].name == "festive hat" )
     {
-      display( u.y + 1, u.x, symdata( u.sym.ch, CLR_FESTIVE_PLAYER ), true );
+      display( u.y + 1, u.x, symdata( u.sym.ch, Colors.Festive_Player ), true );
     }
     else  display( u.y + 1, u.x, u.sym, true );
   }
@@ -665,6 +665,7 @@ discard_swap:
       foreach( x; 0 .. MAP_X )
       {
         Symbol output = to_display.t[y][x].sym;
+	Color_Pair initial_color = CLR[output.color];
 
 static if( COLOR )
 {
@@ -676,11 +677,11 @@ static if( COLOR )
           {
             if( !(to_display.t[y][x].hazard & HAZARD_WATER ) )
             {
-              if( to_display.t[y][x].sym.color.get_inverted() )
-              { output.color = CLR_MOLD_WALL;
+              if( initial_color.get_inverted() )
+              { output.color = Colors.Mold_Wall;
               }
               else
-              { output.color = CLR_MOLD;
+              { output.color = Colors.Mold;
               }
             }
           }
@@ -693,11 +694,11 @@ static if( COLOR )
           {
             if( !(to_display.t[y][x].hazard & HAZARD_WATER) )
             {
-              if( to_display.t[y][x].sym.color.get_inverted() )
-              { output.color = CLR_BLOOD_WALL;
+              if( initial_color.get_inverted() )
+              { output.color = Colors.Blood_Wall;
               }
               else
-              { output.color = CLR_BLOOD;
+              { output.color = Colors.Blood;
               }
             }
           }
@@ -716,11 +717,11 @@ else
 {
           if( to_display.t[y][x].seen )
           {
-            if( to_display.t[y][x].sym.color.get_inverted() )
-            { output.color = CLR_SHADOW_WALL;
+            if( initial_color.get_inverted() )
+            { output.color = Colors.Fov_Shadow_Wall;
             }
             else
-            { output.color = CLR_SHADOW;
+            { output.color = Colors.Fov_Shadow;
             }
           }
           else

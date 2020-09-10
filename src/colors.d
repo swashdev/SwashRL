@@ -80,38 +80,38 @@ enum CURSES_GRAY    = 7;
 // Colors                                                                   //
 //////////////////////////////////////////////////////////////////////////////
 
-enum Colors : size_t
+enum Colors
 {
-  Default         =  0,
-  Black           =  1,
-  Red             =  2,
-  Green           =  3,
-  Blue            =  4,
-  Brown           =  5,
-  Magenta         =  6,
-  Cyan            =  7,
-  Gray            =  8,
-  Dark_Gray       =  9,
-  Lite_Red        = 10,
-  Lite_Green      = 11,
-  Lite_Blue       = 12,
-  Yellow          = 13,
-  Pink            = 14,
-  Lite_Cyan       = 15,
-  White           = 16,
-  Error           = 17,
-  Player          = 18,
-  Festive_Player  = 19,
-  Wall            = 20,
-  Mold            = 21,
-  Mold_Wall       = 22,
-  Blood           = 23,
-  Blood_Wall      = 24,
-  Fov_Shadow      = 25,
-  Fov_Shadow_Wall = 26
+  Default,
+  Black,
+  Red,
+  Green,
+  Blue,
+  Brown,
+  Magenta,
+  Cyan,
+  Gray,
+  Dark_Gray,
+  Lite_Red,
+  Lite_Green,
+  Lite_Blue,
+  Yellow,
+  Pink,
+  Lite_Cyan,
+  White,
+  Error,
+  Player,
+  Festive_Player,
+  Wall,
+  Mold,
+  Mold_Wall,
+  Blood,
+  Blood_Wall,
+  Fov_Shadow,
+  Fov_Shadow_Wall
 }
 
-static Color_Pair[] CLR;
+static Color_Pair[Colors.max + 1] CLR;
 
 // Initialize the global color pairs.
 void init_colors()

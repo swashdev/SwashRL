@@ -858,7 +858,7 @@ debug
   ////////////////////////////////////////////////////////////////////////////
 
   // Output a screen which will display various color pairs for test purposes
-  void color_test_screen()
+  final void color_test_screen()
   {
     clear_screen();
 

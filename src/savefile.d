@@ -40,6 +40,11 @@ import std.conv;
 // Placeholders & Special Markers                                           //
 //////////////////////////////////////////////////////////////////////////////
 
+// `LAST_COMPATIBLE_VERSION` is used to indicate the last version of the game
+// whose save files are compatible with the current version.  See global.d
+// for how version numbers are stored.
+enum LAST_COMPATIBLE_VERSION = 0.032;
+
 // `PLACEHOLDER_MARKER` is used to indicate that an object which would
 // normally be written does not exist.
 enum PLACEHOLDER_MARKER = cast(char)19;
@@ -387,7 +392,7 @@ Map level_from_file( string file_label )
 
   ver = to!float( strip_line( fil ) );
 
-  if( ver < 0.026 )
+  if( ver < LAST_COMPATIBLE_VERSION )
   {
     fil.close();
     level_file_error( path, "File version %.3f not compatible with current "

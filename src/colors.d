@@ -121,7 +121,6 @@ enum Colors
   Silver,
   Gold,
   Roentgenium,
-  Paper,
   Money,
   Royal,
   Holy
@@ -278,9 +277,7 @@ void init_colors()
   CLR[Colors.Gold]   = new Color_Pair( C_GOLD,   5, true,  false );
   CLR[Colors.Roentgenium] = new Color_Pair( C_ROENTGENIUM, 1, true, false );
 
-  // The "Money" color is used for bank notes, and the "Paper" color is used
-  // for regular notes :-p
-  CLR[Colors.Paper] = new Color_Pair( C_WHITE, C_BLACK,  8, true, true );
+  // The "Money" color is used for bank notes.
   CLR[Colors.Money] = new Color_Pair( C_WHITE, C_GREEN, -1, true, false );
 
   // "Royal" colors are used to mark members of the nobility and may be used

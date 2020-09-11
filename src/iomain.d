@@ -943,7 +943,7 @@ debug
 
     refresh_screen();
 
-    get_input();
+    get_key();
   } // color_test_screen()
 } // debug
 

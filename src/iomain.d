@@ -902,7 +902,7 @@ debug
                       Colors.Inverted_Red,        "Inverted_Red"        );
     put_colored_line( 15, 21,
                       Colors.Inverted_Lite_Green, "Inverted_Lite_Green" );
-    put_colored_line( 17, 21
+    put_colored_line( 17, 21,
                       Colors.Inverted_Blue,       "Inverted_Blue"       );
     put_colored_line( 19, 21,
                       Colors.Inverted_Yellow,     "Inverted_Yellow"     );

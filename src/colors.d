@@ -82,7 +82,7 @@ enum Colors
   Black,
   Red,
   Green,
-  Blue,
+  Dark_Blue,
   Brown,
   Magenta,
   Cyan,
@@ -90,7 +90,7 @@ enum Colors
   Dark_Gray,
   Lite_Red,
   Lite_Green,
-  Lite_Blue,
+  Blue,
   Yellow,
   Pink,
   Lite_Cyan,
@@ -168,7 +168,7 @@ void init_colors()
   CLR[Colors.Black]     = new Color_Pair( C_BLACK   ); // 1
   CLR[Colors.Red]       = new Color_Pair( C_RED     ); // 2
   CLR[Colors.Green]     = new Color_Pair( C_GREEN   ); // 3
-  CLR[Colors.Blue]      = new Color_Pair( C_BLUE    ); // 4
+  CLR[Colors.Dark_Blue] = new Color_Pair( C_BLUE    ); // 4
   CLR[Colors.Brown]     = new Color_Pair( C_BROWN   ); // 5
   CLR[Colors.Magenta]   = new Color_Pair( C_MAGENTA ); // 6
   CLR[Colors.Cyan]      = new Color_Pair( C_CYAN    ); // 7
@@ -185,7 +185,7 @@ void init_colors()
   CLR[Colors.Dark_Gray]  = new Color_Pair( C_DARK_GRAY,  1, true ); //  9
   CLR[Colors.Lite_Red]   = new Color_Pair( C_LITE_RED,   2, true ); // 10
   CLR[Colors.Lite_Green] = new Color_Pair( C_LITE_GREEN, 3, true ); // 11
-  CLR[Colors.Lite_Blue]  = new Color_Pair( C_LITE_BLUE,  4, true ); // 12
+  CLR[Colors.Blue]       = new Color_Pair( C_LITE_BLUE,  4, true ); // 12
   CLR[Colors.Yellow]     = new Color_Pair( C_YELLOW,     5, true ); // 13
   CLR[Colors.Pink]       = new Color_Pair( C_PINK,       6, true ); // 14
   CLR[Colors.Lite_Cyan]  = new Color_Pair( C_LITE_CYAN,  7, true ); // 15

@@ -1,16 +1,16 @@
 SwashRL is dedicated:
 
-  To Seb, who helped with a bunch of the number-crunching and design for the
-  game as it will eventually exist, and has generally been the best mentor and
-  friend I could have asked for
+  To Seb (1994-2020)  For ten years, he taught me a lot about life, growing
+  up, the universe, and people.  He suffered from a number of unfortunate
+  health conditions, including mental health problems, but survived and
+  persevered in spite of them, teaching me how to be strong myself and take
+  care of myself even while trying to help others.  His contributions to my
+  life and the value of his companionship can not be overstated.
 
-  To my family, who have been supportive above and beyond the call of duty and
-  kept me in their prayers when I needed them most
-
-  To Alec Holowka (1983-10-30 - 2019-08-31) A victim of the stigmatization of
-  the independent gaming space and the video game industry in general,
-  betrayed by former colleagues and abandoned by those he called his friends.
-  Rest in peace--you will be missed.
+  Rest in peace, my dear friend and fellow weirdo.  As promised, I will do
+  the very best I can to live in a way that you would have been proud of,
+  not for pity but for its own sake.  You will be remembered, if only in
+  this small way.
 
 Special thanks to the following "Honorary Dev Team Members," who contributed
 significant help to the SwashRL source code:

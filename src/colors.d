@@ -101,6 +101,7 @@ enum Colors
   Wall,
   Water,
   Lava,
+  Acid,
   Mold,
   Mold_Wall,
   Blood,
@@ -219,6 +220,9 @@ void init_colors()
 
   // The "Lava" color scheme is used for lava pits.
   CLR[Colors.Lava] = new Color_Pair( C_YELLOW, C_RED, -1, true, false );
+
+  // The "Acid" color scheme is used for pools of acid.
+  CLR[Colors.Acid] = new Color_Pair( C_YELLOW, C_GREEN, -1, true, false );
 
   // `CLR_MOLD` & `CLR_MOLD_WALL` define the colors of the mold patches which
   // generate naturally in the dungeon.  Like `CLR_WALL`, `CLR_MOLD_WALL` is

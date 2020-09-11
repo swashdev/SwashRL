@@ -901,44 +901,58 @@ debug
     put_colored_line( 13, 21,
                       Colors.Inverted_Red,        "Inverted_Red"        );
     put_colored_line( 15, 21,
-                      Colors.Inverted_Lite_Green, "Inverted_Lite_Green" );
+                      Colors.Inverted_Green,      "Inverted_Green"      );
     put_colored_line( 17, 21,
-                      Colors.Inverted_Blue,       "Inverted_Blue"       );
+                      Colors.Inverted_Dark_Blue,  "Inverted_Dark_Blue"  );
     put_colored_line( 19, 21,
-                      Colors.Inverted_Yellow,     "Inverted_Yellow"     );
+                      Colors.Inverted_Brown,      "Inverted_Brown"      );
     put_colored_line( 21, 21,
-                      Colors.Inverted_Pink,       "Inverted_Pink"       );
+                      Colors.Inverted_Magenta,    "Inverted_Magenta"    );
     put_colored_line( 23, 21,
-                      Colors.Inverted_Lite_Cyan,  "Inverted_Lite_Cyan"  );
+                      Colors.Inverted_Cyan,       "Inverted_Cyan"       );
     put_colored_line(  1, 41,
-                      Colors.Inverted_White,      "Inverted_White"      );
+                      Colors.Inverted_Gray,       "Inverted_Gray"       );
     put_colored_line(  3, 41,
-                      Colors.Error,               "Error"               );
+                      Colors.Inverted_Dark_Gray,  "Inverted_Dark_Gray"  );
     put_colored_line(  5, 41,
-                      Colors.Player,              "Player"              );
+                      Colors.Inverted_Lite_Red,   "Inverted_Lite_Red"   );
     put_colored_line(  7, 41,
-                      Colors.Festive_Player,      "Festive_Player"      );
+                      Colors.Inverted_Lite_Green, "Inverted_Lite_Green" );
     put_colored_line(  9, 41,
-                      Colors.Water,               "Water"               );
+                      Colors.Inverted_Blue,       "Inverted_Blue"       );
     put_colored_line( 11, 41,
-                      Colors.Lava,                "Lava"                );
+                      Colors.Inverted_Yellow,     "Inverted_Yellow"     );
     put_colored_line( 13, 41,
-                      Colors.Acid,                "Acid"                );
+                      Colors.Inverted_Pink,       "Inverted_Pink"       );
     put_colored_line( 15, 41,
-                      Colors.Copper,              "Copper"              );
+                      Colors.Inverted_Lite_Cyan,  "Inverted_Lite_Cyan"  );
     put_colored_line( 17, 41,
-                      Colors.Silver,              "Silver"              );
+                      Colors.Inverted_White,      "Inverted_White"      );
     put_colored_line( 19, 41,
-                      Colors.Gold,                "Gold"                );
+                      Colors.Error,               "Error"               );
     put_colored_line( 21, 41,
-                      Colors.Roentgenium,         "Roentgenium"         );
+                      Colors.Player,              "Player"              );
     put_colored_line( 23, 41,
-                      Colors.Paper,               "Paper"               );
+                      Colors.Festive_Player,      "Festive_Player"      );
     put_colored_line(  1, 61,
-                      Colors.Money,               "Money"               );
+                      Colors.Water,               "Water"               );
     put_colored_line(  3, 61,
-                      Colors.Royal,               "Royal"               );
+                      Colors.Lava,                "Lava"                );
     put_colored_line(  5, 61,
+                      Colors.Acid,                "Acid"                );
+    put_colored_line(  7, 61,
+                      Colors.Copper,              "Copper"              );
+    put_colored_line(  9, 61,
+                      Colors.Silver,              "Silver"              );
+    put_colored_line( 11, 61,
+                      Colors.Gold,                "Gold"                );
+    put_colored_line( 13, 61,
+                      Colors.Roentgenium,         "Roentgenium"         );
+    put_colored_line( 15, 61,
+                      Colors.Money,               "Money"               );
+    put_colored_line( 17, 61,
+                      Colors.Royal,               "Royal"               );
+    put_colored_line( 19, 61,
                       Colors.Holy,                "Holy"                );
 
     refresh_screen();

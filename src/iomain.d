@@ -678,10 +678,10 @@ static if( COLOR )
             if( !(to_display.t[y][x].hazard & HAZARD_WATER ) )
             {
               if( initial_color.get_inverted() )
-              { output.color = Colors.Mold_Wall;
+              { output.color = Colors.Inverted_Green;
               }
               else
-              { output.color = Colors.Mold;
+              { output.color = Colors.Green;
               }
             }
           }
@@ -695,10 +695,10 @@ static if( COLOR )
             if( !(to_display.t[y][x].hazard & HAZARD_WATER) )
             {
               if( initial_color.get_inverted() )
-              { output.color = Colors.Blood_Wall;
+              { output.color = Colors.Inverted_Red;
               }
               else
-              { output.color = Colors.Blood;
+              { output.color = Colors.Red;
               }
             }
           }
@@ -718,10 +718,10 @@ else
           if( to_display.t[y][x].seen )
           {
             if( initial_color.get_inverted() )
-            { output.color = Colors.Fov_Shadow_Wall;
+            { output.color = Colors.Inverted_Dark_Gray;
             }
             else
-            { output.color = Colors.Fov_Shadow;
+            { output.color = Colors.Dark_Gray;
             }
           }
           else

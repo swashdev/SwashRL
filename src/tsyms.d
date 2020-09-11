@@ -40,7 +40,9 @@ static Symbol SYM_SHADOW;
 void init_tile_symbols()
 {
   SYM_FLOOR  = symdata( '.', Colors.Gray      );
-  SYM_WALL   = symdata( '#', Colors.Wall      );
+  SYM_WALL   = symdata( '#', REVERSED_WALLS
+                               ? Colors.Inverted_Gray : Colors.Gray
+                      );
   SYM_STALA  = symdata( 'V', Colors.Gray      );
   SYM_DOOR   = symdata( '+', Colors.Brown     );
   SYM_WATER  = symdata( '}', Colors.Water     );

@@ -114,16 +114,9 @@ enum Colors
   Error,
   Player,
   Festive_Player,
-  Wall,
   Water,
   Lava,
   Acid,
-  Mold,
-  Mold_Wall,
-  Blood,
-  Blood_Wall,
-  Fov_Shadow,
-  Fov_Shadow_Wall,
   Copper,
   Silver,
   Gold,
@@ -265,10 +258,6 @@ void init_colors()
   CLR[Colors.Festive_Player] =
       new Color_Pair( C_WHITE, C_RED, -1, true, false );
 
-  // `CLR_WALL` is a reversed version of `CLR_GRAY`, unless `REVERSED_WALLS`
-  // is disabled
-  CLR[Colors.Wall]  = new Color_Pair( C_GRAY,      8, false, REVERSED_WALLS );
-
   // The "Water" color scheme is for dangerous bodies of water.
   CLR[Colors.Water] = new Color_Pair( C_LITE_BLUE, C_BLUE, -1, true, false );
 
@@ -277,25 +266,6 @@ void init_colors()
 
   // The "Acid" color scheme is used for pools of acid.
   CLR[Colors.Acid] = new Color_Pair( C_YELLOW, C_GREEN, -1, true, false );
-
-  // `CLR_MOLD` & `CLR_MOLD_WALL` define the colors of the mold patches which
-  // generate naturally in the dungeon.  Like `CLR_WALL`, `CLR_MOLD_WALL` is
-  // only inverted if `REVERSED_WALLS` is true.
-  CLR[Colors.Mold] = new Color_Pair( C_GREEN,     3, false, false );
-  CLR[Colors.Mold_Wall] =
-      new Color_Pair( C_GREEN, 3, false, REVERSED_WALLS );
-
-  // `CLR_BLOOD` & `CLR_BLOOD_WALL` define the color of blood smears that
-  // generate during combat.
-  CLR[Colors.Blood] = new Color_Pair( C_RED,       2, false, false );
-  CLR[Colors.Blood_Wall] =
-      new Color_Pair( C_RED,       2, false, REVERSED_WALLS );
-
-  // `CLR_SHADOW` & `CLR_SHADOW_WALL` define the colors for map features which
-  // are no longer in the player's line-of-sight.
-  CLR[Colors.Fov_Shadow] = new Color_Pair( C_DARK_GRAY, 1, true,  false );
-  CLR[Colors.Fov_Shadow_Wall] =
-      new Color_Pair( C_DARK_GRAY, 1, true,  REVERSED_WALLS );
 
   // The group 11 chemicals are often referred to as "coinage metals," owing
   // to their popularity as coinage metals in the real world.  The stand-out,

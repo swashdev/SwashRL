@@ -850,9 +850,106 @@ else
 
   } // final void display_inventory( Player* )
 
+debug
+{
+
+  // Section 6: //////////////////////////////////////////////////////////////
+  // Debug Output                                                           //
+  ////////////////////////////////////////////////////////////////////////////
+
+  // Output a screen which will display various color pairs for test purposes
+  void color_test_screen()
+  {
+    clear_screen();
+
+    put_colored_line(  1,  1,
+                      Colors.Default,             "Default"             );
+    put_colored_line(  3,  1,
+                      Colors.Black,               "Black"               );
+    put_colored_line(  5,  1,
+                      Colors.Red,                 "Red"                 );
+    put_colored_line(  7,  1,
+                      Colors.Green,               "Green"               );
+    put_colored_line(  9,  1,
+                      Colors.Dark_Blue,           "Dark_Blue"           );
+    put_colored_line( 11,  1,
+                      Colors.Brown,               "Brown"               );
+    put_colored_line( 13,  1,
+                      Colors.Magenta,             "Magenta"             );
+    put_colored_line( 15,  1,
+                      Colors.Cyan,                "Cyan"                );
+    put_colored_line( 17,  1,
+                      Colors.Gray,                "Gray"                );
+    put_colored_line( 19,  1,
+                      Colors.Dark_Gray,           "Dark_Gray"           );
+    put_colored_line( 21,  1,
+                      Colors.Lite_Red,            "Lite_Red"            );
+    put_colored_line( 23,  1,
+                      Colors.Lite_Green,          "Lite_Green"          );
+    put_colored_line(  1, 21,
+                      Colors.Blue,                "Blue"                );
+    put_colored_line(  3, 21,
+                      Colors.Yellow,              "Yellow"              );
+    put_colored_line(  5, 21,
+                      Colors.Pink,                "Pink"                );
+    put_colored_line(  7, 21,
+                      Colors.Lite_Cyan,           "Lite_Cyan"           );
+    put_colored_line(  9, 21,
+                      Colors.White,               "White"               );
+    put_colored_line( 11, 21,
+                      Colors.Inverted_Black,      "Inverted_Black"      );
+    put_colored_line( 13, 21,
+                      Colors.Inverted_Red,        "Inverted_Red"        );
+    put_colored_line( 15, 21,
+                      Colors.Inverted_Lite_Green, "Inverted_Lite_Green" );
+    put_colored_line( 17, 21
+                      Colors.Inverted_Blue,       "Inverted_Blue"       );
+    put_colored_line( 19, 21,
+                      Colors.Inverted_Yellow,     "Inverted_Yellow"     );
+    put_colored_line( 21, 21,
+                      Colors.Inverted_Pink,       "Inverted_Pink"       );
+    put_colored_line( 23, 21,
+                      Colors.Inverted_Lite_Cyan,  "Inverted_Lite_Cyan"  );
+    put_colored_line(  1, 41,
+                      Colors.Inverted_White,      "Inverted_White"      );
+    put_colored_line(  3, 41,
+                      Colors.Error,               "Error"               );
+    put_colored_line(  5, 41,
+                      Colors.Player,              "Player"              );
+    put_colored_line(  7, 41,
+                      Colors.Festive_Player,      "Festive_Player"      );
+    put_colored_line(  9, 41,
+                      Colors.Water,               "Water"               );
+    put_colored_line( 11, 41,
+                      Colors.Lava,                "Lava"                );
+    put_colored_line( 13, 41,
+                      Colors.Acid,                "Acid"                );
+    put_colored_line( 15, 41,
+                      Colors.Copper,              "Copper"              );
+    put_colored_line( 17, 41,
+                      Colors.Silver,              "Silver"              );
+    put_colored_line( 19, 41,
+                      Colors.Gold,                "Gold"                );
+    put_colored_line( 21, 41,
+                      Colors.Roentgenium,         "Roentgenium"         );
+    put_colored_line( 23, 41,
+                      Colors.Paper,               "Paper"               );
+    put_colored_line(  1, 61,
+                      Colors.Money,               "Money"               );
+    put_colored_line(  3, 61,
+                      Colors.Royal,               "Royal"               );
+    put_colored_line(  5, 61,
+                      Colors.Holy,                "Holy"                );
+
+    refresh_screen();
+
+    get_input();
+  } // color_test_screen()
+} // debug
+
 } // interface SwashIO
 
-// SECTION 6: ////////////////////////////////////////////////////////////////
+// SECTION 7: ////////////////////////////////////////////////////////////////
 // Importing Further IO Files                                               //
 //////////////////////////////////////////////////////////////////////////////
 

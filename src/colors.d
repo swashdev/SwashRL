@@ -117,6 +117,8 @@ enum Colors
   Water,
   Lava,
   Acid,
+  Snow,
+  Snow_Tree,
   Copper,
   Silver,
   Gold,
@@ -288,5 +290,10 @@ void init_colors()
   // was only used for the most important artworks, which is why it was often
   // used for religious pieces.
   CLR[Colors.Holy] = new Color_Pair( C_WHITE, C_HOLY, -1, true, false );
+
+  // "Snow" is used for snowy environmnents.  "Snow_Tree" is used for
+  // evergreen trees in snowy environments.
+  CLR[Colors.Snow] = new Color_Pair( C_WHITE, C_GRAY, -1, true, true );
+  CLR[Colors.Snow_Tree] = new Color_Pair( C_WHITE, C_GREEN, -1, true, true );
 
 } /* void init_colors() */

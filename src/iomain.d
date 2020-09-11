@@ -576,15 +576,19 @@ discard_swap:
   // General Output //////////////////////////////////////////////////////////
 
   // Prints a string at the given coordinates.  Equivalent to `mvprint` in
-  // curses.
-  final void put_line( T... )( uint y, uint x, T args )
+  // curses.  If `color` is given, the output line will be in the given color.
+  final void put_colored_line( T... )( uint y, uint x, Colors color, T args )
   {
     import std.string: format;
     string output = format( args );
 
     foreach( c; 0 .. cast(uint)output.length )
-    { put_char( y, x + c, output[c] );
+    { put_char( y, x + c, output[c], color );
     }
+  }
+
+  final void put_line( T... )( uint y, uint x, T args )
+  { put_colored_line( y, x, Colors.Default, args );
   }
 
   // The Help Screen /////////////////////////////////////////////////////////

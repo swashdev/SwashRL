@@ -954,6 +954,10 @@ debug
                       Colors.Royal,               "Royal"               );
     put_colored_line( 19, 61,
                       Colors.Holy,                "Holy"                );
+    put_colored_line( 21, 61,
+                      Colors.Snow,                "Snow"                );
+    put_colored_line( 23, 61,
+                      Colors.Snow_Tree,           "Snow_Tree"           );
 
     refresh_screen();
 

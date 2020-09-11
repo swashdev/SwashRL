@@ -82,7 +82,7 @@ interface SwashIO
 
   // Outputs a text character at the given coordinates.
   void put_char( uint y, uint x, char c,
-                 Color color = Color( CLR_NONE, false ) );
+                 Colors color = Colors.Default );
 
   // The central display function: displays a given symbol at the given
   // coordinates.  Equivalent to `mvputch` in curses.
@@ -576,15 +576,19 @@ discard_swap:
   // General Output //////////////////////////////////////////////////////////
 
   // Prints a string at the given coordinates.  Equivalent to `mvprint` in
-  // curses.
-  final void put_line( T... )( uint y, uint x, T args )
+  // curses.  If `color` is given, the output line will be in the given color.
+  final void put_colored_line( T... )( uint y, uint x, Colors color, T args )
   {
     import std.string: format;
     string output = format( args );
 
     foreach( c; 0 .. cast(uint)output.length )
-    { put_char( y, x + c, output[c] );
+    { put_char( y, x + c, output[c], color );
     }
+  }
+
+  final void put_line( T... )( uint y, uint x, T args )
+  { put_colored_line( y, x, Colors.Default, args );
   }
 
   // The Help Screen /////////////////////////////////////////////////////////
@@ -631,12 +635,7 @@ discard_swap:
     // color
     if( u.inventory.items[INVENT_HELMET].name == "festive hat" )
     {
-      // get the foreground color of the hat...
-      uint hat_fg = u.inventory.items[INVENT_HELMET].sym.color.fg;
-      // make an inverted version of the hat's color...
-      Color hat_color = Color( hat_fg, true );
-      // same as the original display function, but with the new hat color
-      display( u.y + 1, u.x, symdata( u.sym.ch, hat_color ), true );
+      display( u.y + 1, u.x, symdata( u.sym.ch, Colors.Festive_Player ), true );
     }
     else  display( u.y + 1, u.x, u.sym, true );
   }
@@ -670,6 +669,7 @@ discard_swap:
       foreach( x; 0 .. MAP_X )
       {
         Symbol output = to_display.t[y][x].sym;
+	Color_Pair initial_color = CLR[output.color];
 
 static if( COLOR )
 {
@@ -681,7 +681,12 @@ static if( COLOR )
           {
             if( !(to_display.t[y][x].hazard & HAZARD_WATER ) )
             {
-              output.color.fg = CLR_GREEN;
+              if( initial_color.get_inverted() )
+              { output.color = Colors.Inverted_Green;
+              }
+              else
+              { output.color = Colors.Green;
+              }
             }
           }
   }
@@ -693,7 +698,12 @@ static if( COLOR )
           {
             if( !(to_display.t[y][x].hazard & HAZARD_WATER) )
             {
-              output.color.fg = CLR_RED;
+              if( initial_color.get_inverted() )
+              { output.color = Colors.Inverted_Red;
+              }
+              else
+              { output.color = Colors.Red;
+              }
             }
           }
  }
@@ -711,7 +721,12 @@ else
 {
           if( to_display.t[y][x].seen )
           {
-            output.color.fg = CLR_DARKGRAY; 
+            if( initial_color.get_inverted() )
+            { output.color = Colors.Inverted_Dark_Gray;
+            }
+            else
+            { output.color = Colors.Dark_Gray;
+            }
           }
           else
           {
@@ -835,9 +850,124 @@ else
 
   } // final void display_inventory( Player* )
 
+debug
+{
+
+  // Section 6: //////////////////////////////////////////////////////////////
+  // Debug Output                                                           //
+  ////////////////////////////////////////////////////////////////////////////
+
+  // Output a screen which will display various color pairs for test purposes
+  final void color_test_screen()
+  {
+    clear_screen();
+
+    put_colored_line(  1,  1,
+                      Colors.Default,             "Default"             );
+    put_colored_line(  3,  1,
+                      Colors.Black,               "Black"               );
+    put_colored_line(  5,  1,
+                      Colors.Red,                 "Red"                 );
+    put_colored_line(  7,  1,
+                      Colors.Green,               "Green"               );
+    put_colored_line(  9,  1,
+                      Colors.Dark_Blue,           "Dark_Blue"           );
+    put_colored_line( 11,  1,
+                      Colors.Brown,               "Brown"               );
+    put_colored_line( 13,  1,
+                      Colors.Magenta,             "Magenta"             );
+    put_colored_line( 15,  1,
+                      Colors.Cyan,                "Cyan"                );
+    put_colored_line( 17,  1,
+                      Colors.Gray,                "Gray"                );
+    put_colored_line( 19,  1,
+                      Colors.Dark_Gray,           "Dark_Gray"           );
+    put_colored_line( 21,  1,
+                      Colors.Lite_Red,            "Lite_Red"            );
+    put_colored_line( 23,  1,
+                      Colors.Lite_Green,          "Lite_Green"          );
+    put_colored_line(  1, 21,
+                      Colors.Blue,                "Blue"                );
+    put_colored_line(  3, 21,
+                      Colors.Yellow,              "Yellow"              );
+    put_colored_line(  5, 21,
+                      Colors.Pink,                "Pink"                );
+    put_colored_line(  7, 21,
+                      Colors.Lite_Cyan,           "Lite_Cyan"           );
+    put_colored_line(  9, 21,
+                      Colors.White,               "White"               );
+    put_colored_line( 11, 21,
+                      Colors.Inverted_Black,      "Inverted_Black"      );
+    put_colored_line( 13, 21,
+                      Colors.Inverted_Red,        "Inverted_Red"        );
+    put_colored_line( 15, 21,
+                      Colors.Inverted_Green,      "Inverted_Green"      );
+    put_colored_line( 17, 21,
+                      Colors.Inverted_Dark_Blue,  "Inverted_Dark_Blue"  );
+    put_colored_line( 19, 21,
+                      Colors.Inverted_Brown,      "Inverted_Brown"      );
+    put_colored_line( 21, 21,
+                      Colors.Inverted_Magenta,    "Inverted_Magenta"    );
+    put_colored_line( 23, 21,
+                      Colors.Inverted_Cyan,       "Inverted_Cyan"       );
+    put_colored_line(  1, 41,
+                      Colors.Inverted_Gray,       "Inverted_Gray"       );
+    put_colored_line(  3, 41,
+                      Colors.Inverted_Dark_Gray,  "Inverted_Dark_Gray"  );
+    put_colored_line(  5, 41,
+                      Colors.Inverted_Lite_Red,   "Inverted_Lite_Red"   );
+    put_colored_line(  7, 41,
+                      Colors.Inverted_Lite_Green, "Inverted_Lite_Green" );
+    put_colored_line(  9, 41,
+                      Colors.Inverted_Blue,       "Inverted_Blue"       );
+    put_colored_line( 11, 41,
+                      Colors.Inverted_Yellow,     "Inverted_Yellow"     );
+    put_colored_line( 13, 41,
+                      Colors.Inverted_Pink,       "Inverted_Pink"       );
+    put_colored_line( 15, 41,
+                      Colors.Inverted_Lite_Cyan,  "Inverted_Lite_Cyan"  );
+    put_colored_line( 17, 41,
+                      Colors.Inverted_White,      "Inverted_White"      );
+    put_colored_line( 19, 41,
+                      Colors.Error,               "Error"               );
+    put_colored_line( 21, 41,
+                      Colors.Player,              "Player"              );
+    put_colored_line( 23, 41,
+                      Colors.Festive_Player,      "Festive_Player"      );
+    put_colored_line(  1, 61,
+                      Colors.Water,               "Water"               );
+    put_colored_line(  3, 61,
+                      Colors.Lava,                "Lava"                );
+    put_colored_line(  5, 61,
+                      Colors.Acid,                "Acid"                );
+    put_colored_line(  7, 61,
+                      Colors.Copper,              "Copper"              );
+    put_colored_line(  9, 61,
+                      Colors.Silver,              "Silver"              );
+    put_colored_line( 11, 61,
+                      Colors.Gold,                "Gold"                );
+    put_colored_line( 13, 61,
+                      Colors.Roentgenium,         "Roentgenium"         );
+    put_colored_line( 15, 61,
+                      Colors.Money,               "Money"               );
+    put_colored_line( 17, 61,
+                      Colors.Royal,               "Royal"               );
+    put_colored_line( 19, 61,
+                      Colors.Holy,                "Holy"                );
+    put_colored_line( 21, 61,
+                      Colors.Snow,                "Snow"                );
+    put_colored_line( 23, 61,
+                      Colors.Snow_Tree,           "Snow_Tree"           );
+
+    refresh_screen();
+
+    get_key();
+  } // color_test_screen()
+} // debug
+
 } // interface SwashIO
 
-// SECTION 6: ////////////////////////////////////////////////////////////////
+// SECTION 7: ////////////////////////////////////////////////////////////////
 // Importing Further IO Files                                               //
 //////////////////////////////////////////////////////////////////////////////
 

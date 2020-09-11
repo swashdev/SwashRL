@@ -124,6 +124,7 @@ int main( string[] args )
   string saved_lev;
 
   bool gen_map = false;
+  bool test_colors = false;
 
   uint moved = 0;
   int mv = 5;
@@ -148,6 +149,10 @@ int main( string[] args )
     // For debugging purposes, this "test map" can be generated at runtime
     // to test new features or other changes to the game.
     "test-map", &Use_test_map,
+    // For debugging purposes, this "color test screen" can be used to test
+    // SwashRL's colors.
+    "test-colors", &test_colors,
+    "test-color", &test_colors,
     // the "mapgen" mode generates a sample map, displays it, and then exits
     // without starting a game
     "mapgen",   &gen_map,
@@ -175,6 +180,9 @@ int main( string[] args )
                       game.
     --test-map        Debug builds only: Starts the game on a test map.  Will
                       have no effect if -s or --save was used.
+    --test-colors     Debug builds only: Displays a color test screen and then
+                      exits without starting a game.
+    --test-color      Debug builds only: Same effect as --test-colors
   examples:
     %s -s save0
     %s -m terminal
@@ -189,31 +197,49 @@ You are running %s version %s",
     return 1;
   }
 
-  // Activate Cheat / Debug Modes ////////////////////////////////////////////
-
-  // If all we're doing is a quick mapgen, turn on the Silent Cartographer and
-  // ignore the rest.
-  if( gen_map )  No_shadows = true;
+  // If all we're doing is testing colors, ignore everything until I/O
+  // initialization.
+  if( test_colors )
+  {
+    // the color test screen is only available on debug builds
+debug {}
+else
+{
+    writeln( "The color test screen is only available on debug builds of the
+game.  Try compiling with dub build -b debug" );
+    return 31;
+}
+  }
   else
   {
 
-    // Announce cheat modes
-    if( Degreelessness )
-    { message( "Degreelessness mode is turned on." );
-    }
-    if( Infinite_weapon )
-    { message( "Killer heels mode is turned on." );
-    }
-    if( Noclip )
-    {
-      message( "Xorn mode is turned on." );
-      No_shadows = true;
-    }
-    if( No_shadows )
-    { message( "Silent Cartographer is turned on." );
-    }
+    // Activate Cheat / Debug Modes //////////////////////////////////////////
 
-  } // else from `if( gen_map )`
+    // If all we're doing is a quick mapgen, turn on the Silent Cartographer
+    // and ignore the rest.
+    if( gen_map )  No_shadows = true;
+    else
+    {
+
+      // Announce cheat modes
+      if( Degreelessness )
+      { message( "Degreelessness mode is turned on." );
+      }
+      if( Infinite_weapon )
+      { message( "Killer heels mode is turned on." );
+      }
+      if( Noclip )
+      {
+        message( "Xorn mode is turned on." );
+        No_shadows = true;
+      }
+      if( No_shadows )
+      { message( "Silent Cartographer is turned on." );
+      }
+
+    } // else from `if( gen_map )`
+
+  } // else from `if( test_colors )`
 
   // Initialize Input / Output ///////////////////////////////////////////////
 
@@ -248,9 +274,36 @@ version( sdl )
 
 } // version( sdl )
 
+  // Initialize Standard Colors //////////////////////////////////////////////
+
+  init_colors();
+
+  // If a color test has been requested, and this is a debug build, display
+  // the test screen and then exit.
+debug
+{
+  if( test_colors )
+  {
+    IO.color_test_screen();
+
+    // skip the rest of main
+    IO.cleanup();
+    return 0;
+  }
+}
+
   // Initialize Random Number Generator //////////////////////////////////////
 
   seed();
+
+  // Initialize Standard Terrain Elements ////////////////////////////////////
+
+  init_tile_symbols();
+  init_terrain();
+
+  // Initialize the `No_item` placeholder ////////////////////////////////////
+
+  No_item = Item( symdata( '\0', Colors.Error ), "NO ITEM", 0, 0, 0, 0 );
 
   // Map Generator ///////////////////////////////////////////////////////////
 
@@ -311,13 +364,6 @@ Try compiling with dub build -b debug" );
 
   Monst u = init_player( Current_map.player_start[0],
                          Current_map.player_start[1] );
-
-  // If the game is configured to highlight the player, and the SDL terminal
-  // is being used, highlight the player.
-  if( SDL_terminal() )
-  {
-     u.sym = symdata( SMILEY, Color( CLR_WHITE, HILITE_PLAYER ) );
-  }
 
   // Initialize Field-of-Vision //////////////////////////////////////////////
 
@@ -546,8 +592,8 @@ Try compiling with dub build -b debug" );
 playerdied:
 
   // Display a grayed-out player:
-  IO.display( u.y + 1, u.x, symdata( SMILEY, Color( CLR_DARKGRAY, false ) ),
-              true );
+  u.sym.color = Colors.Dark_Gray;
+  IO.display_player( u );
 
   // Say Goodbye /////////////////////////////////////////////////////////////
 

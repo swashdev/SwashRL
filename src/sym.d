@@ -36,7 +36,7 @@ struct Symbol
 {
   char ch;
 
-  Color color;
+  Colors color;
 
   // further members of this struct will be used when SDL is implemented for
   // images (possibly including sprites in the future)
@@ -44,7 +44,7 @@ struct Symbol
 
 // Generates a new symbol.
 // DEPRECATED: Use D's built-in struct constructors instead.
-Symbol symdata( char character, Color color )
+Symbol symdata( char character, Colors color )
 {
 
   Symbol ret;

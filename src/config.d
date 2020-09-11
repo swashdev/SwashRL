@@ -84,11 +84,6 @@ enum DYSLEXIA = false;
 // standard font for these purposes.
 enum BOLD_MESSAGE_FONT = true;
 
-// Whether to highlight the player in the game display, as would normally
-// happen in a curses terminal when the cursor hovers over the player's
-// location.
-enum HILITE_PLAYER = true;
-
 // SECTION 2: ////////////////////////////////////////////////////////////////
 // SwashRL configuration                                                    //
 //////////////////////////////////////////////////////////////////////////////

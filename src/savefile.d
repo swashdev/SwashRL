@@ -115,14 +115,10 @@ void save_level( T... )( Map m, Player u, T args )
       char ch = s.ch;
       fil.writeln( ch );
 
-      // Each symbol has a Color...
-      Color c = s.color;
+      // Each symbol has a Colors enum...
+      Colors c = s.color;
 
-      uint fg = c.fg;
-      fil.writeln( fg );
-
-      bool reverse = c.reverse;
-      fil.writeln( reverse );
+      fil.writeln( c );
 
       // Each tile also has a series of booleans:
       bool block_c = t.block_cardinal_movement,
@@ -170,13 +166,9 @@ void save_level( T... )( Map m, Player u, T args )
       char ch = s.ch;
       fil.writeln( ch );
 
-      Color c = s.color;
+      Colors c = s.color;
 
-      uint fg = c.fg;
-      fil.writeln( fg );
-
-      bool reverse = c.reverse;
-      fil.writeln( reverse );
+      fil.writeln( c );
 
       // Each item has a name...
       string name = i.name;
@@ -215,13 +207,9 @@ void save_level( T... )( Map m, Player u, T args )
     char ch = s.ch;
     fil.writeln( ch );
 
-    Color c = s.color;
+    Colors c = s.color;
 
-    uint fg = c.fg;
-    fil.writeln( fg );
-
-    bool reverse = c.reverse;
-    fil.writeln( reverse );
+    fil.writeln( c );
 
     // Every monster has a string...
     string name = mn.name;
@@ -327,17 +315,17 @@ Map level_from_file( string file_label )
       Tile t;
 
       char ch = '?';
-      uint fg = CLR_LITERED;
-      bool reversed = 1;
+      short curses_color_pair = 0;
+      bool reversed = 1, bold = 1;
 
 
       ch = to!char( strip_line( fil ) );
-      fg = to!uint( strip_line( fil ) );
-      reversed = to!bool( strip_line( fil ) );
 
       t.sym.ch = ch;
-      t.sym.color.fg = fg;
-      t.sym.color.reverse = reversed;
+      
+      Colors c = to!Colors( strip_line( fil ) );
+
+      t.sym.color = c;
 
       bool block_c = 1, block_d = 1, block_v = 1, lit = 0, seen = 0;
 
@@ -388,15 +376,14 @@ Map level_from_file( string file_label )
 
       Item i;
 
-      uint fg = CLR_LITERED;
-      bool reversed = 1;
+      Colors c;
 
-      fg = to!uint( strip_line( fil ) );
-      reversed = to!bool( strip_line( fil ) );
+
+      c = to!Colors( strip_line( fil ) );
 
       i.sym.ch = ch;
-      i.sym.color.fg = fg;
-      i.sym.color.reverse = reversed;
+
+      i.sym.color = c;
 
       string name = strip_line( fil );
 
@@ -446,15 +433,13 @@ Map level_from_file( string file_label )
 
     Monst mn;
 
-    uint fg = CLR_LITERED;
-    bool reversed = 1;
+    Colors c;
 
-    fg = to!uint( strip_line( fil ) );
-    reversed = to!bool( strip_line( fil ) );
+    c = to!Colors( strip_line( fil ) );
 
     mn.sym.ch = ch;
-    mn.sym.color.fg = fg;
-    mn.sym.color.reverse = reversed;
+      
+    mn.sym.color = c;
 
     string name = strip_line( fil );
  

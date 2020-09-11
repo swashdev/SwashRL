@@ -17,7 +17,7 @@ Table of Contents
 * [SwashRL]
   * [SDL Support]
 
-[Jump to the current version](#0031-christmas-update)
+[Jump to the current version](#0032)
 
 [Back to top]: #table-of-contents
 
@@ -79,6 +79,7 @@ Table of Contents
 [0.031]: #0031
 [0.031 Christmas Update]: #0031-christmas-update
 [0.031-christmas-update]: #0031-christmas-update
+[0.032]: #0032
 
 Prehistory
 ----------
@@ -677,5 +678,56 @@ This is the first official release of the game, besides the "in-between"
 versions [0.020-1], [0.029-1], and [0.030-1], which did not increment the
 version number; instead, this is simply an official update to version [0.031],
 referred to in the repository as `v0.031-christmas-update`
+
+[Back to top]
+
+### 0.032
+
+2020-09-11 17:28 CDT
+
+Following yet another substantial delay, Revision 0.032 represents significant
+changes to the way that SwashRL handles colors in order to make them
+substantially easier to store but also much more compatible between the curses
+and SDL terminal interfaces.  Several issues with the way that the SDL
+interface interprets color codes were fixed by using this method, and even
+save files are notably smaller as a result.
+
+Because of these changes, this is also the first version of the game which is
+not compatible with earlier save files since the ability to save the dungeon
+level was introduced in revision [0.026].
+
+As an experimental extra feature, a configuration option was added which
+allowed the user to compile a copy of SwashRL that uses the
+[OpenDyslexic](https://opendyslexic.org/) Mono font rather than the standard
+DejaVu Sans Mono font.  This should hopefully make it easier for people with
+dyslexia to distinguish characters on the screen.
+
+As a bonus, the player character is now displayed in a unique orange color as
+an homage to the oldest game that I have ever published,
+[Orange Guy's Quest](https://github.com/swashdev/orange-guys-quest).  This is
+only true on the SDL terminal interface, however, because it doesn't come out
+looking quite right on the curses interface.
+
+Finally, on a sadder note, my boyfriend passed away between the release of
+the [0.031 Christmas Update] and this revision.  Not only has he been a major
+inspiration for me personally, but he also inspired me to keep on going with
+my game dev projects, including SwashRL, and has even contributed some useful
+ideas regarding the game's plot and gameplay.  In response, SwashRL has been
+dedicated to his memory.
+
+> To Seb (1994-2020)  For ten years, he taught me a lot about life, growing
+> up, the universe, and people.  He suffered from a number of unfortunate
+> health conditions, including mental health problems, but survived and
+> persevered in spite of them, teaching me how to be strong myself and take
+> care of myself even while trying to help others.  His contributions to my
+> life and the value of his companionship can not be overstated.
+> 
+> Rest in peace, my dear friend and fellow weirdo.  As promised, I will do
+> the very best I can to live in a way that you would have been proud of,
+> not for pity but for its own sake.  You will be remembered, if only in
+> this small way.
+
+Take care of yourselves, friends.  Hopefully the next update will be out
+before someone else dies :-p
 
 [Back to top]

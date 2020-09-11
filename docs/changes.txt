@@ -2,10 +2,21 @@ SwashRL official changelog
 
 VERSION 0.32
 
+  Save files from version 0.031 Christmas Update and earlier will are not
+  compatible with this or future versions of SwashRL.
+
+  Fixed:
+   - The SDL terminal interface now inverts colors correctly.
+
   Added:
    - The OpenDyslexic Mono font, used to create a more readable interface for
      dyslexic users, has been added.  It is activated by the DYSLEXIA option
      in config.d
+   - Debug builds can now access a color test screen by passing in
+     --test-colors or --test-color in the command line.
+   - Many many new color pairs have been defined.  Most of them are not
+     currently in use but many are reserved for planned features to be
+     included in later versions of SwashRL.
 
   Changed:
    - Default fonts for the SDL terminal interface are now defined in an enum
@@ -14,6 +25,26 @@ VERSION 0.32
    - Whether or not the message line and status bar use a bolder font is now
      determined by a configuration setting in config.d rather than being
      hard-coded.
+   - Substantial changes have been made to the way colors are stored.  SDL
+     colors and curses color codes are now saved in a `Color` class, and color
+     pairs are defined in a `Color_Pair` class.  `Color_Pair` objects also
+     specify whether the color pair should be boldened and/or reversed in the
+     curses interface.
+   - Tiles, items, and monsters now store an enum of type `Colors` in order to
+     instruct display functions on what color pair to use.  Saved files also
+     save and load these enums rather than taking in the full color data.
+   - While wearing the festive hat, the player is now displayed in white-on-
+     red rather than black-on-red.
+   - The player character is now orange in the SDL terminal interface and is
+     bright white in the curses interface.  The reason for the difference is
+     that the closest thing to orange that curses normally supports is "bright
+     red," which is not suitable on most terminal color schemes, so instead a
+     traditional color is used.
+
+  Corrections:
+   - The changelog for the Version 0.032 Christmas Update stated that the
+     player would be greeted on October and listed the date as 10-31.  In
+     fact, the game refers to this holiday as Halloween.
 
 VERSION 0.031 Christmas Update
 Finalized 2019-12-21 23:02 CST

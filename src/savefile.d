@@ -34,8 +34,21 @@ import std.stdio;
 import std.format;
 import std.file;
 import std.exception : basicExceptionCtors;
+import std.conv;
 
 // SECTION 0: ////////////////////////////////////////////////////////////////
+// Placeholders & Special Markers                                           //
+//////////////////////////////////////////////////////////////////////////////
+
+// `PLACEHOLDER_MARKER` is used to indicate that an object which would
+// normally be written does not exist.
+enum PLACEHOLDER_MARKER = cast(char)19;
+
+// `SEPARATOR_MARKER` is used to indicate that a section in a save file has
+// ended.
+enum SEPARATOR_MARKER   = cast(char)20;
+
+// SECTION 1: ////////////////////////////////////////////////////////////////
 // Exceptions & Error Handling                                              //
 //////////////////////////////////////////////////////////////////////////////
 
@@ -66,9 +79,85 @@ void level_file_error( T... )( string dungeon_file, T args )
     dungeon_file, format( args ) ) );
 }
 
-// SECTION 1: ////////////////////////////////////////////////////////////////
+// SECTION 2: ////////////////////////////////////////////////////////////////
 // Saving to a File                                                         //
 //////////////////////////////////////////////////////////////////////////////
+
+// Saves a Symbol to a file.
+void save_Symbol( Symbol sym, File fil )
+{
+  // Each Symbol has a char and a Colors.  Write both of these.
+  fil.writeln( sym.ch );
+  fil.writeln( sym.color );
+}
+
+// Saves a Tile to a file.
+void save_Tile( Tile t, File fil )
+{
+  // Each Tile has a Symbol.  Write this first.
+  save_Symbol( t.sym, fil );
+
+  // Next, write the tile's special properties.
+  fil.writeln( t.block_cardinal_movement );
+  fil.writeln( t.block_diagonal_movement );
+  fil.writeln( t.block_vision );
+  fil.writeln( t.lit );
+  fil.writeln( t.seen );
+  fil.writeln( t.hazard );
+}
+
+// Saves an Item to a file.
+void save_Item( Item i, File fil )
+{
+  // If the given item turns out not to exist, write a placeholder instead.
+  if( i.sym.ch == '\0' )  fil.writeln( PLACEHOLDER_MARKER );
+  else
+  {
+    // Each Item has a Symbol.  Write this first.
+    save_Symbol( i.sym, fil );
+
+    // Next, write the Item's special properties.
+    fil.writeln( i.name );
+    fil.writeln( i.type );
+    fil.writeln( i.equip );
+    fil.writeln( i.addd );
+    fil.writeln( i.addm );
+  }
+}
+
+// Saves a Dicebag to a file.
+void save_Dicebag( Dicebag dice, File fil )
+{
+  // Each Dicebag has a dice count, a modifier, and a floor & ceiling.
+  fil.writeln( dice.dice );
+  fil.writeln( dice.modifier );
+  fil.writeln( dice.floor );
+  fil.writeln( dice.ceiling);
+}
+
+// Saves a Monst to a file.
+void save_Monst( Monst mn, File fil )
+{
+  // Only save the monster if it has >0 hit points.
+  if( mn.hp > 0 )
+  {
+    // Each Monst has a Symbol.  Write this first.
+    save_Symbol( mn.sym, fil );
+
+    //Next, write the Monst's special properties.
+    fil.writeln( mn.name );
+    fil.writeln( mn.hp );
+    fil.writeln( mn.fly );
+    fil.writeln( mn.swim );
+    fil.writeln( mn.x );
+    fil.writeln( mn.y );
+
+    // Each Monst has a Dicebag.  Write this next.
+    save_Dicebag( mn.attack_roll, fil );
+
+    // Saving of the Monst's Inven has not yet been implemented (TODO)
+  }
+}
 
 // Saves a level to a file.
 void save_level( T... )( Map m, Player u, T args )
@@ -101,7 +190,7 @@ void save_level( T... )( Map m, Player u, T args )
   // We start by recording all of the tiles on the map:
 
   // Leave a marker indicating we're starting tile recording:
-  fil.writeln( cast(char)20 );
+  fil.writeln( SEPARATOR_MARKER );
 
   foreach( y; 0 .. MAP_Y )
   {
@@ -109,30 +198,7 @@ void save_level( T... )( Map m, Player u, T args )
     {
       Tile t = m.t[y][x];
 
-      // Each tile has a symbol...
-      Symbol s = t.sym;
-
-      char ch = s.ch;
-      fil.writeln( ch );
-
-      // Each symbol has a Colors enum...
-      Colors c = s.color;
-
-      fil.writeln( c );
-
-      // Each tile also has a series of booleans:
-      bool block_c = t.block_cardinal_movement,
-           block_d = t.block_diagonal_movement,
-           block_v = t.block_vision,
-           lit = t.lit, seen = t.seen;
-      fil.writeln( block_c );
-      fil.writeln( block_d );
-      fil.writeln( block_v );
-      fil.writeln( lit );
-      fil.writeln( seen );
-
-      uint hazard = t.hazard;
-      fil.writeln( hazard );
+      save_Tile( t, fil );
 
       // We're done with this tile.
     } // foreach( x; 0 .. MAP_X )
@@ -140,7 +206,7 @@ void save_level( T... )( Map m, Player u, T args )
 
   // Leave a marker indicating that we're finishing tile output and starting
   // items:
-  fil.writeln( cast(char)20 );
+  fil.writeln( SEPARATOR_MARKER );
 
   // Start writing items:
   foreach( y; 0 .. MAP_Y )
@@ -149,38 +215,7 @@ void save_level( T... )( Map m, Player u, T args )
     {
       Item i = m.i[y][x];
 
-      // Every item has a symbol:
-      Symbol s = i.sym;
-
-      // Unlike with the tiles, if the symbol's character is equal to '\0' we
-      // actually just output a marker and then continue, because that
-      // indicates that there's no item there.
-      if( s.ch == '\0' )
-      {
-        fil.writeln( cast(char)19 );
-        continue;
-      }
-
-      // Otherwise, we treat this symbol much like the tile's symbol:
-
-      char ch = s.ch;
-      fil.writeln( ch );
-
-      Colors c = s.color;
-
-      fil.writeln( c );
-
-      // Each item has a name...
-      string name = i.name;
-      fil.writeln( name );
-
-      uint type = i.type, equip = i.equip;
-      fil.writeln( type );
-      fil.writeln( equip );
-
-      int addd = i.addd, addm = i.addm;
-      fil.writeln( addd );
-      fil.writeln( addm );
+      save_Item( i, fil );
 
       // We're done with the item.
     } // foreach( x; 0 .. MAP_X )
@@ -188,60 +223,20 @@ void save_level( T... )( Map m, Player u, T args )
 
   // Leave a marker indicating that we're done with items and now are
   // outputting monsters
-  fil.writeln( cast(char)20 );
+  fil.writeln( SEPARATOR_MARKER );
 
   // Start writing monsters:
   foreach( n; 0 .. m.m.length )
   {
     Monst mn = m.m[n];
 
-    // If the monster has no hit points, skip it... dead monsters aren't worth
-    // recording.
-    if( mn.hp <= 0 )
-    { continue;
-    }
-
-    // Every monster has--you guessed it!  A symbol!
-    Symbol s = mn.sym;
-
-    char ch = s.ch;
-    fil.writeln( ch );
-
-    Colors c = s.color;
-
-    fil.writeln( c );
-
-    // Every monster has a string...
-    string name = mn.name;
-    fil.writeln( name );
-
-    int hp = mn.hp;
-    fil.writeln( hp );
-
-    uint fly = mn.fly, swim = mn.swim, x = mn.x, y = mn.y;
-    fil.writeln( fly );
-    fil.writeln( swim );
-    fil.writeln( x );
-    fil.writeln( y );
-
-    // Every monster has a dicebag...
-    Dicebag db = mn.attack_roll;
-
-    uint di = db.dice;
-    fil.writeln( di );
-
-    int modifier = db.modifier;
-    fil.writeln( modifier );
-
-    int floor = db.floor, ceiling = db.ceiling;
-    fil.writeln( floor );
-    fil.writeln( ceiling );
+    save_Monst( mn, fil );
 
     // We're done with the monster.
   } // foreach( n; 0 .. m.m.length )
 
   // Leave a marker indicating that we're done with outputting monsters
-  fil.writeln( cast(char)20 );
+  fil.writeln( SEPARATOR_MARKER );
 
   // Finally, we output the coordinates that the player character is standing
   // at.
@@ -254,14 +249,118 @@ void save_level( T... )( Map m, Player u, T args )
   fil.close();
 } // save_level( map, player, uint )
 
-// SECTION 2: ////////////////////////////////////////////////////////////////
+// SECTION 3: ////////////////////////////////////////////////////////////////
 // Loading from a Saved File                                                //
 //////////////////////////////////////////////////////////////////////////////
+
+// Loads in a Symbol from a file.
+Symbol load_Symbol( File fil )
+{
+  // Each Symbol has a char and a Colors.  Read these in order.
+  char ch = to!char( strip_line( fil ) );
+  Colors color = to!Colors( strip_line( fil ) );
+
+  // Return the resulting Symbol.
+  return Symbol( ch, color );
+}
+
+// Loads in a Tile from a file.
+Tile load_Tile( File fil )
+{
+  // Each Tile has a Symbol.  Read this first.
+  Symbol sym = load_Symbol( fil );
+
+  // Next, read in the Tile's special properties.
+  bool block_cardinal_movement = to!bool( strip_line( fil ) );
+  bool block_diagonal_movement = to!bool( strip_line( fil ) );
+  bool block_vision = to!bool( strip_line( fil ) );
+  bool lit = to!bool( strip_line( fil ) );
+  bool seen = to!bool( strip_line( fil ) );
+  uint hazard = to!uint( strip_line( fil ) );
+
+  // Return the resulting Tile.
+  return Tile( sym, block_cardinal_movement, block_diagonal_movement,
+               block_vision, lit, seen, hazard );
+}
+
+// Loads in an Item from a file.
+Item load_Item( File fil )
+{
+  // Unlike with Tiles, we need to read in the char and Colors of the Item's
+  // Symbol separately, so we can check if a `PLACEHOLDER_MARKER` has been
+  // written instead.
+  char ch = to!char( strip_line( fil ) );
+  
+  // If we got a placeholder, return `No_item`.
+  if( ch == PLACEHOLDER_MARKER )  return No_item;
+
+  // Otherwise, we can proceed as normal by reading in the Symbol's Colors
+  // and then getting the Symbol from there.
+  Colors color = to!Colors( strip_line( fil ) );
+  Symbol sym = Symbol( ch, color );
+
+  // Next, read in the Item's special properties.
+  string name = strip_line( fil );
+  uint type = to!uint( strip_line( fil ) );
+  uint equip = to!uint( strip_line( fil ) );
+  uint addd = to!int( strip_line( fil ) );
+  uint addm = to!int( strip_line( fil ) );
+
+  // Return the resulting Item.
+  return Item( sym, name, type, equip, addd, addm );
+}
+
+// Loads in a Dicebag from a file.
+Dicebag load_Dicebag( File fil )
+{
+  // Each dicebag has dice count, a modifier, a floor, and a ceiling.  Read
+  // these in order.
+  uint dice = to!uint( strip_line( fil ) );
+  int modifier = to!int( strip_line( fil ) );
+  int floor = to!int( strip_line( fil ) );
+  int ceiling = to!int( strip_line( fil ) );
+
+  // Return the resulting Dicebag.
+  return Dicebag( dice, modifier, floor, ceiling );
+}
+
+// Loads in a Monst from a file.
+Monst load_Monst( char ch, File fil )
+{
+  // Unlike with Tiles or Items, we need to save in `ch` before we start
+  // reading the Monst so we know that we don't have a `SEPARATOR_MARKER`,
+  // so we already have that.  We just need to read in a Colors and from
+  // there we'll have the Symbol we need.
+  Colors color = to!Colors( strip_line( fil ) );
+
+  Symbol sym = Symbol( ch, color );
+
+  // Next, read in the Monst's special properties.
+  string name = strip_line( fil );
+  int hp = to!int( strip_line( fil ) );
+  uint fly = to!uint( strip_line( fil ) );
+  uint swim = to!uint( strip_line( fil ) );
+  ubyte x = to!ubyte( strip_line( fil ) );
+  ubyte y = to!ubyte( strip_line( fil ) );
+
+  // Read in the Monst's Dicebag next.
+  Dicebag attack_roll = load_Dicebag( fil );
+
+  // Generate an empty inventory, because inventory saving has not yet been
+  // implemented (TODO)
+  Inven tory;
+  foreach( count; 0 .. 40 )
+  { tory.items[count] = No_item;
+  }
+  tory.quiver_count = tory.coins = 0;
+
+  // Return the resulting Monst.
+  return Monst( sym, name, hp, fly, swim, attack_roll, x, y, tory );
+}
 
 // Get a saved level from a file.
 Map level_from_file( string file_label )
 {
-  import std.conv;
 
   string path = format( "save/lev/%s.lev", file_label );
 
@@ -299,7 +398,7 @@ Map level_from_file( string file_label )
 
   marker = to!char( strip_line( fil ) );
 
-  if( marker != cast(char)20 )
+  if( marker != SEPARATOR_MARKER )
   {
     fil.close();
     level_file_error( path,
@@ -312,40 +411,7 @@ Map level_from_file( string file_label )
   {
     foreach( x; 0 .. MAP_X )
     {
-      Tile t;
-
-      char ch = '?';
-      short curses_color_pair = 0;
-      bool reversed = 1, bold = 1;
-
-
-      ch = to!char( strip_line( fil ) );
-
-      t.sym.ch = ch;
-      
-      Colors c = to!Colors( strip_line( fil ) );
-
-      t.sym.color = c;
-
-      bool block_c = 1, block_d = 1, block_v = 1, lit = 0, seen = 0;
-
-      block_c = to!bool( strip_line( fil ) );
-      block_d = to!bool( strip_line( fil ) );
-      block_v = to!bool( strip_line( fil ) );
-      lit =     to!bool( strip_line( fil ) );
-      seen =    to!bool( strip_line( fil ) );
-
-      t.block_cardinal_movement = block_c;
-      t.block_diagonal_movement = block_d;
-      t.block_vision = block_v;
-      t.lit = lit;
-      t.seen = seen;
-
-      uint hazard = 0;
-
-      hazard = to!uint( strip_line( fil ) );
-
-      t.hazard = hazard;
+      Tile t = load_Tile( fil );
 
       m.t[y][x] = t;
     } // foreach( x; 0 .. MAP_X )
@@ -353,7 +419,7 @@ Map level_from_file( string file_label )
 
   marker = to!char( strip_line( fil ) );
 
-  if( marker != cast(char)20 )
+  if( marker != SEPARATOR_MARKER )
   {
     fil.close();
     level_file_error( path,
@@ -364,46 +430,7 @@ Map level_from_file( string file_label )
   {
     foreach( x; 0 .. MAP_X )
     {
-      char ch = '\0';
-
-      ch = to!char( strip_line( fil ) );
-
-      if( ch == cast(char)19 )
-      {
-        m.i[y][x] = No_item;
-        continue;
-      }
-
-      Item i;
-
-      Colors c;
-
-
-      c = to!Colors( strip_line( fil ) );
-
-      i.sym.ch = ch;
-
-      i.sym.color = c;
-
-      string name = strip_line( fil );
-
-      i.name = name;
-
-      uint type = 0, equip = 0;
-
-      type = to!uint( strip_line( fil ) );
-      equip = to!uint( strip_line( fil ) );
-
-      i.type = type;
-      i.equip = equip;
-
-      int addd = 0, addm = 0;
-
-      addd = to!int( strip_line( fil ) );
-      addm = to!int( strip_line( fil ) );
-
-      i.addd = addd;
-      i.addm = addm;
+      Item i = load_Item( fil );
 
       m.i[y][x] = i;
     } // foreach( x; 0 .. MAP_X )
@@ -411,7 +438,7 @@ Map level_from_file( string file_label )
 
   marker = to!char( strip_line( fil ) );
 
-  if( marker != cast(char)20 )
+  if( marker != SEPARATOR_MARKER )
   {
     fil.close();
     level_file_error( path,
@@ -423,7 +450,7 @@ Map level_from_file( string file_label )
 
   ch = to!char( strip_line( fil ) );
 
-  while( ch != cast(char)20 )
+  while( ch != SEPARATOR_MARKER )
   {
     if( fil.eof() )
     {
@@ -431,61 +458,7 @@ Map level_from_file( string file_label )
       level_file_error( path, "Reached EOF before end of monster array" );
     }
 
-    Monst mn;
-
-    Colors c;
-
-    c = to!Colors( strip_line( fil ) );
-
-    mn.sym.ch = ch;
-      
-    mn.sym.color = c;
-
-    string name = strip_line( fil );
- 
-    mn.name = name;
-
-    int hp = 0;
-
-    hp = to!int( strip_line( fil ) );
-
-    mn.hp = hp;
-
-    uint fly = 0, swim = 0;
-
-    fly = to!uint( strip_line( fil ) );
-    swim = to!uint( strip_line( fil ) );
-
-    mn.fly = fly;
-    mn.swim = swim;
-
-    ubyte x = 0, y = 0;
-
-    x = to!ubyte( strip_line( fil ) );
-    y = to!ubyte( strip_line( fil ) );
-
-    uint di = 0;
-
-    di = to!uint( strip_line( fil ) );
-
-    mn.attack_roll.dice = di;
-
-    int modifier = 0;
-
-    modifier = to!int( strip_line( fil ) );
-
-    mn.attack_roll.modifier = modifier;
-
-    int floor = 1000, ceiling = 0;
-
-    floor = to!int( strip_line( fil ) );
-    ceiling = to!int( strip_line( fil ) );
-
-    mn.attack_roll.floor = floor;
-    mn.attack_roll.ceiling = ceiling;
-
-    mn.x = x;
-    mn.y = y;
+    Monst mn = load_Monst( ch, fil );
 
     m.m.length++;
     m.m[count] = mn;

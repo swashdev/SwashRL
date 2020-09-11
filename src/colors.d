@@ -95,6 +95,22 @@ enum Colors
   Pink,
   Lite_Cyan,
   White,
+  Inverted_Black,
+  Inverted_Red,
+  Inverted_Green,
+  Inverted_Dark_Blue,
+  Inverted_Brown,
+  Inverted_Magenta,
+  Inverted_Cyan,
+  Inverted_Gray,
+  Inverted_Dark_Gray,
+  Inverted_Lite_Red,
+  Inverted_Lite_Green,
+  Inverted_Blue,
+  Inverted_Yellow,
+  Inverted_Pink,
+  Inverted_Lite_Cyan,
+  Inverted_White,
   Error,
   Player,
   Festive_Player,
@@ -190,6 +206,44 @@ void init_colors()
   CLR[Colors.Pink]       = new Color_Pair( C_PINK,       6, true ); // 14
   CLR[Colors.Lite_Cyan]  = new Color_Pair( C_LITE_CYAN,  7, true ); // 15
   CLR[Colors.White]      = new Color_Pair( C_WHITE,      8, true ); // 16
+
+  // Inverted Colors /////////////////////////////////////////////////////////
+
+  // Versions of the standard & bright colors defined above which have been
+  // "flipped" with the standard black background.
+  CLR[Colors.Inverted_Black] 
+      = new Color_Pair( C_BLACK, C_BLACK,   1, false, true );
+  CLR[Colors.Inverted_Red] 
+      = new Color_Pair( C_BLACK, C_RED,     2, false, true );
+  CLR[Colors.Inverted_Green] 
+      = new Color_Pair( C_BLACK, C_GREEN,   3, false, true );
+  CLR[Colors.Inverted_Dark_Blue] 
+      = new Color_Pair( C_BLACK, C_BLUE,    4, false, true );
+  CLR[Colors.Inverted_Brown] 
+      = new Color_Pair( C_BLACK, C_BROWN,   5, false, true );
+  CLR[Colors.Inverted_Magenta] 
+      = new Color_Pair( C_BLACK, C_MAGENTA, 6, false, true );
+  CLR[Colors.Inverted_Cyan] 
+      = new Color_Pair( C_BLACK, C_CYAN,    7, false, true );
+  CLR[Colors.Inverted_Gray] 
+      = new Color_Pair( C_BLACK, C_GRAY,    8, false, true );
+
+  CLR[Colors.Inverted_Dark_Gray] 
+      = new Color_Pair( C_DARK_GRAY,  C_BLACK, 1, true, true );
+  CLR[Colors.Inverted_Lite_Red] 
+      = new Color_Pair( C_LITE_RED,   C_BLACK, 2, true, true );
+  CLR[Colors.Inverted_Lite_Green] 
+      = new Color_Pair( C_LITE_GREEN, C_BLACK, 3, true, true );
+  CLR[Colors.Inverted_Blue] 
+      = new Color_Pair( C_LITE_BLUE,  C_BLACK, 4, true, true );
+  CLR[Colors.Inverted_Yellow] 
+      = new Color_Pair( C_YELLOW,     C_BLACK, 5, true, true );
+  CLR[Colors.Inverted_Pink] 
+      = new Color_Pair( C_PINK,       C_BLACK, 6, true, true );
+  CLR[Colors.Inverted_Lite_Cyan] 
+      = new Color_Pair( C_LITE_CYAN,  C_BLACK, 7, true, true );
+  CLR[Colors.Inverted_White] 
+      = new Color_Pair( C_WHITE,      C_BLACK, 8, true, true );
 
   // Special Colors //////////////////////////////////////////////////////////
 

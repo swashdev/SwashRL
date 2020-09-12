@@ -29,18 +29,11 @@ closest.
    release.  Tagged commits will always come from `master`.
    [`hotfix-*` branches](#Production-Branches) should branch from `master`.
 
- * [`stable`](https://github.com/swashdev/SwashRL/tree/stable)  
-   This branch is used to hold stable versions of the code.  While it is not
-   intended as a release branch, it is helpful to think of `stable` as a good
-   place to put "nightly release" builds.  When you need to modify some code,
-   merge `stable` into `dev` and work from there.
-   [`release-*` branches](#Production-Branches) also branch from `stable`.
-
  * [`dev`](https://github.com/swashdev/SwashRL/tree/dev)  
    This is the branch used when modifying code files.  Merge this branch to
-   `stable` when the code is stable.  When working on a new feature, create a
-   [`feature-*` branch](#Production-Branches) off of `dev` and merge back when
-   the feature is complete.
+   `master` with `--no-ff` when the code is ready for release.  When working
+   on a new feature, create a [`feature-*` branch](#Production-Branches) off
+   of `dev` and merge back when the feature is complete.
 
  * [`spring-cleaning`](https://github.com/swashdev/SwashRL/tree/spring-cleaning)  
    This is a special branch originally created towards the end of February
@@ -62,15 +55,8 @@ close they are to the `master` branch.
    These branches are used to quickly fix bugs in `master` release versions of
    SwashRL.  These branches should be very short-lived; larger bugfixes will
    have to happen in `dev`.  Name the branch according to what the version
-   number will be after the hotfix is complete, e.g. `hotfix-0.31.1`.  Do not
+   number will be after the hotfix is complete, e.g. `hotfix-0.032`.  Do not
    merge `hotfix-*` branches to `master` until they are ready for release.
-
- * `release-*`
-   These are release branches, branches off of `stable` which are used to set
-   the repository up for a release version of the software.  Merges to
-   `master` should come from `release-*` branches.  Name the branch according
-   to what the version number will be after the release is complete, e.g.
-   `release-0.32.0`.
 
  * `feature-*`  
    Whenever you are working on adding a new feature, merge `dev` into a
@@ -78,7 +64,8 @@ close they are to the `master` branch.
    away what its intended feature is; for example, `feature-colors` was used
    for an overhaul of the color storage system in SwashRL's display code.  All
    of the work done in this branch should go toward working on that particular
-   feature, not bug fixes in the existing source code.
+   feature, not bug fixes in the existing source code.  Merge back to `dev`
+   with `--no-ff` when the feature is complete and then delete the branch.
 
 ### Special Branches
 

@@ -127,7 +127,7 @@ int main( string[] args )
   bool test_colors = false;
 
   uint moved = 0;
-  int mv = 5;
+  Move mv = Move.wait;
 
   // Command-Line Arguments //////////////////////////////////////////////////
 
@@ -429,14 +429,14 @@ Try compiling with dub build -b debug" );
 
     switch( mv )
     {
-      case MOVE_UNKNOWN:
+      case Move.invalid:
 
          message( "Command not recognized.  Press ? for help." );
 
          break;
 
       // display help
-      case MOVE_HELP:
+      case Move.help:
 
          IO.help_screen();
 
@@ -449,7 +449,7 @@ Try compiling with dub build -b debug" );
          break;
 
       // save and quit
-      case MOVE_SAVE:
+      case Move.save:
 
         if( 'y' == IO.ask( "Really save?", ['y', 'n'], true ) )
         {
@@ -460,7 +460,7 @@ Try compiling with dub build -b debug" );
         break;
 
       // quit
-      case MOVE_QUIT:
+      case Move.quit:
 
         if( 'y' == IO.ask( "Really quit?", ['y', 'n'], true ) )
         {
@@ -470,13 +470,13 @@ Try compiling with dub build -b debug" );
         break;
 
       // display version information
-      case MOVE_GETVERSION:
+      case Move.get_version:
 
         message( "%s, version %s", NAME, sp_version() );
 
         break;
 
-      case MOVE_ALTKEYS:
+      case Move.change_keymap:
 
         if( Current_keymap >= Keymaps.length - 1 )  Current_keymap = 0;
         else  Current_keymap++;
@@ -487,7 +487,7 @@ Try compiling with dub build -b debug" );
         break;
 
       // print the message buffer
-      case MOVE_MESS_DISPLAY:
+      case Move.check_messages:
 
         IO.read_message_history();
 
@@ -497,14 +497,14 @@ Try compiling with dub build -b debug" );
         break;
 
       // clear the message line
-      case MOVE_MESS_CLEAR:
+      case Move.clear_message:
 
         IO.clear_message_line();
 
         break;
 
       // wait
-      case MOVE_WAIT:
+      case Move.wait:
 
         message( "You bide your time." );
         moved = 1;
@@ -512,7 +512,7 @@ Try compiling with dub build -b debug" );
         break;
 
       // display the inventory screen
-      case MOVE_INVENTORY:
+      case Move.inventory:
 
         // If the player's inventory is empty, don't waste their time.
         if( !Item_here( u.inventory.items[INVENT_BAG] ) )
@@ -526,10 +526,10 @@ Try compiling with dub build -b debug" );
         IO.manage_inventory( &u );
 
         // Have the inventory screen exit to the equipment screen:
-        goto case MOVE_EQUIPMENT;
+        goto case Move.equipment;
 
       // inventory management
-      case MOVE_EQUIPMENT:
+      case Move.equipment:
 
         moved = IO.manage_equipment( &u );
 

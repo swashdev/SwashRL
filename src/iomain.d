@@ -112,16 +112,16 @@ interface SwashIO
 
   // Takes in a `char` input from the player and returns a movement flag
   // appropriate to the input.
-  final uint get_command()
+  final Move get_command()
   {
     char c = get_key();
 
     // First check if `c' is contained in the player's keymap (see `keymap.d')
-    uint* cmd = (c in Keymaps[Current_keymap]);
+    Move* cmd = (c in Keymaps[Current_keymap]);
 
     // If so, return the appropriate command:
     if( cmd !is null )
-    { return Keymaps[Current_keymap].get( c, MOVE_UNKNOWN );
+    { return Keymaps[Current_keymap].get( c, Move.invalid );
     }
 
     // If not, check the standard prompts:
@@ -130,34 +130,34 @@ interface SwashIO
 
       // Number pad keys:
       case '7':
-        return MOVE_NW;
+        return Move.northwest;
       case '8':
-        return MOVE_NN;
+        return Move.north;
       case '9':
-        return MOVE_NE;
+        return Move.northeast;
       case '6':
-        return MOVE_EE;
+        return Move.east;
       case '3':
-        return MOVE_SE;
+        return Move.southeast;
       case '2':
-        return MOVE_SS;
+        return Move.south;
       case '1':
-        return MOVE_SW;
+        return Move.southwest;
       case '4':
-        return MOVE_WW;
+        return Move.west;
       case '5':
-        return MOVE_WAIT;
+        return Move.wait;
 
       // If it's not in any of the standard controls or the number pad
       // controls, check the "admin keys":
       case 'Q':
-        return MOVE_QUIT;
+        return Move.quit;
       case 'v':
-        return MOVE_GETVERSION;
+        return Move.get_version;
       case '@':
-        return MOVE_ALTKEYS;
+        return Move.change_keymap;
       case '?':
-        return MOVE_HELP;
+        return Move.help;
 
       default:
         // Handle the default case outside this switch statement
@@ -167,7 +167,7 @@ interface SwashIO
 
     // If none of the above command prompts match, default to the "command
     // not recognized" response.
-    return MOVE_UNKNOWN;
+    return Move.invalid;
 
   } // int get_command
 

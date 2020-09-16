@@ -49,7 +49,7 @@ class InvalidKeymapException : Exception
 //////////////////////////////////////////////////////////////////////////////
 
 // Initializes a keymap from a list of key inputs.
-uint[char] keymap( string keylist = "" )
+Move[char] keymap( string keylist = "" )
 {
   // The standard keymap, which is being overwritten
   char[] kl = "ykuhlbjn.ie,dP S".dup;
@@ -94,31 +94,31 @@ uint[char] keymap( string keylist = "" )
   } // if( keylist.length > 0 )
 
   // Now we define the actual keymap:
-  uint[char] ret;
+  Move[char] ret;
 
   // Standard movement keys:
-  ret[ kl[ 0] ] = MOVE_NW;
-  ret[ kl[ 1] ] = MOVE_NN;
-  ret[ kl[ 2] ] = MOVE_NE;
-  ret[ kl[ 3] ] = MOVE_WW;
-  ret[ kl[ 4] ] = MOVE_EE;
-  ret[ kl[ 5] ] = MOVE_SW;
-  ret[ kl[ 6] ] = MOVE_SS;
-  ret[ kl[ 7] ] = MOVE_SE;
-  ret[ kl[ 8] ] = MOVE_WAIT;
+  ret[ kl[ 0] ] = Move.northwest;
+  ret[ kl[ 1] ] = Move.north;
+  ret[ kl[ 2] ] = Move.northeast;
+  ret[ kl[ 3] ] = Move.west;
+  ret[ kl[ 4] ] = Move.east;
+  ret[ kl[ 5] ] = Move.southwest;
+  ret[ kl[ 6] ] = Move.south;
+  ret[ kl[ 7] ] = Move.southeast;
+  ret[ kl[ 8] ] = Move.wait;
 
   // Inventory management
-  ret[ kl[ 9] ] = MOVE_INVENTORY;
-  ret[ kl[10] ] = MOVE_EQUIPMENT;
-  ret[ kl[11] ] = MOVE_GET;
-  ret[ kl[12] ] = MOVE_DROP;
+  ret[ kl[ 9] ] = Move.inventory;
+  ret[ kl[10] ] = Move.equipment;
+  ret[ kl[11] ] = Move.get;
+  ret[ kl[12] ] = Move.drop;
 
   // Message management
-  ret[ kl[13] ] = MOVE_MESS_DISPLAY;
-  ret[ kl[14] ] = MOVE_MESS_CLEAR;
+  ret[ kl[13] ] = Move.check_messages;
+  ret[ kl[14] ] = Move.clear_message;
 
   // Game management
-  ret[ kl[15] ] = MOVE_SAVE;
+  ret[ kl[15] ] = Move.save;
 
 version( none )
 {
@@ -154,7 +154,7 @@ version( none )
 static string[] Keymap_labels;
 
 // The global list of keymaps.
-static uint[char][] Keymaps;
+static Move[char][] Keymaps;
 
 // The index of the control scheme currently in use in `Keymaps`
 static uint Current_keymap = 0;

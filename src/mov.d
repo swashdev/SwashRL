@@ -56,39 +56,39 @@ enum CAN_ONLY_SWIM = 2;
 
 // Takes a movement flag and gives the change in y and x coordinates which
 // indicate the given direction, if any.
-void get_dydx( uint dir, byte* dy, byte* dx )
+void get_dydx( Move dir, byte* dy, byte* dx )
 {
   switch( dir )
   {
-    case MOVE_NW:
+    case Move.northwest:
       *dy = -1;
       *dx = -1;
       break;
-    case MOVE_NN:
+    case Move.north:
       *dy = -1;
       *dx =  0;
       break;
-    case MOVE_NE:
+    case Move.northeast:
       *dy = -1;
       *dx =  1;
       break;
-    case MOVE_EE:
+    case Move.east:
       *dy =  0;
       *dx =  1;
       break;
-    case MOVE_SE:
+    case Move.southeast:
       *dy =  1;
       *dx =  1;
       break;
-    case MOVE_SS:
+    case Move.south:
       *dy =  1;
       *dx =  0;
       break;
-    case MOVE_SW:
+    case Move.southwest:
       *dy =  1;
       *dx = -1;
       break;
-    case MOVE_WW:
+    case Move.west:
       *dy =  0;
       *dx = -1;
       break;
@@ -246,7 +246,7 @@ static if( BLOOD )
       foreach( c; 0 .. 10 )
       {
         byte dk, dj;
-        get_dydx( cast(ubyte)td10(), &dj, &dk );
+        get_dydx( cast(Move)td10(), &dj, &dk );
         Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
       }
 }
@@ -266,7 +266,7 @@ static if( BLOOD )
       foreach( c; d() .. atk )
       {
         byte dk, dj;
-        get_dydx( cast(ubyte)td10(), &dj, &dk );
+        get_dydx( cast(Move)td10(), &dj, &dk );
         Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
       }
 }
@@ -286,9 +286,9 @@ static if( BLOOD )
 //////////////////////////////////////////////////////////////////////////////
 
 // Causes the player to make a move based on the given movement flag.
-uint umove( Player* u, Map* m, uint dir )
+uint umove( Player* u, Map* m, Move dir )
 {
-  if( dir == MOVE_GET )
+  if( dir == Move.get )
   {
     if( pickup( u, m.i[u.y][u.x] ) )
     {

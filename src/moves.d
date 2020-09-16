@@ -28,35 +28,42 @@
 
 // moves.d: defines a number of indexes representing in-game commands.
 
-// Standard movement
-enum MOVE_NW = 7;
-enum MOVE_NN = 8;
-enum MOVE_NE = 9;
-enum MOVE_WW = 4;
-enum MOVE_EE = 6;
-enum MOVE_SW = 1;
-enum MOVE_SS = 2;
-enum MOVE_SE = 3;
-enum MOVE_WAIT = 5;
+enum Move
+{
+    
+    // Standard movement
+    // NOTE: These must come first so that functions which choose a random
+    // direction can roll a die in order to get one of these enums.
+    northwest, // 0
+    north,     // 1
+    northeast, // 2
+    west,      // 3
+    east,      // 4
+    southwest, // 5
+    south,     // 6
+    southeast, // 7
+    wait,      // 8
 
-// Inventory management
-enum MOVE_INVENTORY = 20;
-enum MOVE_EQUIPMENT = 21;
-enum MOVE_GET  = 22;
-enum MOVE_DROP = 23;
+    // Inventory management
+    inventory,
+    equipment,
+    get,
+    drop,
 
-// Message management
-enum MOVE_MESS_DISPLAY = 30;
-enum MOVE_MESS_CLEAR   = 31;
+    // Message management
+    check_messages,
+    clear_message,
 
-// Game management keys:
-enum MOVE_SAVE = 40;
+    // Game management keys:
+    save,
 
-// Global "admin" keys:
-enum MOVE_HELP = 0;
-enum MOVE_QUIT = 10;
-enum MOVE_GETVERSION = 11;
-enum MOVE_ALTKEYS = 12;
+    // Reserved "admin" keys:
+    help,
+    quit,
+    get_version,
+    change_keymap,
 
-// "Command not recognized" key:
-enum MOVE_UNKNOWN = 255;
+    // "Command not recognized" flag
+    invalid
+
+}

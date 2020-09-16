@@ -84,9 +84,10 @@ void drop_item( Map* mp, Item it, ubyte at_x, ubyte at_y,
     do
     {
       // the item "bounces" off an item or wall into an adjacent tile
-      Move fall = to!(Move)dn(8);
+      Move fall = cast(Move)dn(8);
       switch( fall )
       {
+        default: continue;
         case Move.northwest:
           x--; y--;  break;
         case Move.north:
@@ -106,7 +107,7 @@ void drop_item( Map* mp, Item it, ubyte at_x, ubyte at_y,
       }
 
     } while( mp.t[x][y].block_cardinal_movement
-             && mp.t[x][y].block_diagonal_movement )
+             && mp.t[x][y].block_diagonal_movement );
 
   } // while( Item_here( mp.i[x][y] ) )
 

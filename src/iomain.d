@@ -796,10 +796,21 @@ else
       { break;
       }
 
-      put_line( 1 + count, 1, "         %c) %s: %s", schr, snam,
-                u.inventory.items[count].sym.ch == '\0'
-                  ? "EMPTY" : u.inventory.items[count].name
-              );
+      put_colored_line( 1 + count, 1,
+                       count == grabbed ? Colors.Inverted_White : Colors.Gray,
+                        "%c) %s:%s", schr, snam,
+                        count == grabbed ? "            " : ""
+                      );
+      if( Item_here( u.inventory.items[count] ) )
+      {
+        put_colored_line( 1 + count, 20,
+                       count == grabbed ? Colors.Inverted_White : Colors.Gray,
+                          u.inventory.items[count].name );
+      }
+      else
+      { put_colored_line( 1 + count, 20, Colors.Inverted_Dark_Gray, "EMPTY" );
+      }
+
     } /* foreach( count; 0 .. INVENT_LAST_SLOT ) */
 
     put_line( 16, 1, "i) Bag" );
@@ -811,7 +822,6 @@ else
     }
     else
     {
-      put_line( grabbed + 1, 1, "GRABBED:" );
       put_line( 18, 1,
         "Press a letter to move the grabbed item into a new equipment slot" );
       put_line( 19, 1, "or \'i\' to put it in your bag" );

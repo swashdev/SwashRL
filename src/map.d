@@ -57,7 +57,74 @@ struct Map
   ubyte[2] player_start;
 }
 
-// Map manipulation functions for Monsters ///////////////////////////////////
+// SECTION 3: ////////////////////////////////////////////////////////////////
+// Map Manipulation                                                         //
+//////////////////////////////////////////////////////////////////////////////
+
+// Drop Items In /////////////////////////////////////////////////////////////
+
+// "drops" an item in the map at the given coordinates.  If `inform_player` is
+// true, send the player a message to indicate that the item was moved due to
+// an item already being present.
+void drop_item( Map* mp, Item it, ubyte at_x, ubyte at_y,
+                bool inform_player = false )
+{
+  ubyte x = minmax!(ubyte)( at_x, 0, MAP_x );
+  ubyte y = minmax!(ubyte)( at_y, 0, MAP_y );
+
+  if( inform_player )  message( "You drop the %s.", it.name );
+  
+  while( Item_here( mp.i[x][y] ) )
+  {
+
+    if( inform_player )
+    { message( "The %s bounces off of a %s", it.name, mp.i[x][y].name );
+    }
+
+    do
+    {
+      // the item "bounces" off an item or wall into an adjacent tile
+      Move fall = to!(Move)dn(8);
+      switch( fall )
+      {
+        case Move.northwest:
+          x--; y--;  break;
+        case Move.north:
+               y--;  break;
+        case Move.northeast:
+          x++; y--;  break;
+        case Move.west:
+          x--;       break;
+        case Move.east:
+          x++;       break;
+        case Move.southwest:
+          x--; y++;  break;
+        case Move.south:
+               y++;  break;
+        case Move.southeast:
+          x++; y++;  break;
+      }
+
+    } while( mp.t[x][y].block_cardinal_movement
+             && mp.t[x][y].block_diagonal_movement )
+
+  } // while( Item_here( mp.i[x][y] ) )
+
+  // destroy the item if it falls in water.
+  if( mp.t[x][y].hazard & HAZARD_WATER )
+  {
+    if( inform_player )
+    { message( "The %s falls in the water and sinks.", it.name );
+    }
+  }
+  // otherwise, place the item in the map.
+  else
+  { mp.i[x][y] = it;
+  }
+
+} // drop_item( Map*, Item, ubyte, ubyte, bool? )
+
+// Add & Remove Monsters /////////////////////////////////////////////////////
 
 // Add a monster to the given map
 void add_mon( Map* mp, Monst mn )

@@ -364,56 +364,48 @@ static if( false ) /* never */
                      addd:0, addm:2 };
   nu.i[10][5] = old_sword;
 
-// I'm too lazy to do all of this crap right now (TODO)
-static if( false ) /* never */
-{
-  Item ring = { .sym = symdata( '=', A_NORMAL ),
-                .name = "tungsten ring",
-                .type = ITEM_JEWELERY, .equip = EQUIP_JEWELERY_RING,
-                .addd = 0, .addm = 0 };
+  Item shield = Item( Symbol( ']', Colors.Dark_Gray ), "crow-crested shield",
+                      ITEM_ARMOR, EQUIP_SHIELD, 0, 5 );
+  nu.i[11][5] = shield;
+
+  Item ring = Item( Symbol( '*', Colors.Silver ), "silver ring",
+                    ITEM_JEWELERY, EQUIP_JEWELERY_RING, 0, 0 );
   nu.i[10][2] = ring;
+
+  ring.sym.color = Colors.Gold;  ring.name = "gold ring";
   nu.i[10][1] = ring;
-  Item helmet = { .sym = symdata( ']', A_NORMAL ),
-                  .name = "hat",
-                  .type = ITEM_ARMOR, .equip = EQUIP_HELMET,
-                  .addd = 0, .addm = 0 };
+
+  Item helmet = Item( Symbol( ']', Colors.Brown ), "hat",
+                      ITEM_ARMOR, EQUIP_HELMET, 0, 0 );
   nu.i[10][3] = helmet;
-  Item scarf = { .sym = symdata( ']', A_NORMAL ),
-                 .name = "fluffy scarf",
-                 .type = ITEM_ARMOR, .equip = EQUIP_JEWELERY_NECK,
-                 .addd = 0, .addm = 0 };
+
+  Item scarf = Item( Symbol( ']', Colors.Green ), "fluffy scarf",
+                     ITEM_ARMOR, EQUIP_JEWELERY_NECK, 0, 0 );
   nu.i[11][3] = scarf;
-  Item tunic = { .sym = symdata( ']', A_NORMAL ),
-                 .name = "tunic",
-                 .type = ITEM_ARMOR, .equip = EQUIP_CUIRASS,
-                 .addd = 0, .addm = 0 };
+
+  Item tunic = Item( Symbol( ']', Colors.Brown ), "tunic",
+                     ITEM_ARMOR, EQUIP_CUIRASS, 0, 0 );
   nu.i[12][3] = tunic;
-  Item gloves = { .sym = symdata( ']', A_NORMAL ),
-                  .name = "pair of leather gloves",
-                  .type = ITEM_ARMOR, .equip = EQUIP_BRACERS,
-                  .addd = 0, .addm = 1 };
+
+  Item gloves = Item( Symbol( ']', Colors.Brown ), "pair of leather gloves",
+                      ITEM_ARMOR, EQUIP_BRACERS, 0, 1 );
   nu.i[13][3] = gloves;
-  Item pants = { .sym = symdata( ']', A_NORMAL ),
-                 .name = "pair of trousers",
-                 .type = ITEM_ARMOR, .equip = EQUIP_GREAVES,
-                 .addd = 0, .addm = 0 };
+
+  Item pants = Item( Symbol( ']', Colors.Brown ), "pair of trousers",
+                     ITEM_ARMOR, EQUIP_GREAVES, 0, 0 );
   nu.i[14][3] = pants;
-  Item kilt = { .sym = symdata( ']', A_NORMAL ),
-                .name = "plaid kilt",
-                .type = ITEM_ARMOR, .equip = EQUIP_KILT,
-                .addd = 0, .addm = 0 };
+
+  Item kilt = Item( Symbol( ']', Colors.Green ), "plaid kilt",
+                    ITEM_ARMOR, EQUIP_KILT, 0, 0 );
   nu.i[15][3] = kilt;
-  Item boots = { .sym = symdata( ']', A_NORMAL ),
-                 .name = "pair of shoes",
-                 .type = ITEM_ARMOR, .equip = EQUIP_FEET,
-                 .addd = 0, .addm = 0 };
+
+  Item boots = Item( Symbol( ']', Colors.Brown ), "pair of shoes",
+                     ITEM_ARMOR, EQUIP_FEET, 0, 0 );
   nu.i[16][3] = boots;
-  Item tailsheath = { .sym = symdata( ']', A_NORMAL ),
-                      .name = "leather tailsheath",
-                      .type = ITEM_ARMOR, .equip = EQUIP_TAIL,
-                      .addd = 0, .addm = 1 };
+
+  Item tailsheath = Item( Symbol( ']', Colors.Brown ), "leather tailsheath",
+                          ITEM_ARMOR, EQUIP_TAIL, 0, 1 );
   nu.i[17][3] = tailsheath;
-} /* static if( false ) */
   
   return nu;
 }

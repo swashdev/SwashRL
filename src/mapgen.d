@@ -344,17 +344,34 @@ static if( FOLIAGE )
                           roll( 2, 2 ), Locomotion.terrestrial,
                           Dicebag( 2, 0, 2, 1000 ), 50, 10, init_inven()
                         );
-  goobling.sym.color = Colors.Dark_Gray;
 
   add_mon( &nu, goobling );
 
-static if( false ) /* never */
+static if( MORE_TEST_MONSTERS )
 {
-  goobling.x = 50;
+
+  goobling = Monst( Symbol( 'b', Colors.Dark_Gray ), "crow",
+                    roll( 1, 2 ), Locomotion.aerial,
+                    Dicebag( 1, 2, 3, 1000 ), 50, 20, init_inven()
+                  );
+
   add_mon( &nu, goobling );
-  goobling.y = 10;
+
+  goobling = Monst( Symbol( '8', Colors.Cyan ), "carp",
+                    roll( 1, 0 ), Locomotion.aquatic,
+                    Dicebag( 1, 3, 4, 1000 ), 12, 20, init_inven()
+                  );
+
   add_mon( &nu, goobling );
-}
+
+  goobling = Monst( Symbol( '%', Colors.Brown ), "slime mold",
+                    roll( 0, 3 ), Locomotion.sessile,
+                    Dicebag( 0, 2, 2, 2 ), 78, 2, init_inven()
+                  );
+
+  add_mon( &nu, goobling );
+
+} // static if( MORE_TEST_MONSTERS )
 
   // test Items
 

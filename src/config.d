@@ -90,3 +90,9 @@ enum BOLD_MESSAGE_FONT = true;
 
 // The number of messages to store in the message buffer
 enum MAX_MESSAGE_BUFFER = 20;
+
+// Add more test monsters to the test map.  Only relevant to debug builds.
+debug
+{
+enum MORE_TEST_MONSTERS = true;
+}

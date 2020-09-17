@@ -249,7 +249,7 @@ interface SwashIO
         // weapon-hand, but other objects will favor the off-hand,
         // except when the favored hand is already taken.
         if( !Item_here( u.inventory.items[INVENT_WEAPON] ) &&
-              (u.inventory.items[line].type & ITEM_WEAPON
+              (u.inventory.items[line].type == Type.weapon
             || Item_here( u.inventory.items[INVENT_OFFHAND] ))
           )
         { hand = INVENT_WEAPON;
@@ -478,7 +478,7 @@ interface SwashIO
           switch( line )
           {
             case INVENT_HELMET:
-              if( grabbed.type & ITEM_WEAPON )
+              if( grabbed.type == Type.weapon )
               {
                 // Don't use `display_equipment_screen` here because we need
                 // to be able to format this message and we're going to end up
@@ -495,7 +495,7 @@ seppuku:
             goto case INVENT_CUIRASS;
             // fall through to next case
             case INVENT_CUIRASS:
-              if( grabbed.type & ITEM_WEAPON )
+              if( grabbed.type == Type.weapon )
               {
                 // See above comment at `case INVENT_HELMET` for why we're not
                 // using `display_equipment_screen`

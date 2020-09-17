@@ -77,10 +77,8 @@ Player init_player( ubyte y, ubyte x )
   // if it is December, the player character starts with a "festive hat"
   if( Clock.currTime().month == Month.dec )
   {
-    Item hat = { sym:Symbol(']', Colors.Red ),
-                 type:ITEM_ARMOR, equip:EQUIP_HELMET,
-                 addd:0, addm:0,
-                 name:"festive hat" };
+    Item hat = Item( Symbol( ']', Colors.Red ), "festive hat",
+                     Type.armor, Armor.helmet, 0, 0 );
     u.inventory.items[INVENT_HELMET] = hat;
   }
   

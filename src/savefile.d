@@ -306,8 +306,8 @@ Item load_Item( File fil )
 
   // Next, read in the Item's special properties.
   string name = strip_line( fil );
-  uint type = to!uint( strip_line( fil ) );
-  uint equip = to!uint( strip_line( fil ) );
+  Type type = to!Type( strip_line( fil ) );
+  Armor equip = to!Armor( strip_line( fil ) );
   uint addd = to!int( strip_line( fil ) );
   uint addm = to!int( strip_line( fil ) );
 

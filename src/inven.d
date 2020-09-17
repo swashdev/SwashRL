@@ -102,41 +102,41 @@ bool check_equip( Item i, uint s )
   switch( s )
   {
     case INVENT_QUIVER:
-      return cast(bool)(i.type & ITEM_WEAPON_MISSILE);
+      return i.type == Type.projectile;
 
     case INVENT_HELMET:
-      return cast(bool)(i.equip & EQUIP_HELMET);
+      return i.equip == Armor.helmet;
 
     case INVENT_CUIRASS:
       // the "cuirass" item slot can accept either cuirasses or shields (the
       // player straps a shield to their back)
-      return cast(bool)(i.equip & EQUIP_CUIRASS) || cast(bool)(i.equip & EQUIP_SHIELD);
+      return i.equip == Armor.cuirass || i.equip == Armor.shield;
 
     case INVENT_PAULDRONS:
-      return cast(bool)(i.equip & EQUIP_PAULDRONS);
+      return i.equip == Armor.pauldrons;
 
     case INVENT_BRACERS:
-      return cast(bool)(i.equip & EQUIP_BRACERS);
+      return i.equip == Armor.bracers;
 
     case INVENT_RINGL:
       // rings are obviously ambidexterous
     case INVENT_RINGR:
-      return cast(bool)(i.equip & EQUIP_JEWELERY_RING);
+      return i.equip == Armor.ring;
 
     case INVENT_NECKLACE:
-      return cast(bool)(i.equip & EQUIP_JEWELERY_NECK);
+      return i.equip == Armor.neck;
 
     case INVENT_GREAVES:
-      return cast(bool)(i.equip & EQUIP_GREAVES);
+      return i.equip == Armor.greaves;
 
     case INVENT_KILT:
-      return cast(bool)(i.equip & EQUIP_KILT);
+      return i.equip == Armor.kilt;
 
     case INVENT_FEET:
-      return cast(bool)(i.equip & EQUIP_FEET);
+      return i.equip == Armor.feet;
 
     case INVENT_TAIL:
-      return cast(bool)(i.equip & EQUIP_TAIL);
+      return i.equip == Armor.tail;
 
     default:
       return false;

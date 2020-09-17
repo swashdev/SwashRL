@@ -410,7 +410,7 @@ bool pickup( Monst* mn, Item i )
   // Items are picked up in the weapon-hand if the weapon-hand is empty, AND
   // the item is a weapon OR the off-hand is NOT empty
   if( mn.inventory.items[INVENT_WEAPON].sym.ch == '\0' &&
-          (i.type & ITEM_WEAPON
+          (i.type == Type.weapon
         || mn.inventory.items[INVENT_OFFHAND].sym.ch != '\0')
     )
   {

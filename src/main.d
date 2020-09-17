@@ -303,7 +303,8 @@ debug
 
   // Initialize the `No_item` placeholder ////////////////////////////////////
 
-  No_item = Item( symdata( '\0', Colors.Error ), "NO ITEM", 0, 0, 0, 0 );
+  No_item = Item( Symbol( '\0', Colors.Error ), "NO ITEM",
+                  Type.none, Armor.none, 0, 0 );
 
   // Map Generator ///////////////////////////////////////////////////////////
 

@@ -31,6 +31,9 @@
 
 import global;
 
+// for `remove`
+import std.algorithm.mutation;
+
 // SECTION 1: ////////////////////////////////////////////////////////////////
 // Rooms                                                                    //
 //////////////////////////////////////////////////////////////////////////////
@@ -144,10 +147,6 @@ void remove_mon( Map* mp, uint index )
   // To remove a Monster in a Map's mon array, move all Monsters that are
   // past it in the array up, thus overwriting it.
   if( index < mp.m.length )
-  {
-    foreach( mn; index + 1 .. mp.m.length )
-    { mp.m[mn - 1] = mp.m[mn];
-    }
-    mp.m.length--;
+  { mp.m = mp.m.remove( index );
   }
 }

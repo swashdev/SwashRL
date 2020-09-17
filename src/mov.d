@@ -239,14 +239,23 @@ void map_move_all_monsters( Map* m, Player* u )
   { return;
   }
 
+  uint[] kill_mons;
+
   foreach( mn; 0 .. cast(uint)m.m.length )
   {
-    if( m.m[mn].hp > 0 )
+    if( m.m[cast(size_t)mn].hp > 0 )
     { monst_ai( m, mn, u );
     }
     else
-    { remove_mon( m, mn );
+    {
+      // mark the mon for removal:
+      kill_mons = kill_mons ~ [mn];
     }
+  }
+
+  // remove all of the dead mons:
+  foreach( mn; 0 .. cast(size_t)kill_mons.length )
+  { remove_mon( m, kill_mons[mn] );
   }
 }
 

@@ -41,8 +41,7 @@ struct Inven
   // all `Items' carried in this inventory; 14 "equipment slots" for the
   // various body parts, plus 26 "inventory slots" for the "bag"
   Item[40] items; 
-  uint quiver_count;
-  uint coins;
+  Item[5] wallet;
 }
 
 // Indexes of Equipment Slots ////////////////////////////////////////////////
@@ -76,6 +75,22 @@ enum INVENT_BAG = INVENT_LAST_SLOT + 1;
 // SECTION 2: ////////////////////////////////////////////////////////////////
 // Inventory Management Functions                                           //
 //////////////////////////////////////////////////////////////////////////////
+
+// Initializes an empty inventory
+Inven init_inven()
+{
+  Item[40] items;
+  foreach( count; 0 .. items.length )
+  { items[count] = No_item;
+  }
+
+  Item[5] wallet;
+  foreach( count; 0 .. wallet.length )
+  { wallet[count] = No_item;
+  }
+
+  return Inven( items, wallet );
+}
 
 // Checks if the player or other monster has a free grasp.
 // Note that this function doesn't require a monster, just its inventory.

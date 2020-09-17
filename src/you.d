@@ -62,11 +62,8 @@ Player init_player( ubyte y, ubyte x )
   u.sym = symdata( SMILEY, Colors.Player );
   u.hp = roll( 3, 2 );
 
-  foreach( count; 0 .. 40 )
-  { u.inventory.items[count] = No_item;
-  }
-  u.inventory.quiver_count = 0;
-  u.inventory.coins = 0;
+  u.inventory = init_inven();
+
   u.attack_roll = Dice( 2, 0, 0, 1000 );
 
   u.fly  = 0;

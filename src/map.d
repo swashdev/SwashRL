@@ -74,11 +74,11 @@ void drop_item( Map* mp, Item it, ubyte at_x, ubyte at_y,
 
   if( inform_player )  message( "You drop the %s.", it.name );
   
-  while( Item_here( mp.i[x][y] ) )
+  while( Item_here( mp.i[y][x] ) )
   {
 
     if( inform_player )
-    { message( "The %s bounces off of a %s", it.name, mp.i[x][y].name );
+    { message( "The %s bounces off of a %s", it.name, mp.i[y][x].name );
     }
 
     do
@@ -106,13 +106,13 @@ void drop_item( Map* mp, Item it, ubyte at_x, ubyte at_y,
           x++; y++;  break;
       }
 
-    } while( mp.t[x][y].block_cardinal_movement
-             && mp.t[x][y].block_diagonal_movement );
+    } while( mp.t[y][x].block_cardinal_movement
+             && mp.t[y][x].block_diagonal_movement );
 
-  } // while( Item_here( mp.i[x][y] ) )
+  } // while( Item_here( mp.i[y][x] ) )
 
   // destroy the item if it falls in water.
-  if( mp.t[x][y].hazard & HAZARD_WATER )
+  if( mp.t[y][x].hazard & HAZARD_WATER )
   {
     if( inform_player )
     { message( "The %s falls in the water and sinks.", it.name );
@@ -120,7 +120,7 @@ void drop_item( Map* mp, Item it, ubyte at_x, ubyte at_y,
   }
   // otherwise, place the item in the map.
   else
-  { mp.i[x][y] = it;
+  { mp.i[y][x] = it;
   }
 
 } // drop_item( Map*, Item, ubyte, ubyte, bool? )

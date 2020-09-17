@@ -160,7 +160,8 @@ int main( string[] args )
     "dqd",      &Degreelessness,
     "esm",      &Infinite_weapon,
     "spispopd", &Noclip,
-    "eoa",      &No_shadows
+    "eoa",      &No_shadows,
+    "hbr",      &Master_debug
   );
 
   if( clarguments.helpWanted )
@@ -235,6 +236,11 @@ game.  Try compiling with dub build -b debug" );
       }
       if( No_shadows )
       { message( "Silent Cartographer is turned on." );
+      }
+      if( Master_debug )
+      {
+        message( "YOU HAVE THE POWERRRRRRRR!" );
+        Degreelessness = Infinite_weapon = Noclip = No_shadows = true;
       }
 
     } // else from `if( gen_map )`

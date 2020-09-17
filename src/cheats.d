@@ -33,5 +33,6 @@ static bool Degreelessness = false;
 static bool Infinite_weapon = false;
 static bool Noclip = false;
 static bool No_shadows = false;
+static bool Master_debug = false;
 
 static bool Use_test_map = false;

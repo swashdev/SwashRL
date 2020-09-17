@@ -359,7 +359,7 @@ static if( MORE_TEST_MONSTERS )
 
   goobling = Monst( Symbol( '8', Colors.Cyan ), "carp",
                     roll( 1, 0 ), Locomotion.aquatic,
-                    Dicebag( 1, 3, 4, 1000 ), 12, 20, init_inven()
+                    Dicebag( 1, 3, 4, 1000 ), 50, 12, init_inven()
                   );
 
   add_mon( &nu, goobling );

@@ -29,10 +29,25 @@
 // mov.d:  Functions related to player and monster movement
 
 import global;
+import std.random;
 
 // SECTION 0: ////////////////////////////////////////////////////////////////
 // Useful flags for monster movement                                        //
 //////////////////////////////////////////////////////////////////////////////
+
+// For functions which choose a direction
+enum Direction
+{
+  northwest, // 0
+  north,     // 1
+  northeast, // 2
+  west,      // 3
+  east,      // 4
+  southwest, // 5
+  south,     // 6
+  southeast, // 7
+  invalid    // 8
+}
 
 // Colission detection:
 enum FLOOR_HERE = 0;
@@ -56,39 +71,39 @@ enum CAN_ONLY_SWIM = 2;
 
 // Takes a movement flag and gives the change in y and x coordinates which
 // indicate the given direction, if any.
-void get_dydx( Move dir, byte* dy, byte* dx )
+void get_dydx( Direction dir, byte* dy, byte* dx )
 {
   switch( dir )
   {
-    case Move.northwest:
+    case Direction.northwest:
       *dy = -1;
       *dx = -1;
       break;
-    case Move.north:
+    case Direction.north:
       *dy = -1;
       *dx =  0;
       break;
-    case Move.northeast:
+    case Direction.northeast:
       *dy = -1;
       *dx =  1;
       break;
-    case Move.east:
+    case Direction.east:
       *dy =  0;
       *dx =  1;
       break;
-    case Move.southeast:
+    case Direction.southeast:
       *dy =  1;
       *dx =  1;
       break;
-    case Move.south:
+    case Direction.south:
       *dy =  1;
       *dx =  0;
       break;
-    case Move.southwest:
+    case Direction.southwest:
       *dy =  1;
       *dx = -1;
       break;
-    case Move.west:
+    case Direction.west:
       *dy =  0;
       *dx = -1;
       break;
@@ -97,6 +112,31 @@ void get_dydx( Move dir, byte* dy, byte* dx )
       *dy =  0;
       *dx =  0;
       break;
+  }
+}
+
+Direction get_direction( Move movement )
+{
+  switch( movement )
+  {
+    default:
+      return Direction.invalid;
+    case Move.northeast:
+      return Direction.northeast;
+    case Move.north:
+      return Direction.north;
+    case Move.northwest:
+      return Direction.northwest;
+    case Move.west:
+      return Direction.west;
+    case Move.east:
+      return Direction.east;
+    case Move.southeast:
+      return Direction.southeast;
+    case Move.south:
+      return Direction.south;
+    case Move.southwest:
+      return Direction.southwest;
   }
 }
 
@@ -246,7 +286,7 @@ static if( BLOOD )
       foreach( c; 0 .. 10 )
       {
         byte dk, dj;
-        get_dydx( cast(Move)td10(), &dj, &dk );
+        get_dydx( uniform!(Direction)( Lucky ), &dj, &dk );
         Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
       }
 }
@@ -266,7 +306,7 @@ static if( BLOOD )
       foreach( c; d() .. atk )
       {
         byte dk, dj;
-        get_dydx( cast(Move)td10(), &dj, &dk );
+        get_dydx( uniform!(Direction)( Lucky ), &dj, &dk );
         Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
       }
 }
@@ -286,17 +326,8 @@ static if( BLOOD )
 //////////////////////////////////////////////////////////////////////////////
 
 // Causes the player to make a move based on the given movement flag.
-uint umove( Player* u, Map* m, Move dir )
+uint umove( Player* u, Map* m, Direction dir )
 {
-  if( dir == Move.get )
-  {
-    if( pickup( u, m.i[u.y][u.x] ) )
-    {
-      m.i[u.y][u.x] = No_item;
-      return 1;
-    }
-    return 0;
-  }
 
   byte dy, dx;
   get_dydx( dir, &dy, &dx );

@@ -32,8 +32,6 @@ enum Move
 {
     
     // Standard movement
-    // NOTE: These must come first so that functions which choose a random
-    // direction can roll a die in order to get one of these enums.
     northwest, // 0
     north,     // 1
     northeast, // 2

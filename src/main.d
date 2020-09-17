@@ -511,6 +511,15 @@ Try compiling with dub build -b debug" );
 
         break;
 
+      // pick up an item
+      case Move.get:
+        if( pickup( &u, Current_map.i[u.y][u.x] ) )
+        {
+          Current_map.i[u.y][u.x] = No_item;
+          moved = 1;
+        }
+	break;
+
       // drop an item
       case Move.drop:
 
@@ -583,7 +592,7 @@ drop_offhand:
         IO.clear_message_line();
         IO.display( u.y + 1, u.x, Current_map.t[u.y][u.x].sym );
 
-        moved = umove( &u, &Current_map, cast(ubyte)mv );
+        moved = umove( &u, &Current_map, get_direction( mv ) );
 
         if( u.hp <= 0 )  goto playerdied;
         break;

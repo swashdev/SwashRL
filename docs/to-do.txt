@@ -1,4 +1,3 @@
-Implement item dropping
 Implement appropriate item stats (attack & defense modifiers, &c)
 Implement appropriate item behaviors (parrying, thrusting, &c)
 Implement stat generator

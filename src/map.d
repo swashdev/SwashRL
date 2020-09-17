@@ -84,7 +84,7 @@ void drop_item( Map* mp, Item it, ubyte at_x, ubyte at_y,
     do
     {
       // the item "bounces" off an item or wall into an adjacent tile
-      Move fall = cast(Move)dn(8);
+      Move fall = cast(Move)(dn(8) - 1);
       switch( fall )
       {
         default: continue;

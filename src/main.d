@@ -517,26 +517,22 @@ Try compiling with dub build -b debug" );
         bool weapon = Item_here( u.inventory.items[INVENT_WEAPON] ),
              off    = Item_here( u.inventory.items[INVENT_OFFHAND] );
 
+        Item dropme = No_item;
+
         if( !weapon && !off )
         { message( "You are not holding anything right now." );
         }
         else if( weapon && !off )
         {
 drop_weapon:
-          Item dropme = u.inventory.items[INVENT_WEAPON];
+          dropme = u.inventory.items[INVENT_WEAPON];
           u.inventory.items[INVENT_WEAPON] = No_item;
-          Current_map.i[u.y][u.x] = dropme;
-          message( "You drop your %s.", dropme.name );
-          moved = 1;
         }
         else if( !weapon && off )
         {
 drop_offhand:
-          Item dropme = u.inventory.items[INVENT_OFFHAND];
+          dropme = u.inventory.items[INVENT_OFFHAND];
           u.inventory.items[INVENT_OFFHAND] = No_item;
-          Current_map.i[u.y][u.x] = dropme;
-          message( "You drop your %s.", dropme.name );
-          moved = 1;
         }
         else
         {
@@ -545,7 +541,11 @@ drop_offhand:
                     ['w','o','c'], true );
           if( 'w' == dropwhich )  goto drop_weapon;
           if( 'o' == dropwhich )  goto drop_offhand;
-          moved = 0;
+        }
+        if( Item_here( dropme ) )
+        {
+          drop_item( &Current_map, dropme, u.x, u.y, true );
+          moved = 1;
         }
         break;
 

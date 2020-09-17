@@ -26,57 +26,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-// you.d:  Defines functions related to the player struct
+// mflags.d: flags used for monster data
 
-import global;
-
-// As of version 0.028, the "Player" is just an alias for a regular monster
-alias Player = Monst;
-
-// Returns "true" if the given monster is you.
-bool is_you( Monst u )
-{ return u.name == "spelunker";
-}
-
-// Initializes the player character and places it at the given coordinates.
-Player init_player( ubyte y, ubyte x )
+enum Locomotion
 {
-  Player u;
-
-  // The "spelunker" name should ONLY be used for the player character, and
-  // is a signal to monster movement functions that the monster is "you."
-  u.name = "spelunker";
-
-  if( x < 80 )
-  { u.x = x;
-  }
-  else
-  { u.x = 1;
-  }
-  if( y < 24 )
-  { u.y = y;
-  }
-  else
-  { u.y = 1;
-  }
-  u.sym = symdata( SMILEY, Colors.Player );
-  u.hp = roll( 3, 2 );
-
-  u.inventory = init_inven();
-
-  u.attack_roll = Dice( 2, 0, 0, 1000 );
-
-  u.walk = Locomotion.terrestrial;
-
-  import std.datetime.systime;
-  import std.datetime.date;
-  // if it is December, the player character starts with a "festive hat"
-  if( Clock.currTime().month == Month.dec )
-  {
-    Item hat = Item( Symbol( ']', Colors.Red ), "festive hat",
-                     Type.armor, Armor.helmet, 0, 0 );
-    u.inventory.items[INVENT_HELMET] = hat;
-  }
-  
-  return u;
+  sessile, terrestrial, amphibious, aquatic, aerial
 }

@@ -50,20 +50,12 @@ enum Direction
 }
 
 // Colission detection:
-enum FLOOR_HERE = 0;
-enum WALL_HERE  = 1;
-enum WATER_HERE = 2;
-enum MOVEMENT_IMPOSSIBLE = 3;
-
-// Whether or not the monster can fly:
-enum CAN_NOT_FLY = 0;
-enum CAN_FLY     = 1;
-enum IS_FLYING   = 2;
-
-// Whether or not the monster can swim:
-enum CAN_NOT_SWIM  = 0;
-enum CAN_SWIM      = 1;
-enum CAN_ONLY_SWIM = 2;
+enum Collision
+{
+  none,
+  wall, water, monster,
+  movement_impossible
+}
 
 // SECTION 1: ////////////////////////////////////////////////////////////////
 // Translating Movement to Data                                             //
@@ -149,47 +141,49 @@ void mmove( Monst* mn, Map* m, byte idy, byte idx, Player* u )
 {
   uint dy = idy, dx = idx;
 
-  uint terrain = 0, monster = 0;
+  Collision obstacle;
 
   dx = dx + mn.x; dy = dy + mn.y;
-  bool cardinal = dx == 0 || dy == 0;
+  bool cardinal;
+
+check_collision:
+  obstacle = Collision.none;
+  cardinal = dx == 0 || dy == 0;
 
   if( (cardinal && (m.t[dy][dx].block_cardinal_movement))
   || (!cardinal && (m.t[dy][dx].block_diagonal_movement)) )
   {
-    terrain = WALL_HERE;
+    obstacle = Collision.wall;
   }
   else
   {
-    if( (m.t[dy][dx].hazard & HAZARD_WATER) && mn.swim == CAN_NOT_SWIM )
+    if( (m.t[dy][dx].hazard & HAZARD_WATER)
+        && mn.walk == Locomotion.terrestrial )
     {
-      terrain = WATER_HERE;
+      obstacle = Collision.water;
     }
     else if( !(m.t[dy][dx].hazard & HAZARD_WATER)
-             && mn.swim == CAN_ONLY_SWIM )
+             && mn.walk == Locomotion.aquatic )
     {
-      terrain = MOVEMENT_IMPOSSIBLE;
+      obstacle = Collision.movement_impossible;
     }
   }
 
-  if( terrain )
+  // Attempt to have the monster navigate around obstacles
+  if( obstacle == Collision.wall )
   {
-    // Attempt to have the monster navigate around obstacles
-    if( terrain == WATER_HERE && mn.fly == CAN_FLY )
+    // TODO: Definitely need better colission checking here.  Maybe a
+    // function should be written to determine if a monster can step in a
+    // certain tile.
+    if( !m.t[dy][mn.x].block_cardinal_movement )
     {
-      mn.fly = IS_FLYING;
+      dx = mn.x;
+      goto check_collision;
     }
-    else if( terrain == WALL_HERE || mn.fly == CAN_NOT_FLY )
+    else if( !m.t[mn.y][dx].block_cardinal_movement )
     {
-      // TODO: Definitely need better colission checking here.  Maybe a
-      // function should be written to determine if a monster can step in a
-      // certain tile.
-      if( !m.t[dy][mn.x].block_cardinal_movement )
-      { dx = mn.x;
-      }
-      else if( !m.t[mn.y][dx].block_cardinal_movement )
-      { dy = mn.y;
-      }
+      dy = mn.y;
+      goto check_collision;
     }
   }
   
@@ -197,7 +191,7 @@ void mmove( Monst* mn, Map* m, byte idy, byte idx, Player* u )
   if( dx == u.x && dy == u.y )
   {
     mattack( mn, u );
-    monster = 1;
+    obstacle = Collision.monster;
   }
   else
   {
@@ -205,12 +199,12 @@ void mmove( Monst* mn, Map* m, byte idy, byte idx, Player* u )
     {
       if( m.m[c].x == dx && m.m[c].y == dy )
       {
-        monster = 1;
+        obstacle = Collision.monster;
       }
     }
   }
 
-  if( !monster )
+  if( obstacle == Collision.none )
   {
     mn.x = cast(byte)dx; mn.y = cast(byte)dy;
   }

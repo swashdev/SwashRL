@@ -41,24 +41,9 @@ struct Mon
 {
   Symbol sym;
   string name;
-  uint fly;
-  uint swim;
+  Locomotion swim;
   Dicebag hit_dice;
   Dicebag attack_roll;
-}
-
-// Generates a new monster template.
-// DEPRECATED: Use D's built-in struct constructors instead.
-Mon mondat( char isym, string iname, uint ifly, uint iswim,
-            uint hit_dice, int hit_modifier, int hit_min, int hit_max,
-            uint at_dice, int at_modifier, int at_min, int at_max )
-{
-  Mon mn = { sym:symdata( isym, Colors.Gray ), name:iname, fly:ifly,
-             swim:iswim,
-             hit_dice:Dice( hit_dice, hit_modifier, hit_min, hit_max ),
-             attack_roll:Dice( at_dice, at_modifier, at_min, at_max )
-           };
-  return mn;
 }
 
 // SECTION 2: ////////////////////////////////////////////////////////////////
@@ -72,69 +57,10 @@ struct Monst
   Symbol sym;
   string name;
   int hp;
-  uint fly;
-  uint swim;
+  Locomotion walk;
   Dicebag attack_roll;
   ubyte x, y;
   Inven inventory;
-}
-
-// Generates a new `Monst` at the given coordinates.
-// DEPRECATED: Use D's built-in struct constructors instead.
-Monst new_monst_at( char isym, string iname, uint ifly, uint iswim,
-                    uint hit_dice, int hit_mod, int hit_min, int hit_max,
-                    uint at_dice, int at_mod, int at_min, int at_max,
-                    ubyte x, ubyte y )
-{
-  Monst mon = { sym:symdata( isym, Colors.Gray ), name:iname,
-                fly:ifly, swim:iswim,
-                hp:roll( hit_dice, hit_mod ),
-                attack_roll:Dice( at_dice, at_mod, at_min, at_max ),
-                x:x, y:y
-              };
-
-  foreach( count; 0 .. 40 )
-  { mon.inventory.items[count] = No_item;
-  }
-
-  return mon;
-}
-
-// Generates a new `Monst` at coordinates (0,0).
-// DEPRECATED: Use D's built-in struct constructors instead.
-Monst new_monst( char isym, string iname, uint ifly, uint iswim,
-                 uint hit_dice, int hit_mod, int hit_min, int hit_max,
-                 uint at_dice, int at_mod, int at_min, int at_max )
-{ return new_monst_at( isym, iname, ifly, iswim, hit_dice, hit_mod, hit_min,
-                       hit_max, at_dice, at_mod, at_min, at_max,
-                       0, 0
-                     );
-}
-
-// Generating Monsters from Templates ////////////////////////////////////////
-
-// Generates a monster at the given coordinates, using the given `Mon`
-// template.
-Monst monster_at( Mon mn, ubyte x, ubyte y )
-{
-  Monst mon = { sym:mn.sym, name:mn.name, fly:mn.fly, swim:mn.swim,
-                hp:roll( mn.hit_dice.dice, mn.hit_dice.modifier ),
-                attack_roll:mn.attack_roll,
-                x:x, y:y
-              };
-
-  foreach( count; 0 .. 40 )
-  { mon.inventory.items[count] = No_item;
-  }
-
-  return mon;
-} 
-
-// Generates a monster using the given `Mon` template.  Note that this
-// function will place the monster at coordinates (0,0), which is an invalid
-// location in the current SwashRL maps.
-Monst monster( Mon mn )
-{ return monster_at( mn, 0, 0 );
 }
 
 // SECTION 3: ////////////////////////////////////////////////////////////////

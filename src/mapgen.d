@@ -340,8 +340,10 @@ static if( FOLIAGE )
 
   // test Monsters
 
-  Monst goobling = new_monst_at( 'g', "goobling", 0, 0, 2, 2, 0, 10, 2, 0, 2,
-                                 1000, 60, 20 );
+  Monst goobling = Monst( Symbol( 'g', Colors.Dark_Gray ), "goobling",
+                          roll( 2, 2 ), Locomotion.terrestrial,
+                          Dicebag( 2, 0, 2, 1000 ), 50, 10, init_inven()
+                        );
   goobling.sym.color = Colors.Dark_Gray;
 
   add_mon( &nu, goobling );

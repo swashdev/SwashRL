@@ -152,8 +152,7 @@ void save_Monst( Monst mn, File fil )
     //Next, write the Monst's special properties.
     fil.writeln( mn.name );
     fil.writeln( mn.hp );
-    fil.writeln( mn.fly );
-    fil.writeln( mn.swim );
+    fil.writeln( mn.walk );
     fil.writeln( mn.x );
     fil.writeln( mn.y );
 
@@ -343,8 +342,7 @@ Monst load_Monst( char ch, File fil )
   // Next, read in the Monst's special properties.
   string name = strip_line( fil );
   int hp = to!int( strip_line( fil ) );
-  uint fly = to!uint( strip_line( fil ) );
-  uint swim = to!uint( strip_line( fil ) );
+  Locomotion walk = to!Locomotion( strip_line( fil ) );
   ubyte x = to!ubyte( strip_line( fil ) );
   ubyte y = to!ubyte( strip_line( fil ) );
 
@@ -353,14 +351,10 @@ Monst load_Monst( char ch, File fil )
 
   // Generate an empty inventory, because inventory saving has not yet been
   // implemented (TODO)
-  Inven tory;
-  foreach( count; 0 .. 40 )
-  { tory.items[count] = No_item;
-  }
-  tory.quiver_count = tory.coins = 0;
+  Inven tory = init_inven();
 
   // Return the resulting Monst.
-  return Monst( sym, name, hp, fly, swim, attack_roll, x, y, tory );
+  return Monst( sym, name, hp, walk, attack_roll, x, y, tory );
 }
 
 // Get a saved level from a file.

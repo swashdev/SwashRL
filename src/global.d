@@ -184,6 +184,7 @@ public import tile;
 public import iflags;
 public import item;
 public import inven;
+public import mflags;
 public import monst;
 public import you;
 public import map;

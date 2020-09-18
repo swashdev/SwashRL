@@ -30,6 +30,7 @@
 
 import global;
 import std.random;
+import std.range;
 
 // SECTION 0: ////////////////////////////////////////////////////////////////
 // Useful flags for monster movement                                        //
@@ -137,20 +138,32 @@ Direction get_direction( Move movement )
 //////////////////////////////////////////////////////////////////////////////
 
 // Checks whether the given Monst is able to move to a certain destination
-// given its start coordinates and its dx,dy coordinates.
-Collision check_collision( Map* m, Monst u, ubyte start_x, ubyte start_y,
-                           byte dx, byte dy )
+// given its dx,dy coordinates.  This function also checks the player's
+// position via the `u` parameter.
+Collision check_collision( Map* m, Monst* mon, ubyte dest_x, byte dest_y,
+                           bool cardinal, Player* u )
 {
 
-  // Sessile monsters can never move.
-  if( u.walk == Locomotion.sessile)  return Collision.movement_impossible;
+  byte start_x = mon.x;
+  byte start_y = mon.y;
 
-  // determine whether the monster is moving in a cardinal or diagonal
-  // direction.
-  bool cardinal = dx == 0 || dy == 0;
+  // Check if there are any monsters on the destination tile; if so, the
+  // monster will not be able to move and may be forced to attack.
+  if( u.x == dest_x && u.y == dest_y )
+  {
+    return Collision.monster;
+  }
+  foreach( mn; 0 .. cast(uint)m.m.length )
+  {
+    if( m.m[mn].x == dest_x && m.m[mn].y == dest_y )
+    {
+      return Collision.monster;
+    }
+  }
 
-  ubyte dest_x = start_x + dx;
-  ubyte dest_y = start_y + dy;
+  // Sessile monsters can never move, so if the above check did not result in
+  // an attack then there is nothing more that it can do.
+  if( mon.walk == Locomotion.sessile)  return Collision.movement_impossible;
 
   if( cardinal )
   {
@@ -180,20 +193,10 @@ Collision check_collision( Map* m, Monst u, ubyte start_x, ubyte start_y,
     }
   } // else from if( cardinal )
 
-  // Check if there are any monsters on the destination tile; if so, the
-  // monster will not be able to move and may be forced to attack.
-  foreach( mn; 0 .. cast(uint)m.m.length )
-  {
-    if( m.m[mn].x == dest_x && m.m[mn].y == dest_y )
-    {
-      return Collision.monster;
-    }
-  }
-
   // If the monster is not able to move over water, they must abort.
-  if( m.t[dest_y][dest_x].hazards & HAZARD_WATER )
+  if( m.t[dest_y][dest_x].hazard & HAZARD_WATER )
   {
-    if( u.walk == Locomotion.terrestrial )
+    if( mon.walk == Locomotion.terrestrial )
     {
       return Collision.water;
     }
@@ -202,13 +205,15 @@ Collision check_collision( Map* m, Monst u, ubyte start_x, ubyte start_y,
   // have water, movement onto this space is impossible.
   else
   {
-    if( u.walk == Locomotion.aquatic )
+    if( mon.walk == Locomotion.aquatic )
     {
       return Collision.movement_impossible;
     }
   }
 
-} // Collision check_collision( Map*, Monst, ubyte, ubyte, byte, byte )
+  return Collision.none;
+
+} // Collision check_collision( Map*, Monst*, ubyte, ubyte, bool, Monst* )
 
 // SECTION 3: ////////////////////////////////////////////////////////////////
 // Monster Movement                                                         //

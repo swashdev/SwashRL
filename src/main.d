@@ -585,7 +585,7 @@ drop_offhand:
       // inventory management
       case Move.equipment:
 
-        moved = IO.manage_equipment( &u );
+        moved = IO.manage_equipment( &u, &Current_map );
 
         // we must redraw the screen after the equipment screen is cleared
         IO.refresh_status_bar( &u );

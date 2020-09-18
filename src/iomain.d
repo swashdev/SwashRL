@@ -292,7 +292,7 @@ interface SwashIO
 
   // Controls the equipment screen and returns the number of turns spent based
   // on how many items are swapped around.
-  final uint manage_equipment( Player* u )
+  final uint manage_equipment( Player* u, Map* mp )
   {
     import std.ascii: toLower;
     import std.format : format;
@@ -340,6 +340,23 @@ interface SwashIO
           display_equipment_screen( u, -1, "You do not have a tail." );
           refresh_screen();
           line = -1;
+          break;
+        case 'd':
+          if( grabbed_line <= -1 )
+          {
+            display_equipment_screen( u, -1,
+                                      "You don't have anything to drop." );
+            refresh_screen();
+            line = -1;
+          }
+          else
+          {
+            grabbed = u.inventory.items[grabbed_line];
+            u.inventory.items[grabbed_line] = No_item;
+            drop_item( mp, grabbed, u.x, u.y, true );
+            grabbed_line = line = -1;
+            refnow = true;
+          }
           break;
         case 'i':
           // The player has chosen to access an item in their bag
@@ -562,12 +579,6 @@ discard_swap:
   
     return turns;
   } // uint manage_equipment( Player* )
-
-  deprecated("control_inventory has been superceded by manage_equipment to prevent ambiguity.  Please use this function instead.")
-  final uint control_inventory( Player* u )
-  {
-    return manage_equipment( u );
-  }
 
 // SECTION 5: ////////////////////////////////////////////////////////////////
 // Global Output Functions                                                  //
@@ -822,6 +833,7 @@ else
     }
     else
     {
+      put_line( 15, 1, "d) Drop" );
       put_line( 18, 1,
         "Press a letter to move the grabbed item into a new equipment slot" );
       put_line( 19, 1, "or \'i\' to put it in your bag" );

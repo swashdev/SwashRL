@@ -133,6 +133,84 @@ Direction get_direction( Move movement )
 }
 
 // SECTION 2: ////////////////////////////////////////////////////////////////
+// Collision Detection                                                      //
+//////////////////////////////////////////////////////////////////////////////
+
+// Checks whether the given Monst is able to move to a certain destination
+// given its start coordinates and its dx,dy coordinates.
+Collision check_collision( Map* m, Monst u, ubyte start_x, ubyte start_y,
+                           byte dx, byte dy )
+{
+
+  // Sessile monsters can never move.
+  if( u.walk == Locomotion.sessile)  return Collision.movement_impossible;
+
+  // determine whether the monster is moving in a cardinal or diagonal
+  // direction.
+  bool cardinal = dx == 0 || dy == 0;
+
+  ubyte dest_x = start_x + dx;
+  ubyte dest_y = start_y + dy;
+
+  if( cardinal )
+  {
+    // If the monster's current position blocks cardinal movement, they are
+    // stuck and must try to move diagonally.
+    if( m.t[start_y][start_x].block_cardinal_movement )
+    {
+      return Collision.wall;
+    }
+    // If the monster's destination blocks cardinal movement, same story.
+    if( m.t[dest_y][dest_x].block_cardinal_movement )
+    {
+      return Collision.wall;
+    }
+  }
+  else
+  {
+    // If the monster's current position or destination block diagonal
+    // movement, they must try to move cardinally.
+    if( m.t[start_y][start_x].block_diagonal_movement )
+    {
+      return Collision.wall;
+    }
+    if( m.t[dest_y][dest_x].block_diagonal_movement )
+    {
+      return Collision.wall;
+    }
+  } // else from if( cardinal )
+
+  // Check if there are any monsters on the destination tile; if so, the
+  // monster will not be able to move and may be forced to attack.
+  foreach( mn; 0 .. cast(uint)m.m.length )
+  {
+    if( m.m[mn].x == dest_x && m.m[mn].y == dest_y )
+    {
+      return Collision.monster;
+    }
+  }
+
+  // If the monster is not able to move over water, they must abort.
+  if( m.t[dest_y][dest_x].hazards & HAZARD_WATER )
+  {
+    if( u.walk == Locomotion.terrestrial )
+    {
+      return Collision.water;
+    }
+  }
+  // If the monster is _only_ able to move over water, but this tile does not
+  // have water, movement onto this space is impossible.
+  else
+  {
+    if( u.walk == Locomotion.aquatic )
+    {
+      return Collision.movement_impossible;
+    }
+  }
+
+} // Collision check_collision( Map*, Monst, ubyte, ubyte, byte, byte )
+
+// SECTION 3: ////////////////////////////////////////////////////////////////
 // Monster Movement                                                         //
 //////////////////////////////////////////////////////////////////////////////
 
@@ -210,7 +288,7 @@ check_collision:
   }
 }
 
-// SECTION 3: ////////////////////////////////////////////////////////////////
+// SECTION 4: ////////////////////////////////////////////////////////////////
 // Monster AI                                                               //
 //////////////////////////////////////////////////////////////////////////////
 
@@ -259,7 +337,7 @@ void map_move_all_monsters( Map* m, Player* u )
   }
 }
 
-// SECTION 4: ////////////////////////////////////////////////////////////////
+// SECTION 5: ////////////////////////////////////////////////////////////////
 // Attacking                                                                //
 //////////////////////////////////////////////////////////////////////////////
 
@@ -324,7 +402,7 @@ static if( BLOOD )
   }
 }
 
-// SECTION 5: ////////////////////////////////////////////////////////////////
+// SECTION 6: ////////////////////////////////////////////////////////////////
 // Player Movement                                                          //
 //////////////////////////////////////////////////////////////////////////////
 

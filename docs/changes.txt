@@ -1,5 +1,34 @@
 SwashRL official changelog
 
+VERSION 0.033
+
+  Save files from version 0.032 and earlier will not be compatible with this
+  or future versions of SwashRL.
+
+  Corrections:
+   - The previous version was referred to as 0.32 in this changelog.  The
+     actual version number was 0.032.
+
+  Fixed:
+   - Terrestrial monsters can no longer walk across water diagonally by
+     taking advantage of poor collision detection.
+   - Killing a monster no longer causes a range error by decrementing the
+     array index while still accessing elements in the array.
+
+  Changed:
+   - The flags used to determine monster behavior and item types have been
+     altered substantially, making the code much more readable and consistent.
+   - Monster AI has been improved slightly, allowing the monster to do
+     collision detection multiple times per turn.  This also prevents the
+     goobling from using hax to walk across water diagonally.
+
+  Added:
+   - The player can now drop items.  By pressing the 'd' key, he will be able
+     to drop an item from his weapon-hand or off-hand.  If only one hand has
+     an item in it, it will be dropped automatically.  Alternatively, the
+     player can drop items from the equipment screen by selecting a slot and
+     then pressing the 'd' key when the "Drop" option comes up.
+
 VERSION 0.32
 Finalized 2020-09-11 17:28 CDT
 

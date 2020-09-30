@@ -94,5 +94,5 @@ enum MAX_MESSAGE_BUFFER = 20;
 // Add more test monsters to the test map.  Only relevant to debug builds.
 debug
 {
-enum MORE_TEST_MONSTERS = false;
+    enum MORE_TEST_MONSTERS = false;
 }

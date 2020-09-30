@@ -32,9 +32,9 @@ import global;
 import std.stdio : File;
 
 // Quickly check if a number is within a certain range.
-bool within_minmax(T)( T n, T floor, T ceil )
+bool within_minmax(T)( T num, T floor, T ceil )
 {
-    if( floor <= n && n <= ceil && floor <= ceil )
+    if( floor <= num && num <= ceil && floor <= ceil )
     {
         return true;
     }
@@ -43,7 +43,7 @@ bool within_minmax(T)( T n, T floor, T ceil )
 }
 
 // Changes a number to be within a certain range.
-T minmax(T)( T n, T floor, T ceil )
+T minmax(T)( T num, T floor, T ceil )
 {
     if( floor == ceil )
     {
@@ -52,10 +52,10 @@ T minmax(T)( T n, T floor, T ceil )
 
     if( floor > ceil )
     {
-        return n;
+        return num;
     }
 
-    return floor > n ? floor : ceil < n ? ceil : n;
+    return floor > num ? floor : ceil < num ? ceil : num;
 }
 
 // Reads a line from a file and strips the newline off the end.

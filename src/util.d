@@ -34,28 +34,35 @@ import std.stdio : File;
 // Quickly check if a number is within a certain range.
 bool within_minmax(T)( T n, T floor, T ceil )
 {
-  if( floor <= n && n <= ceil && floor <= ceil )
-  { return true;
-  }
-  return false;
+    if( floor <= n && n <= ceil && floor <= ceil )
+    {
+        return true;
+    }
+
+    return false;
 }
 
 // Changes a number to be within a certain range.
 T minmax(T)( T n, T floor, T ceil )
 {
-  if( floor == ceil )
-  { return floor;
-  }
-  if( floor > ceil )
-  { return n;
-  }
-  return floor > n ? floor : ceil < n ? ceil : n;
+    if( floor == ceil )
+    {
+        return floor;
+    }
+
+    if( floor > ceil )
+    {
+        return n;
+    }
+
+    return floor > n ? floor : ceil < n ? ceil : n;
 }
 
 // Reads a line from a file and strips the newline off the end.
 string strip_line( File fil )
 {
-  char[] line = fil.readln().dup;
-  line.length--;
-  return cast(string)line;
+    char[] line = fil.readln().dup;
+    line.length--;
+
+    return cast(string)line;
 }

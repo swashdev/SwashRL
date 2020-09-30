@@ -1,7 +1,7 @@
 SwashRL Guidelines for Contributors
 ===================================
 
-Version 1.0.3.  Last updated 2020-03-07 21:14 CST
+Version 1.0.4.  Last updated 2020-09-18 17:05 CDT
 
 ---
 
@@ -106,64 +106,54 @@ on us, and on you, as a result.
 
 ## Style Guide
 
-SwashRL's code is written to be readable by the average user.  Because
-SwashRL is written in D, a relatively new language, this is particularly
-important.  As such, we have a few perhaps unconventional rules about the
-aesthetics of the source code that you should keep in mind while writing your
-changes:
+SwashRL's code is written to be readable by the average user.  This means
+ample use of whitespace and clear naming conventions.  In general, the style
+guide should match [The D Style], but there are some notable exceptions:
 
-* The code is indented using two spaces, not tab characters, with function
-parameters padded with a space on either side to make relevant parenthesis
-more visible.
+* **White space**: Add a space after opening parenthesis `(` and before
+  closing parenthesis `)` in function calls and conditional statements (`if`,
+  `while`, &c).
 
-* Where possible, the length of each line of code is limited to 78 characters,
-to keep it and diff files related to it readable on your average command
-line terminal.  There are some exceptions to this rule, because not every
-line of code can easily be broken up into 78-character lines, but in general
-we work hard to ensure that this is the case.
+* **Line width**: In general, code lines should _prefer_ to be no longer than
+  78 characters, to make code and diff files readable on a standard 80x24
+  terminal.  A _hard limit_ of 120 characters is imposed in accordance with
+  [The D Style].
 
-* Conditional statements, such as `static if` or `version` statements, are
-_not_ indented, but their contents are.  This convention is a holdover from
-when the source code was written in C, and is done to make these conditional
-programming blocks more visible.
+* **Block length**: The end of any code block exceeding 22 lines in length
+  should have a comment on the same line as the end-bracket `}` which
+  indicates which block it was a part of, to assist readability on standard
+  80x24 terminals.
 
-* Class and object names are always Capitalized\_Like\_This, global variables
-always have the first letter of their name Capitalized\_like\_this, constants
-and enums are always named IN\_ALL\_CAPS, and words in all variable, function,
-class, enum, &c names are always separated\_by\_underscores.
+* **Naming conventions**: SwashRL always uses snake\_case.  A minimum variable
+  name length of 3 is imposed to discourarge ambiguity in the code, with
+  exceptions made for coordinate names such as `x`, `y`, `dx`, et cetera.  
+  Capitalization rules are as follows:
 
-* Two different conventions are used for comment lines:
+  * Normal variables and functions, including member variables and functions,
+    are named in\_all\_lowercase.
+
+  * Global variables are named with the first letter Capitalized\_like\_this.
+
+  * Constants are named IN\_ALL\_CAPS.
+
+  * Classes and structs are named in initial caps Like\_This.
+
+  * Enums should use Initial\_Caps like classes, while their members should
+    use all_lowercase like normal variables; this is, in my opinion, the
+    generally least confusing compromise between my code style and
+    [The D Style].
+
+* **Comment lines**: Three different conventions are used for comment lines:
 
   1. Most comment lines use a `//`double-slash format, so that users can
-accidentally delete a line without breaking anything.
+     accidentally delete a line without breaking anything.
 
   2. Comment blocks which are considered important, such as copyright notices,
-attribution notices, or otherwise important notices, use the more modern
-`/*`slash-asterisk format`*/` with an asterisk preceding each new line.
+     attribution notices, or otherwise important notices, use the more modern
+     `/*`slash-asterisk format`*/` with an asterisk preceding each new line.
 
-  3. In the case of section headers, a box is drawn around the comment using
-asterisks or slashes to grab the user's attention.
-
-* Curly brackets `{}` should always be placed on their own line, like this:  
-`if( this )`  
-`{`  
-`..that();`  
-`..the( other );`  
-`}`  
-The exception to this rule is code blocks which contain only one line.  In a
-lot of conventions, curly brackets aren't used at all, but in our case we
-choose a less ambiguous compromise:  
-`if( this )`  
-`{ that();`  
-`}`
-
-* The end of a long ``if`` block, function, or other programming block that
-ends with a curly bracket ``}`` should include a ``//`` comment that lets the
-user know which block that curly bracket marks the end of.  This will also
-make it easier for you to keep track of your own code.
-
-As a rule of thumb, just try to make your code look like our code for the sake
-of consistency and you'll be fine.
+  3. In the case of section headers, a box or line is drawn using slashes to
+     grab the user's attention.
 
 [the SwashRL license]: ../LICENSE.txt
 [the third-party licenses file]: ../3rdparty.txt
@@ -179,3 +169,4 @@ of consistency and you'll be fine.
 [Pull Request]: https://github.com/swashdev/SwashRL/pulls
 [the guide on their website]: https://guides.github.com/activities/hello-world/
 [GitHub offers a helpful guide]: https://help.github.com/articles/creating-a-commit-with-multiple-authors/
+[The D Style]: https://dlang.org/dstyle.html

@@ -201,7 +201,7 @@ bool quick_check( uint num, int mod, uint difficulty )
 // As above, but without modifier.
 bool quick_check( uint num, uint difficulty )
 {
-    quick_check( num, 0, difficulty )
+    return quick_check( num, 0, difficulty );
 }
 
 // Quickly do an "extended" difficulty check with minimum and maximum dice
@@ -216,5 +216,5 @@ bool quick_check_x( uint num, int mod, uint difficulty,
 bool quick_check_x( uint num, uint difficulty,
                     int floor, int ceiling )
 {
-    return quick_check_x( num, 0, difficulty, floor, ceiling )
+    return quick_check_x( num, 0, difficulty, floor, ceiling );
 }

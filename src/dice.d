@@ -40,28 +40,16 @@ import core.stdc.time;
 // Stores data for dice rolls.
 struct Dicebag
 {
-  // `dice' is the number of d6es, `modifier' gets added to the result of the
-  // roll
-  uint dice;
-  int modifier;
-  // `floor' and `ceiling' represent an absolute maximum and absolute minimum.
-  // these are enforced after the modifier is added.  If `floor' < `ceiling',
-  // use the global limits.  Note that there is absolutely nothing stopping
-  // you from making `ceiling' negative as long as `floor' is lesser or equal.
-  int floor, ceiling;
-}
+    // `dice` is the number of d6es, `modifier` gets added to the result of
+    // the roll
+    uint dice;
+    int modifier;
 
-/* Defines a `Dicebag`.
- *
- * Deprecated:
- *   This function is a holdover from the C days.  Use D's generic struct
- *   constructor instead.
- * XXX: Check and see if we can remove this function without breaking the code
- */
-Dicebag Dice( uint d, int m, int f, int c )
-{ 
-  Dicebag r = { dice:d, modifier:m, floor:f, ceiling:c };
-  return r;
+    // `floor` and `ceiling` represent an absolute maximum and absolute
+    // minimum.  These are enforced after the modifier is added.
+    // Note that there is absolutely nothing stopping you from making
+    // `ceiling` negative as long as `floor` is lesser or equal.
+    int floor, ceiling;
 }
 
 // SECTION 2: ////////////////////////////////////////////////////////////////
@@ -76,142 +64,157 @@ static Random Lucky;
 // Random Number Generator Settings & Maintenance ////////////////////////////
 
 // Sets the seed for the random number generator `Lucky`.
-void set_seed( int s )
-{ Lucky = Random( s );
+void set_seed( int fixed_seed )
+{
+    Lucky = Random( fixed_seed );
 }
 
 // Generates a seed for the random number generator `Lucky` from system time.
 void seed()
-{ Lucky = Random( cast(int)core.stdc.time.time(null) );
+{
+    Lucky = Random( cast(int)core.stdc.time.time(null) );
 }
 
 // SECTION 3: ////////////////////////////////////////////////////////////////
 // Functions to Represent Dicerolls                                         //
 //////////////////////////////////////////////////////////////////////////////
 
+// Generic Die-Rolling Functions /////////////////////////////////////////////
+
+// Roll a die.  This function will return a uniform distribution between 1 and
+// `sides` (or 0 if `sides` is 0).  The default case is a six-sided die, the
+// standard in SwashRL.
+int d( uint sides = 6 )
+{
+    int result = sides;
+
+    if( sides > 1 )
+    {
+        result = uniform( 1, sides + 1, Lucky );
+    }
+
+    return result;
+}
+
+// Roll a given `num`ber of dice with the given `sides` and add the given
+// `mod`ifier.  The default is 1d6 + 0.  As a general rule, it's best practice
+// to add modifiers outside of this function, but `mod` is included for the
+// sake of completeness.
+int roll( uint num = 1, uint sides = 6, int mod = 0 )
+{
+    if( num == 0 )
+    {
+        return mod;
+    }
+
+    return d( sides ) + roll( num - 1, sides, mod );
+}
+
+// Same as `roll` but with explicit minimum and maximum possible results.
+// Note that the number is minmaxed _after_ the modifier is added.
+int roll_within( int min, int max, uint num = 1, uint sides = 6,
+                 int mod = 0 )
+{
+    return minmax( roll( num, sides, mod ), min, max );
+}
+
+// Same as roll_within, but using a `Dicebag` to fill in the relevant data.
+int roll_bag( Dicebag dice )
+{
+    return roll_within( dice.floor, dice.ceiling, dice.dice, 6,
+                        dice.modifier );
+}
+
+// Non-Standard Die-Rolling Functions ////////////////////////////////////////
+
+// Simulate the roll of a "traditional" ten-sided die, that is a twenty-sided
+// die numbered from 0 to 10 twice.  If `num` is greater than 1, simulate the
+// rolling of multiple such dice.  `mod` is included for the sake of
+// completeness, but as a general rule it's best practice to add the modifier
+// in an external function.
+int d10( uint num = 1, int mod = 0 )
+{
+    if( num == 0 )
+    {
+        return mod;
+    }
+
+    auto result = uniform( 0, 20, Lucky );
+
+    if( result > 9 )
+    {
+        result -= 10;
+    }
+
+    return result + d10( num - 1, mod );
+}
+
+// Roll a percentile die using the traditional method of rolling two d10s.
+// As above, `num` will determine how many percentile dice are rolled and
+// `mod` will add a modifier to the result.
+int d100( uint num = 1, int mod = 0 )
+{
+    if( num == 0 )
+    {
+        return mod;
+    }
+
+    int ten = d10(), unit = d10();
+    int result = (ten * 10) + unit;
+
+    if( result == 0 )
+    {
+        result = 100;
+    }
+
+    return result + d100( num - 1, mod );
+}
+
 // Boolean Dice //////////////////////////////////////////////////////////////
 
 // Gets a random boolean from a simulated coin toss.
 bool flip()
-{ return cast(bool)uniform( 0, 2, Lucky );
+{
+    return d( 2 ) == 2;
 }
 
-// The Standard Six-Sided Die ////////////////////////////////////////////////
+// Impossible Dice ///////////////////////////////////////////////////////////
 
-// The standard die in SwashRL is the d6, which is generated here as a
-// uniform distribution between 1 and 6 and returned as a `uint`.
-int d()
-{ return uniform( 1, 7, Lucky );
+// Return a number between `min` and `max` inclusive without simulating a dice
+// roll.  Useful for random number generation, but breaks the theme of using
+// dice for everything.
+int not_dice( int min, int max )
+{
+    return uniform( min, max + 1, Lucky );
 }
-
-// Roll a d6 and add the given modifier.
-int dm( int mod )
-{ return (d() + mod);
-}
-
-// Other Standard Role-Playing Dice //////////////////////////////////////////
-
-// Roll a "traditional" d10 numbered from 0 to 9.
-int td10()
-{
-  auto result = uniform( 1, 21, Lucky );
-  if( result > 9 )
-  { result -= 10;
-  }
-  return result;
-}
-
-// Roll a "non-traditional" d10 numbered from 1 to 10.
-int d10()
-{
-  int result = td10();
-  return result == 0 ? 10 : result;
-} 
-
-// Roll a percentile die using the traditional method of rolling two d10s.
-int d100()
-{
-  int t = td10(), u = td10();
-  if( t == 0 && u == 0 )
-  { return 100;
-  } 
-  return (t * 10) + u;
-} 
-
-// Non-Standard Dice /////////////////////////////////////////////////////////
-
-// Yes, two-sided dice exist in real life.
-int d2()
-{ return uniform( 1, 3 );
-} 
-
-// Roll a die with an arbitrary number of sides.
-// If s == 1, just return 1.  If s == 0, return 0.
-// If s < 0, force that result (e.g., -4 always produces 4)
-int dn( int s )
-{
-  if( s < 2 )
-  {
-    if( s >= 0 )
-    { return s;
-    } 
-    return -s;
-  } 
-  return uniform( 1, s + 1, Lucky );
-} 
 
 // SECTION 4: ////////////////////////////////////////////////////////////////
-// Functions Representing Full or "Extended" Dicerolls                      //
+// Difficulty Checks                                                        //
 //////////////////////////////////////////////////////////////////////////////
-
-// Roll a given number of six-sided dice and add the given modifier.
-int roll( uint num, int mod )
-{
-  if( num == 0 )
-  { return mod;
-  } 
-
-  uint result;
-
-  foreach( dice; 0 .. num )
-  { result += d();
-  } 
-
-  return result + mod;
-} 
-
-// Perform an "extended roll" using the given number of six-sided dice and the
-// given modifier, with maximum and minimum possible values.
-int roll_x( uint num, int mod, uint floor, uint ceiling )
-{
-  if( num == 0 )
-  { return mod;
-  } 
-
-  uint result = 0;
-  foreach( dice; 0 .. num-1 )
-  {
-    result += d();
-  } 
-
-  return minmax( result, floor, ceiling ) + mod;
-}
-
-// Same as roll_x, but using a `Dicebag` to fill in the relevant data.
-int roll_bag( Dicebag dice )
-{ return roll_x( dice.dice, dice.modifier, dice.floor, dice.ceiling );
-}
-
-// Functions Representing Simple Difficulty Checks ///////////////////////////
 
 // Quickly do a difficulty check.
 bool quick_check( uint num, int mod, uint difficulty )
-{ return roll( num, mod ) <= difficulty;
+{
+    return roll( num, 6, mod ) <= difficulty;
+}
+
+// As above, but without modifier.
+bool quick_check( uint num, uint difficulty )
+{
+    quick_check( num, 0, difficulty )
 }
 
 // Quickly do an "extended" difficulty check with minimum and maximum dice
-// rolls (using roll_x instead of roll)
+// rolls (using roll_within instead of roll)
 bool quick_check_x( uint num, int mod, uint difficulty,
                     int floor, int ceiling )
-{ return roll_x( num, mod, floor, ceiling ) <= difficulty;
+{
+    return roll_within( floor, ceiling, num, 6, mod ) <= difficulty;
+}
+
+// As above, but without modifier
+bool quick_check_x( uint num, uint difficulty,
+                    int floor, int ceiling )
+{
+    return quick_check_x( num, 0, difficulty, floor, ceiling )
 }

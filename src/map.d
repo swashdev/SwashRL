@@ -41,7 +41,7 @@ import std.algorithm.mutation;
 // A `struct' used to store `Room's for the Map generation code
 struct Room
 {
-  int x1, y1, x2, y2;
+    int x1, y1, x2, y2;
 }
 
 // SECTION 2: ////////////////////////////////////////////////////////////////
@@ -51,13 +51,13 @@ struct Room
 // A struct which stores map data
 struct Map
 {
-  Tile[MAP_X][MAP_Y]   t; // `t'iles
-  Monst[]              m; // 'm'onsters
-  Item[MAP_X][MAP_Y]   i; // 'i'tems
-  Room[12]             r; // 'r'ooms
-  bool[MAP_X][MAP_Y]   v; // 'v'isibility
+    Tile[MAP_X][MAP_Y]   tils;
+    Monst[]              mons;
+    Item[MAP_X][MAP_Y]   itms;
+    Room[12]             rooms;
+    bool[MAP_X][MAP_Y]   visible;
 
-  ubyte[2] player_start;
+    ubyte[2] player_start;
 }
 
 // SECTION 3: ////////////////////////////////////////////////////////////////
@@ -69,84 +69,113 @@ struct Map
 // "drops" an item in the map at the given coordinates.  If `inform_player` is
 // true, send the player a message to indicate that the item was moved due to
 // an item already being present.
-void drop_item( Map* mp, Item it, ubyte at_x, ubyte at_y,
+void drop_item( Map* map, Item itm, ubyte at_x, ubyte at_y,
                 bool inform_player = false )
 {
-  ubyte x = minmax!(ubyte)( at_x, 0, MAP_x );
-  ubyte y = minmax!(ubyte)( at_y, 0, MAP_y );
-
-  if( inform_player )  message( "You drop the %s.", it.name );
-  
-  while( Item_here( mp.i[y][x] ) )
-  {
+    ubyte x = minmax!(ubyte)( at_x, 0, MAP_x );
+    ubyte y = minmax!(ubyte)( at_y, 0, MAP_y );
 
     if( inform_player )
-    { message( "The %s bounces off of a %s", it.name, mp.i[y][x].name );
-    }
-
-    do
     {
-      // the item "bounces" off an item or wall into an adjacent tile
-      Move fall = cast(Move)not_dice( 0, 7 );
-      switch( fall )
-      {
-        default: continue;
-        case Move.northwest:
-          x--; y--;  break;
-        case Move.north:
-               y--;  break;
-        case Move.northeast:
-          x++; y--;  break;
-        case Move.west:
-          x--;       break;
-        case Move.east:
-          x++;       break;
-        case Move.southwest:
-          x--; y++;  break;
-        case Move.south:
-               y++;  break;
-        case Move.southeast:
-          x++; y++;  break;
-      }
-
-    } while( mp.t[y][x].block_cardinal_movement
-             && mp.t[y][x].block_diagonal_movement );
-
-  } // while( Item_here( mp.i[y][x] ) )
-
-  // destroy the item if it falls in water.
-  if( mp.t[y][x].hazard & HAZARD_WATER )
-  {
-    if( inform_player )
-    { message( "The %s falls in the water and sinks.", it.name );
+        message( "You drop the %s.", itm.name );
     }
-  }
-  // otherwise, place the item in the map.
-  else
-  { mp.i[y][x] = it;
-  }
+  
+    while( Item_here( map.itms[y][x] ) )
+    {
 
+        if( inform_player )
+        {
+            message( "The %s bounces off of a %s", itm.name,
+                     map.itms[y][x].name );
+        }
+
+        do
+        {
+            // the item "bounces" off an item or wall into an adjacent tile
+            Move fall = cast(Move)not_dice( 0, 7 );
+
+            switch( fall )
+            {
+                default:
+                    continue;
+
+                case Move.northwest:
+                    x--;
+                    y--;
+                    break;
+
+                case Move.north:
+                    y--;
+                    break;
+
+                case Move.northeast:
+                    x++;
+                    y--;
+                    break;
+
+                case Move.west:
+                    x--;
+                    break;
+
+                case Move.east:
+                    x++;
+                    break;
+
+                case Move.southwest:
+                    x--;
+                    y++;
+                    break;
+
+                case Move.south:
+                    y++;
+                    break;
+
+                case Move.southeast:
+                    x++;
+                    y++;
+                    break;
+            } // switch( fall )
+
+        } while( map.tils[y][x].block_cardinal_movement
+                 && map.tils[y][x].block_diagonal_movement );
+
+    } // while( Item_here( map.itms[y][x] ) )
+
+    // destroy the item if it falls in water.
+    if( map.tils[y][x].hazard & HAZARD_WATER )
+    {
+        if( inform_player )
+        {
+            message( "The %s falls in the water and sinks.", itm.name );
+        }
+    }
+    // otherwise, place the item in the map.
+    else
+    {
+        map.itms[y][x] = itm;
+    }
 } // drop_item( Map*, Item, ubyte, ubyte, bool? )
 
 // Add & Remove Monsters /////////////////////////////////////////////////////
 
 // Add a monster to the given map
-void add_mon( Map* mp, Monst mn )
+void add_mon( Map* map, Monst mon )
 {
-  size_t mndex = mp.m.length;
-  if( mndex < NUMTILES )
-  {
-    mp.m.length++;
-    mp.m[mndex] = mn;
-  }
+    size_t mndex = map.mons.length;
+    if( mndex < NUMTILES )
+    {
+        map.mons.length++;
+        map.mons[mndex] = mon;
+    }
 }
 
 // Remove a monster from the given map by index
-void remove_mon( Map* mp, uint index )
+void remove_mon( Map* map, uint index )
 {
-  // To remove a Monster in a Map's mon array, move all Monsters that are
-  // past it in the array up, thus overwriting it.
-  if( index < mp.m.length )
-  { mp.m = mp.m.remove( index );
-  }
+    // To remove a Monster in a Map's mon array, move all Monsters that are
+    // past it in the array up, thus overwriting it.
+    if( index < map.mon.length )
+    {
+        map.mons = map.mons.remove( index );
+    }
 }

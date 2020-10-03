@@ -115,12 +115,13 @@ int roll( uint num = 1, uint sides = 6, int mod = 0 )
 int roll_within( int min, int max, uint num = 1, uint sides = 6,
                  int mod = 0 )
 {
-    return minmax( roll( num, sides, mod ), min, max );
+    return minmax!int( roll( num, sides, mod ), min, max );
 }
 
 // Same as roll_within, but using a `Dicebag` to fill in the relevant data.
 int roll_bag( Dicebag dice )
 {
+
     return roll_within( dice.floor, dice.ceiling, dice.dice, 6,
                         dice.modifier );
 }

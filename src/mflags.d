@@ -30,5 +30,5 @@
 
 enum Locomotion
 {
-  sessile, terrestrial, amphibious, aquatic, aerial
+    sessile, terrestrial, amphibious, aquatic, aerial
 }

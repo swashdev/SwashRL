@@ -32,244 +32,277 @@
 version( curses )
 {
 
-import global;
+    import global;
 
-import std.string : toStringz;
-import std.ascii : toLower;
-import std.string : format;
+    import std.string : toStringz;
+    import std.ascii : toLower;
+    import std.string : format;
 
-// This class contains functions for the curses display.  See iomain.d for the
-// SwashIO interface.
-class CursesIO : Swash_IO
-{
+    // This class contains functions for the curses display.  See iomain.d for
+    // the Swash_IO interface.
+    class Curses_IO : Swash_IO
+    {
 
 // SECTION 1: ////////////////////////////////////////////////////////////////
 // Setup & Cleanup                                                          //
 //////////////////////////////////////////////////////////////////////////////
 
-  // This constructor will initialize the curses window.
-  this( ubyte screen_size_vertical = 24, ubyte screen_size_horizontal = 80 )
-  {
-    // Initializing curses
-    initscr();
-    // pass raw input directly to curses
-    raw();
-    // do not echo user input
-    noecho();
-    // enable the keypad and function keys
-    keypad( stdscr, 1 );
+        // This constructor will initialize the curses window.
+        this( ubyte screen_size_vertical = 24,
+              ubyte screen_size_horizontal = 80 )
+        {
+            // Initializing curses
+            initscr();
+    
+            // pass raw input directly to curses
+            raw();
+    
+            // do not echo user input
+            noecho();
+    
+            // enable the keypad and function keys
 
-    // enable color:
-static if( COLOR )
-{
-    start_color();
-}
-  }
+            keypad( stdscr, 1 );
 
-  // Close the curses window.
-  void cleanup()
-  { endwin();
-  }
+            // enable color:
+            static if( COLOR )
+            {
+                start_color();
+            }
+        }
 
-  // This function has no practical purpose and is only required because the
-  // SwashIO interface must define it for SDL compatibility.
-  bool window_closed()
-  { return false;
-  }
+        // Close the curses window.
+        void cleanup()
+        {
+            endwin();
+        }
+
+        // This function has no practical purpose and is only required because
+        // the Swash_IO interface must define it for SDL compatibility.
+        bool window_closed()
+        {
+            return false;
+        }
 
 // SECTION 2: ////////////////////////////////////////////////////////////////
 // Curses Utility Functions                                                 //
 //////////////////////////////////////////////////////////////////////////////
 
-  // Takes in a color flag and returns a curses-style `attr_t' representing
-  // that color.
-  attr_t get_color( Colors color = Colors.Default )
-  {
-    return COLOR_PAIR( Clr[color].get_color_pair() );
-  } // attr_t get_color( Colors? )
+        // Takes in a color flag and returns a curses-style `attr_t`
+        // representing that color.
+        attr_t get_color( Colors color = Colors.Default )
+        {
+            return COLOR_PAIR( Clr[color].get_color_pair() );
+        }
 
 // SECTION 3: ////////////////////////////////////////////////////////////////
 // Input                                                                    //
 //////////////////////////////////////////////////////////////////////////////
 
-  // Gets a character input from the user and returns it.
-  char get_key()
-  { return cast(char)getch();
-  }
+        // Gets a character input from the user and returns it.
+        char get_key()
+        {
+            return cast(char)getch();
+        }
 
-  // Outputs a question to the user and returns a `char` result based on their
-  // answer.
-  char ask( string question, char[] options = ['y', 'n'],
-            bool assume_lower = false )
-  {
-    clear_message_line();
-    char[] q = (question ~ " [").dup;
-    foreach( c; 0 .. options.length )
-    {
-      q ~= options[c];
-      if( c + 1 < options.length )
-      { q ~= '/';
-      }
-    }
-    q ~= ']';
+        // Outputs a question to the user and returns a `char` result based on
+        // their answer.
+        char ask( string question, char[] options = ['y', 'n'],
+                  bool assume_lower = false )
+        {
+            clear_message_line();
+            char[] output = (question ~ " [").dup;
 
-    put_line( 0, 0, q );
-    refresh_screen();
+            foreach( letter; 0 .. options.length )
+            {
+                output ~= options[letter];
 
-    char answer = '\0';
+                if( letter + 1 < options.length )
+                {
+                    output ~= '/';
+                }
+            }
 
-    while( true )
-    {
-      answer = get_key();
+            output ~= ']';
 
-      if( assume_lower ) answer = toLower( answer );
+            put_line( 0, 0, output );
+            refresh_screen();
 
-      foreach( c; 0 .. options.length )
-      { if( answer == options[c] ) return answer;
-      }
-    }
-  }
+            char answer = '\0';
+
+            while( true )
+            {
+                answer = get_key();
+
+                if( assume_lower )
+                {
+                    answer = toLower( answer );
+                }
+
+                foreach( count; 0 .. options.length )
+                {
+                    if( answer == options[count] )
+                    {
+                        return answer;
+                    }
+                }
+            }
+        } // char ask( string, char[]?, bool? )
 
 // SECTION 4: ////////////////////////////////////////////////////////////////
 // Output                                                                   //
 //////////////////////////////////////////////////////////////////////////////
 
-  // General Output //////////////////////////////////////////////////////////
+        // General Output ////////////////////////////////////////////////////
 
-  // Clears the screen.
-  void clear_screen()
-  { clear();
-  }
+        // Clears the screen.
+        void clear_screen()
+        {
+            clear();
+        }
 
-  // Refreshes the screen to reflect the changes made by the below `display`
-  // functions.
-  void refresh_screen()
-  { refresh();
-  }
+        // Refreshes the screen to reflect the changes made by the below
+        // `display` functions.
+        void refresh_screen()
+        {
+            refresh();
+        }
 
-  // Outputs a text character at the given coordinates.
-  void put_char( uint y, uint x, char c, Colors color = Colors.Default )
-  {
-
-    Color_Pair color_pair = Clr[color];
+        // Outputs a text character at the given coordinates.
+        void put_char( uint y, uint x, char c, Colors color = Colors.Default )
+        {
+            Color_Pair color_pair = Clr[color];
     
-static if( TEXT_EFFECTS )
-{
-    if( color_pair.get_bright() )
-    { attron( A_BOLD );
-    }
-    else
-    { attroff( A_BOLD );
-    }
-    if( color_pair.get_inverted() )
-    { attron( A_REVERSE );
-    }
-    else
-    { attroff( A_REVERSE );
-    }
-}
-static if( COLOR )
-{
-    attron( COLOR_PAIR( color_pair.get_color_pair() ) );
-}
-    mvaddch( y, x, c );
-static if( COLOR )
-{
-    attroff( COLOR_PAIR( color_pair.get_color_pair() ) );
-}
-  }
+            static if( TEXT_EFFECTS )
+            {
+                if( color_pair.get_bright() )
+                {
+                    attron( A_BOLD );
+                }
+                else
+                {
+                    attroff( A_BOLD );
+                }
 
-  // The central display function.  If `center` is true, the cursor will be
-  // moved over the place where the symbol was output.
-  void display( uint y, uint x, Symbol s, bool center = false )
-  {
-    put_char( y, x, s.ascii, s.color );
+                if( color_pair.get_inverted() )
+                {
+                    attron( A_REVERSE );
+                }
+                else
+                {
+                    attroff( A_REVERSE );
+                }
+            }
 
-    if( center )
-    { move( y, x );
-    }
-  }
+            static if( COLOR )
+            {
+                attron( COLOR_PAIR( color_pair.get_color_pair() ) );
+            }
 
-  // Prints a string at the given coordinates.
-  void put_line( T... )( uint y, uint x, T args )
-  {
-    import std.string : toStringz;
-    string output = format( args );
-    mvprintw( y, x, toStringz( output ) );
-  }
+            mvaddch( y, x, c );
 
-  // The Message Line ////////////////////////////////////////////////////////
+            static if( COLOR )
+            {
+                attroff( COLOR_PAIR( color_pair.get_color_pair() ) );
+            }
+        } // void put_char( uint, uint, char, Colors? )
 
-  // Clears the current message off the message line.
-  void clear_message_line()
-  {
-    foreach( y; 0 .. MESSAGE_BUFFER_LINES )
-    {
-      foreach( x; 0 .. MAP_X )
-      { put_char( y, x, ' ' );
-      }
-    }
-  }
+        // The central display function.  If `center` is true, the cursor will
+        // be moved over the place where the symbol was output.
+        void display( uint y, uint x, Symbol sym, bool center = false )
+        {
+            put_char( y, x, sym.ascii, sym.color );
 
-  // Outputs all of the messages in the message queue.
-  void read_messages()
-  {
-    while( !Messages.empty() )
-    {
-      clear_message_line();
-      put_line( 0, 0, "%s%s", pop_message(),
-                Messages.empty() == false ? "  (More)" : "" );
-      refresh_screen();
+            if( center )
+            {
+                move( y, x );
+            }
+        }
 
-      if( !Messages.empty() )
-      { get_key();
-      }
-    }
-  }
+        // Prints a string at the given coordinates.
+        void put_line( T... )( uint y, uint x, T args )
+        {
+            string output = format( args );
+            mvprintw( y, x, toStringz( output ) );
+        }
 
-  // Gives the player a menu containing their message history.
-  void read_message_history()
-  {
-    clear_screen();
+        // The Message Line //////////////////////////////////////////////////
 
-    uint actual_c = 0;
-    foreach( c; 0 .. Message_history.length )
-    {
-      if( actual_c > 23 )
-      {
-        refresh_screen();
-        get_key();
-        clear_screen();
-        actual_c = 0;
-      }
+        // Clears the current message off the message line.
+        void clear_message_line()
+        {
+            foreach( y; 0 .. MESSAGE_BUFFER_LINES )
+            {
+                foreach( x; 0 .. MAP_X )
+                {
+                    put_char( y, x, ' ' );
+                }
+            }
+        }
 
-      put_line( actual_c, 0, Message_history[c] );
+        // Outputs all of the messages in the message queue.
+        void read_messages()
+        {
+            while( !Messages.empty() )
+            {
+                clear_message_line();
+                put_line( 0, 0, "%s%s", pop_message(),
+                    Messages.empty() == false ? "  (More)" : "" );
+                refresh_screen();
 
-      actual_c++;
-    }
+                if( !Messages.empty() )
+                {
+                    get_key();
+                }
+            }
+        }
 
-    refresh_screen();
-    get_key();
-    clear_message_line();
-  }
+        // Gives the player a menu containing their message history.
+        void read_message_history()
+        {
+            clear_screen();
 
-  // The Status Bar //////////////////////////////////////////////////////////
+            uint line = 0;
+            
+            foreach( count; 0 .. Message_history.length )
+            {
+                if( line > 23 )
+                {
+                    refresh_screen();
+                    get_key();
+                    clear_screen();
+                    line = 0;
+                }
 
-  // Refreshes the status bar.
-  void refresh_status_bar( Player* u )
-  {
-    int hp = u.hit_points;
-    int dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].add_dice;
-    int mod = u.attack_roll.modifier
-              + u.inventory.items[INVENT_WEAPON].add_mod;
+                put_line( line, 0, Message_history[count] );
 
-    foreach( x; 0 .. MAP_X )
-    { put_char( 1 + MAP_Y, x, ' ' );
-    }
-    put_line( 1 + MAP_Y, 0, "HP: %d    Attack: %ud %c %u",
-              hp, dice, mod >= 0 ? '+' : '-', mod * ((-1) * mod < 0) );
-  }
+                line++;
+            }
 
-} // class CursesIO
+            refresh_screen();
+            get_key();
+            clear_message_line();
+        } // void read_message_history()
 
+        // The Status Bar ////////////////////////////////////////////////////
+
+        // Refreshes the status bar.
+        void refresh_status_bar( Player* plyr )
+        {
+            int hit_points = plyr.hit_points;
+            int dice = plyr.attack_roll.dice
+                + plyr.inventory.items[INVENT_WEAPON].add_dice;
+            int mod = plyr.attack_roll.modifier
+                + plyr.inventory.items[INVENT_WEAPON].add_mod;
+
+            foreach( x; 0 .. MAP_X )
+            {
+                put_char( 1 + MAP_Y, x, ' ' );
+            }
+    
+            put_line( 1 + MAP_Y, 0, "HP: %d    Attack: %ud %c %u",
+                hit_points, dice,
+                mod >= 0 ? '+' : '-', mod * ((-1) * mod < 0) );
+        }
+    } // class Curses_IO
 } // version( curses )

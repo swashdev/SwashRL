@@ -420,7 +420,7 @@ Try compiling with dub build -b debug" );
 // The Main Loop                                                            //
 //////////////////////////////////////////////////////////////////////////////
 
-  while( u.hp > 0 )
+  while( u.hit_points > 0 )
   {
 
     // Input /////////////////////////////////////////////////////////////////
@@ -601,7 +601,7 @@ drop_offhand:
 
         moved = umove( &u, &Current_map, get_direction( mv ) );
 
-        if( u.hp <= 0 )  goto playerdied;
+        if( u.hit_points <= 0 )  goto playerdied;
         break;
     }
 
@@ -628,14 +628,14 @@ drop_offhand:
 
     // Refresh the Player ////////////////////////////////////////////////////
 
-    if( u.hp > 0 )  IO.display_player( u );
+    if( u.hit_points > 0 )  IO.display_player( u );
     else  break; // end the mainloop if the player is dead
 
     // Refresh the Display ///////////////////////////////////////////////////
 
     IO.refresh_screen();
 
-  } // while( u.hp > 0 )
+  } // while( u.hit_points > 0 )
 
 // SECTION 3: ////////////////////////////////////////////////////////////////
 // Closing the Program                                                      //

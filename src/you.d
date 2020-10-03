@@ -60,7 +60,7 @@ Player init_player( ubyte y, ubyte x )
   { u.y = 1;
   }
   u.sym = Symbol( SMILEY, Colors.Player );
-  u.hp = roll( 3 ) + 2;
+  u.hit_points = roll( 3 ) + 2;
 
   u.inventory = init_inven();
 

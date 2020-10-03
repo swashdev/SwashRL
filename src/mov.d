@@ -326,7 +326,7 @@ void map_move_all_monsters( Map* m, Player* u )
 
   foreach( mn; 0 .. cast(uint)m.m.length )
   {
-    if( m.m[cast(size_t)mn].hp > 0 )
+    if( m.m[cast(size_t)mn].hit_points > 0 )
     { monst_ai( m, mn, u );
     }
     else
@@ -362,7 +362,7 @@ void mattack( Monst* m, Monst* u )
     }
     else if( is_you( *m ) && Infinite_weapon )
     {
-      u.hp = 0;
+      u.hit_points = 0;
       message( "The %s explodes from the force of your attack!", u.name );
 
 static if( BLOOD )
@@ -381,7 +381,7 @@ static if( BLOOD )
     } // else if( is_you( m ) && Infinite_weapon )
     else
     {
-      u.hp -= atk;
+      u.hit_points -= atk;
       message( "%s attack%s %s!", The_monst( *m ),
                is_you( *m ) ? "" : "s", the_monst( *u ) );
 static if( BLOOD )
@@ -398,7 +398,7 @@ static if( BLOOD )
       }
 }
 
-      if( u.hp <= 0 )  message( "%s %s slain!", The_monst( *u ),
+      if( u.hit_points <= 0 )  message( "%s %s slain!", The_monst( *u ),
                                 is_you( *u ) ? "are" : "is" );
     } // else from if( is_you( m ) && Infinite_weapon )
   } // if( atk > 0 )
@@ -428,7 +428,7 @@ uint umove( Player* u, Map* m, Direction dir )
   foreach( c; 0 .. m.m.length )
   {
     mn = &m.m[c];
-    if( mn.x == dx && mn.y == dy && mn.hp > 0 )
+    if( mn.x == dx && mn.y == dy && mn.hit_points > 0 )
     {
       mattack( u, mn );
       monster = 1;
@@ -458,7 +458,7 @@ uint umove( Player* u, Map* m, Direction dir )
     {
       if( m.t[dy][dx].hazard & HAZARD_WATER )
       {
-        u.hp = 0;
+        u.hit_points = 0;
 message( "You step into the water and are pulled down by your equipment..." );
       }
     }

@@ -258,7 +258,7 @@ static if( COLOR )
   // Refreshes the status bar.
   void refresh_status_bar( Player* u )
   {
-    int hp = u.hp;
+    int hp = u.hit_points;
     int dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].add_dice;
     int mod = u.attack_roll.modifier
               + u.inventory.items[INVENT_WEAPON].add_mod;

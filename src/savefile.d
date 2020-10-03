@@ -144,14 +144,14 @@ void save_Dicebag( Dicebag dice, File fil )
 void save_Monst( Monst mn, File fil )
 {
   // Only save the monster if it has >0 hit points.
-  if( mn.hp > 0 )
+  if( mn.hit_points > 0 )
   {
     // Each Monst has a Symbol.  Write this first.
     save_Symbol( mn.sym, fil );
 
     //Next, write the Monst's special properties.
     fil.writeln( mn.name );
-    fil.writeln( mn.hp );
+    fil.writeln( mn.hit_points );
     fil.writeln( mn.walk );
     fil.writeln( mn.x );
     fil.writeln( mn.y );

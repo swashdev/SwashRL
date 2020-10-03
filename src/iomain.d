@@ -506,7 +506,7 @@ interface SwashIO
 seppuku:
                   refresh_screen();
                   get_key();
-                  u.hp = 0;
+                  u.hit_points = 0;
                   return 0;
               }
             goto case INVENT_CUIRASS;

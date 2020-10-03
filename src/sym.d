@@ -34,7 +34,7 @@ import global;
 // A struct used to store symbols.
 struct Symbol
 {
-    char ch;
+    char ascii;
 
     Colors color;
 

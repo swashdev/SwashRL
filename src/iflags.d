@@ -32,36 +32,36 @@
 
 enum Armor
 {
-  none,
-  shield,
-  helmet,
-  cuirass,
-  pauldrons,
-  bracers,
-  ring,
-  neck,
-  greaves,
-  kilt,
-  feet,
-  tail
+    none,
+    shield,
+    helmet,
+    cuirass,
+    pauldrons,
+    bracers,
+    ring,
+    neck,
+    greaves,
+    kilt,
+    feet,
+    tail
 }
 
 // item type
 
 enum Type
 {
-  none,
-  weapon,
-  two_handed_weapon,
-  missile_weapon,
-  projectile,
-  armor,
-  tool,
-  food,
-  drink,
-  scroll,
-  book,
-  jewelery,
-  coin,
-  reagent
+    none,
+    weapon,
+    two_handed_weapon,
+    missile_weapon,
+    projectile,
+    armor,
+    tool,
+    food,
+    drink,
+    scroll,
+    book,
+    jewelery,
+    coin,
+    reagent
 }

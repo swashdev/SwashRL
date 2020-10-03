@@ -258,7 +258,7 @@ game.  Try compiling with dub build -b debug" );
 version( curses )
 {
 
-  if( SDL_none() )  IO = new CursesIO();
+  if( SDL_none() )  IO = new Curses_IO();
 
 }
 version( sdl )

@@ -125,8 +125,8 @@ void save_Item( Item i, File fil )
     fil.writeln( i.name );
     fil.writeln( i.type );
     fil.writeln( i.equip );
-    fil.writeln( i.addd );
-    fil.writeln( i.addm );
+    fil.writeln( i.add_dice );
+    fil.writeln( i.add_mod );
   }
 }
 
@@ -307,11 +307,11 @@ Item load_Item( File fil )
   string name = strip_line( fil );
   Type type = to!Type( strip_line( fil ) );
   Armor equip = to!Armor( strip_line( fil ) );
-  uint addd = to!int( strip_line( fil ) );
-  uint addm = to!int( strip_line( fil ) );
+  uint add_dice = to!int( strip_line( fil ) );
+  uint add_mod = to!int( strip_line( fil ) );
 
   // Return the resulting Item.
-  return Item( sym, name, type, equip, addd, addm );
+  return Item( sym, name, type, equip, add_dice, add_mod );
 }
 
 // Loads in a Dicebag from a file.

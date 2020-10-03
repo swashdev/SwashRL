@@ -349,8 +349,8 @@ void map_move_all_monsters( Map* m, Player* u )
 // Causes a monster to attack another monster.
 void mattack( Monst* m, Monst* u )
 {
-  int dic = m.attack_roll.dice + m.inventory.items[INVENT_WEAPON].addd;
-  int mod = m.attack_roll.modifier  + m.inventory.items[INVENT_WEAPON].addm;
+  int dic = m.attack_roll.dice + m.inventory.items[INVENT_WEAPON].add_dice;
+  int mod = m.attack_roll.modifier + m.inventory.items[INVENT_WEAPON].add_mod;
   int atk = roll_within( m.attack_roll.floor, m.attack_roll.ceiling,
                          dic, 6, mod );
 

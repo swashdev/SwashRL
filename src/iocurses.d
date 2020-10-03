@@ -259,8 +259,9 @@ static if( COLOR )
   void refresh_status_bar( Player* u )
   {
     int hp = u.hp;
-    int dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].addd;
-    int mod = u.attack_roll.modifier + u.inventory.items[INVENT_WEAPON].addm;
+    int dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].add_dice;
+    int mod = u.attack_roll.modifier
+              + u.inventory.items[INVENT_WEAPON].add_mod;
 
     foreach( x; 0 .. MAP_X )
     { put_char( 1 + MAP_Y, x, ' ' );

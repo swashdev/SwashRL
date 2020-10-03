@@ -517,8 +517,9 @@ class SDLTerminalIO : SwashIO
   void refresh_status_bar( Player* u )
   {
     int hp = u.hp;
-    int dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].addd;
-    int mod = u.attack_roll.modifier + u.inventory.items[INVENT_WEAPON].addm;
+    int dice = u.attack_roll.dice + u.inventory.items[INVENT_WEAPON].add_dice;
+    int mod = u.attack_roll.modifier
+              + u.inventory.items[INVENT_WEAPON].add_mod;
 
     // Because the status bar is considered a "message," switch the current
     // tileset to the special `message_font':

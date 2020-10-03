@@ -79,83 +79,87 @@ enum INVENT_BAG = INVENT_LAST_SLOT + 1;
 // Initializes an empty inventory
 Inven init_inven()
 {
-  Item[40] items;
-  foreach( count; 0 .. items.length )
-  { items[count] = No_item;
-  }
+    Item[40] items;
+    foreach( count; 0 .. items.length )
+    {
+        items[count] = No_item;
+    }
 
-  Item[5] wallet;
-  foreach( count; 0 .. wallet.length )
-  { wallet[count] = No_item;
-  }
+    Item[5] wallet;
+    foreach( count; 0 .. wallet.length )
+    {
+        wallet[count] = No_item;
+    }
 
-  return Inven( items, wallet );
+    return Inven( items, wallet );
 }
 
 // Checks if the player or other monster has a free grasp.
 // Note that this function doesn't require a monster, just its inventory.
 bool check_grasp( Inven tory )
 {
-  return !Item_here( tory.items[INVENT_WEAPON] )
-      || !Item_here( tory.items[INVENT_OFFHAND] );
+    return !Item_here( tory.items[INVENT_WEAPON] )
+        || !Item_here( tory.items[INVENT_OFFHAND] );
 }
 
 // Checks if a given item fits into the given equipment slot (see iflags.d)
 // TODO: See if you can move this to a more appropriate file like item.d
 bool check_equip( Item i, uint s )
 {
-  // an empty item can go in any slot (obviously)
-  if( i.sym.ch == '\0' )
-  { return true;
-  }
-  // the player can hold any item in their hands
-  if( s == INVENT_WEAPON || s == INVENT_OFFHAND )
-  { return true;
-  }
+    // an empty item can go in any slot (obviously)
+    if( i.sym.ch == '\0' )
+    {
+        return true;
+    }
+    // the player can hold any item in their hands
+    if( s == INVENT_WEAPON || s == INVENT_OFFHAND )
+    {
+        return true;
+    }
 
-  // everything else goes into the switch statement
-  switch( s )
-  {
-    case INVENT_QUIVER:
-      return i.type == Type.projectile;
+    // everything else goes into the switch statement
+    switch( s )
+    {
+      case INVENT_QUIVER:
+        return i.type == Type.projectile;
 
-    case INVENT_HELMET:
-      return i.equip == Armor.helmet;
+      case INVENT_HELMET:
+        return i.equip == Armor.helmet;
 
-    case INVENT_CUIRASS:
-      // the "cuirass" item slot can accept either cuirasses or shields (the
-      // player straps a shield to their back)
-      return i.equip == Armor.cuirass || i.equip == Armor.shield;
+      case INVENT_CUIRASS:
+        // the "cuirass" item slot can accept either cuirasses or shields (the
+        // player straps a shield to their back)
+        return i.equip == Armor.cuirass || i.equip == Armor.shield;
 
-    case INVENT_PAULDRONS:
-      return i.equip == Armor.pauldrons;
+      case INVENT_PAULDRONS:
+        return i.equip == Armor.pauldrons;
 
-    case INVENT_BRACERS:
-      return i.equip == Armor.bracers;
+      case INVENT_BRACERS:
+        return i.equip == Armor.bracers;
 
-    case INVENT_RINGL:
-      // rings are obviously ambidexterous
-    case INVENT_RINGR:
-      return i.equip == Armor.ring;
+      case INVENT_RINGL:
+        // rings are obviously ambidexterous
+      case INVENT_RINGR:
+        return i.equip == Armor.ring;
 
-    case INVENT_NECKLACE:
-      return i.equip == Armor.neck;
+      case INVENT_NECKLACE:
+        return i.equip == Armor.neck;
 
-    case INVENT_GREAVES:
-      return i.equip == Armor.greaves;
+      case INVENT_GREAVES:
+        return i.equip == Armor.greaves;
 
-    case INVENT_KILT:
-      return i.equip == Armor.kilt;
+      case INVENT_KILT:
+        return i.equip == Armor.kilt;
 
-    case INVENT_FEET:
-      return i.equip == Armor.feet;
+      case INVENT_FEET:
+        return i.equip == Armor.feet;
 
-    case INVENT_TAIL:
-      return i.equip == Armor.tail;
+      case INVENT_TAIL:
+        return i.equip == Armor.tail;
 
-    default:
-      return false;
-  }
-}
+      default:
+        return false;
+    } // switch( s )
+} // bool check_equip( Item, uint )
 
 void get_inv_slot_name( string* nam, char* ch, ubyte slot );

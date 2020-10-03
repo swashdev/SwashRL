@@ -383,7 +383,7 @@ Try compiling with dub build -b debug" );
     {
       foreach( vx; 0 .. MAP_X )
       {
-        Current_map.v[vy][vx] = true;
+        Current_map.visible[vy][vx] = true;
       }
     }
   }
@@ -520,9 +520,9 @@ Try compiling with dub build -b debug" );
 
       // pick up an item
       case Move.get:
-        if( pickup( &u, Current_map.i[u.y][u.x] ) )
+        if( pickup( &u, Current_map.itms[u.y][u.x] ) )
         {
-          Current_map.i[u.y][u.x] = No_item;
+          Current_map.itms[u.y][u.x] = No_item;
           moved = 1;
         }
 	break;
@@ -597,7 +597,7 @@ drop_offhand:
       default:
 
         IO.clear_message_line();
-        IO.display( u.y + 1, u.x, Current_map.t[u.y][u.x].sym );
+        IO.display( u.y + 1, u.x, Current_map.tils[u.y][u.x].sym );
 
         moved = umove( &u, &Current_map, get_direction( mv ) );
 

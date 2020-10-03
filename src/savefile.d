@@ -200,7 +200,7 @@ void save_level( T... )( Map m, Player u, T args )
   {
     foreach( x; 0 .. MAP_X )
     {
-      Tile t = m.t[y][x];
+      Tile t = m.tils[y][x];
 
       save_Tile( t, fil );
 
@@ -217,7 +217,7 @@ void save_level( T... )( Map m, Player u, T args )
   {
     foreach( x; 0 .. MAP_X )
     {
-      Item i = m.i[y][x];
+      Item i = m.itms[y][x];
 
       save_Item( i, fil );
 
@@ -230,14 +230,14 @@ void save_level( T... )( Map m, Player u, T args )
   fil.writeln( SEPARATOR_MARKER );
 
   // Start writing monsters:
-  foreach( n; 0 .. m.m.length )
+  foreach( n; 0 .. m.mons.length )
   {
-    Monst mn = m.m[n];
+    Monst mn = m.mons[n];
 
     save_Monst( mn, fil );
 
     // We're done with the monster.
-  } // foreach( n; 0 .. m.m.length )
+  } // foreach( n; 0 .. m.mons.length )
 
   // Leave a marker indicating that we're done with outputting monsters
   fil.writeln( SEPARATOR_MARKER );
@@ -412,7 +412,7 @@ Map level_from_file( string file_label )
     {
       Tile t = load_Tile( fil );
 
-      m.t[y][x] = t;
+      m.tils[y][x] = t;
     } // foreach( x; 0 .. MAP_X )
   } // foreach( y; 0 .. MAP_Y )
 
@@ -431,7 +431,7 @@ Map level_from_file( string file_label )
     {
       Item i = load_Item( fil );
 
-      m.i[y][x] = i;
+      m.itms[y][x] = i;
     } // foreach( x; 0 .. MAP_X )
   } // foreach( y; 0 .. MAP_Y )
 
@@ -459,8 +459,8 @@ Map level_from_file( string file_label )
 
     Monst mn = load_Monst( ch, fil );
 
-    m.m.length++;
-    m.m[count] = mn;
+    m.mons.length++;
+    m.mons[count] = mn;
     count++;
 
     ch = to!char( strip_line( fil ) );

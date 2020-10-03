@@ -174,7 +174,7 @@ void remove_mon( Map* map, uint index )
 {
     // To remove a Monster in a Map's mon array, move all Monsters that are
     // past it in the array up, thus overwriting it.
-    if( index < map.mon.length )
+    if( index < map.mons.length )
     {
         map.mons = map.mons.remove( index );
     }

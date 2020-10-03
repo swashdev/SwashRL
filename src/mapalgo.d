@@ -39,8 +39,8 @@ Map empty_Map()
   {
     foreach( x; 0 .. MAP_X )
     {
-      m.i[y][x] = No_item;
-      m.t[y][x] = TERRAIN_WALL;
+      m.itms[y][x] = No_item;
+      m.tils[y][x] = TERRAIN_WALL;
     }
   }
 
@@ -114,7 +114,7 @@ version( none )
   } // for( size_t s = 0; s < SECTORS.length; s++ )
 
   // Give the list of rooms to the generated map:
-  m.r = rs;
+  m.rooms = rs;
 
   // Add the player to a random location in a random room on the map:
   Room pr = rs[uniform( 0, 8, Lucky )];

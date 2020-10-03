@@ -659,13 +659,13 @@ discard_swap:
   // Uses `display_mon` to display all monsters on the given map.
   final void display_map_mons( Map to_display )
   {
-    size_t d = to_display.m.length;
+    size_t d = to_display.mons.length;
     Monst mn;
     foreach( c; 0 .. d )
     {
-      mn = to_display.m[c];
+      mn = to_display.mons[c];
 
-      if( No_shadows || to_display.v[mn.y][mn.x] )
+      if( No_shadows || to_display.visible[mn.y][mn.x] )
       { display_mon( mn );
       }
 
@@ -679,7 +679,7 @@ discard_swap:
     {
       foreach( x; 0 .. MAP_X )
       {
-        Symbol output = to_display.t[y][x].sym;
+        Symbol output = to_display.tils[y][x].sym;
 	Color_Pair initial_color = Clr[output.color];
 
 static if( COLOR )
@@ -688,9 +688,9 @@ static if( COLOR )
  {
           // If there is mold growing on this tile, change the tile's color
           // to green (unless there's also water)
-          if( to_display.t[y][x].hazard & SPECIAL_MOLD )
+          if( to_display.tils[y][x].hazard & SPECIAL_MOLD )
           {
-            if( !(to_display.t[y][x].hazard & HAZARD_WATER ) )
+            if( !(to_display.tils[y][x].hazard & HAZARD_WATER ) )
             {
               if( initial_color.get_inverted() )
               { output.color = Colors.Inverted_Green;
@@ -705,9 +705,9 @@ static if( COLOR )
  {
           // If there is blood spattered on this tile, change the tile's
           // color to red (unless there's also water?)
-          if( to_display.t[y][x].hazard & SPECIAL_BLOOD )
+          if( to_display.tils[y][x].hazard & SPECIAL_BLOOD )
           {
-            if( !(to_display.t[y][x].hazard & HAZARD_WATER) )
+            if( !(to_display.tils[y][x].hazard & HAZARD_WATER) )
             {
               if( initial_color.get_inverted() )
               { output.color = Colors.Inverted_Red;
@@ -720,17 +720,17 @@ static if( COLOR )
  }
 } // static if( COLOR )
 
-        if( to_display.i[y][x].sym.ascii != '\0' )
-        { output = to_display.i[y][x].sym;
+        if( to_display.itms[y][x].sym.ascii != '\0' )
+        { output = to_display.itms[y][x].sym;
         }
 
-        if( !No_shadows && !to_display.v[y][x] )
+        if( !No_shadows && !to_display.visible[y][x] )
         {
 static if( !COLOR )
           output = SYM_SHADOW;
 else
 {
-          if( to_display.t[y][x].seen )
+          if( to_display.tils[y][x].seen )
           {
             if( initial_color.get_inverted() )
             { output.color = Colors.Inverted_Dark_Gray;

@@ -108,15 +108,15 @@ void cast_light( Map* to_display, int cx, int cy, int row, float start,
         { break;
         }
         if ( dx*dx+dy*dy <= r2
-             && (light_walls || !(to_display.t[Y][X].block_vision))
+             && (light_walls || !(to_display.tils[Y][X].block_vision))
            )
         {
-          to_display.v[Y][X] = true;
-          to_display.t[Y][X].seen = true;
+          to_display.visible[Y][X] = true;
+          to_display.tils[Y][X].seen = true;
         }
         if ( blocked )
         {
-          if (to_display.t[Y][X].block_vision)
+          if (to_display.tils[Y][X].block_vision)
           {
             new_start=r_slope;
             continue;
@@ -129,7 +129,7 @@ void cast_light( Map* to_display, int cx, int cy, int row, float start,
         }
         else
         {
-          if ((to_display.t[Y][X].block_vision) && j < radius )
+          if ((to_display.tils[Y][X].block_vision) && j < radius )
           {
             blocked=true;
             cast_light(to_display,cx,cy,j+1,start,l_slope,radius,r2,xx,xy,yx,
@@ -156,7 +156,7 @@ void TCOD_map_compute_fov_recursive_shadowcasting(
   /* clean the map */
   foreach (c; 0 .. MAP_Y)
   { foreach (d; 0 .. MAP_X)
-    { to_display.v[c][d] = false;
+    { to_display.visible[c][d] = false;
     }
   }
   if ( max_radius == 0 )
@@ -175,7 +175,7 @@ void TCOD_map_compute_fov_recursive_shadowcasting(
     cast_light(to_display,player_x,player_y,1,1.0,0.0,max_radius,r2,
     mult[0][oct],mult[1][oct],mult[2][oct],mult[3][oct],0,light_walls);
   }
-  to_display.v[player_y][player_x] = true;
+  to_display.visible[player_y][player_x] = true;
 }
 
 // This function was added specifically for SwashRL to quickly do the call to

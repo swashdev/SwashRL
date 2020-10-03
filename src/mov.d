@@ -153,9 +153,9 @@ Collision check_collision( Map* m, Monst* mon, ubyte dest_x, byte dest_y,
   {
     return Collision.monster;
   }
-  foreach( mn; 0 .. cast(uint)m.m.length )
+  foreach( mn; 0 .. cast(uint)m.mons.length )
   {
-    if( m.m[mn].x == dest_x && m.m[mn].y == dest_y )
+    if( m.mons[mn].x == dest_x && m.mons[mn].y == dest_y )
     {
       return Collision.monster;
     }
@@ -169,12 +169,12 @@ Collision check_collision( Map* m, Monst* mon, ubyte dest_x, byte dest_y,
   {
     // If the monster's current position blocks cardinal movement, they are
     // stuck and must try to move diagonally.
-    if( m.t[start_y][start_x].block_cardinal_movement )
+    if( m.tils[start_y][start_x].block_cardinal_movement )
     {
       return Collision.wall;
     }
     // If the monster's destination blocks cardinal movement, same story.
-    if( m.t[dest_y][dest_x].block_cardinal_movement )
+    if( m.tils[dest_y][dest_x].block_cardinal_movement )
     {
       return Collision.wall;
     }
@@ -183,18 +183,18 @@ Collision check_collision( Map* m, Monst* mon, ubyte dest_x, byte dest_y,
   {
     // If the monster's current position or destination block diagonal
     // movement, they must try to move cardinally.
-    if( m.t[start_y][start_x].block_diagonal_movement )
+    if( m.tils[start_y][start_x].block_diagonal_movement )
     {
       return Collision.wall;
     }
-    if( m.t[dest_y][dest_x].block_diagonal_movement )
+    if( m.tils[dest_y][dest_x].block_diagonal_movement )
     {
       return Collision.wall;
     }
   } // else from if( cardinal )
 
   // If the monster is not able to move over water, they must abort.
-  if( m.t[dest_y][dest_x].hazard & HAZARD_WATER )
+  if( m.tils[dest_y][dest_x].hazard & HAZARD_WATER )
   {
     if( mon.walk == Locomotion.terrestrial )
     {
@@ -233,19 +233,19 @@ check_collision:
   obstacle = Collision.none;
   cardinal = dx == 0 || dy == 0;
 
-  if( (cardinal && (m.t[dy][dx].block_cardinal_movement))
-  || (!cardinal && (m.t[dy][dx].block_diagonal_movement)) )
+  if( (cardinal && (m.tils[dy][dx].block_cardinal_movement))
+  || (!cardinal && (m.tils[dy][dx].block_diagonal_movement)) )
   {
     obstacle = Collision.wall;
   }
   else
   {
-    if( (m.t[dy][dx].hazard & HAZARD_WATER)
+    if( (m.tils[dy][dx].hazard & HAZARD_WATER)
         && mn.walk == Locomotion.terrestrial )
     {
       obstacle = Collision.water;
     }
-    else if( !(m.t[dy][dx].hazard & HAZARD_WATER)
+    else if( !(m.tils[dy][dx].hazard & HAZARD_WATER)
              && mn.walk == Locomotion.aquatic )
     {
       obstacle = Collision.movement_impossible;
@@ -258,12 +258,12 @@ check_collision:
     // TODO: Definitely need better colission checking here.  Maybe a
     // function should be written to determine if a monster can step in a
     // certain tile.
-    if( !m.t[dy][mn.x].block_cardinal_movement )
+    if( !m.tils[dy][mn.x].block_cardinal_movement )
     {
       dx = mn.x;
       goto check_collision;
     }
-    else if( !m.t[mn.y][dx].block_cardinal_movement )
+    else if( !m.tils[mn.y][dx].block_cardinal_movement )
     {
       dy = mn.y;
       goto check_collision;
@@ -278,9 +278,9 @@ check_collision:
   }
   else
   {
-    foreach( c; 0 .. m.m.length )
+    foreach( c; 0 .. m.mons.length )
     {
-      if( m.m[c].x == dx && m.m[c].y == dy )
+      if( m.mons[c].x == dx && m.mons[c].y == dy )
       {
         obstacle = Collision.monster;
       }
@@ -300,7 +300,7 @@ check_collision:
 // Tells the given monster to make their move.
 void monst_ai( Map* m, uint index, Player* u )
 {
-  Monst* mn = &m.m[index];
+  Monst* mn = &m.mons[index];
   ubyte mnx = mn.x, mny = mn.y, ux = u.x, uy = u.y;
   byte dx = 0, dy = 0;
   if( mnx > ux )
@@ -318,15 +318,15 @@ void monst_ai( Map* m, uint index, Player* u )
 // move.
 void map_move_all_monsters( Map* m, Player* u )
 {
-  if( m.m.length == 0 )
+  if( m.mons.length == 0 )
   { return;
   }
 
   uint[] kill_mons;
 
-  foreach( mn; 0 .. cast(uint)m.m.length )
+  foreach( mn; 0 .. cast(uint)m.mons.length )
   {
-    if( m.m[cast(size_t)mn].hit_points > 0 )
+    if( m.mons[cast(size_t)mn].hit_points > 0 )
     { monst_ai( m, mn, u );
     }
     else
@@ -374,7 +374,7 @@ static if( BLOOD )
       {
         byte dk, dj;
         get_dydx( uniform!(Direction)( Lucky ), &dj, &dk );
-        Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
+        Current_map.tils[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
       }
 }
 
@@ -389,12 +389,12 @@ static if( BLOOD )
       import main : Current_map;
       int k = u.x, j = u.y;
       // The player bleeds...
-      Current_map.t[j][k].hazard |= SPECIAL_BLOOD;
+      Current_map.tils[j][k].hazard |= SPECIAL_BLOOD;
       foreach( c; d() .. atk )
       {
         byte dk, dj;
         get_dydx( uniform!(Direction)( Lucky ), &dj, &dk );
-        Current_map.t[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
+        Current_map.tils[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
       }
 }
 
@@ -425,9 +425,9 @@ uint umove( Player* u, Map* m, Direction dir )
   dx += u.x; dy += u.y;
 
   Monst* mn;
-  foreach( c; 0 .. m.m.length )
+  foreach( c; 0 .. m.mons.length )
   {
-    mn = &m.m[c];
+    mn = &m.mons[c];
     if( mn.x == dx && mn.y == dy && mn.hit_points > 0 )
     {
       mattack( u, mn );
@@ -447,8 +447,8 @@ uint umove( Player* u, Map* m, Direction dir )
   }
   else
   {
-    if( (cardinal && (m.t[dy][dx].block_cardinal_movement))
-    || (!cardinal && (m.t[dy][dx].block_diagonal_movement)) )
+    if( (cardinal && (m.tils[dy][dx].block_cardinal_movement))
+    || (!cardinal && (m.tils[dy][dx].block_diagonal_movement)) )
     {
       message( "Ouch!  You walk straight into a wall!" );
       // report "no movement" to the mainloop so we don't expend a turn
@@ -456,7 +456,7 @@ uint umove( Player* u, Map* m, Direction dir )
     }
     else
     {
-      if( m.t[dy][dx].hazard & HAZARD_WATER )
+      if( m.tils[dy][dx].hazard & HAZARD_WATER )
       {
         u.hit_points = 0;
 message( "You step into the water and are pulled down by your equipment..." );
@@ -464,8 +464,8 @@ message( "You step into the water and are pulled down by your equipment..." );
     }
   } // else from if( Noclip )
 
-  if( m.i[dy][dx].sym.ascii != '\0' )
-  { message( "You see here a %s", m.i[dy][dx].name );
+  if( m.itms[dy][dx].sym.ascii != '\0' )
+  { message( "You see here a %s", m.itms[dy][dx].name );
   }
 
   if( monster || terrain )

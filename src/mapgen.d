@@ -128,8 +128,8 @@ bool add_corridor_y( uint x, uint y1, uint y2, Map* m )
   foreach( y; sta .. (end + 1) )
   {
     // Do not destroy water by carving
-    if( m.t[y][x] != TERRAIN_WATER )
-    { m.t[y][x] = TERRAIN_FLOOR;
+    if( m.tils[y][x] != TERRAIN_WATER )
+    { m.tils[y][x] = TERRAIN_FLOOR;
     }
   }
 
@@ -166,8 +166,8 @@ bool add_corridor_x( uint y, uint x1, uint x2, Map* m )
   foreach( x; sta .. (end + 1) )
   {
     // Do not destroy water by carving
-    if( m.t[y][x] != TERRAIN_WATER )
-    { m.t[y][x] = TERRAIN_FLOOR;
+    if( m.tils[y][x] != TERRAIN_WATER )
+    { m.tils[y][x] = TERRAIN_FLOOR;
     }
   }
 
@@ -192,7 +192,7 @@ bool add_room( uint y1, uint x1, uint y2, uint x2, Map* m )
   {
     foreach( index_x; x1 .. (x2 + 1) )
     {
-      m.t[index_y][index_x] = TERRAIN_FLOOR;
+      m.tils[index_y][index_x] = TERRAIN_FLOOR;
     }
   }
 
@@ -234,7 +234,7 @@ void grow_mold( Map* m )
       foreach( d; 1 .. mold_len )
       {
         // Place mold on the current Tile:
-        m.t[y][x].hazard |= SPECIAL_MOLD;
+        m.tils[y][x].hazard |= SPECIAL_MOLD;
 
         // Now decide a random direction to move in:
         final switch( uniform( 0, 10, Lucky ) )
@@ -266,7 +266,7 @@ void grow_mold( Map* m )
   {
     foreach( x; 0 .. MAP_X )
     {
-      if( m.t[y][x].hazard & HAZARD_WATER )
+      if( m.tils[y][x].hazard & HAZARD_WATER )
       {
         // 1 in 4 chance the Tile will have mold growing near it...
         if( d( 4 ) == 1 )
@@ -284,7 +284,7 @@ void grow_mold( Map* m )
           if( trux >= MAP_X || trux < 0 ) continue;
           if( truy >= MAP_Y || truy < 0 ) continue;
 
-          m.t[y][x].hazard |= SPECIAL_MOLD;
+          m.tils[y][x].hazard |= SPECIAL_MOLD;
         }
       }
     } // foreach( x; 0 .. MAP_X )
@@ -310,23 +310,23 @@ Map test_map()
   {
     foreach( x; 0 .. MAP_X )
     {
-      nu.i[y][x] = No_item;
+      nu.itms[y][x] = No_item;
       if( y == 0 || y == MAP_y || x == 0 || x == MAP_x )
       {
-        nu.t[y][x] = TERRAIN_WALL;
+        nu.tils[y][x] = TERRAIN_WALL;
       }
       else
       {
         if( (y < 13 && y > 9) && ((x > 19 && x < 24) || (x < 61 && x > 56)) )
-        { nu.t[y][x] = TERRAIN_WALL;
+        { nu.tils[y][x] = TERRAIN_WALL;
         }
         else
         {
           if( (y < 13 && y > 9) && (x > 30 && x < 50) )
-          { nu.t[y][x] = TERRAIN_WATER;
+          { nu.tils[y][x] = TERRAIN_WATER;
           }
           else
-          { nu.t[y][x] = TERRAIN_FLOOR;
+          { nu.tils[y][x] = TERRAIN_FLOOR;
           }
         } /* else from if( (y < 13 && y > 9) ... */
       } /* else from if( y == 0 || y == MAP_y ... */
@@ -379,50 +379,50 @@ static if( MORE_TEST_MONSTERS )
   // attack roll
   Item old_sword = Item( Symbol( '(', Colors.Gray ), "old sword",
                          Type.weapon, Armor.none, 0, 2 );
-  nu.i[10][5] = old_sword;
+  nu.itms[10][5] = old_sword;
 
   Item shield = Item( Symbol( ']', Colors.Dark_Gray ), "crow-crested shield",
                       Type.armor, Armor.shield, 0, 5 );
-  nu.i[11][5] = shield;
+  nu.itms[11][5] = shield;
 
   Item ring = Item( Symbol( '*', Colors.Silver ), "silver ring",
                     Type.jewelery, Armor.ring, 0, 0 );
-  nu.i[10][2] = ring;
+  nu.itms[10][2] = ring;
 
   ring.sym.color = Colors.Gold;  ring.name = "gold ring";
-  nu.i[10][1] = ring;
+  nu.itms[10][1] = ring;
 
   Item helmet = Item( Symbol( ']', Colors.Brown ), "hat",
                       Type.armor, Armor.helmet, 0, 0 );
-  nu.i[10][3] = helmet;
+  nu.itms[10][3] = helmet;
 
   Item scarf = Item( Symbol( ']', Colors.Green ), "fluffy scarf",
                      Type.armor, Armor.neck, 0, 0 );
-  nu.i[11][3] = scarf;
+  nu.itms[11][3] = scarf;
 
   Item tunic = Item( Symbol( ']', Colors.Brown ), "tunic",
                      Type.armor, Armor.cuirass, 0, 0 );
-  nu.i[12][3] = tunic;
+  nu.itms[12][3] = tunic;
 
   Item gloves = Item( Symbol( ']', Colors.Brown ), "pair of leather gloves",
                       Type.armor, Armor.bracers, 0, 1 );
-  nu.i[13][3] = gloves;
+  nu.itms[13][3] = gloves;
 
   Item pants = Item( Symbol( ']', Colors.Brown ), "pair of trousers",
                      Type.armor, Armor.greaves, 0, 0 );
-  nu.i[14][3] = pants;
+  nu.itms[14][3] = pants;
 
   Item kilt = Item( Symbol( ']', Colors.Green ), "plaid kilt",
                     Type.armor, Armor.kilt, 0, 0 );
-  nu.i[15][3] = kilt;
+  nu.itms[15][3] = kilt;
 
   Item boots = Item( Symbol( ']', Colors.Brown ), "pair of shoes",
                      Type.armor, Armor.feet, 0, 0 );
-  nu.i[16][3] = boots;
+  nu.itms[16][3] = boots;
 
   Item tailsheath = Item( Symbol( ']', Colors.Brown ), "leather tailsheath",
                           Type.armor, Armor.tail, 0, 1 );
-  nu.i[17][3] = tailsheath;
+  nu.itms[17][3] = tailsheath;
   
   return nu;
 }

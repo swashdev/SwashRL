@@ -39,60 +39,63 @@ import global;
 class Color
 {
 
-static if( CURSES_ENABLED )
-{
-  private short curses_color = 7;
+    static if( CURSES_ENABLED )
+    {
+        private short curses_color = 7;
 
-  public short get_curses_color()
-  { return curses_color;
-  }
+        public short get_curses_color()
+        {
+            return curses_color;
+        }
 
-  public void set_curses_color( short curses_color_code = 7 )
-  { curses_color = curses_color_code;
-  }
+        public void set_curses_color( short curses_color_code = 7 )
+        {
+            curses_color = curses_color_code;
+        }
+    }
 
-} /* static if( CURSES_ENABLED ) */
+    static if( SDL_ENABLED )
+    {
+        private SDL_Color sdl_color = SDL_Color( 162, 162, 162, 255 );
 
-static if( SDL_ENABLED )
-{
-  private SDL_Color sdl_color = SDL_Color( 162, 162, 162, 255 );
+        public SDL_Color get_sdl_color()
+        {
+            return sdl_color;
+        }
 
-  public SDL_Color get_sdl_color()
-  { return sdl_color;
-  }
+        public void set_sdl_color( ubyte sdl_red = 162, ubyte sdl_green = 162,
+                                   ubyte sdl_blue = 162,
+                                   ubyte sdl_opacity = 255 )
+        {
+            sdl_color = SDL_Color( sdl_red, sdl_green, sdl_blue,
+                                   sdl_opacity );
+        }
 
-  public void set_sdl_color( ubyte sdl_red = 162, ubyte sdl_green = 162,
-                             ubyte sdl_blue = 162, ubyte sdl_opacity = 255 )
-  { sdl_color = SDL_Color( sdl_red, sdl_green, sdl_blue, sdl_opacity );
-  }
-
-  public void set_sdl_color( SDL_Color sdl_color_object )
-  { sdl_color = sdl_color_object;
-  }
-
-} /* static if( SDL_ENABLED ) */
+        public void set_sdl_color( SDL_Color sdl_color_object )
+        {
+            sdl_color = sdl_color_object;
+        }
+    }
 
 
-  // Initialize a `Color` object by specifying the curses color code and the
-  // RGB values for an SDL color.  As an additional option, the opacity value
-  // has also been included, but should only be used sparingly.
-  this( short curses_color_code, ubyte sdl_red, ubyte sdl_blue,
-        ubyte sdl_green, ubyte sdl_opacity = 255 )
-  {
+    // Initialize a `Color` object by specifying the curses color code and the
+    // RGB values for an SDL color.  As an additional option, the opacity
+    // value has also been included, but should only be used sparingly.
+    this( short curses_color_code, ubyte sdl_red, ubyte sdl_blue,
+          ubyte sdl_green, ubyte sdl_opacity = 255 )
+    {
+        static if( CURSES_ENABLED )
+        {
+            curses_color = curses_color_code;
+        }
 
-static if( CURSES_ENABLED )
-{
-    curses_color = curses_color_code;
-}
-
-static if( SDL_ENABLED )
-{
-    sdl_color = SDL_Color( sdl_red, sdl_blue, sdl_green, sdl_opacity );
-}
-    
-  } /* this( short, int, int, int, bool?, int? ) */
-
-}
+        static if( SDL_ENABLED )
+        {
+            sdl_color = SDL_Color( sdl_red, sdl_blue, sdl_green,
+                                   sdl_opacity );
+        }
+    }
+} // class Color
 
 // SECTION 2: ////////////////////////////////////////////////////////////////
 // Color Pairs                                                              //
@@ -101,134 +104,139 @@ static if( SDL_ENABLED )
 class Color_Pair
 {
 
-  private Color foreground, background;
+    private Color foreground, background;
 
-  // Because of the way curses works, "bright" color values must be specified
-  // here, in the color pair, because the bright colors are created by
-  // applying the "bold" attribute to an existing color pair.  This does not
-  // apply to SDL.
-  private bool bold = false, inverted = false;
+    // Because of the way curses works, "bright" color values must be
+    // specified here, in the color pair, because the bright colors are
+    // created by applying the "bold" attribute to an existing color pair.
+    // This does not apply to SDL.
+    private bool bold = false, inverted = false;
 
-  public bool get_bright()
-  { return bold;
-  }
-
-  public void set_bright( bool bright )
-  { bold = bright;
-  }
-
-  public bool get_inverted()
-  { return inverted;
-  }
-
-  public void set_inverted( bool reversed )
-  { inverted = reversed;
-  }
-
-  // Because curses refers to color pairs by an index, we need to store what
-  // the most recent index was, as well as the index of the current color
-  // pair.  Note that if `last_color_pair` is 0, that means that no color
-  // pairs were defined, because curses uses 0 as sort of a default color
-  // pair.
-
-  private static short last_color_pair = 0;
-  private short curses_color_pair = 0;
-
-  public short get_last_color_pair()
-  { return last_color_pair;
-  }
-
-  public short get_color_pair()
-  { return curses_color_pair;
-  }
-
-  public static bool color_pairs_defined()
-  {
-static if( CURSES_ENABLED )
-{
-    return (last_color_pair > 0);
-}
-else
-{
-    return false;
-}
-  } /* public static bool color_pairs_defined() */
-
-  public Color get_foreground()
-  { return foreground;
-  }
-
-  public void set_foreground( Color new_foreground_color )
-  { foreground = new_foreground_color;
-  }
-
-  public Color get_background()
-  { return background;
-  }
-
-  public void set_background( Color new_background_color )
-  { background = new_background_color;
-  }
-
-  // Initialize a `Color_Pair` using an existing `Color` (or two if we want to
-  // specify a background other than black).
-  // If `existing_curses_color_pair` is < 0, define a new color pair.
-  // Otherwise, use an existing one.
-  this( Color foreground_color,
-        Color background_color = new Color( 0, 0, 0, 0 ),
-        short existing_curses_color_pair = -1,
-	bool is_bright = false, bool is_reversed = false )
-  {
-    foreground = foreground_color;
-    background = background_color;
-
-    if( existing_curses_color_pair >= 0
-        && existing_curses_color_pair <= last_color_pair )
+    public bool get_bright()
     {
-      curses_color_pair = existing_curses_color_pair;
+        return bold;
     }
-    else
+
+    public void set_bright( bool bright )
     {
-      // Initialize a curses color pair and then store the resulting index in
-      // `curses_color_pair`.
-      last_color_pair++;
-      curses_color_pair = last_color_pair;
+        bold = bright;
+    }
 
-static if( CURSES_ENABLED )
-{
+    public bool get_inverted()
+    {
+        return inverted;
+    }
 
-      init_pair( curses_color_pair, foreground.get_curses_color(),
-                 background.get_curses_color() );
+    public void set_inverted( bool reversed )
+    {
+        inverted = reversed;
+    }
 
-} /* static if( CURSES_ENABLED ) */
+    // Because curses refers to color pairs by an index, we need to store what
+    // the most recent index was, as well as the index of the current color
+    // pair.  Note that if `last_color_pair` is 0, that means that no color
+    // pairs were defined, because curses uses 0 as sort of a default color
+    // pair.
 
-    } /* else from if( existing_curses_color_pair > 0 ) */
+    private static short last_color_pair = 0;
+    private short curses_color_pair = 0;
 
-    set_bright( is_bright );
-    set_inverted( is_reversed );
+    public short get_last_color_pair()
+    {
+        return last_color_pair;
+    }
 
-  } /* this( Color, Color?, short?, bool?, bool? ) */
+    public short get_color_pair()
+    {
+        return curses_color_pair;
+    }
 
-  // Initialize a `Color_Pair` using an existing `Color`.  This constructor
-  // will always use the default black background color.
-  // If `existing_curses_color_pair` is < 0, define a new color pair.
-  // Otherwise, use an existing one.
-  // `is_bright` & `is_reversed` set if the color pair will be boldened or
-  // inverted, respectively.  Default for both is `false`
-  this( Color foreground_color,
-        short existing_curses_color_pair = -1,
-	bool is_bright = false, bool is_reversed = false )
-  {
-    this( foreground_color, new Color( 0, 0, 0, 0 ),
-          existing_curses_color_pair, is_bright, is_reversed );
-  } /* this( Color, short?, bool?, bool? ) */
+    public static bool color_pairs_defined()
+    {
+        static if( CURSES_ENABLED )
+        {
+            return last_color_pair > 0;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-  // Initialize a `Color_Pair` using an existing `Color`.
-  // All other options, such as background color and text effects, will remain
-  // at their defaults.
-  this( Color foreground_color )
-  {
-    this( foreground_color, new Color( 0, 0, 0, 0 ), -1, false, false );
-  } /* this( Color ) */
+    public Color get_foreground()
+    {
+        return foreground;
+    }
 
-} /* class Color_Pair */
+    public void set_foreground( Color new_foreground_color )
+    {
+        foreground = new_foreground_color;
+    }
+
+    public Color get_background()
+    {
+        return background;
+    }
+
+    public void set_background( Color new_background_color )
+    {
+        background = new_background_color;
+    }
+
+    // Initialize a `Color_Pair` using an existing `Color` (or two if we want
+    // to specify a background other than black).
+    // If `existing_curses_color_pair` is < 0, define a new color pair.
+    // Otherwise, use an existing one.
+    this( Color foreground_color,
+          Color background_color = new Color( 0, 0, 0, 0 ),
+          short existing_curses_color_pair = -1,
+	      bool is_bright = false, bool is_reversed = false )
+    {
+        foreground = foreground_color;
+        background = background_color;
+
+        if( existing_curses_color_pair >= 0
+            && existing_curses_color_pair <= last_color_pair )
+        {
+            curses_color_pair = existing_curses_color_pair;
+        }
+        else
+        {
+            // Initialize a curses color pair and then store the resulting
+            // index in `curses_color_pair`.
+            last_color_pair++;
+            curses_color_pair = last_color_pair;
+
+            static if( CURSES_ENABLED )
+            {
+                init_pair( curses_color_pair, foreground.get_curses_color(),
+                           background.get_curses_color() );
+            }
+        }
+
+        set_bright( is_bright );
+        set_inverted( is_reversed );
+    } // this( Color, Color?, short?, bool?, bool? )
+
+    // Initialize a `Color_Pair` using an existing `Color`.  This constructor
+    // will always use the default black background color.
+    // If `existing_curses_color_pair` is < 0, define a new color pair.
+    // Otherwise, use an existing one.
+    // `is_bright` & `is_reversed` set if the color pair will be boldened or
+    // inverted, respectively.  Default for both is `false`
+    this( Color foreground_color,
+          short existing_curses_color_pair = -1,
+          bool is_bright = false, bool is_reversed = false )
+    {
+        this( foreground_color, new Color( 0, 0, 0, 0 ),
+              existing_curses_color_pair, is_bright, is_reversed );
+    }
+
+    // Initialize a `Color_Pair` using an existing `Color`.
+    // All other options, such as background color and text effects, will
+    // remain at their defaults.
+    this( Color foreground_color )
+    {
+        this( foreground_color, new Color( 0, 0, 0, 0 ), -1, false, false );
+    }
+} // class Color_Pair

@@ -33,25 +33,27 @@ import global;
 // A struct which defines an item.
 struct Item
 {
-  Symbol sym;
-  string name;
-  // what `type` of item this is and, if applicable, what `equip`ment slot it
-  // goes into
-  Type type;
-  Armor equip;
-  // modifiers to the player's dice rolls: `addd` adds dice, `addm` adds
-  // modifiers
-  int addd, addm;
+    Symbol sym;
+    string name;
+
+    // what `type` of item this is and, if applicable, what `equip`ment slot
+    // it goes into
+    Type type;
+    Armor equip;
+
+    // modifiers to the player's dice rolls: `add_dice` adds dice, `add_mod`
+    // adds a modifier
+    int add_dice, add_mod;
 }
 
 // A generic placeholder Item used to signal an empty equipment slot or a
 // floor tile which does not have an Item on it.
 static Item No_item;
 
-
 // Quickly check if the given item is valid.
 // Mostly used to check for empty equipment slots, inventory spaces, or floor
 // tiles.
 bool Item_here( Item i )
-{ return i.sym.ch != '\0';
+{
+    return i.sym.ch != '\0';
 }

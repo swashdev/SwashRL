@@ -39,23 +39,23 @@ import std.range;
 // For functions which choose a direction
 enum Direction
 {
-  northwest, // 0
-  north,     // 1
-  northeast, // 2
-  west,      // 3
-  east,      // 4
-  southwest, // 5
-  south,     // 6
-  southeast, // 7
-  invalid    // 8
+    northwest, // 0
+    north,     // 1
+    northeast, // 2
+    west,      // 3
+    east,      // 4
+    southwest, // 5
+    south,     // 6
+    southeast, // 7
+    invalid    // 8
 }
 
 // Colission detection:
 enum Collision
 {
-  none,
-  wall, water, monster,
-  movement_impossible
+    none,
+    wall, water, monster,
+    movement_impossible
 }
 
 // SECTION 1: ////////////////////////////////////////////////////////////////
@@ -66,153 +66,172 @@ enum Collision
 // indicate the given direction, if any.
 void get_dydx( Direction dir, byte* dy, byte* dx )
 {
-  switch( dir )
-  {
-    case Direction.northwest:
-      *dy = -1;
-      *dx = -1;
-      break;
-    case Direction.north:
-      *dy = -1;
-      *dx =  0;
-      break;
-    case Direction.northeast:
-      *dy = -1;
-      *dx =  1;
-      break;
-    case Direction.east:
-      *dy =  0;
-      *dx =  1;
-      break;
-    case Direction.southeast:
-      *dy =  1;
-      *dx =  1;
-      break;
-    case Direction.south:
-      *dy =  1;
-      *dx =  0;
-      break;
-    case Direction.southwest:
-      *dy =  1;
-      *dx = -1;
-      break;
-    case Direction.west:
-      *dy =  0;
-      *dx = -1;
-      break;
+    switch( dir )
+    {
+        case Direction.northwest:
+            *dy = -1;
+            *dx = -1;
+            break;
+        
+        case Direction.north:
+            *dy = -1;
+            *dx =  0;
+            break;
 
-    default:
-      *dy =  0;
-      *dx =  0;
-      break;
-  }
-}
+        case Direction.northeast:
+            *dy = -1;
+            *dx =  1;
+            break;
+
+        case Direction.east:
+            *dy =  0;
+            *dx =  1;
+            break;
+
+        case Direction.southeast:
+            *dy =  1;
+            *dx =  1;
+            break;
+
+        case Direction.south:
+            *dy =  1;
+            *dx =  0;
+            break;
+
+        case Direction.southwest:
+            *dy =  1;
+            *dx = -1;
+            break;
+
+        case Direction.west:
+            *dy =  0;
+            *dx = -1;
+            break;
+
+        default:
+            *dy =  0;
+            *dx =  0;
+            break;
+    } // switch( dir )
+} // void get_dydx( Direction, byte*, byte* )
 
 Direction get_direction( Move movement )
 {
-  switch( movement )
-  {
-    default:
-      return Direction.invalid;
-    case Move.northeast:
-      return Direction.northeast;
-    case Move.north:
-      return Direction.north;
-    case Move.northwest:
-      return Direction.northwest;
-    case Move.west:
-      return Direction.west;
-    case Move.east:
-      return Direction.east;
-    case Move.southeast:
-      return Direction.southeast;
-    case Move.south:
-      return Direction.south;
-    case Move.southwest:
-      return Direction.southwest;
-  }
-}
+    switch( movement )
+    {
+        default:
+            return Direction.invalid;
+
+        case Move.northeast:
+            return Direction.northeast;
+
+        case Move.north:
+            return Direction.north;
+
+        case Move.northwest:
+            return Direction.northwest;
+
+        case Move.west:
+            return Direction.west;
+
+        case Move.east:
+            return Direction.east;
+
+        case Move.southeast:
+            return Direction.southeast;
+
+        case Move.south:
+            return Direction.south;
+
+        case Move.southwest:
+            return Direction.southwest;
+    } // switch( movement )
+} // Direction get_direction( Move )
 
 // SECTION 2: ////////////////////////////////////////////////////////////////
 // Collision Detection                                                      //
 //////////////////////////////////////////////////////////////////////////////
 
+
+
 // Checks whether the given Monst is able to move to a certain destination
 // given its dx,dy coordinates.  This function also checks the player's
 // position via the `u` parameter.
-Collision check_collision( Map* m, Monst* mon, ubyte dest_x, byte dest_y,
-                           bool cardinal, Player* u )
+Collision check_collision( Map* map, Monst* mon, ubyte dest_x, byte dest_y,
+                           bool cardinal, Player* plyr )
 {
+    byte start_x = mon.x;
+    byte start_y = mon.y;
 
-  byte start_x = mon.x;
-  byte start_y = mon.y;
+    // Check if there are any monsters on the destination tile; if so, the
+    // monster will not be able to move and may be forced to attack.
+    if( plyr.x == dest_x && plyr.y == dest_y )
+    {
+        return Collision.monster;
+    }
+    foreach( index; 0 .. cast(uint)map.mons.length )
+    {
+        if( map.mons[index].x == dest_x && map.mons[index].y == dest_y )
+        {
+            return Collision.monster;
+        }
+    }
 
-  // Check if there are any monsters on the destination tile; if so, the
-  // monster will not be able to move and may be forced to attack.
-  if( u.x == dest_x && u.y == dest_y )
-  {
-    return Collision.monster;
-  }
-  foreach( mn; 0 .. cast(uint)m.mons.length )
-  {
-    if( m.mons[mn].x == dest_x && m.mons[mn].y == dest_y )
+    // Sessile monsters can never move, so if the above check did not result
+    // in an attack then there is nothing more that it can do.
+    if( mon.walk == Locomotion.sessile)
     {
-      return Collision.monster;
+        return Collision.movement_impossible;
     }
-  }
 
-  // Sessile monsters can never move, so if the above check did not result in
-  // an attack then there is nothing more that it can do.
-  if( mon.walk == Locomotion.sessile)  return Collision.movement_impossible;
+    if( cardinal )
+    {
+        // If the monster's current position blocks cardinal movement, they
+        // are stuck and must try to move diagonally.
+        if( map.tils[start_y][start_x].block_cardinal_movement )
+        {
+            return Collision.wall;
+        }
+        // If the monster's destination blocks cardinal movement, same story.
+        if( map.tils[dest_y][dest_x].block_cardinal_movement )
+        {
+            return Collision.wall;
+        }
+    }
+    else
+    {
+        // If the monster's current position or destination block diagonal
+        // movement, they must try to move cardinally.
+        if( map.tils[start_y][start_x].block_diagonal_movement )
+        {
+            return Collision.wall;
+        }
+        if( map.tils[dest_y][dest_x].block_diagonal_movement )
+        {
+            return Collision.wall;
+        }
+    }
 
-  if( cardinal )
-  {
-    // If the monster's current position blocks cardinal movement, they are
-    // stuck and must try to move diagonally.
-    if( m.tils[start_y][start_x].block_cardinal_movement )
+    // If the monster is not able to move over water, they must abort.
+    if( map.tils[dest_y][dest_x].hazard & HAZARD_WATER )
     {
-      return Collision.wall;
+        if( mon.walk == Locomotion.terrestrial )
+        {
+            return Collision.water;
+        }
     }
-    // If the monster's destination blocks cardinal movement, same story.
-    if( m.tils[dest_y][dest_x].block_cardinal_movement )
-    {
-      return Collision.wall;
-    }
-  }
-  else
-  {
-    // If the monster's current position or destination block diagonal
-    // movement, they must try to move cardinally.
-    if( m.tils[start_y][start_x].block_diagonal_movement )
-    {
-      return Collision.wall;
-    }
-    if( m.tils[dest_y][dest_x].block_diagonal_movement )
-    {
-      return Collision.wall;
-    }
-  } // else from if( cardinal )
 
-  // If the monster is not able to move over water, they must abort.
-  if( m.tils[dest_y][dest_x].hazard & HAZARD_WATER )
-  {
-    if( mon.walk == Locomotion.terrestrial )
+    // If the monster is _only_ able to move over water, but this tile does
+    // not have water, movement onto this space is impossible.
+    else
     {
-      return Collision.water;
+        if( mon.walk == Locomotion.aquatic )
+        {
+            return Collision.movement_impossible;
+        }
     }
-  }
-  // If the monster is _only_ able to move over water, but this tile does not
-  // have water, movement onto this space is impossible.
-  else
-  {
-    if( mon.walk == Locomotion.aquatic )
-    {
-      return Collision.movement_impossible;
-    }
-  }
 
-  return Collision.none;
-
+    return Collision.none;
 } // Collision check_collision( Map*, Monst*, ubyte, ubyte, bool, Monst* )
 
 // SECTION 3: ////////////////////////////////////////////////////////////////
@@ -220,340 +239,374 @@ Collision check_collision( Map* m, Monst* mon, ubyte dest_x, byte dest_y,
 //////////////////////////////////////////////////////////////////////////////
 
 // Moves a given monster on the given map.
-void mmove( Monst* mn, Map* m, byte idy, byte idx, Player* u )
+void mmove( Monst* mon, Map* map, byte idy, byte idx, Player* plyr )
 {
-  uint dy = idy, dx = idx;
+    uint dy = idy, dx = idx;
 
-  Collision obstacle;
+    Collision obstacle;
 
-  dx = dx + mn.x; dy = dy + mn.y;
-  bool cardinal;
+    dx = dx + mon.x;
+    dy = dy + mon.y;
+
+    bool cardinal;
 
 check_collision:
-  obstacle = Collision.none;
-  cardinal = dx == 0 || dy == 0;
+    obstacle = Collision.none;
+    cardinal = dx == 0 || dy == 0;
 
-  if( (cardinal && (m.tils[dy][dx].block_cardinal_movement))
-  || (!cardinal && (m.tils[dy][dx].block_diagonal_movement)) )
-  {
-    obstacle = Collision.wall;
-  }
-  else
-  {
-    if( (m.tils[dy][dx].hazard & HAZARD_WATER)
-        && mn.walk == Locomotion.terrestrial )
+    if( (cardinal && (map.tils[dy][dx].block_cardinal_movement))
+        || (!cardinal && (map.tils[dy][dx].block_diagonal_movement)) )
     {
-      obstacle = Collision.water;
+        obstacle = Collision.wall;
     }
-    else if( !(m.tils[dy][dx].hazard & HAZARD_WATER)
-             && mn.walk == Locomotion.aquatic )
+    else
     {
-      obstacle = Collision.movement_impossible;
+        if( (map.tils[dy][dx].hazard & HAZARD_WATER)
+            && mon.walk == Locomotion.terrestrial )
+        {
+            obstacle = Collision.water;
+        }
+        else if( !(map.tils[dy][dx].hazard & HAZARD_WATER)
+                 && mon.walk == Locomotion.aquatic )
+        {
+            obstacle = Collision.movement_impossible;
+        }
     }
-  }
 
-  // Attempt to have the monster navigate around obstacles
-  if( obstacle == Collision.wall )
-  {
-    // TODO: Definitely need better colission checking here.  Maybe a
-    // function should be written to determine if a monster can step in a
-    // certain tile.
-    if( !m.tils[dy][mn.x].block_cardinal_movement )
+    // Attempt to have the monster navigate around obstacles
+    if( obstacle == Collision.wall )
     {
-      dx = mn.x;
-      goto check_collision;
+        // TODO: Definitely need better colission checking here.  Maybe a
+        // function should be written to determine if a monster can step in a
+        // certain tile.
+        if( !map.tils[dy][mon.x].block_cardinal_movement )
+        {
+            dx = mon.x;
+            goto check_collision;
+        }
+        else if( !map.tils[mon.y][dx].block_cardinal_movement )
+        {
+            dy = mon.y;
+            goto check_collision;
+        }
     }
-    else if( !m.tils[mn.y][dx].block_cardinal_movement )
-    {
-      dy = mn.y;
-      goto check_collision;
-    }
-  }
   
 
-  if( dx == u.x && dy == u.y )
-  {
-    mattack( mn, u );
-    obstacle = Collision.monster;
-  }
-  else
-  {
-    foreach( c; 0 .. m.mons.length )
+    if( dx == plyr.x && dy == plyr.y )
     {
-      if( m.mons[c].x == dx && m.mons[c].y == dy )
-      {
+        mattack( mon, plyr );
         obstacle = Collision.monster;
-      }
     }
-  }
+    else
+    {
+        foreach( index; 0 .. map.mons.length )
+        {
+            if( map.mons[index].x == dx && map.mons[index].y == dy )
+            {
+                obstacle = Collision.monster;
+            }
+        }
+    }
 
-  if( obstacle == Collision.none )
-  {
-    mn.x = cast(byte)dx; mn.y = cast(byte)dy;
-  }
-}
+    if( obstacle == Collision.none )
+    {
+        mon.x = cast(byte)dx; mon.y = cast(byte)dy;
+    }
+} // void mmove( Monst*, Map*, byte, byte, Player* )
 
 // SECTION 4: ////////////////////////////////////////////////////////////////
 // Monster AI                                                               //
 //////////////////////////////////////////////////////////////////////////////
 
 // Tells the given monster to make their move.
-void monst_ai( Map* m, uint index, Player* u )
+void monst_ai( Map* map, uint index, Player* plyr )
 {
-  Monst* mn = &m.mons[index];
-  ubyte mnx = mn.x, mny = mn.y, ux = u.x, uy = u.y;
-  byte dx = 0, dy = 0;
-  if( mnx > ux )
-    dx = -1;
-  if( mnx < ux )
-    dx =  1;
-  if( mny > uy )
-    dy = -1;
-  if( mny < uy )
-    dy =  1;
-  mmove( mn, m, dy, dx, u );
-}
+    Monst* mon = &map.mons[index];
+    ubyte mnx = mon.x, mny = mon.y, ux = plyr.x, uy = plyr.y;
+    byte dx = 0, dy = 0;
+
+    if( mnx > ux )
+    {
+        dx = -1;
+    }
+    if( mnx < ux )
+    {
+        dx =  1;
+    }
+    if( mny > uy )
+    {
+        dy = -1;
+    }
+    if( mny < uy )
+    {
+        dy =  1;
+    }
+
+    mmove( mon, map, dy, dx, plyr );
+} // void monst_ai( Map*, uint, Player* )
 
 // Sends an instruction to all of the monsters on the given map to make their
 // move.
-void map_move_all_monsters( Map* m, Player* u )
+void map_move_all_monsters( Map* map, Player* plyr )
 {
-  if( m.mons.length == 0 )
-  { return;
-  }
-
-  uint[] kill_mons;
-
-  foreach( mn; 0 .. cast(uint)m.mons.length )
-  {
-    if( m.mons[cast(size_t)mn].hit_points > 0 )
-    { monst_ai( m, mn, u );
-    }
-    else
+    if( map.mons.length == 0 )
     {
-      // mark the mon for removal:
-      kill_mons = kill_mons ~ [mn];
+        return;
     }
-  }
 
-  // remove all of the dead mons:
-  foreach( mn; 0 .. cast(size_t)kill_mons.length )
-  { remove_mon( m, kill_mons[mn] );
-  }
-}
+    uint[] kill_mons;
+
+    foreach( index; 0 .. cast(uint)map.mons.length )
+    {
+        if( map.mons[cast(size_t)index].hit_points > 0 )
+        {
+            monst_ai( map, index, plyr );
+        }
+        else
+        {
+            // mark the mon for removal:
+            kill_mons = kill_mons ~ [index];
+        }
+    }
+
+    // remove all of the dead mons:
+    foreach( index; 0 .. cast(size_t)kill_mons.length )
+    {
+        remove_mon( map, kill_mons[index] );
+    }
+} // void map_move_all_monsters( Map*, Player* )
 
 // SECTION 5: ////////////////////////////////////////////////////////////////
 // Attacking                                                                //
 //////////////////////////////////////////////////////////////////////////////
 
 // Causes a monster to attack another monster.
-void mattack( Monst* m, Monst* u )
+void mattack( Monst* off, Monst* def )
 {
-  int dic = m.attack_roll.dice + m.inventory.items[INVENT_WEAPON].add_dice;
-  int mod = m.attack_roll.modifier + m.inventory.items[INVENT_WEAPON].add_mod;
-  int atk = roll_within( m.attack_roll.floor, m.attack_roll.ceiling,
-                         dic, 6, mod );
+    int dic = off.attack_roll.dice
+              + off.inventory.items[INVENT_WEAPON].add_dice;
+    int mod = off.attack_roll.modifier
+              + off.inventory.items[INVENT_WEAPON].add_mod;
+    int atk = roll_within( off.attack_roll.floor, off.attack_roll.ceiling,
+                           dic, 6, mod );
 
-  if( atk > 0 )
-  {
-    if( is_you( *u ) && Degreelessness )
+    if( atk > 0 )
     {
-      message( "The puny %s's feeble attack does nothing!", m.name );
-    }
-    else if( is_you( *m ) && Infinite_weapon )
-    {
-      u.hit_points = 0;
-      message( "The %s explodes from the force of your attack!", u.name );
+        if( is_you( *def ) && Degreelessness )
+        {
+            message( "The puny %s's feeble attack does nothing!", off.name );
+        }
+        else if( is_you( *off ) && Infinite_weapon )
+        {
+            def.hit_points = 0;
+            message( "The %s explodes from the force of your attack!",
+                     def.name );
 
-static if( BLOOD )
-{
-      // Spread viscera everywhere:
-      import main : Current_map;
-      int k = u.x, j = u.y;
-      foreach( c; 0 .. 10 )
-      {
-        byte dk, dj;
-        get_dydx( uniform!(Direction)( Lucky ), &dj, &dk );
-        Current_map.tils[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
-      }
-}
+            static if( BLOOD )
+            {
+                // Spread viscera everywhere:
+                import main : Current_map;
+                int k = def.x, j = def.y;
+                foreach( count; 0 .. 10 )
+                {
+                    byte dk, dj;
+                    get_dydx( uniform!(Direction)( Lucky ), &dj, &dk );
+                    Current_map.tils[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
+                }
+            }
+        } // else if( is_you( *off ) && Infinite_weapon )
+        else
+        {
+            def.hit_points -= atk;
+            message( "%s attack%s %s!", The_monst( *off ),
+                    is_you( *def ) ? "" : "s", the_monst( *def ) );
 
-    } // else if( is_you( m ) && Infinite_weapon )
+            static if( BLOOD )
+            {
+                // The defender bleeds.
+                import main : Current_map;
+                int k = def.x, j = def.y;
+                Current_map.tils[j][k].hazard |= SPECIAL_BLOOD;
+                foreach( count; d() .. atk )
+                {
+                    byte dk, dj;
+                    get_dydx( uniform!(Direction)( Lucky ), &dj, &dk );
+                    Current_map.tils[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
+                }
+            }
+
+            if( def.hit_points <= 0 )
+            {
+                message( "%s %s slain!", The_monst( *def ),
+                         is_you( *def ) ? "are" : "is" );
+            }
+        } // else from if( is_you( *off ) && Infinite_weapon )
+    } // if( atk > 0 )
     else
     {
-      u.hit_points -= atk;
-      message( "%s attack%s %s!", The_monst( *m ),
-               is_you( *m ) ? "" : "s", the_monst( *u ) );
-static if( BLOOD )
-{
-      import main : Current_map;
-      int k = u.x, j = u.y;
-      // The player bleeds...
-      Current_map.tils[j][k].hazard |= SPECIAL_BLOOD;
-      foreach( c; d() .. atk )
-      {
-        byte dk, dj;
-        get_dydx( uniform!(Direction)( Lucky ), &dj, &dk );
-        Current_map.tils[j + dj][k + dk].hazard |= SPECIAL_BLOOD;
-      }
-}
-
-      if( u.hit_points <= 0 )  message( "%s %s slain!", The_monst( *u ),
-                                is_you( *u ) ? "are" : "is" );
-    } // else from if( is_you( m ) && Infinite_weapon )
-  } // if( atk > 0 )
-  else
-  { message( "%s barely miss%s %s!", The_monst( *m ),
-             is_you( *m ) ? "" : "es", the_monst( *u ) );
-  }
-}
+        message( "%s barely miss%s %s!", The_monst( *off ),
+                is_you( *off ) ? "" : "es", the_monst( *def ) );
+    }
+} // void mattack( Monst*, Monst*)
 
 // SECTION 6: ////////////////////////////////////////////////////////////////
 // Player Movement                                                          //
 //////////////////////////////////////////////////////////////////////////////
 
 // Causes the player to make a move based on the given movement flag.
-uint umove( Player* u, Map* m, Direction dir )
+uint umove( Player* plyr, Map* map, Direction dir )
 {
+    byte dy, dx;
+    get_dydx( dir, &dy, &dx );
+    bool cardinal = dy == 0 || dx == 0;
 
-  byte dy, dx;
-  get_dydx( dir, &dy, &dx );
-  bool cardinal = dy == 0 || dx == 0;
+    uint terrain = 0, monster = 0;
 
-  uint terrain = 0, monster = 0;
+    dx += plyr.x; dy += plyr.y;
 
-  dx += u.x; dy += u.y;
-
-  Monst* mn;
-  foreach( c; 0 .. m.mons.length )
-  {
-    mn = &m.mons[c];
-    if( mn.x == dx && mn.y == dy && mn.hit_points > 0 )
+    Monst* mon;
+    foreach( index; 0 .. map.mons.length )
     {
-      mattack( u, mn );
-      monster = 1;
-      break;
+        mon = &map.mons[index];
+        if( mon.x == dx && mon.y == dy && mon.hit_points > 0 )
+        {
+            mattack( plyr, mon );
+            monster = 1;
+            break;
+        }
     }
-  }
 
-  if( Noclip )
-  {
-    if( dx <= 0 || dx >= MAP_X || dy <= 0 || dy >= MAP_Y )
+    if( Noclip )
     {
-      message( "Woah there!  You ain't Orpheus!  Get back in the game!"
-             );
-      return 0;
-    }
-  }
-  else
-  {
-    if( (cardinal && (m.tils[dy][dx].block_cardinal_movement))
-    || (!cardinal && (m.tils[dy][dx].block_diagonal_movement)) )
-    {
-      message( "Ouch!  You walk straight into a wall!" );
-      // report "no movement" to the mainloop so we don't expend a turn
-      return 0;
+        if( dx <= 0 || dx >= MAP_X || dy <= 0 || dy >= MAP_Y )
+        {
+            message( "Woah there!  You ain't Orpheus!  Get back in the game!"
+                   );
+            return 0;
+        }
     }
     else
     {
-      if( m.tils[dy][dx].hazard & HAZARD_WATER )
-      {
-        u.hit_points = 0;
-message( "You step into the water and are pulled down by your equipment..." );
-      }
+        if( (cardinal && (map.tils[dy][dx].block_cardinal_movement))
+            || (!cardinal && (map.tils[dy][dx].block_diagonal_movement)) )
+        {
+            message( "Ouch!  You walk straight into a wall!" );
+            // report "no movement" to the mainloop so we don't expend a turn
+            return 0;
+        }
+        else
+        {
+            if( map.tils[dy][dx].hazard & HAZARD_WATER )
+            {
+                plyr.hit_points = 0;
+                message( "You step into the water and are pulled down by your equipment..." );
+            }
+        }
     }
-  } // else from if( Noclip )
 
-  if( m.itms[dy][dx].sym.ascii != '\0' )
-  { message( "You see here a %s", m.itms[dy][dx].name );
-  }
+    if( Item_here( map.itms[dy][dx] ) )
+    {
+        message( "You see here a %s", map.itms[dy][dx].name );
+    }
 
-  if( monster || terrain )
-  { dx = 0; dy = 0;
-  }
-  else
-  {
-    u.y = dy; u.x = dx;
-  }
+    if( monster || terrain )
+    {
+        dx = 0; dy = 0;
+    }
+    else
+    {
+        plyr.y = dy;
+        plyr.x = dx;
+    }
 
-  return 1;
-}
+    return 1;
+} // uint umove( Player*, Map*, Direction )
 
 // SECTION 6: ////////////////////////////////////////////////////////////////
 // Miscellaneous Monster/Player Actions                                     //
 //////////////////////////////////////////////////////////////////////////////
 
 // Causes a monster to try to pick up a given item.
-bool pickup( Monst* mn, Item i )
+bool pickup( Monst* mon, Item itm )
 {
-  bool mon_picked_up = false;
+    bool mon_picked_up = false;
 
-  if( i.sym.ascii == '\0' )
-  {
-    if( is_you( *mn ) )  message( "There is nothing here to pick up." );
+    if( !Item_here( itm ) )
+    {
+        if( is_you( *mon ) )
+        {
+            message( "There is nothing here to pick up." );
+            return false;
+        }
+    }
+
+    // Items are picked up in the weapon-hand if the weapon-hand is
+    // empty, AND the item is a weapon OR the off-hand is NOT empty
+    if( !Item_here( mon.inventory.items[INVENT_WEAPON] )
+        && (itm.type == Type.weapon
+           || !Item_here( mon.inventory.items[INVENT_OFFHAND] ))
+      )
+    {
+
+        mon.inventory.items[INVENT_WEAPON] = itm;
+
+        if( is_you( *mon ) )
+        {
+            message( "You pick up a %s in your weapon-hand.", itm.name );
+            return true;
+        }
+        else
+        {
+            mon_picked_up = true;
+        }
+    }
+    // Items go in the off-hand if the off-hand is empty, AND the item is not
+    // a weapon OR the weapon-hand is NOT empty
+    else if( !Item_here( mon.inventory.items[INVENT_OFFHAND] ) )
+    {
+        mon.inventory.items[INVENT_OFFHAND] = itm;
+
+        if( is_you( *mon ) )
+        {
+            message( "You pick up a %s in your off-hand.", itm.name );
+            return true;
+        }
+        else
+        {
+            mon_picked_up = true;
+        }
+    }
+    else if( is_you( *mon ) )
+    {
+        message( "You do not have a free grasp." );
+    }
+
+    if( mon_picked_up )
+    {
+        message( "The %s picks up a %s.", monst_name( *mon ), itm.name );
+        return true;
+    }
+
     return false;
-  }
-
-  // Items are picked up in the weapon-hand if the weapon-hand is empty, AND
-  // the item is a weapon OR the off-hand is NOT empty
-  if( mn.inventory.items[INVENT_WEAPON].sym.ascii == '\0' &&
-          (i.type == Type.weapon
-        || mn.inventory.items[INVENT_OFFHAND].sym.ascii != '\0')
-    )
-  {
-
-    mn.inventory.items[INVENT_WEAPON] = i;
-
-    if( is_you( *mn ) )
-    {
-      message( "You pick up a %s in your weapon-hand.", i.name );
-      return true;
-    }
-    else
-    { mon_picked_up = true;
-    }
-  }
-  // Items go in the off-hand if the off-hand is empty, AND the item is not a
-  // weapon OR the weapon-hand is NOT empty
-  else if( mn.inventory.items[INVENT_OFFHAND].sym.ascii == '\0' )
-  {
-    mn.inventory.items[INVENT_OFFHAND] = i;
-
-    if( is_you( *mn ) )
-    {
-      message( "You pick up a %s in your off-hand.", i.name );
-      return true;
-    }
-    else
-    { mon_picked_up = true;
-    }
-  }
-  else if( is_you( *mn ) )
-  { message( "You do not have a free grasp." );
-  }
-
-  if( mon_picked_up )
-  {
-    message( "The %s picks up a %s.", monst_name( *mn ), i.name );
-    return true;
-  }
-
-  return false;
-}
+} // bool pickup( Monst*, Item )
 
 // Causes a monster to try to put down or "drop" an `Item` at the given index
 // in its inventory.
-Item m_drop_item( Monst* mn, int index )
+Item m_drop_item( Monst* mon, int index )
 {
-  Item ret = No_item;
+    Item ret = No_item;
 
-  // If the given index is invalid, return a placeholder item.  Note that 40
-  // is the maximum number of slots in a monster's inventory (14 equipment
-  // slots and 26 items in the bag)
-  if( index < 0 || index >= 40 )  return No_item;
+    // If the given index is invalid, return a placeholder item.  Note that 40
+    // is the maximum number of slots in a monster's inventory (14 equipment
+    // slots and 26 items in the bag)
+    if( index < 0 || index >= 40 )
+    {
+        return No_item;
+    }
 
-  // Otherwise, we simply remove that item and return it:
-  ret = mn.inventory.items[index];
-  mn.inventory.items[index] = No_item;
-  return ret;
+    // Otherwise, we simply remove that item and return it:
+    ret = mon.inventory.items[index];
+    mon.inventory.items[index] = No_item;
+  
+    return ret;
 }

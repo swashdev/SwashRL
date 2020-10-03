@@ -34,22 +34,10 @@ import global;
 // A struct used to store symbols.
 struct Symbol
 {
-  char ch;
+    char ch;
 
-  Colors color;
+    Colors color;
 
-  // further members of this struct will be used when SDL is implemented for
-  // images (possibly including sprites in the future)
-}
-
-// Generates a new symbol.
-// DEPRECATED: Use D's built-in struct constructors instead.
-Symbol symdata( char character, Colors color )
-{
-
-  Symbol ret;
-  ret.ch = character;
-  ret.color = color;
-
-  return ret;
+    // further members of this struct will be used when SDL is implemented for
+    // images (possibly including sprites in the future)
 }

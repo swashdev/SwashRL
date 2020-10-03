@@ -53,7 +53,7 @@ static Item No_item;
 // Quickly check if the given item is valid.
 // Mostly used to check for empty equipment slots, inventory spaces, or floor
 // tiles.
-bool Item_here( Item i )
+bool Item_here( Item itm )
 {
-    return i.sym.ch != '\0';
+    return itm.sym.ch != '\0';
 }

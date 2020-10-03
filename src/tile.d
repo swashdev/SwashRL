@@ -33,32 +33,32 @@ import global;
 // A struct for storing map tile data.
 struct Tile
 {
-  // The symbol used to represent this map tile.
-  Symbol sym;
+    // The symbol used to represent this map tile.
+    Symbol sym;
   
-  // Cardinal and diagonal movement are blocked separately beacuse some map
-  // tiles like doors only block diagonal movement.
-  bool block_cardinal_movement;
-  bool block_diagonal_movement;
+    // Cardinal and diagonal movement are blocked separately beacuse some map
+    // tiles like doors only block diagonal movement.
+    bool block_cardinal_movement;
+    bool block_diagonal_movement;
 
-  // Disable seeing through this tile.
-  bool block_vision;
+    // Disable seeing through this tile.
+    bool block_vision;
 
-  // Determines if the tile is illuminated.
-  bool lit;
+    // Determines if the tile is illuminated.
+    bool lit;
 
-  // Determine if the player has seen this tile (in NetHack this is called
-  // "memory.")
-  bool seen;
+    // Determine if the player has seen this tile (in NetHack this is called
+    // "memory.")
+    bool seen;
 
-  // A bitmask to determine if there are any hazards on this tile; use this
-  // carefully, as some hazards might conflict (can't have a pit and a pool of
-  // water on the same tile!)
-  // note: this flag could potentially be used for other special tiles, not
-  // just hazards--the sky's the limit when you're programming your own
-  // universe!
-  uint hazard;
-}
+    // A bitmask to determine if there are any hazards on this tile; use this
+    // carefully, as some hazards might conflict (can't have a pit and a pool
+    // of water on the same tile!)
+    // note: this flag could potentially be used for other special tiles, not
+    // just hazards--the sky's the limit when you're programming your own
+    // universe!
+    uint hazard;
+} // struct Tile
 
 // A collection of standard terrain elements.
 static Tile TERRAIN_FLOOR,
@@ -69,9 +69,9 @@ static Tile TERRAIN_FLOOR,
 // Initialize the standard terrain elements.
 void init_terrain()
 {
-  TERRAIN_FLOOR = Tile( SYM_FLOOR, false, false, false, true, false, 0 );
-  TERRAIN_WALL  = Tile( SYM_WALL,  true,  true,  true,  true, false, 0 );
-  TERRAIN_WATER = Tile( SYM_WATER, false, false, false, true, false,
-                        HAZARD_WATER );
-  TERRAIN_DOOR  = Tile( SYM_DOOR,  false, true,  true,  true, false, 0 );
-} /* void init_terrain() */
+    TERRAIN_FLOOR = Tile( SYM_FLOOR, false, false, false, true, false, 0 );
+    TERRAIN_WALL  = Tile( SYM_WALL,  true,  true,  true,  true, false, 0 );
+    TERRAIN_WATER = Tile( SYM_WATER, false, false, false, true, false,
+                          HAZARD_WATER );
+    TERRAIN_DOOR  = Tile( SYM_DOOR,  false, true,  true,  true, false, 0 );
+}

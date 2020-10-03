@@ -48,7 +48,7 @@ import std.datetime : Month;
 
 static Map Current_map;
 static uint Current_level;
-static SwashIO IO;
+static Swash_IO IO;
 
 // An enum representing valid values for `SDL_Mode`.
 enum SDL_MODES { none, terminal, full };

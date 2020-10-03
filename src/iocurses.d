@@ -40,7 +40,7 @@ import std.string : format;
 
 // This class contains functions for the curses display.  See iomain.d for the
 // SwashIO interface.
-class CursesIO : SwashIO
+class CursesIO : Swash_IO
 {
 
 // SECTION 1: ////////////////////////////////////////////////////////////////

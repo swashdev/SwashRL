@@ -60,7 +60,7 @@ void sdl_error( string error = "" )
 
 // This class contains functions and other members for the SDL "virtual
 // terminal" display.  See iomain.d for the SwashIO interface.
-class SDLTerminalIO : SwashIO
+class SDLTerminalIO : Swash_IO
 {
 
 // SECTION 1: ////////////////////////////////////////////////////////////////

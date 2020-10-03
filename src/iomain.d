@@ -646,7 +646,7 @@ discard_swap:
     // color
     if( u.inventory.items[INVENT_HELMET].name == "festive hat" )
     {
-      display( u.y + 1, u.x, symdata( u.sym.ch, Colors.Festive_Player ), true );
+      display( u.y + 1, u.x, Symbol( u.sym.ch, Colors.Festive_Player ), true );
     }
     else  display( u.y + 1, u.x, u.sym, true );
   }

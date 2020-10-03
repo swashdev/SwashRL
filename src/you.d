@@ -34,49 +34,55 @@ import global;
 alias Player = Monst;
 
 // Returns "true" if the given monster is you.
-bool is_you( Monst u )
-{ return u.name == "spelunker";
+bool is_you( Monst mon )
+{
+    return mon.name == "spelunker";
 }
 
 // Initializes the player character and places it at the given coordinates.
 Player init_player( ubyte y, ubyte x )
 {
-  Player u;
+    Player player;
 
-  // The "spelunker" name should ONLY be used for the player character, and
-  // is a signal to monster movement functions that the monster is "you."
-  u.name = "spelunker";
+    // The "spelunker" name should ONLY be used for the player character, and
+    // is a signal to monster movement functions that the monster is "you."
+    player.name = "spelunker";
 
-  if( x < 80 )
-  { u.x = x;
-  }
-  else
-  { u.x = 1;
-  }
-  if( y < 24 )
-  { u.y = y;
-  }
-  else
-  { u.y = 1;
-  }
-  u.sym = Symbol( SMILEY, Colors.Player );
-  u.hit_points = roll( 3 ) + 2;
+    if( x < 80 )
+    {
+        player.x = x;
+    }
+    else
+    {
+        player.x = 1;
+    }
+    if( y < 24 )
+    {
+        player.y = y;
+    }
+    else
+    {
+        player.y = 1;
+    }
 
-  u.inventory = init_inven();
+    player.sym = Symbol( SMILEY, Colors.Player );
+    player.hit_points = roll( 3 ) + 2;
 
-  u.attack_roll = Dicebag( 2, 0, 0, 1000 );
+    player.inventory = init_inven();
 
-  u.walk = Locomotion.terrestrial;
+    player.attack_roll = Dicebag( 2, 0, 0, 1000 );
 
-  import std.datetime.systime;
-  import std.datetime.date;
-  // if it is December, the player character starts with a "festive hat"
-  if( Clock.currTime().month == Month.dec )
-  {
-    Item hat = Item( Symbol( ']', Colors.Red ), "festive hat",
-                     Type.armor, Armor.helmet, 0, 0 );
-    u.inventory.items[INVENT_HELMET] = hat;
-  }
+    player.walk = Locomotion.terrestrial;
+
+    import std.datetime.systime;
+    import std.datetime.date;
+    // if it is December, the player character starts with a "festive hat"
+    if( Clock.currTime().month == Month.dec )
+    {
+        Item hat = Item( Symbol( ']', Colors.Red ), "festive hat",
+                         Type.armor, Armor.helmet, 0, 0 );
+        player.inventory.items[INVENT_HELMET] = hat;
+    }
   
-  return u;
-}
+    return player;
+} // player init_player( ubyte, ubyte )

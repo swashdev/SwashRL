@@ -39,11 +39,11 @@ import std.string : format;
 // A struct containing data used to generate monsters from a template.
 struct Mon
 {
-  Symbol sym;
-  string name;
-  Locomotion swim;
-  Dicebag hit_dice;
-  Dicebag attack_roll;
+    Symbol sym;
+    string name;
+    Locomotion swim;
+    Dicebag hit_dice;
+    Dicebag attack_roll;
 }
 
 // SECTION 2: ////////////////////////////////////////////////////////////////
@@ -54,13 +54,13 @@ struct Mon
 // monsters store their own map coordinates.
 struct Monst
 {
-  Symbol sym;
-  string name;
-  int hp;
-  Locomotion walk;
-  Dicebag attack_roll;
-  ubyte x, y;
-  Inven inventory;
+    Symbol sym;
+    string name;
+    int hit_points;
+    Locomotion walk;
+    Dicebag attack_roll;
+    ubyte x, y;
+    Inven inventory;
 }
 
 // SECTION 3: ////////////////////////////////////////////////////////////////
@@ -69,29 +69,38 @@ struct Monst
 
 // Returns the monster's name.  If the monster is identified as the player,
 // returns "you".  This function is used for formatting messages.
-string monst_name( Monst mn )
+string monst_name( Monst mon )
 {
-  if( mn.name == "spelunker" )  return "you";
+    if( mon.name == "spelunker" )
+    {
+        return "you";
+    }
 
-  return mn.name;
+    return mon.name;
 }
 
 // Returns the string "the %s," where %s is the name of the given monster,
 // unless the monster is identified as the player, in which case "you" is
 // returned instead.  Much like `monst_name`, this function is used for
 // formatting messages.
-string the_monst( Monst mn )
+string the_monst( Monst mon )
 {
-  if( mn.name == "spelunker" )  return "you";
+    if( mon.name == "spelunker" )
+    {
+        return "you";
+    }
 
-  return format( "the %s", mn.name );
+    return format( "the %s", mon.name );
 }
 
 // The same as `the_monst`, but with a capital first letter, used at the start
 // of sentences.
-string The_monst( Monst mn )
+string The_monst( Monst mon )
 {
-  if( mn.name == "spelunker" )  return "You";
+    if( mon.name == "spelunker" )
+    {
+        return "You";
+    }
 
-  return format( "The %s", mn.name );
+    return format( "The %s", mon.name );
 }

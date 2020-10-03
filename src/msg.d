@@ -48,32 +48,37 @@ string[] Message_history;
 
 // Clears the message queue.
 void clear_messages()
-{ Messages.clear();
+{
+    Messages.clear();
 }
 
 // Pops the first message in the message queue.
 string pop_message()
 {
-  if( Messages.empty() )
-  { return "";
-  }
+    if( Messages.empty() )
+    {
+        return "";
+    }
 
-  string ret = Messages.front;
-  Messages.removeFront();
-  return ret;
+    string ret = Messages.front;
+
+    Messages.removeFront();
+
+    return ret;
 }
 
 // Formats a message and appends it to the message queue.
 void message( T... )(T args)
 {
-  // Append the message to the message buffer...
-  Messages.insertBack( format( args ) );
+    // Append the message to the message buffer...
+    Messages.insertBack( format( args ) );
 
-  // ...and to the message history.
-  Message_history ~= format( args );
+    // ...and to the message history.
+    Message_history ~= format( args );
 
-  // Truncate the message buffer when it exceeds the maximum set length:
-  if( Message_history.length > MAX_MESSAGE_BUFFER )
-  { Message_history = Message_history[1 .. (MAX_MESSAGE_BUFFER + 1)];
-  }
+    // Truncate the message buffer when it exceeds the maximum set length:
+    if( Message_history.length > MAX_MESSAGE_BUFFER )
+    {
+        Message_history = Message_history[1 .. (MAX_MESSAGE_BUFFER + 1)];
+    }
 }

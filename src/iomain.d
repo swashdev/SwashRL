@@ -680,7 +680,7 @@ discard_swap:
       foreach( x; 0 .. MAP_X )
       {
         Symbol output = to_display.t[y][x].sym;
-	Color_Pair initial_color = CLR[output.color];
+	Color_Pair initial_color = Clr[output.color];
 
 static if( COLOR )
 {

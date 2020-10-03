@@ -85,7 +85,7 @@ static if( COLOR )
   // that color.
   attr_t get_color( Colors color = Colors.Default )
   {
-    return COLOR_PAIR( CLR[color].get_color_pair() );
+    return COLOR_PAIR( Clr[color].get_color_pair() );
   } // attr_t get_color( Colors? )
 
 // SECTION 3: ////////////////////////////////////////////////////////////////
@@ -151,7 +151,7 @@ static if( COLOR )
   void put_char( uint y, uint x, char c, Colors color = Colors.Default )
   {
 
-    Color_Pair color_pair = CLR[color];
+    Color_Pair color_pair = Clr[color];
     
 static if( TEXT_EFFECTS )
 {

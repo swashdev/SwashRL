@@ -377,13 +377,13 @@ class SDLTerminalIO : SwashIO
 
     SDL_Texture* renderedchar;
 
-    Color_Pair co = CLR[color];
+    Color_Pair co = Clr[color];
 
     // null means there's no glyph, so fall back on a backup character
     if( cur_tileset[c] is null )
     {
       renderedchar = cur_tileset['?'];
-      co = CLR[Colors.Error];
+      co = Clr[Colors.Error];
     }
     else
     { renderedchar = cur_tileset[c];

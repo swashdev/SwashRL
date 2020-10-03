@@ -267,10 +267,10 @@ version( sdl )
   try
   {
 
-    if( SDL_terminal() )  IO = new SDLTerminalIO();
+    if( SDL_terminal() )  IO = new SDL_Terminal_IO();
 
   }
-  catch( SDLException e )
+  catch( SDL_Exception e )
   {
 
     writeln( e.msg );

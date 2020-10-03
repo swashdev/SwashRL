@@ -30,7 +30,6 @@
 
 enum Move
 {
-    
     // Standard movement
     northwest, // 0
     north,     // 1
@@ -63,5 +62,4 @@ enum Move
 
     // "Command not recognized" flag
     invalid
-
-}
+} // enum Move

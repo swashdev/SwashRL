@@ -469,10 +469,10 @@ interface SwashIO
       else
       {
         // if we haven't grabbed an item yet...
-        if( grabbed.sym.ch == '\0' )
+        if( grabbed.sym.ascii == '\0' )
         {
           // ...confirm the slot is not empty...
-          if( u.inventory.items[line].sym.ch == '\0' )
+          if( u.inventory.items[line].sym.ascii == '\0' )
           {
             display_equipment_screen( u, -1, "There is no item there." );
             line = -1;
@@ -486,7 +486,7 @@ interface SwashIO
             // ...and save that line so we can swap the items later.
             grabbed_line = line;
           }
-        } /* if( grabbed.sym.ch == '\0' ) */
+        } /* if( grabbed.sym.ascii == '\0' ) */
         // if we have already grabbed an item...
         else
         {
@@ -537,7 +537,7 @@ seppuku:
                     );
 discard_swap:
             grabbed_line = -1;
-            grabbed.sym.ch = '\0';
+            grabbed.sym.ascii = '\0';
             //get_key();
             //refnow = true;
             continue;
@@ -559,12 +559,12 @@ discard_swap:
           u.inventory.items[grabbed_line] = u.inventory.items[line];
           // if the new slot is not empty, the player expends a turn moving
           // that item
-          if( u.inventory.items[line].sym.ch != '\0' )
+          if( u.inventory.items[line].sym.ascii != '\0' )
           { turns += 1;
           }
           u.inventory.items[line] = grabbed;
           // ...remove the grabbed item...
-          grabbed.sym.ch = '\0';
+          grabbed.sym.ascii = '\0';
           grabbed_line = line = -1;
           // ...clear the screen...
           clear_screen();
@@ -573,7 +573,7 @@ discard_swap:
   
           // the player expends a turn moving an inventory item
           turns += 1;
-        } /* if( grabbed.sym.ch != '\0' ) */
+        } /* if( grabbed.sym.ascii != '\0' ) */
       } /* if( line != -1 ) */
     } while( grab != 'Q' && grab != ' ' );
   
@@ -646,7 +646,7 @@ discard_swap:
     // color
     if( u.inventory.items[INVENT_HELMET].name == "festive hat" )
     {
-      display( u.y + 1, u.x, Symbol( u.sym.ch, Colors.Festive_Player ), true );
+      display( u.y + 1, u.x, Symbol( u.sym.ascii, Colors.Festive_Player ), true );
     }
     else  display( u.y + 1, u.x, u.sym, true );
   }
@@ -720,7 +720,7 @@ static if( COLOR )
  }
 } // static if( COLOR )
 
-        if( to_display.i[y][x].sym.ch != '\0' )
+        if( to_display.i[y][x].sym.ascii != '\0' )
         { output = to_display.i[y][x].sym;
         }
 

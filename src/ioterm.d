@@ -433,7 +433,7 @@ class SDLTerminalIO : SwashIO
   // coordinates.  The `center` parameter has no effect in SDL.
   void display( uint y, uint x, Symbol s, bool center = true )
   {
-    put_char( y, x, s.ch, s.color );
+    put_char( y, x, s.ascii, s.color );
   }
 
   // The Message Line ////////////////////////////////////////////////////////

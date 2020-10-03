@@ -464,7 +464,7 @@ message( "You step into the water and are pulled down by your equipment..." );
     }
   } // else from if( Noclip )
 
-  if( m.i[dy][dx].sym.ch != '\0' )
+  if( m.i[dy][dx].sym.ascii != '\0' )
   { message( "You see here a %s", m.i[dy][dx].name );
   }
 
@@ -488,7 +488,7 @@ bool pickup( Monst* mn, Item i )
 {
   bool mon_picked_up = false;
 
-  if( i.sym.ch == '\0' )
+  if( i.sym.ascii == '\0' )
   {
     if( is_you( *mn ) )  message( "There is nothing here to pick up." );
     return false;
@@ -496,9 +496,9 @@ bool pickup( Monst* mn, Item i )
 
   // Items are picked up in the weapon-hand if the weapon-hand is empty, AND
   // the item is a weapon OR the off-hand is NOT empty
-  if( mn.inventory.items[INVENT_WEAPON].sym.ch == '\0' &&
+  if( mn.inventory.items[INVENT_WEAPON].sym.ascii == '\0' &&
           (i.type == Type.weapon
-        || mn.inventory.items[INVENT_OFFHAND].sym.ch != '\0')
+        || mn.inventory.items[INVENT_OFFHAND].sym.ascii != '\0')
     )
   {
 
@@ -515,7 +515,7 @@ bool pickup( Monst* mn, Item i )
   }
   // Items go in the off-hand if the off-hand is empty, AND the item is not a
   // weapon OR the weapon-hand is NOT empty
-  else if( mn.inventory.items[INVENT_OFFHAND].sym.ch == '\0' )
+  else if( mn.inventory.items[INVENT_OFFHAND].sym.ascii == '\0' )
   {
     mn.inventory.items[INVENT_OFFHAND] = i;
 

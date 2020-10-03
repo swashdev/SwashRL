@@ -55,5 +55,5 @@ static Item No_item;
 // tiles.
 bool Item_here( Item itm )
 {
-    return itm.sym.ch != '\0';
+    return itm.sym.ascii != '\0';
 }

@@ -183,7 +183,7 @@ static if( COLOR )
   // moved over the place where the symbol was output.
   void display( uint y, uint x, Symbol s, bool center = false )
   {
-    put_char( y, x, s.ch, s.color );
+    put_char( y, x, s.ascii, s.color );
 
     if( center )
     { move( y, x );

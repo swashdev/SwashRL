@@ -92,7 +92,7 @@ void level_file_error( T... )( string dungeon_file, T args )
 void save_Symbol( Symbol sym, File fil )
 {
   // Each Symbol has a char and a Colors.  Write both of these.
-  fil.writeln( sym.ch );
+  fil.writeln( sym.ascii );
   fil.writeln( sym.color );
 }
 
@@ -115,7 +115,7 @@ void save_Tile( Tile t, File fil )
 void save_Item( Item i, File fil )
 {
   // If the given item turns out not to exist, write a placeholder instead.
-  if( i.sym.ch == '\0' )  fil.writeln( PLACEHOLDER_MARKER );
+  if( i.sym.ascii == '\0' )  fil.writeln( PLACEHOLDER_MARKER );
   else
   {
     // Each Item has a Symbol.  Write this first.

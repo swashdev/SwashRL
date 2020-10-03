@@ -107,7 +107,7 @@ bool check_grasp( Inven tory )
 bool check_equip( Item i, uint s )
 {
     // an empty item can go in any slot (obviously)
-    if( i.sym.ch == '\0' )
+    if( i.sym.ascii == '\0' )
     {
         return true;
     }

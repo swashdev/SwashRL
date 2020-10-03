@@ -58,30 +58,31 @@ enum SEPARATOR_MARKER   = cast(char)20;
 //////////////////////////////////////////////////////////////////////////////
 
 // An exception for invalid save file access.
-class SaveFileException : Exception
+class Save_File_Exception : Exception
 {
-  mixin basicExceptionCtors;
+    mixin basicExceptionCtors;
 }
 
 // An exception for invalid dungeon level file access.
-class DungeonFileException : Exception
+class Dungeon_File_Exception : Exception
 {
-  mixin basicExceptionCtors;
+    mixin basicExceptionCtors;
 }
 
 // Throws a SaveFileException.
 void save_error( T... )( string file, T args )
 {
-  throw new SaveFileException( format( "Unable to access save file %s: %s",
-                                       file, format( args ) ) );
+    throw new Save_File_Exception(
+            format( "Unable to access save file %s: %s", file,
+                format( args ) ) );
 }
 
 // Throws a DungeonFileException.
 void level_file_error( T... )( string dungeon_file, T args )
 {
-  throw new DungeonFileException(
-    format( "Unable to read dungeon level file %s: %s",
-    dungeon_file, format( args ) ) );
+    throw new Dungeon_File_Exception(
+            format( "Unable to read dungeon level file %s: %s", dungeon_file,
+                format( args ) ) );
 }
 
 // SECTION 2: ////////////////////////////////////////////////////////////////
@@ -91,167 +92,164 @@ void level_file_error( T... )( string dungeon_file, T args )
 // Saves a Symbol to a file.
 void save_Symbol( Symbol sym, File fil )
 {
-  // Each Symbol has a char and a Colors.  Write both of these.
-  fil.writeln( sym.ascii );
-  fil.writeln( sym.color );
+    // Each Symbol has a char and a Colors.  Write both of these.
+    fil.writeln( sym.ascii );
+    fil.writeln( sym.color );
 }
 
 // Saves a Tile to a file.
-void save_Tile( Tile t, File fil )
+void save_Tile( Tile til, File fil )
 {
-  // Each Tile has a Symbol.  Write this first.
-  save_Symbol( t.sym, fil );
+    // Each Tile has a Symbol.  Write this first.
+    save_Symbol( til.sym, fil );
 
-  // Next, write the tile's special properties.
-  fil.writeln( t.block_cardinal_movement );
-  fil.writeln( t.block_diagonal_movement );
-  fil.writeln( t.block_vision );
-  fil.writeln( t.lit );
-  fil.writeln( t.seen );
-  fil.writeln( t.hazard );
+    // Next, write the tile's special properties.
+    fil.writeln( til.block_cardinal_movement );
+    fil.writeln( til.block_diagonal_movement );
+    fil.writeln( til.block_vision );
+    fil.writeln( til.lit );
+    fil.writeln( til.seen );
+    fil.writeln( til.hazard );
 }
 
 // Saves an Item to a file.
-void save_Item( Item i, File fil )
+void save_Item( Item itm, File fil )
 {
-  // If the given item turns out not to exist, write a placeholder instead.
-  if( i.sym.ascii == '\0' )  fil.writeln( PLACEHOLDER_MARKER );
-  else
-  {
-    // Each Item has a Symbol.  Write this first.
-    save_Symbol( i.sym, fil );
+    // If the given item turns out not to exist, write a placeholder instead.
+    if( !Item_here( itm ) )
+    {
+        fil.writeln( PLACEHOLDER_MARKER );
+    }
+    else
+    {
+        // Each Item has a Symbol.  Write this first.
+        save_Symbol( itm.sym, fil );
 
-    // Next, write the Item's special properties.
-    fil.writeln( i.name );
-    fil.writeln( i.type );
-    fil.writeln( i.equip );
-    fil.writeln( i.add_dice );
-    fil.writeln( i.add_mod );
-  }
+        // Next, write the Item's special properties.
+        fil.writeln( itm.name );
+        fil.writeln( itm.type );
+        fil.writeln( itm.equip );
+        fil.writeln( itm.add_dice );
+        fil.writeln( itm.add_mod );
+    }
 }
 
 // Saves a Dicebag to a file.
 void save_Dicebag( Dicebag dice, File fil )
 {
-  // Each Dicebag has a dice count, a modifier, and a floor & ceiling.
-  fil.writeln( dice.dice );
-  fil.writeln( dice.modifier );
-  fil.writeln( dice.floor );
-  fil.writeln( dice.ceiling);
+    // Each Dicebag has a dice count, a modifier, and a floor & ceiling.
+    fil.writeln( dice.dice );
+    fil.writeln( dice.modifier );
+    fil.writeln( dice.floor );
+    fil.writeln( dice.ceiling);
 }
 
 // Saves a Monst to a file.
-void save_Monst( Monst mn, File fil )
+void save_Monst( Monst mon, File fil )
 {
-  // Only save the monster if it has >0 hit points.
-  if( mn.hit_points > 0 )
-  {
-    // Each Monst has a Symbol.  Write this first.
-    save_Symbol( mn.sym, fil );
+    // Only save the monster if it has >0 hit points.
+    if( mon.hit_points > 0 )
+    {
+        // Each Monst has a Symbol.  Write this first.
+        save_Symbol( mon.sym, fil );
 
-    //Next, write the Monst's special properties.
-    fil.writeln( mn.name );
-    fil.writeln( mn.hit_points );
-    fil.writeln( mn.walk );
-    fil.writeln( mn.x );
-    fil.writeln( mn.y );
+        // Next, write the Monst's special properties.
+        fil.writeln( mon.name );
+        fil.writeln( mon.hit_points );
+        fil.writeln( mon.walk );
+        fil.writeln( mon.x );
+        fil.writeln( mon.y );
 
-    // Each Monst has a Dicebag.  Write this next.
-    save_Dicebag( mn.attack_roll, fil );
+        // Each Monst has a Dicebag.  Write this next.
+        save_Dicebag( mon.attack_roll, fil );
 
-    // Saving of the Monst's Inven has not yet been implemented (TODO)
-  }
+        // Saving of the Monst's Inven has not yet been implemented (TODO)
+    }
 }
 
 // Saves a level to a file.
-void save_level( T... )( Map m, Player u, T args )
+void save_level( T... )( Map map, Player plyr, T args )
 {
-  File fil;
-  string path = format( "save/lev/%s.lev", format( args ) );
+    File fil;
+    string path = format( "save/lev/%s.lev", format( args ) );
 
-  mkdirRecurse( "save/lev" );
+    mkdirRecurse( "save/lev" );
 
-  if( exists( path ) && !isFile( path ) )
-  {
-    level_file_error( path,
-                      "This file name points to a directory or symlink" );
-  }
-
-  try
-  {
-    fil = File( path, "w" );
-  }
-  catch( FileException e )
-  {
-    level_file_error( path, e.msg );
-  }
-
-  // First things first: Output the version number so that we can determine
-  // level file compatibility:
-  string ver = format( "%.3f", VERSION );
-  fil.writeln( VERSION );
-
-  // We start by recording all of the tiles on the map:
-
-  // Leave a marker indicating we're starting tile recording:
-  fil.writeln( SEPARATOR_MARKER );
-
-  foreach( y; 0 .. MAP_Y )
-  {
-    foreach( x; 0 .. MAP_X )
+    if( exists( path ) && !isFile( path ) )
     {
-      Tile t = m.tils[y][x];
+        level_file_error( path,
+                "This file name points to a directory or symlink" );
+    }
 
-      save_Tile( t, fil );
-
-      // We're done with this tile.
-    } // foreach( x; 0 .. MAP_X )
-  } // foreach( y; 0 .. MAP_Y )
-
-  // Leave a marker indicating that we're finishing tile output and starting
-  // items:
-  fil.writeln( SEPARATOR_MARKER );
-
-  // Start writing items:
-  foreach( y; 0 .. MAP_Y )
-  {
-    foreach( x; 0 .. MAP_X )
+    try
     {
-      Item i = m.itms[y][x];
+        fil = File( path, "w" );
+    }
+    catch( FileException error )
+    {
+        level_file_error( path, error.msg );
+    }
 
-      save_Item( i, fil );
+    // First things first: Output the version number so that we can determine
+    // level file compatibility:
+    string ver = format( "%.3f", VERSION );
+    fil.writeln( ver );
 
-      // We're done with the item.
-    } // foreach( x; 0 .. MAP_X )
-  } // foreach( y; 0 .. MAP_Y )
+    // We start by recording all of the tiles on the map:
 
-  // Leave a marker indicating that we're done with items and now are
-  // outputting monsters
-  fil.writeln( SEPARATOR_MARKER );
+    // Leave a marker indicating we're starting tile recording:
+    fil.writeln( SEPARATOR_MARKER );
 
-  // Start writing monsters:
-  foreach( n; 0 .. m.mons.length )
-  {
-    Monst mn = m.mons[n];
+    foreach( y; 0 .. MAP_Y )
+    {
+        foreach( x; 0 .. MAP_X )
+        {
+            Tile til = map.tils[y][x];
 
-    save_Monst( mn, fil );
+            save_Tile( til, fil );
+        }
+    }
 
-    // We're done with the monster.
-  } // foreach( n; 0 .. m.mons.length )
+    // Leave a marker indicating that we're finishing tile output and starting
+    // items:
+    fil.writeln( SEPARATOR_MARKER );
 
-  // Leave a marker indicating that we're done with outputting monsters
-  fil.writeln( SEPARATOR_MARKER );
+    // Start writing items:
+    foreach( y; 0 .. MAP_Y )
+    {
+        foreach( x; 0 .. MAP_X )
+        {
+            Item itm = map.itms[y][x];
 
-  // Finally, we output the coordinates that the player character is standing
-  // at.
-  ubyte x = u.x, y = u.y;
+            save_Item( itm, fil );
+        } // foreach( x; 0 .. MAP_X )
+    }
 
-  fil.writeln( x );
-  fil.writeln( y );
+    // Leave a marker indicating that we're done with items and now are
+    // outputting monsters
+    fil.writeln( SEPARATOR_MARKER );
 
-  // We're done.
-  fil.close();
-} // save_level( map, player, uint )
+    // Start writing monsters:
+    foreach( index; 0 .. map.mons.length )
+    {
+        Monst mon = map.mons[index];
+
+        save_Monst( mon, fil );
+    }
+
+    // Leave a marker indicating that we're done with outputting monsters
+    fil.writeln( SEPARATOR_MARKER );
+
+    // Finally, we output the coordinates that the player character is
+    // standing at.
+    ubyte x = plyr.x, y = plyr.y;
+
+    fil.writeln( x );
+    fil.writeln( y );
+
+    // We're done.
+    fil.close();
+} // void save_level( Map, Player, T args )
 
 // SECTION 3: ////////////////////////////////////////////////////////////////
 // Loading from a Saved File                                                //
@@ -260,220 +258,227 @@ void save_level( T... )( Map m, Player u, T args )
 // Loads in a Symbol from a file.
 Symbol load_Symbol( File fil )
 {
-  // Each Symbol has a char and a Colors.  Read these in order.
-  char ch = to!char( strip_line( fil ) );
-  Colors color = to!Colors( strip_line( fil ) );
+    // Each Symbol has a char and a Colors.  Read these in order.
+    char ascii = to!char( strip_line( fil ) );
+    Colors color = to!Colors( strip_line( fil ) );
 
-  // Return the resulting Symbol.
-  return Symbol( ch, color );
+    // Return the resulting Symbol.
+    return Symbol( ascii, color );
 }
 
 // Loads in a Tile from a file.
 Tile load_Tile( File fil )
 {
-  // Each Tile has a Symbol.  Read this first.
-  Symbol sym = load_Symbol( fil );
+    // Each Tile has a Symbol.  Read this first.
+    Symbol sym = load_Symbol( fil );
 
-  // Next, read in the Tile's special properties.
-  bool block_cardinal_movement = to!bool( strip_line( fil ) );
-  bool block_diagonal_movement = to!bool( strip_line( fil ) );
-  bool block_vision = to!bool( strip_line( fil ) );
-  bool lit = to!bool( strip_line( fil ) );
-  bool seen = to!bool( strip_line( fil ) );
-  uint hazard = to!uint( strip_line( fil ) );
+    // Next, read in the Tile's special properties.
+    bool block_cardinal_movement = to!bool( strip_line( fil ) );
+    bool block_diagonal_movement = to!bool( strip_line( fil ) );
+    bool block_vision = to!bool( strip_line( fil ) );
+    bool lit = to!bool( strip_line( fil ) );
+    bool seen = to!bool( strip_line( fil ) );
+    uint hazard = to!uint( strip_line( fil ) );
 
-  // Return the resulting Tile.
-  return Tile( sym, block_cardinal_movement, block_diagonal_movement,
-               block_vision, lit, seen, hazard );
+    // Return the resulting Tile.
+    return Tile( sym, block_cardinal_movement, block_diagonal_movement,
+                 block_vision, lit, seen, hazard );
 }
 
 // Loads in an Item from a file.
 Item load_Item( File fil )
 {
-  // Unlike with Tiles, we need to read in the char and Colors of the Item's
-  // Symbol separately, so we can check if a `PLACEHOLDER_MARKER` has been
-  // written instead.
-  char ch = to!char( strip_line( fil ) );
+    // Unlike with Tiles, we need to read in the char and Colors of the Item's
+    // Symbol separately, so we can check if a `PLACEHOLDER_MARKER` has been
+    // written instead.
+    char ascii = to!char( strip_line( fil ) );
   
-  // If we got a placeholder, return `No_item`.
-  if( ch == PLACEHOLDER_MARKER )  return No_item;
+    // If we got a placeholder, return `No_item`.
+    if( ascii == PLACEHOLDER_MARKER )
+    {
+        return No_item;
+    }
 
-  // Otherwise, we can proceed as normal by reading in the Symbol's Colors
-  // and then getting the Symbol from there.
-  Colors color = to!Colors( strip_line( fil ) );
-  Symbol sym = Symbol( ch, color );
+    // Otherwise, we can proceed as normal by reading in the Symbol's Colors
+    // and then getting the Symbol from there.
+    Colors color = to!Colors( strip_line( fil ) );
+    Symbol sym = Symbol( ascii, color );
 
-  // Next, read in the Item's special properties.
-  string name = strip_line( fil );
-  Type type = to!Type( strip_line( fil ) );
-  Armor equip = to!Armor( strip_line( fil ) );
-  uint add_dice = to!int( strip_line( fil ) );
-  uint add_mod = to!int( strip_line( fil ) );
+    // Next, read in the Item's special properties.
+    string name = strip_line( fil );
+    Type type = to!Type( strip_line( fil ) );
+    Armor equip = to!Armor( strip_line( fil ) );
+    uint add_dice = to!int( strip_line( fil ) );
+    int add_mod = to!int( strip_line( fil ) );
 
-  // Return the resulting Item.
-  return Item( sym, name, type, equip, add_dice, add_mod );
-}
+    // Return the resulting Item.
+    return Item( sym, name, type, equip, add_dice, add_mod );
+} // Item load_Item( File )
 
 // Loads in a Dicebag from a file.
 Dicebag load_Dicebag( File fil )
 {
-  // Each dicebag has dice count, a modifier, a floor, and a ceiling.  Read
-  // these in order.
-  uint dice = to!uint( strip_line( fil ) );
-  int modifier = to!int( strip_line( fil ) );
-  int floor = to!int( strip_line( fil ) );
-  int ceiling = to!int( strip_line( fil ) );
+    // Each dicebag has dice count, a modifier, a floor, and a ceiling.  Read
+    // these in order.
+    uint dice = to!uint( strip_line( fil ) );
+    int modifier = to!int( strip_line( fil ) );
+    int floor = to!int( strip_line( fil ) );
+    int ceiling = to!int( strip_line( fil ) );
 
-  // Return the resulting Dicebag.
-  return Dicebag( dice, modifier, floor, ceiling );
+    // Return the resulting Dicebag.
+    return Dicebag( dice, modifier, floor, ceiling );
 }
 
 // Loads in a Monst from a file.
-Monst load_Monst( char ch, File fil )
+Monst load_Monst( char ascii, File fil )
 {
-  // Unlike with Tiles or Items, we need to save in `ch` before we start
-  // reading the Monst so we know that we don't have a `SEPARATOR_MARKER`,
-  // so we already have that.  We just need to read in a Colors and from
-  // there we'll have the Symbol we need.
-  Colors color = to!Colors( strip_line( fil ) );
+    // Unlike with Tiles or Items, we need to save in `ch` before we start
+    // reading the Monst so we know that we don't have a `SEPARATOR_MARKER`,
+    // so we already have that.  We just need to read in a Colors and from
+    // there we'll have the Symbol we need.
+    Colors color = to!Colors( strip_line( fil ) );
 
-  Symbol sym = Symbol( ch, color );
+    Symbol sym = Symbol( ascii, color );
 
-  // Next, read in the Monst's special properties.
-  string name = strip_line( fil );
-  int hp = to!int( strip_line( fil ) );
-  Locomotion walk = to!Locomotion( strip_line( fil ) );
-  ubyte x = to!ubyte( strip_line( fil ) );
-  ubyte y = to!ubyte( strip_line( fil ) );
+    // Next, read in the Monst's special properties.
+    string name = strip_line( fil );
+    int hit_points = to!int( strip_line( fil ) );
+    Locomotion walk = to!Locomotion( strip_line( fil ) );
+    ubyte x = to!ubyte( strip_line( fil ) );
+    ubyte y = to!ubyte( strip_line( fil ) );
 
-  // Read in the Monst's Dicebag next.
-  Dicebag attack_roll = load_Dicebag( fil );
+    // Read in the Monst's Dicebag next.
+    Dicebag attack_roll = load_Dicebag( fil );
 
-  // Generate an empty inventory, because inventory saving has not yet been
-  // implemented (TODO)
-  Inven tory = init_inven();
+    // Generate an empty inventory, because inventory saving has not yet been
+    // implemented (TODO)
+    Inven tory = init_inven();
 
-  // Return the resulting Monst.
-  return Monst( sym, name, hp, walk, attack_roll, x, y, tory );
-}
+    // Return the resulting Monst.
+    return Monst( sym, name, hit_points, walk, attack_roll, x, y, tory );
+} // Monst load_Monst( char, File )
 
 // Get a saved level from a file.
 Map level_from_file( string file_label )
 {
+    string path = format( "save/lev/%s.lev", file_label );
 
-  string path = format( "save/lev/%s.lev", file_label );
-
-  if( !exists( path ) )
-  { level_file_error( path, "File does not exist." );
-  }
-
-  if( !isFile( path ) )
-  { level_file_error( path, "This is a directory or a symlink, not a file." );
-  }
-
-  File fil;
-
-  try
-  {
-    fil = File( path, "r" );
-  }
-  catch( FileException e )
-  {
-    level_file_error( path, e.msg );
-  }
-
-  float ver = 0.000;
-
-  ver = to!float( strip_line( fil ) );
-
-  if( ver < LAST_COMPATIBLE_VERSION )
-  {
-    fil.close();
-    level_file_error( path, "File version %.3f not compatible with current "
-                      ~ "version %.3f", ver, VERSION );
-  }
-
-  char marker = '\0';
-
-  marker = to!char( strip_line( fil ) );
-
-  if( marker != SEPARATOR_MARKER )
-  {
-    fil.close();
-    level_file_error( path,
-                  "Could not read map tiles; file not formatted correctly." );
-  }
-
-  Map m;
-
-  foreach( y; 0 .. MAP_Y )
-  {
-    foreach( x; 0 .. MAP_X )
+    if( !exists( path ) )
     {
-      Tile t = load_Tile( fil );
-
-      m.tils[y][x] = t;
-    } // foreach( x; 0 .. MAP_X )
-  } // foreach( y; 0 .. MAP_Y )
-
-  marker = to!char( strip_line( fil ) );
-
-  if( marker != SEPARATOR_MARKER )
-  {
-    fil.close();
-    level_file_error( path,
-                  "Could not read items; file not formatted correctly." );
-  }
-
-  foreach( y; 0 .. MAP_Y )
-  {
-    foreach( x; 0 .. MAP_X )
-    {
-      Item i = load_Item( fil );
-
-      m.itms[y][x] = i;
-    } // foreach( x; 0 .. MAP_X )
-  } // foreach( y; 0 .. MAP_Y )
-
-  marker = to!char( strip_line( fil ) );
-
-  if( marker != SEPARATOR_MARKER )
-  {
-    fil.close();
-    level_file_error( path,
-                  "Could not read monsters; file not formatted correctly." );
-  }
-
-  char ch = '\0';
-  uint count = 0;
-
-  ch = to!char( strip_line( fil ) );
-
-  while( ch != SEPARATOR_MARKER )
-  {
-    if( fil.eof() )
-    {
-      fil.close();
-      level_file_error( path, "Reached EOF before end of monster array" );
+        level_file_error( path, "File does not exist." );
     }
 
-    Monst mn = load_Monst( ch, fil );
+    if( !isFile( path ) )
+    {
+        level_file_error( path,
+                "This is a directory or a symlink, not a file." );
+    }
 
-    m.mons.length++;
-    m.mons[count] = mn;
-    count++;
+    File fil;
 
-    ch = to!char( strip_line( fil ) );
-  }
+    try
+    {
+        fil = File( path, "r" );
+    }
+    catch( FileException error )
+    {
+        level_file_error( path, error.msg );
+    }
 
-  ubyte px = 0, py = 0;
+    float ver = 0.000;
 
-  px = to!ubyte( strip_line( fil ) );
-  py = to!ubyte( strip_line( fil ) );
+    ver = to!float( strip_line( fil ) );
 
-  m.player_start = [ py, px ];
+    if( ver < LAST_COMPATIBLE_VERSION )
+    {
+        fil.close();
+        level_file_error( path,
+                "File version %.3f not compatible with current version %.3f",
+                ver, VERSION );
+    }
 
-  fil.close();
+    char marker = '\0';
 
-  return m;
-} // level_from_file( string )
+    marker = to!char( strip_line( fil ) );
+
+    if( marker != SEPARATOR_MARKER )
+    {
+        fil.close();
+        level_file_error( path,
+                "Could not read map tiles; file not formatted correctly." );
+    }
+
+    Map map;
+
+    foreach( y; 0 .. MAP_Y )
+    {
+        foreach( x; 0 .. MAP_X )
+        {
+            Tile til = load_Tile( fil );
+
+            map.tils[y][x] = til;
+        }
+    }
+
+    marker = to!char( strip_line( fil ) );
+
+    if( marker != SEPARATOR_MARKER )
+    {
+        fil.close();
+        level_file_error( path,
+                "Could not read items; file not formatted correctly." );
+    }
+
+    foreach( y; 0 .. MAP_Y )
+    {
+        foreach( x; 0 .. MAP_X )
+        {
+            Item itm = load_Item( fil );
+
+            map.itms[y][x] = itm;
+        }
+    }
+
+    marker = to!char( strip_line( fil ) );
+
+    if( marker != SEPARATOR_MARKER )
+    {
+        fil.close();
+        level_file_error( path,
+                "Could not read monsters; file not formatted correctly." );
+    }
+
+    char ascii = '\0';
+    uint count = 0;
+
+    ascii = to!char( strip_line( fil ) );
+
+    while( ascii != SEPARATOR_MARKER )
+    {
+        if( fil.eof() )
+        {
+            fil.close();
+            level_file_error( path,
+                    "Reached EOF before end of monster array" );
+        }
+
+        Monst mon = load_Monst( ascii, fil );
+
+        map.mons.length++;
+        map.mons[count] = mon;
+        count++;
+
+        ascii = to!char( strip_line( fil ) );
+    }
+
+    ubyte px = 0, py = 0;
+
+    px = to!ubyte( strip_line( fil ) );
+    py = to!ubyte( strip_line( fil ) );
+
+    map.player_start = [ py, px ];
+
+    fil.close();
+
+    return map;
+} // Map level_from_file( string )

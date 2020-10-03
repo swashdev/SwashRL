@@ -60,11 +60,11 @@ Player init_player( ubyte y, ubyte x )
   { u.y = 1;
   }
   u.sym = symdata( SMILEY, Colors.Player );
-  u.hp = roll( 3, 2 );
+  u.hp = roll( 3 ) + 2;
 
   u.inventory = init_inven();
 
-  u.attack_roll = Dice( 2, 0, 0, 1000 );
+  u.attack_roll = Dicebag( 2, 0, 0, 1000 );
 
   u.walk = Locomotion.terrestrial;
 

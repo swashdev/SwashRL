@@ -351,7 +351,8 @@ void mattack( Monst* m, Monst* u )
 {
   int dic = m.attack_roll.dice + m.inventory.items[INVENT_WEAPON].addd;
   int mod = m.attack_roll.modifier  + m.inventory.items[INVENT_WEAPON].addm;
-  int atk = roll_x( dic, mod, m.attack_roll.floor, m.attack_roll.ceiling );
+  int atk = roll_within( m.attack_roll.floor, m.attack_roll.ceiling,
+                         dic, 6, mod );
 
   if( atk > 0 )
   {

@@ -217,7 +217,7 @@ void grow_mold( Map* m )
   import std.random;
 
   // This is the number of seeds we're going to have for mold growths:
-  int num_molds = td10();
+  int num_molds = d10();
 
   if( num_molds > 0 )
   {
@@ -269,7 +269,7 @@ void grow_mold( Map* m )
       if( m.t[y][x].hazard & HAZARD_WATER )
       {
         // 1 in 4 chance the Tile will have mold growing near it...
-        if( dn(4) == 1 )
+        if( d( 4 ) == 1 )
         {
           // Grow mold in a random Tile near the water...
           int trux, truy;
@@ -341,7 +341,7 @@ static if( FOLIAGE )
   // test Monsters
 
   Monst goobling = Monst( Symbol( 'g', Colors.Dark_Gray ), "goobling",
-                          roll( 2, 2 ), Locomotion.terrestrial,
+                          roll( 2 ) + 2, Locomotion.terrestrial,
                           Dicebag( 2, 0, 2, 1000 ), 50, 10, init_inven()
                         );
 
@@ -351,21 +351,21 @@ static if( MORE_TEST_MONSTERS )
 {
 
   goobling = Monst( Symbol( 'b', Colors.Dark_Gray ), "crow",
-                    roll( 1, 2 ), Locomotion.aerial,
+                    roll() + 2, Locomotion.aerial,
                     Dicebag( 1, 2, 3, 1000 ), 50, 20, init_inven()
                   );
 
   add_mon( &nu, goobling );
 
   goobling = Monst( Symbol( '8', Colors.Cyan ), "carp",
-                    roll( 1, 0 ), Locomotion.aquatic,
+                    roll(), Locomotion.aquatic,
                     Dicebag( 1, 3, 4, 1000 ), 50, 12, init_inven()
                   );
 
   add_mon( &nu, goobling );
 
   goobling = Monst( Symbol( '%', Colors.Brown ), "slime mold",
-                    roll( 0, 3 ), Locomotion.sessile,
+                    roll( 0, 0, 3 ), Locomotion.sessile,
                     Dicebag( 0, 2, 2, 2 ), 78, 2, init_inven()
                   );
 

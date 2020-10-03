@@ -21,6 +21,11 @@ VERSION 0.033
    - Monster AI has been improved slightly, allowing the monster to do
      collision detection multiple times per turn.  This also prevents the
      goobling from using hax to walk across water diagonally.
+   - Random number generator functions have been rewritten to be significantly
+     more consistent and reduce the number of redundant or unnecessary
+     functions.  Unique functions used to simulate real non-standardized dice
+     like the d10 or the d100 remain, but everything else now uses `d` or
+     `roll`.
 
   Added:
    - The player can now drop items.  By pressing the 'd' key, he will be able

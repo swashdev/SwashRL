@@ -26,6 +26,10 @@ VERSION 0.033
      functions.  Unique functions used to simulate real non-standardized dice
      like the d10 or the d100 remain, but everything else now uses `d` or
      `roll`.
+   - Following feedback on the general readability of the source code, a new
+     style guide has been written and the source code has been made (mostly)
+     compliant with it.  The Style Guide is included at the bottom of the
+     Guidelines for Contributors. (docs/CONTRIBUTING.md)
 
   Added:
    - The player can now drop items.  By pressing the 'd' key, he will be able

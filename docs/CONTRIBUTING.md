@@ -1,7 +1,7 @@
 SwashRL Guidelines for Contributors
 ===================================
 
-Version 1.0.4.  Last updated 2020-09-18 17:05 CDT
+Version 1.0.5.  Last updated 2020-10-03 19:37 CDT
 
 ---
 
@@ -126,7 +126,7 @@ guide should match [The D Style], but there are some notable exceptions:
 
 * **Naming conventions**: SwashRL always uses snake\_case.  A minimum variable
   name length of 3 is imposed to discourarge ambiguity in the code, with
-  exceptions made for coordinate names such as `x`, `y`, `dx`, et cetera.  
+  exceptions made for coordinate names such as `x`, `y`, `dx`, et cetera.[^1]
   Capitalization rules are as follows:
 
   * Normal variables and functions, including member variables and functions,
@@ -154,6 +154,12 @@ guide should match [The D Style], but there are some notable exceptions:
 
   3. In the case of section headers, a box or line is drawn using slashes to
      grab the user's attention.
+
+[^1]: I lied, there are actually two exceptions to this rule which don't
+apply to the exception I gave: The `d()` function, because it uses standard
+die specifications from RPGs (e.g. `d( 4 )` is a d4) and the `IO` object in
+the mainloop, whose name I left as-is because it's about as descriptive as it
+needs to be.
 
 [the SwashRL license]: ../LICENSE.txt
 [the third-party licenses file]: ../3rdparty.txt

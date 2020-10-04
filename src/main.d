@@ -51,22 +51,28 @@ static uint Current_level;
 static Swash_IO IO;
 
 // An enum representing valid values for `SDL_Mode`.
-enum SDL_MODES { none, terminal, full };
+enum SDL_mode
+{
+    none, terminal, full
+};
 
 // Used to determine how the SDL interface will behave, or if it will be
 // foregone in favor of the curses interface.
-static SDL_MODES SDL_Mode = SDL_ENABLED ? SDL_MODES.terminal : SDL_MODES.none;
+static SDL_mode SDL_Mode = SDL_ENABLED ? SDL_mode.terminal : SDL_mode.none;
 
 // These functions all act as shortcuts for the phrase
-// `SDL_Mode == SDL_MODES.*`
+// `SDL_Mode == SDL_mode.*`
 bool SDL_none()
-{ return SDL_Mode == SDL_MODES.none;
+{
+    return SDL_Mode == SDL_mode.none;
 }
 bool SDL_terminal()
-{ return SDL_Mode == SDL_MODES.terminal;
+{
+    return SDL_Mode == SDL_mode.terminal;
 }
 bool SDL_full()
-{ return SDL_terminal();
+{
+    return SDL_terminal();
 }
 
 // Utility Functions for Main ////////////////////////////////////////////////
@@ -74,44 +80,55 @@ bool SDL_full()
 // Returns the version number as a string.
 string sp_version()
 {
-  return format( "%.3f-%s", VERSION, COMMIT );
+    return format( "%.3f-%s", VERSION, COMMIT );
 }
 
 // Greet the player according to the current date.
 string greet_player()
 {
-  SysTime current_time = Clock.currTime();
-  Month month = current_time.month;
-  ubyte date  = current_time.day;
+    SysTime current_time = Clock.currTime();
+    Month month = current_time.month;
+    ubyte date  = current_time.day;
 
-  // New Year's Eve/Day
-  if((month == Month.dec && date == 31) || (month == Month.jan && date == 1))
-    return "Happy New Year!  ";
+    // New Year's Eve/Day
+    if( (month == Month.dec && date == 31)
+        || (month == Month.jan && date == 1) )
+    {
+        return "Happy New Year!  ";
+    }
 
-  // Christmas (and Christmas Eve)
-  if( month == Month.dec && (date == 24 || date == 25) )
-    return "Merry Christmas!  ";
+    // Christmas (and Christmas Eve)
+    if( month == Month.dec && (date == 24 || date == 25) )
+    {
+        return "Merry Christmas!  ";
+    }
 
-  // Halloween
-  if( month == Month.oct && date == 31 )
-    return "Happy Halloween!  ";
+    // Halloween
+    if( month == Month.oct && date == 31 )
+    {
+        return "Happy Halloween!  ";
+    }
 
-  // Hanami (Cherry Blossom Festival, in this case set as Hanamatsuri, the
-  // date of Buddha's birthday)
-  if( month == Month.apr && date == 8 )
-    return "Happy Hanami!  ";
+    // Hanami (Cherry Blossom Festival, in this case set as Hanamatsuri, the
+    // date of Buddha's birthday)
+    if( month == Month.apr && date == 8 )
+    {
+        return "Happy Hanami!  ";
+    }
 
-  // Test date greeting (I coded this feature on 2019-12-21, so on that date
-  // give the player this test output to make sure it's working)
-debug
-{
-  if( month == Month.dec && date == 21 )
-    return "Happy date that I coded this stupid feature!  ";
-}
+    // Test date greeting (I coded this feature on 2019-12-21, so on that date
+    // give the player this test output to make sure it's working)
+    debug
+    {
+        if( month == Month.dec && date == 21 )
+        {
+            return "Happy date that I coded this stupid feature!  ";
+        }
+    }
 
-  // Default return:
-  return "";
-}
+    // Default return:
+    return "";
+} // string greet_player()
 
 int main( string[] args )
 {
@@ -120,53 +137,49 @@ int main( string[] args )
 // Initialization                                                           //
 //////////////////////////////////////////////////////////////////////////////
 
-  bool disp_version = false;
-  string saved_lev;
+    bool disp_version = false;
+    string saved_lev;
 
-  bool gen_map = false;
-  bool test_colors = false;
+    bool gen_map = false;
+    bool test_colors = false;
 
-  uint moved = 0;
-  Move mv = Move.wait;
+    uint moved = 0;
+    Move mov = Move.wait;
 
-  // Command-Line Arguments //////////////////////////////////////////////////
+    // Command-Line Arguments ////////////////////////////////////////////////
 
-  // Get the name of the executable:
-  string Name = args[0];
+    // Get the name of the executable:
+    string Name = args[0];
 
-  auto clarguments = getopt( args,
-    // v, display the version number and then exit
-    "v",        &disp_version,
-    "version",  &disp_version,
-    // s, the file name of a saved game
-    "s",        &saved_lev,
-    "save",     &saved_lev,
-    // the display mode, either an SDL "terminal" or "none" for curses ("full"
-    // is the same as "terminal" until a full graphics version of the game is
-    // finished)
-    "sdl-mode", &SDL_Mode,
-    "m",        &SDL_Mode,
-    // For debugging purposes, this "test map" can be generated at runtime
-    // to test new features or other changes to the game.
-    "test-map", &Use_test_map,
-    // For debugging purposes, this "color test screen" can be used to test
-    // SwashRL's colors.
-    "test-colors", &test_colors,
-    "test-color", &test_colors,
-    // the "mapgen" mode generates a sample map, displays it, and then exits
-    // without starting a game
-    "mapgen",   &gen_map,
-    // Cheat modes (keep these a secret):
-    "dqd",      &Degreelessness,
-    "esm",      &Infinite_weapon,
-    "spispopd", &Noclip,
-    "eoa",      &No_shadows,
-    "hbr",      &Master_debug
-  );
+    auto clarguments = getopt( args,
+        // v, display the version number and then exit
+        "v|version",    &disp_version,
+        // s, the file name of a saved game
+        "s|save",       &saved_lev,
+        // the display mode, either an SDL "terminal" or "none" for curses
+        // ("full" is the same as "terminal" until a full graphics version of
+        // the game is finished)
+        "m|sdl-mode",   &SDL_Mode,
+        // For debugging purposes, this "test map" can be generated at runtime
+        // to test new features or other changes to the game.
+        "test-map",     &Use_test_map,
+        // For debugging purposes, this "color test screen" can be used to
+        // test SwashRL's colors.
+        "test-colors|test-color", &test_colors,
+        // the "mapgen" mode generates a sample map, displays it, and then
+        // exits without starting a game
+        "mapgen",       &gen_map,
+        // Cheat modes (keep these a secret):
+        "dqd", &Degreelessness,
+        "esm", &Infinite_weapon,
+        "spispopd", &Noclip,
+        "eoa", &No_shadows,
+        "hbr", &Master_debug
+    ); // auto clarguments = getopt( args, ...
 
-  if( clarguments.helpWanted )
-  {
-    writefln( "Usage: %s [options]
+    if( clarguments.helpWanted )
+    {
+        writefln( "Usage: %s [options]
   options:
     -h, --help        Displays this help output and then exits.
     -v, --version     Displays the version number and then exits.
@@ -187,486 +200,510 @@ int main( string[] args )
   examples:
     %s -s save0
     %s -m terminal
-You are running %s version %s",
-      Name, Name, Name, NAME, sp_version() );
-    return 1;
-  }
+You are running %s version %s", Name, Name, Name, NAME, sp_version() );
+        return 1;
+    } // if( clarguments.helpWanted )
 
-  if( disp_version )
-  {
-    writefln( "%s, version %s", NAME, sp_version() );
-    return 1;
-  }
+    if( disp_version )
+    {
+        writefln( "%s, version %s", NAME, sp_version() );
+        return 1;
+    }
 
-  // If all we're doing is testing colors, ignore everything until I/O
-  // initialization.
-  if( test_colors )
-  {
-    // the color test screen is only available on debug builds
-debug {}
-else
-{
-    writeln( "The color test screen is only available on debug builds of the
-game.  Try compiling with dub build -b debug" );
-    return 31;
-}
-  }
-  else
-  {
-
-    // Activate Cheat / Debug Modes //////////////////////////////////////////
-
-    // If all we're doing is a quick mapgen, turn on the Silent Cartographer
-    // and ignore the rest.
-    if( gen_map )  No_shadows = true;
+    // If all we're doing is testing colors, ignore everything until I/O
+    // initialization.
+    if( test_colors )
+    {
+        // the color test screen is only available on debug builds
+        debug {}
+        else
+        {
+            writeln( "The color test screen is only available on debug builds of the game.
+Try compiling with dub build -b debug" );
+            return 31;
+        }
+    }
     else
     {
 
-      // Announce cheat modes
-      if( Degreelessness )
-      { message( "Degreelessness mode is turned on." );
-      }
-      if( Infinite_weapon )
-      { message( "Killer heels mode is turned on." );
-      }
-      if( Noclip )
-      {
-        message( "Xorn mode is turned on." );
-        No_shadows = true;
-      }
-      if( No_shadows )
-      { message( "Silent Cartographer is turned on." );
-      }
-      if( Master_debug )
-      {
-        message( "YOU HAVE THE POWERRRRRRRR!" );
-        Degreelessness = Infinite_weapon = Noclip = No_shadows = true;
-      }
+        // Activate Cheat / Debug Modes //////////////////////////////////////
 
+        // If all we're doing is a quick mapgen, turn on the Silent
+        // Cartographer and ignore the rest.
+        if( gen_map )
+        {
+            No_shadows = true;
+        }
+        else
+        {
+            // Announce cheat modes
+            if( Degreelessness )
+            {
+                message( "Degreelessness mode is turned on." );
+            }
+            if( Infinite_weapon )
+            {
+                message( "Killer heels mode is turned on." );
+            }
+            if( Noclip )
+            {
+                message( "Xorn mode is turned on." );
+                No_shadows = true;
+            }
+            if( No_shadows )
+            {
+                message( "Silent Cartographer is turned on." );
+            }
+            if( Master_debug )
+            {
+                message( "YOU HAVE THE POWERRRRRRRR!" );
+                Degreelessness = Infinite_weapon = Noclip = No_shadows = true;
+            }
+
+        } // else from `if( gen_map )`
+
+    } // else from `if( test_colors )`
+
+    // Initialize Input / Output /////////////////////////////////////////////
+
+    // Check to make sure the SDL_Mode does not conflict with the way SwashRL
+    // was compiled:
+    if( !CURSES_ENABLED && SDL_none() )
+    {
+        SDL_Mode = SDL_mode.terminal;
+    }
+
+    if( !SDL_ENABLED && !SDL_none() )
+    {
+        SDL_Mode = SDL_mode.none;
+    }
+
+    version( curses )
+    {
+        if( SDL_none() )
+        {
+            IO = new Curses_IO();
+        }
+    }
+
+    version( sdl )
+    {
+        if( SDL_terminal() )
+        {
+            try
+            {
+                IO = new SDL_Terminal_IO();
+            }
+            catch( SDL_Exception error )
+            {
+                writeln( error.msg );
+                return 21;
+            }
+        }
+    }
+
+    // Initialize Standard Colors ////////////////////////////////////////////
+
+    init_colors();
+
+    // If a color test has been requested, and this is a debug build, display
+    // the test screen and then exit.
+    debug
+    {
+        if( test_colors )
+        {
+            IO.color_test_screen();
+
+            // skip the rest of main
+            IO.cleanup();
+            return 0;
+        }
+    }
+
+    // Initialize Random Number Generator ////////////////////////////////////
+
+    seed();
+
+    // Initialize Standard Terrain Elements //////////////////////////////////
+
+    init_tile_symbols();
+    init_terrain();
+
+    // Initialize the `No_item` placeholder //////////////////////////////////
+
+    No_item = Item( Symbol( '\0', Colors.Error ), "NO ITEM",
+                    Type.none, Armor.none, 0, 0 );
+
+    // Map Generator /////////////////////////////////////////////////////////
+
+    // If we're just doing a sample map generation, do that now.
+    if( gen_map )
+    {
+        Current_map = generate_new_map();
+    }
+    else
+    {
+        // Check if we're loading a map from a saved file.
+        if( saved_lev.length > 0 )
+        {
+            Current_map = level_from_file( saved_lev );
+        }
+        else
+        {
+            // Check if we're using the test map.
+            if( Use_test_map )
+            {
+                debug
+                {
+                    Current_map = test_map();
+                }
+                else
+                {
+                    writeln( "The test map is only available for debug builds of the game.
+Try compiling with dub build -b debug" );
+                    return 31;
+
+                }
+            }
+            else
+            {
+                Current_map = generate_new_map();
+            }
+        }
+
+        Current_level = 0;
     } // else from `if( gen_map )`
 
-  } // else from `if( test_colors )`
+    // Initialize Keymaps ////////////////////////////////////////////////////
 
-  // Initialize Input / Output ///////////////////////////////////////////////
-
-  // Check to make sure the SDL_Mode does not conflict with the way SwashRL
-  // was compiled:
-  if( !CURSES_ENABLED && SDL_none() )  SDL_Mode = SDL_MODES.terminal;
-
-  if( !SDL_ENABLED && !SDL_none() ) SDL_Mode = SDL_MODES.none;
-
-version( curses )
-{
-
-  if( SDL_none() )  IO = new Curses_IO();
-
-}
-version( sdl )
-{
-
-  try
-  {
-
-    if( SDL_terminal() )  IO = new SDL_Terminal_IO();
-
-  }
-  catch( SDL_Exception e )
-  {
-
-    writeln( e.msg );
-    return 21;
-
-  }
-
-} // version( sdl )
-
-  // Initialize Standard Colors //////////////////////////////////////////////
-
-  init_colors();
-
-  // If a color test has been requested, and this is a debug build, display
-  // the test screen and then exit.
-debug
-{
-  if( test_colors )
-  {
-    IO.color_test_screen();
-
-    // skip the rest of main
-    IO.cleanup();
-    return 0;
-  }
-}
-
-  // Initialize Random Number Generator //////////////////////////////////////
-
-  seed();
-
-  // Initialize Standard Terrain Elements ////////////////////////////////////
-
-  init_tile_symbols();
-  init_terrain();
-
-  // Initialize the `No_item` placeholder ////////////////////////////////////
-
-  No_item = Item( Symbol( '\0', Colors.Error ), "NO ITEM",
-                  Type.none, Armor.none, 0, 0 );
-
-  // Map Generator ///////////////////////////////////////////////////////////
-
-  // If we're just doing a sample map generation, do that now.
-  if( gen_map )  Current_map = generate_new_map();
-
-  else
-  {
-
-    // Check if we're loading a map from a saved file.
-    if( saved_lev.length > 0 )
+    try
     {
-      Current_map = level_from_file( saved_lev );
+        Keymaps = [ keymap(), keymap( "ftgdnxhb.ie,pP S" ) ];
+        Keymap_labels = ["Standard", "Dvorak"];
     }
+    catch( Invalid_Keymap_Exception error )
+    {
+        writeln( error.msg );
+        return 11;
+    }
+
+    // Assign default keymap
+    Current_keymap = 0;
+
+    // Initialize the Player /////////////////////////////////////////////////
+
+    Monst plyr = init_player( Current_map.player_start[0],
+                              Current_map.player_start[1] );
+
+    // Initialize Field-of-Vision ////////////////////////////////////////////
+
+    if( !No_shadows )
+    {
+        calc_visible( &Current_map, plyr.x, plyr.y );
+    }
+
+    // If fog of war has been disabled, set all tiles to visible.
     else
     {
-      // Check if we're using the test map.
-      if( Use_test_map )
-      {
-   debug
-        Current_map = test_map();
-   else
-   {
-
-        writeln( "The test map is only available for debug builds of the game.
-Try compiling with dub build -b debug" );
-        return 31;
-
-   }
-      }
-      else
-      {
-        Current_map = generate_new_map();
-      } // else from if( Use_test_map )
-
-    } // else from if( saved_lev.length > 0 )
-    Current_level = 0;
-
-  } // else from `if( gen_map )`
-
-  // Initialize Keymaps //////////////////////////////////////////////////////
-
-  try
-  {
-    Keymaps = [ keymap(), keymap( "ftgdnxhb.ie,pP S" ) ];
-    Keymap_labels = ["Standard", "Dvorak"];
-  }
-  catch( Invalid_Keymap_Exception e )
-  {
-    writeln( e.msg );
-    return 11;
-  }
-
-  // Assign default keymap
-  Current_keymap = 0;
-
-  // Initialize the Player ///////////////////////////////////////////////////
-
-  Monst u = init_player( Current_map.player_start[0],
-                         Current_map.player_start[1] );
-
-  // Initialize Field-of-Vision //////////////////////////////////////////////
-
-  if( !No_shadows )  calc_visible( &Current_map, u.x, u.y );
-
-  // If fog of war has been disabled, set all tiles to visible.
-  else
-  {
-    foreach( vy; 0 .. MAP_Y )
-    {
-      foreach( vx; 0 .. MAP_X )
-      {
-        Current_map.visible[vy][vx] = true;
-      }
+        foreach( vy; 0 .. MAP_Y )
+        {
+            foreach( vx; 0 .. MAP_X )
+            {
+                Current_map.visible[vy][vx] = true;
+            }
+        }
     }
-  }
 
-  // Initial Display /////////////////////////////////////////////////////////
+    // Initial Display ///////////////////////////////////////////////////////
 
-  // If we're just doing a map gen, there's no need to display anything else
-  if( gen_map )
-  {
-    IO.display_map( Current_map );
-    message( "%s, version %s", NAME, sp_version() );
+    // If we're just doing a map gen, there's no need to display anything else
+    if( gen_map )
+    {
+        IO.display_map( Current_map );
+        message( "%s, version %s", NAME, sp_version() );
+        IO.read_messages();
+        IO.get_key();
+
+        // skip the rest of main
+        goto skip_main;
+    }
+
+    // Initialize the status bar
+    IO.refresh_status_bar( &plyr );
+
+    // Display the map and player
+    IO.display_map_and_player( Current_map, plyr );
+
+    // Fill in the message line
+    IO.clear_message_line();
+
+    // Greet the Player //////////////////////////////////////////////////////
+
+    message( "%sWelcome back to SwashRL!", greet_player() );
     IO.read_messages();
-    IO.get_key();
-
-    // skip the rest of main
-    goto skip_main;
-  }
-
-  // Initialize the status bar
-  IO.refresh_status_bar( &u );
-
-  // Display the map and player
-  IO.display_map_and_player( Current_map, u );
-
-  // Fill in the message line
-  IO.clear_message_line();
-
-  // Greet the Player ////////////////////////////////////////////////////////
-
-  message( "%sWelcome back to SwashRL!", greet_player() );
-  IO.read_messages();
 
 // Section 2: ////////////////////////////////////////////////////////////////
 // The Main Loop                                                            //
 //////////////////////////////////////////////////////////////////////////////
 
-  while( u.hit_points > 0 )
-  {
-
-    // Input /////////////////////////////////////////////////////////////////
-
-    if( IO.window_closed() ) goto abrupt_quit;
-
-    moved = 0;
-    mv = IO.get_command();
-
-    if( IO.window_closed() ) goto abrupt_quit;
-
-    // The Player's Turn(s) //////////////////////////////////////////////////
-
-    switch( mv )
+    while( plyr.hit_points > 0 )
     {
-      case Move.invalid:
+        // Input /////////////////////////////////////////////////////////////
 
-         message( "Command not recognized.  Press ? for help." );
-
-         break;
-
-      // display help
-      case Move.help:
-
-         IO.help_screen();
-
-         message( "You are currently using the %s keyboard layout.",
-                  Keymap_labels[ Current_keymap ] );
-
-         IO.refresh_status_bar( &u );
-         IO.display_map_and_player( Current_map, u );
-
-         break;
-
-      // save and quit
-      case Move.save:
-
-        if( 'y' == IO.ask( "Really save?", ['y', 'n'], true ) )
+        if( IO.window_closed() )
         {
-          save_level( Current_map, u, "save0" );
-          goto playerquit;
+            goto abrupt_quit;
         }
 
-        break;
+        moved = 0;
+        mov = IO.get_command();
 
-      // quit
-      case Move.quit:
-
-        if( 'y' == IO.ask( "Really quit?", ['y', 'n'], true ) )
+        if( IO.window_closed() )
         {
-          goto playerquit;
+            goto abrupt_quit;
         }
 
-        break;
+        // The Player's Turn(s) //////////////////////////////////////////////
 
-      // display version information
-      case Move.get_version:
-
-        message( "%s, version %s", NAME, sp_version() );
-
-        break;
-
-      case Move.change_keymap:
-
-        if( Current_keymap >= Keymaps.length - 1 )  Current_keymap = 0;
-        else  Current_keymap++;
-
-        message( "Control scheme swapped to %s", Keymap_labels[Current_keymap]
-               );
-
-        break;
-
-      // print the message buffer
-      case Move.check_messages:
-
-        IO.read_message_history();
-
-        IO.refresh_status_bar( &u );
-        IO.display_map_all( Current_map );
-
-        break;
-
-      // clear the message line
-      case Move.clear_message:
-
-        IO.clear_message_line();
-
-        break;
-
-      // wait
-      case Move.wait:
-
-        message( "You bide your time." );
-        moved = 1;
-
-        break;
-
-      // pick up an item
-      case Move.get:
-        if( pickup( &u, Current_map.itms[u.y][u.x] ) )
+        switch( mov )
         {
-          Current_map.itms[u.y][u.x] = No_item;
-          moved = 1;
-        }
-	break;
+            case Move.invalid:
+                message( "Command not recognized.  Press ? for help." );
+                break;
 
-      // drop an item
-      case Move.drop:
+            // display help
+            case Move.help:
+                IO.help_screen();
+                message( "You are currently using the %s keyboard layout.",
+                         Keymap_labels[ Current_keymap ] );
 
-        bool weapon = Item_here( u.inventory.items[INVENT_WEAPON] ),
-             off    = Item_here( u.inventory.items[INVENT_OFFHAND] );
+                IO.refresh_status_bar( &plyr );
+                IO.display_map_and_player( Current_map, plyr );
+                break;
 
-        Item dropme = No_item;
+            // save and quit
+            case Move.save:
+                if( 'y' == IO.ask( "Really save?", ['y', 'n'], true ) )
+                {
+                    save_level( Current_map, plyr, "save0" );
+                    goto playerquit;
+                }
+                break;
 
-        if( !weapon && !off )
-        { message( "You are not holding anything right now." );
-        }
-        else if( weapon && !off )
-        {
+            // quit
+            case Move.quit:
+                if( 'y' == IO.ask( "Really quit?", ['y', 'n'], true ) )
+                {
+                    goto playerquit;
+                }
+                break;
+
+            // display version information
+            case Move.get_version:
+                message( "%s, version %s", NAME, sp_version() );
+                break;
+
+            case Move.change_keymap:
+                if( Current_keymap >= Keymaps.length - 1 )
+                {
+                    Current_keymap = 0;
+                }
+                else
+                {
+                    Current_keymap++;
+                }
+
+                message( "Control scheme swapped to %s",
+                         Keymap_labels[Current_keymap] );
+                break;
+
+            // print the message buffer
+            case Move.check_messages:
+                IO.read_message_history();
+                IO.refresh_status_bar( &plyr );
+                IO.display_map_all( Current_map );
+                break;
+
+            // clear the message line
+            case Move.clear_message:
+                IO.clear_message_line();
+                break;
+
+            // wait
+            case Move.wait:
+                message( "You bide your time." );
+                moved = 1;
+                break;
+
+            // pick up an item
+            case Move.get:
+                if( pickup( &plyr, Current_map.itms[plyr.y][plyr.x] ) )
+                {
+                    Current_map.itms[plyr.y][plyr.x] = No_item;
+                    moved = 1;
+                }
+	            break;
+
+            // drop an item
+            case Move.drop:
+                bool weapon = Item_here( plyr.inventory.items[INVENT_WEAPON] ),
+                     off    = Item_here( plyr.inventory.items[INVENT_OFFHAND] );
+
+                Item dropme = No_item;
+
+                // If the player has only one item in their hands, drop that
+                // one automatically.  Otherwise, prompt to pick a hand.
+                if( !weapon && !off )
+                {
+                    message( "You are not holding anything right now." );
+                }
+                else if( weapon && !off )
+                {
 drop_weapon:
-          dropme = u.inventory.items[INVENT_WEAPON];
-          u.inventory.items[INVENT_WEAPON] = No_item;
-        }
-        else if( !weapon && off )
-        {
+                    dropme = plyr.inventory.items[INVENT_WEAPON];
+                    plyr.inventory.items[INVENT_WEAPON] = No_item;
+                }
+                else if( !weapon && off )
+                {
 drop_offhand:
-          dropme = u.inventory.items[INVENT_OFFHAND];
-          u.inventory.items[INVENT_OFFHAND] = No_item;
+                    dropme = plyr.inventory.items[INVENT_OFFHAND];
+                    plyr.inventory.items[INVENT_OFFHAND] = No_item;
+                }
+                else
+                {
+                    char drop_which
+                        = IO.ask( "Drop item in weapon-hand or off-hand? (c to cancel)",
+                                  ['w','o','c'], true );
+                    if( 'w' == drop_which )
+                    {
+                        goto drop_weapon;
+                    }
+                    if( 'o' == drop_which )
+                    {
+                        goto drop_offhand;
+                    }
+                }
+
+                if( Item_here( dropme ) )
+                {
+                    drop_item( &Current_map, dropme, plyr.x, plyr.y, true );
+                    moved = 1;
+                }
+                break; // case Move.drop
+
+            // display the inventory screen
+            case Move.inventory:
+                // If the player's inventory is empty, don't waste their time.
+                if( !Item_here( plyr.inventory.items[INVENT_BAG] ) )
+                {
+                    message( "You don't have anything in your bag at the moment." );
+                    break;
+                }
+
+                // If the inventory is NOT empty, display it:
+                IO.manage_inventory( &plyr );
+
+                // Have the inventory screen exit to the equipment screen:
+                goto case Move.equipment;
+
+            // inventory management
+            case Move.equipment:
+                moved = IO.manage_equipment( &plyr, &Current_map );
+
+                // we must redraw the screen after the equipment screen is
+                // cleared
+                IO.refresh_status_bar( &plyr );
+                IO.display_map_and_player( Current_map, plyr );
+                break;
+
+            // all other commands go to umove
+            default:
+                IO.clear_message_line();
+                IO.display( plyr.y + 1, plyr.x,
+                        Current_map.tils[plyr.y][plyr.x].sym );
+
+                moved = umove( &plyr, &Current_map, get_direction( mov ) );
+
+                if( plyr.hit_points <= 0 )
+                {
+                    goto playerdied;
+                }
+                break;
+        } // switch( mov )
+
+        // The Monsters' Turn(s) /////////////////////////////////////////////
+
+        if( moved > 0 )
+        {
+            while( moved > 0 )
+            {
+                map_move_all_monsters( &Current_map, &plyr );
+                moved--;
+            }
+
+            if( !No_shadows )
+            {
+                calc_visible( &Current_map, plyr.x, plyr.y );
+            }
+
+            IO.refresh_status_bar( &plyr );
+            IO.display_map_and_player( Current_map, plyr );
+        }
+
+        // Check Messages ////////////////////////////////////////////////////
+
+        if( !Messages.empty() )
+        {
+            IO.read_messages();
+        }
+
+        // Refresh the Player ////////////////////////////////////////////////
+
+        if( plyr.hit_points > 0 )
+        {
+            IO.display_player( plyr );
         }
         else
         {
-          char dropwhich
-          = IO.ask( "Drop item in weapon-hand or off-hand? (c to cancel)",
-                    ['w','o','c'], true );
-          if( 'w' == dropwhich )  goto drop_weapon;
-          if( 'o' == dropwhich )  goto drop_offhand;
-        }
-        if( Item_here( dropme ) )
-        {
-          drop_item( &Current_map, dropme, u.x, u.y, true );
-          moved = 1;
-        }
-        break;
-
-      // display the inventory screen
-      case Move.inventory:
-
-        // If the player's inventory is empty, don't waste their time.
-        if( !Item_here( u.inventory.items[INVENT_BAG] ) )
-        {
-          message( "You don't have anything in your bag at the moment." );
-          break;
+            break; // end the mainloop if the player is dead
         }
 
-        // If the inventory is NOT empty, display it:
-        //IO.display_inventory( &u );
-        IO.manage_inventory( &u );
+        // Refresh the Display ///////////////////////////////////////////////
 
-        // Have the inventory screen exit to the equipment screen:
-        goto case Move.equipment;
+        IO.refresh_screen();
 
-      // inventory management
-      case Move.equipment:
-
-        moved = IO.manage_equipment( &u, &Current_map );
-
-        // we must redraw the screen after the equipment screen is cleared
-        IO.refresh_status_bar( &u );
-        IO.display_map_and_player( Current_map, u );
-
-        break;
-
-      // all other commands go to umove
-      default:
-
-        IO.clear_message_line();
-        IO.display( u.y + 1, u.x, Current_map.tils[u.y][u.x].sym );
-
-        moved = umove( &u, &Current_map, get_direction( mv ) );
-
-        if( u.hit_points <= 0 )  goto playerdied;
-        break;
-    }
-
-    // The Monsters' Turn(s) /////////////////////////////////////////////////
-
-    if( moved > 0 )
-    {
-      while( moved > 0 )
-      {
-        map_move_all_monsters( &Current_map, &u );
-        moved--;
-      }
-
-      if( !No_shadows )  calc_visible( &Current_map, u.x, u.y );
-
-      IO.refresh_status_bar( &u );
-      IO.display_map_and_player( Current_map, u );
-
-    } // if( moved > 0 )
-
-    // Check Messages ////////////////////////////////////////////////////////
-
-    if( !Messages.empty() )  IO.read_messages();
-
-    // Refresh the Player ////////////////////////////////////////////////////
-
-    if( u.hit_points > 0 )  IO.display_player( u );
-    else  break; // end the mainloop if the player is dead
-
-    // Refresh the Display ///////////////////////////////////////////////////
-
-    IO.refresh_screen();
-
-  } // while( u.hit_points > 0 )
+    } // while( plyr.hit_points > 0 )
 
 // SECTION 3: ////////////////////////////////////////////////////////////////
 // Closing the Program                                                      //
 //////////////////////////////////////////////////////////////////////////////
 
-  // Handle Player Death /////////////////////////////////////////////////////
+    // Handle Player Death ///////////////////////////////////////////////////
 
 playerdied:
 
-  // Display a grayed-out player:
-  u.sym.color = Colors.Dark_Gray;
-  IO.display_player( u );
+    // Display a grayed-out player:
+    plyr.sym.color = Colors.Dark_Gray;
+    IO.display_player( plyr );
 
-  // Say Goodbye /////////////////////////////////////////////////////////////
+    // Say Goodbye ///////////////////////////////////////////////////////////
 
 playerquit:
 
-  message( "See you later..." );
+    message( "See you later..." );
 
-  // view all the messages that you got just before you died
-  IO.read_messages();
+    // view all the messages that you got just before you died
+    IO.read_messages();
 
-  // Wait for the user to press any key and then close the graphical mode and
-  // quit the program.
-  IO.get_key();
+    // Wait for the user to press any key and then close the graphical mode
+    // and quit the program.
+    IO.get_key();
 
-  // Final Cleanup ///////////////////////////////////////////////////////////
+    // Final Cleanup /////////////////////////////////////////////////////////
 
 skip_main:
 abrupt_quit:
-  IO.cleanup();
+    IO.cleanup();
 
-  return 0;
-}
+    return 0;
+} // int main( string[] )

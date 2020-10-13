@@ -30,6 +30,10 @@ VERSION 0.033
      style guide has been written and the source code has been made (mostly)
      compliant with it.  The Style Guide is included at the bottom of the
      Guidelines for Contributors. (docs/CONTRIBUTING.md)
+   - `keymap` is now no longer just a name used internally by comment lines
+     but an actual alias.  This is to make it moderately easier to alter what
+     a keymap is later on, but also to make the code that little bit more
+     readable.
 
   Added:
    - The player can now drop items.  By pressing the 'd' key, he will be able

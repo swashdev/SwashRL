@@ -378,7 +378,7 @@ Try compiling with dub build -b debug" );
 
     try
     {
-        Keymaps = [ keymap(), keymap( "ftgdnxhb.ie,pP S" ) ];
+        Keymaps = [ new_keymap(), new_keymap( "ftgdnxhb.ie,pP S" ) ];
         Keymap_labels = ["Standard", "Dvorak"];
     }
     catch( Invalid_Keymap_Exception error )

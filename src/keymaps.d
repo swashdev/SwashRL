@@ -49,8 +49,12 @@ class Invalid_Keymap_Exception : Exception
 // Keymap initializer function                                              //
 //////////////////////////////////////////////////////////////////////////////
 
+// keymaps are an associative array of `Move` values indexed with `char`
+// variables.
+alias keymap = Move[char];
+
 // Initializes a keymap from a list of key inputs.
-Move[char] keymap( string keylist = "" )
+keymap new_keymap( string keylist = "" )
 {
     // The standard keymap, which is being overwritten
     char[] keys = "ykuhlbjn.ie,dP S".dup;
@@ -92,7 +96,7 @@ Move[char] keymap( string keylist = "" )
     } // if( keylist.length > 0 )
 
     // Now we define the actual keymap:
-    Move[char] ret;
+    keymap ret;
 
     // Standard movement keys:
     ret[ keys[ 0] ] = Move.northwest;
@@ -129,7 +133,7 @@ Move[char] keymap( string keylist = "" )
 
     // Return the keymap
     return ret;
-} // Move[char] keymap( string? )
+} // keymap new_keymap( string? )
 
 // SECTION 3: ////////////////////////////////////////////////////////////////
 // Static variables used to store keymaps                                   //
@@ -139,7 +143,7 @@ Move[char] keymap( string keylist = "" )
 static string[] Keymap_labels;
 
 // The global list of keymaps.
-static Move[char][] Keymaps;
+static keymap[] Keymaps;
 
 // The index of the control scheme currently in use in `Keymaps`
 static uint Current_keymap = 0;

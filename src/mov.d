@@ -460,8 +460,6 @@ uint umove( Player* plyr, Map* map, Direction dir )
     get_dydx( dir, &dy, &dx );
     bool cardinal = dy == 0 || dx == 0;
 
-    uint terrain = 0, monster = 0;
-
     dx += plyr.x; dy += plyr.y;
 
     Monst* mon;
@@ -471,8 +469,7 @@ uint umove( Player* plyr, Map* map, Direction dir )
         if( mon.x == dx && mon.y == dy && mon.hit_points > 0 )
         {
             mattack( plyr, mon );
-            monster = 1;
-            break;
+            return 1;
         }
     }
 
@@ -500,6 +497,7 @@ uint umove( Player* plyr, Map* map, Direction dir )
             {
                 plyr.hit_points = 0;
                 message( "You step into the water and are pulled down by your equipment..." );
+                return 1;
             }
         }
     }
@@ -517,15 +515,9 @@ uint umove( Player* plyr, Map* map, Direction dir )
         }
     }
 
-    if( monster || terrain )
-    {
-        dx = 0; dy = 0;
-    }
-    else
-    {
-        plyr.y = dy;
-        plyr.x = dx;
-    }
+    
+    plyr.y = dy;
+    plyr.x = dx;
 
     return 1;
 } // uint umove( Player*, Map*, Direction )

@@ -18,6 +18,8 @@ VERSION 0.033
      commits, due to a typo, the player would always pick up all items in the
      weapon-hand.  Now the player will only pick up items in the weapon-hand
      if the item is a weapon OR the off-hand is already full.
+   - The player no longer drowns after attacking a monster on a water tile.
+     Instead, the movement function returns after the monster is attacked.
 
   Changed:
    - The flags used to determine monster behavior and item types have been

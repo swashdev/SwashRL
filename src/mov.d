@@ -552,7 +552,7 @@ bool pickup( Monst* mon, Item itm )
     // empty, AND the item is a weapon OR the off-hand is NOT empty
     if( !Item_here( mon.inventory.items[INVENT_WEAPON] )
         && (itm.type == Type.weapon
-           || !Item_here( mon.inventory.items[INVENT_OFFHAND] ))
+           || Item_here( mon.inventory.items[INVENT_OFFHAND] ))
       )
     {
 

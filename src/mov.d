@@ -506,7 +506,15 @@ uint umove( Player* plyr, Map* map, Direction dir )
 
     if( Item_here( map.itms[dy][dx] ) )
     {
-        message( "You see here a %s", map.itms[dy][dx].name );
+        Item itm = map.itms[dy][dx];
+        if( itm.count > 1 )
+        {
+            message( "You see here %d %ss.", itm.count, itm.name );
+        }
+        else
+        {
+            message( "You see here a %s.", itm.name );
+        }
     }
 
     if( monster || terrain )

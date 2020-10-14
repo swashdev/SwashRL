@@ -481,6 +481,10 @@ debug
                                 "leather tailsheath", Type.armor, Armor.tail,
                                 0, 1 );
         map.itms[17][3] = tailsheath;
+
+        Item gold = Item( Symbol( '$', Colors.Gold ),
+                "gold coin", Type.coin, Armor.none, 0, 0, true, 32 );
+        map.itms[9][3] = gold;
   
         return map;
     } // Map test_map()

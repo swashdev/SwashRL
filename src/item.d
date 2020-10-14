@@ -44,6 +44,12 @@ struct Item
     // modifiers to the player's dice rolls: `add_dice` adds dice, `add_mod`
     // adds a modifier
     int add_dice, add_mod;
+
+    // `stacks` determines whether or not this item will stack (useful for
+    // coins, arrows, &c) and `count` determines how many items are in the
+    // stack.
+    bool stacks = false;
+    uint count = 1;
 }
 
 // A generic placeholder Item used to signal an empty equipment slot or a
@@ -55,5 +61,5 @@ static Item No_item;
 // tiles.
 bool Item_here( Item itm )
 {
-    return itm.sym.ascii != '\0';
+    return itm.count > 0;
 }

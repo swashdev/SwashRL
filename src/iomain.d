@@ -631,7 +631,7 @@ seppuku:
 
 discard_swap:
                         grabbed_line = -1;
-                        grabbed.sym.ascii = '\0';
+                        grabbed.count = 0;
                         //get_key();
                         //refnow = true;
                         continue;
@@ -664,7 +664,7 @@ discard_swap:
                     plyr.inventory.items[line] = grabbed;
 
                     // ...remove the grabbed item...
-                    grabbed.sym.ascii = '\0';
+                    grabbed.count = 0;
                     grabbed_line = line = -1;
 
                     // ...clear the screen...

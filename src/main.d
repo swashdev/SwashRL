@@ -331,8 +331,8 @@ Try compiling with dub build -b debug" );
 
     // Initialize the `No_item` placeholder //////////////////////////////////
 
-    No_item = Item( Symbol( '\0', Colors.Error ), "NO ITEM",
-                    Type.none, Armor.none, 0, 0 );
+    No_item = Item( Symbol( '?', Colors.Error ), "NO ITEM",
+                    Type.none, Armor.none, 0, 0, false, 0 );
 
     // Map Generator /////////////////////////////////////////////////////////
 

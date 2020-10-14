@@ -131,6 +131,8 @@ void save_Item( Item itm, File fil )
         fil.writeln( itm.equip );
         fil.writeln( itm.add_dice );
         fil.writeln( itm.add_mod );
+        fil.writeln( itm.stacks );
+        fil.writeln( itm.count );
     }
 }
 
@@ -311,8 +313,11 @@ Item load_Item( File fil )
     uint add_dice = to!int( strip_line( fil ) );
     int add_mod = to!int( strip_line( fil ) );
 
+    bool stacks = to!bool( strip_line( fil ) );
+    uint count = to!uint( strip_line( fil ) );
+
     // Return the resulting Item.
-    return Item( sym, name, type, equip, add_dice, add_mod );
+    return Item( sym, name, type, equip, add_dice, add_mod, stacks, count );
 } // Item load_Item( File )
 
 // Loads in a Dicebag from a file.

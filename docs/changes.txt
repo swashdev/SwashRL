@@ -34,6 +34,9 @@ VERSION 0.033
      but an actual alias.  This is to make it moderately easier to alter what
      a keymap is later on, but also to make the code that little bit more
      readable.
+   - Items can now stack if their `stacks` variable is set to true.  An item's
+     `count` is now the variable used to determine if an item is in a
+     particular place or inventory slot.
 
   Added:
    - The player can now drop items.  By pressing the 'd' key, he will be able

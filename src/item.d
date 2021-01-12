@@ -30,6 +30,8 @@
 
 import global;
 
+import std.string : format;
+
 // A struct which defines an item.
 struct Item
 {
@@ -62,4 +64,38 @@ static Item No_item;
 bool Item_here( Item itm )
 {
     return itm.count > 0;
+}
+
+// Returns the name of the given item.  If the item is a stack, pluralize the
+// name.  If `count` is true, return either "a %s" or "%d %ss", where %d is
+// the number of items and %s is the item's name.
+string item_name( Item itm, bool count = false )
+{
+    if( itm.count > 1 )
+    {
+        if( count )
+        {
+            return format( "%d %ss", itm.count, itm.name );
+        }
+        else
+        {
+            return format( "%ss", itm.name );
+        }
+    }
+    else
+    {
+        if( count )
+        {
+            return format( "a %s", itm.name );
+        }
+        else
+        {
+            return itm.name;
+        }
+    }
+}
+
+string count_items( Item itm )
+{
+    return item_name( itm, true );
 }

@@ -77,7 +77,7 @@ void drop_item( Map* map, Item itm, ubyte at_x, ubyte at_y,
 
     if( inform_player )
     {
-        message( "You drop the %s.", itm.name );
+        message( "You drop the %s.", item_name( itm ) );
     }
   
     while( Item_here( map.itms[y][x] ) )
@@ -85,8 +85,10 @@ void drop_item( Map* map, Item itm, ubyte at_x, ubyte at_y,
 
         if( inform_player )
         {
-            message( "The %s bounces off of a %s", itm.name,
-                     map.itms[y][x].name );
+            message( "The %s bounce%s off of %s %s", item_name( itm ),
+                     itm.count == 1? "s" : "",
+                     map.itms[y][x].count > 1 ? "some" : "a",
+                     item_name( map.itms[y][x] ) );
         }
 
         do
@@ -146,7 +148,9 @@ void drop_item( Map* map, Item itm, ubyte at_x, ubyte at_y,
     {
         if( inform_player )
         {
-            message( "The %s falls in the water and sinks.", itm.name );
+            message( "The %s fall%s in the water and sink%s.",
+                     item_name( itm ), itm.count == 1 ? "s" : "",
+                     itm.count == 1 ? "s" : "" );
         }
     }
     // otherwise, place the item in the map.

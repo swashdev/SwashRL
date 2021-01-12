@@ -505,14 +505,7 @@ uint umove( Player* plyr, Map* map, Direction dir )
     if( Item_here( map.itms[dy][dx] ) )
     {
         Item itm = map.itms[dy][dx];
-        if( itm.count > 1 )
-        {
-            message( "You see here %d %ss.", itm.count, itm.name );
-        }
-        else
-        {
-            message( "You see here a %s.", itm.name );
-        }
+        message( "You see here %s.", count_items( itm ) );
     }
 
     
@@ -552,7 +545,8 @@ bool pickup( Monst* mon, Item itm )
 
         if( is_you( *mon ) )
         {
-            message( "You pick up a %s in your weapon-hand.", itm.name );
+            message( "You pick up %s in your weapon-hand.", count_items( itm )
+                   );
             return true;
         }
         else
@@ -568,7 +562,7 @@ bool pickup( Monst* mon, Item itm )
 
         if( is_you( *mon ) )
         {
-            message( "You pick up a %s in your off-hand.", itm.name );
+            message( "You pick up %s in your off-hand.", count_items( itm ) );
             return true;
         }
         else
@@ -583,7 +577,8 @@ bool pickup( Monst* mon, Item itm )
 
     if( mon_picked_up )
     {
-        message( "The %s picks up a %s.", monst_name( *mon ), itm.name );
+        message( "The %s picks up %s.", monst_name( *mon ), count_items( itm )
+               );
         return true;
     }
 

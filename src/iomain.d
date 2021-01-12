@@ -995,7 +995,7 @@ discard_swap:
             {
                 put_colored_line( 1 + count, 20,
                         count == grabbed ? Colors.Inverted_White : Colors.Gray,
-                        plyr.inventory.items[count].name );
+                        count_items( plyr.inventory.items[count] ) );
             }
             else
             {
@@ -1046,7 +1046,8 @@ discard_swap:
             if( Item_here( plyr.inventory.items[INVENT_BAG + slot_index] ) )
             {
                 put_line( slot_index, 0, "%c) %s", slot_char,
-                    plyr.inventory.items[INVENT_BAG + slot_index].name );
+                    count_items( plyr.inventory.items[INVENT_BAG + slot_index]
+                    ) );
                 slot_char++;
             }
             else

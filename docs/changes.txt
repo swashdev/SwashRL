@@ -43,6 +43,10 @@ VERSION 0.033
    - Items can now stack if their `stacks` variable is set to true.  An item's
      `count` is now the variable used to determine if an item is in a
      particular place or inventory slot.
+   - Items which are in stacks are now counted in some situations (e.g. a
+     stack of 32 gold pieces is now referred to as "32 gold pieces" rather
+     than "a gold piece") and are now crudely pluralized (e.g. "gold pieces"
+     rather than "gold piece").
 
   Added:
    - The player can now drop items.  By pressing the 'd' key, he will be able

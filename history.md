@@ -17,7 +17,7 @@ Table of Contents
 * [SwashRL]
   * [SDL Support]
 
-[Jump to the current version](#0032)
+[Jump to the current version](#0033)
 
 [Back to top]: #table-of-contents
 
@@ -80,6 +80,7 @@ Table of Contents
 [0.031 Christmas Update]: #0031-christmas-update
 [0.031-christmas-update]: #0031-christmas-update
 [0.032]: #0032
+[0.033]: #0033
 
 Prehistory
 ----------
@@ -729,5 +730,47 @@ dedicated to his memory.
 
 Take care of yourselves, friends.  Hopefully the next update will be out
 before someone else dies :-p
+
+[Back to top]
+
+### 0.033
+
+2021-01-27 18:26 CST
+
+Version 0.033's original goal was to implement the ability to drop an item
+that the player is holding.  This was surprisingly difficult to do, and
+resulted indirectly in a massive list of changes to the source code,
+even compared to [0.032], making this quite possibly the most significant
+update to the game since [the translation into D](0.022).
+
+In addition to the player now being able to drop items, some items can now
+stack in the player's inventory, and stacks will be indicated on the inventory
+and equipment screens.
+
+Items dropped on the ground will "bounce" off of items and stacks below them
+until they find an empty square they can land on.  This may result in items
+being lost forever if, for example, they land on a water tile.
+
+The list of bug fixes in this version of the game is also quite extensive,
+and includes the player picking up items in the appropriate hand, not drowning
+if they attack a monster which happens to be on a water tile, and not causing
+a range error by killing a monster.  Monster movement has also been greatly
+improved, making it no longer possible for a terrestrial monster to exploit
+poor collision detection to walk across water diagonally.
+
+The [style guide was also updated](https://github.com/swashdev/SwashRL/blob/2d6d2781533955a040e1abe76f356c8eba2fcabf/docs/CONTRIBUTING.md#style-guide)
+for version 0.033, following feedback from a certain French honey badger I
+know who had a number of complaints about my use of whitespace, naming
+conventions, the ham-fisted way that the code was transferred from C to D, and
+the way I smelled.
+
+So long was the delay between versions that I was
+[seriously considering](https://github.com/swashdev/SwashRL/commit/01c4d5315baa703300ac4706c72f8cb191e466a5)
+changing the version number to 0.∞ and treating the game as an "infinite
+alpha" project that would never be completed.  However, inspired by my
+passion for game development and simply having more fun with discrete version
+numbers leading up to an eventual release, I decided to keep to the course
+with SwashRL, because it may have been downgraded to a hobby in the face of
+other projects but it's still tons of fun to work on.
 
 [Back to top]

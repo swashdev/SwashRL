@@ -1,7 +1,7 @@
 SwashRL
 =======
 
-Readme file, last updated 2020-03-20 21:09 CST  
+Readme file, last updated 2021-01-27 18:35 CST  
 Contact the maintainer: <swashdev@pm.me>
 
 ---
@@ -125,8 +125,6 @@ For the benefit of dyslexic users who find the default font difficult to
 read, the [OpenDyslexic] Mono font has been included.  If configured to do
 so, SwashRL will use this font for all SDL interfaces.  The font will also
 be increased slightly in size to make it easier to read.
-
-![A screenshot showing SwashRL using the OpenDyslexic Mono font](docs/images/screenshot-opendyslexic.png)
 
 The easiest way to compile the program with this font activated is to set the
 `DYSLEXIA` variable in [config.d] to `true`.

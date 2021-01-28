@@ -1,6 +1,7 @@
 SwashRL official changelog
 
 VERSION 0.033
+Finalized on 2021-01-27 18:26 CST
 
   Save files from version 0.032 and earlier will not be compatible with this
   or future versions of SwashRL.

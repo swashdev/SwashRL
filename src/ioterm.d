@@ -132,7 +132,7 @@ version( sdl )
 
                 // Create the SDL window:
                 window = SDL_CreateWindow(
-                        toStringz( format( "%s v0.\u221E", NAME ) ),
+                        toStringz( format( "%s v%.3f", NAME, VERSION ) ),
                         SDL_WINDOWPOS_UNDEFINED,
                         SDL_WINDOWPOS_UNDEFINED,
                         MAP_X * tile_width, (MAP_Y + 2) * tile_height,

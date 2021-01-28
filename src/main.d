@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2021 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2015-2020 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -80,7 +80,7 @@ bool SDL_full()
 // Returns the version number as a string.
 string sp_version()
 {
-    return format( "0.INF-%s", COMMIT );
+    return format( "%.3f-%s", VERSION, COMMIT );
 }
 
 // Greet the player according to the current date.
@@ -200,13 +200,13 @@ int main( string[] args )
   examples:
     %s -s save0
     %s -m terminal
-You are running %s version 0.\u221E-%s", Name, Name, Name, NAME, COMMIT );
+You are running %s version %s", Name, Name, Name, NAME, sp_version() );
         return 1;
     } // if( clarguments.helpWanted )
 
     if( disp_version )
     {
-        writefln( "%s, version 0.\u221E-%s", NAME, COMMIT );
+        writefln( "%s, version %s", NAME, sp_version() );
         return 1;
     }
 

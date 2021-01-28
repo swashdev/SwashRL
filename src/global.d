@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2017-2021 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -61,13 +61,13 @@ enum VERSION = 0.032;
  */
 static if( INCLUDE_COMMIT )
 {
-import std.string : split;
+    import std.string : split;
 
-enum COMMIT = import( ".git/" ~ import( ".git/HEAD" ).split[1] )[0 .. 7];
+    enum COMMIT = import( ".git/" ~ import( ".git/HEAD" ).split[1] )[0 .. 7];
 }
 else
 {
-enum COMMIT = "HOMEMOD";
+    enum COMMIT = "HOMEMOD";
 }
 
 // Include the config file
@@ -98,42 +98,42 @@ public import sys;
 
 version( ncurses )
 {
-  public import deimos.ncurses.curses;
-  enum CURSES_ENABLED = true;
+    public import deimos.ncurses.curses;
+    enum CURSES_ENABLED = true;
 }
 else version( pdcurses )
 {
-  public import pdcurses;
-  enum CURSES_ENABLED = true;
+    public import pdcurses;
+    enum CURSES_ENABLED = true;
 }
 else
 {
-  enum CURSES_ENABLED = false;
+    enum CURSES_ENABLED = false;
 }
 
 // SDL configuration /////////////////////////////////////////////////////////
 
 version( sdl )
 {
-  enum SDL_ENABLED = true;
+    enum SDL_ENABLED = true;
 
-  public import derelict.sdl2.sdl, derelict.sdl2.ttf;
-  public import fonts;
+    public import derelict.sdl2.sdl, derelict.sdl2.ttf;
+    public import fonts;
 
-  static if( DYSLEXIA )
-  {
-    enum FONT         = TileSet.dyslexic;
-    enum MESSAGE_FONT = TileSet.dyslexic;
-  }
-  else
-  {
-    enum FONT         = TileSet.standard;
-    enum MESSAGE_FONT = BOLD_MESSAGE_FONT ? TileSet.bold : TileSet.standard;
-  }
+    static if( DYSLEXIA )
+    {
+        enum FONT = TileSet.dyslexic;
+        enum MESSAGE_FONT = TileSet.dyslexic;
+    }
+    else
+    {
+        enum FONT = TileSet.standard;
+        enum MESSAGE_FONT = BOLD_MESSAGE_FONT ? TileSet.bold : TileSet.standard;
+    }
 }
 else
 {
-  enum SDL_ENABLED = false;
+    enum SDL_ENABLED = false;
 }
 
 // SECTION 3: ////////////////////////////////////////////////////////////////

@@ -126,8 +126,6 @@ read, the [OpenDyslexic] Mono font has been included.  If configured to do
 so, SwashRL will use this font for all SDL interfaces.  The font will also
 be increased slightly in size to make it easier to read.
 
-![A screenshot showing SwashRL using the OpenDyslexic Mono font](docs/images/screenshot-opendyslexic.png)
-
 The easiest way to compile the program with this font activated is to set the
 `DYSLEXIA` variable in [config.d] to `true`.
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2020 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2015-2021 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -73,11 +73,6 @@ enum BLOOD = true;
 enum TEXT_EFFECTS = true;
 
 // SDL-specific options //////////////////////////////////////////////////////
-
-// Set this to `true` to use the OpenDyslexic font rather than the standard
-// fonts.  This should make it easier for dyslexic players to differentiate
-// characters in the SDL display.
-enum DYSLEXIA = false;
 
 // Set this to `true` to use a bolder font for the message line & status bar
 // in the SDL terminal interface.  This may be a bit more readable than the

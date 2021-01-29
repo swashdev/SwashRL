@@ -17,7 +17,7 @@ Table of Contents
 * [SwashRL]
   * [SDL Support]
 
-[Jump to the current version](#0033)
+[Jump to the current version](#0034)
 
 [Back to top]: #table-of-contents
 
@@ -81,6 +81,7 @@ Table of Contents
 [0.031-christmas-update]: #0031-christmas-update
 [0.032]: #0032
 [0.033]: #0033
+[0.034]: #0034
 
 Prehistory
 ----------
@@ -772,5 +773,18 @@ passion for game development and simply having more fun with discrete version
 numbers leading up to an eventual release, I decided to keep to the course
 with SwashRL, because it may have been downgraded to a hobby in the face of
 other projects but it's still tons of fun to work on.
+
+[Back to top]
+
+### 0.034
+
+This is a minor release largely to correct some mistakes I made while
+documenting version [0.033], namely correcting the year in the license notice
+and having deleted the wrong screenshot in the readme file.
+
+This version does represent the official deprecation of the OpenDyslexic Mono
+font and the settings used to activate it, however.  It was a good idea, but
+in the end it just didn't work very well.  Hopefully in a future version I'll
+be able to find a better way to implement it.
 
 [Back to top]

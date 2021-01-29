@@ -1,5 +1,13 @@
 SwashRL official changelog
 
+VERSION 0.034
+
+  Removed:
+   - The OpenDyslexic Mono font and settings used to activate it have been
+     expunged from the program.  It was a good idea but it didn't really work
+     out so well.  Maybe in the future I'll figure out a better way to
+     implement it.
+
 VERSION 0.033
 Finalized on 2021-01-27 18:26 CST
 

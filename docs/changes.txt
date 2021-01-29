@@ -1,6 +1,11 @@
 SwashRL official changelog
 
 VERSION 0.034
+Finalized on 2021-01-28 22:30 CST
+
+  Corrections:
+   - In the version 0.033 release, the copyright year in LICENSE.txt was noted
+     as 2015-2020.  The correct copyright should have been 2015-2021.
 
   Removed:
    - The OpenDyslexic Mono font and settings used to activate it have been

@@ -1,7 +1,7 @@
 SwashRL
 =======
 
-Readme file, last updated 2020-03-20 21:09 CST  
+Readme file, last updated 2021-01-28 22:18 CST  
 Contact the maintainer: <swashdev@pm.me>
 
 ---
@@ -36,8 +36,6 @@ document can be found at the bottom.
 * [Supported Systems](#supported-systems)
 
 * [Compiling](#compiling)
-
-  * [Accessibility Options](#accessibility-options)
 
   * [Compiling for Derivatives](#compiling-for-derivatives)
 
@@ -113,25 +111,6 @@ you can get the up-to-date source repository from
 [our GitHub page].
 
 For more information about git, check out [the git website].
-
-### Accessibility Options
-
-At compile-time, certain features can be activated which allow for greater
-accessibility in the program.
-
-#### Dyslexia-Friendly Font
-
-For the benefit of dyslexic users who find the default font difficult to
-read, the [OpenDyslexic] Mono font has been included.  If configured to do
-so, SwashRL will use this font for all SDL interfaces.  The font will also
-be increased slightly in size to make it easier to read.
-
-The easiest way to compile the program with this font activated is to set the
-`DYSLEXIA` variable in [config.d] to `true`.
-
-If you would like to fine-tune this configuration option, you can instead
-edit the `FONT` and `MESSAGE_FONT` variables in [global.d] and adjust the
-font size with the `TILE_WIDTH` and `TILE_HEIGHT` options.
 
 ### Compiling for Derivatives
 

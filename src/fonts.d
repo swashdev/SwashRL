@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2020-2021 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,6 @@ enum TileSet
 {
     standard = FontDef( "assets/fonts/DejaVuSansMono.ttf",           16,  8 ),
     bold     = FontDef( "assets/fonts/DejaVuSansMono-Bold.ttf",      16,  8 ),
-    dyslexic = FontDef( "assets/fonts/OpenDyslexicMono-Regular.otf", 18, 10 )
 }
 
 } // version( sdl )

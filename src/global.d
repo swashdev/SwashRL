@@ -120,16 +120,8 @@ version( sdl )
     public import derelict.sdl2.sdl, derelict.sdl2.ttf;
     public import fonts;
 
-    static if( DYSLEXIA )
-    {
-        enum FONT = TileSet.dyslexic;
-        enum MESSAGE_FONT = TileSet.dyslexic;
-    }
-    else
-    {
-        enum FONT = TileSet.standard;
-        enum MESSAGE_FONT = BOLD_MESSAGE_FONT ? TileSet.bold : TileSet.standard;
-    }
+    enum FONT = TileSet.standard;
+    enum MESSAGE_FONT = BOLD_MESSAGE_FONT ? TileSet.bold : TileSet.standard;
 }
 else
 {

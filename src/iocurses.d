@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2018-2021 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -289,20 +289,13 @@ version( curses )
         // Refreshes the status bar.
         void refresh_status_bar( Player* plyr )
         {
-            int hit_points = plyr.hit_points;
-            int dice = plyr.attack_roll.dice
-                + plyr.inventory.items[INVENT_WEAPON].add_dice;
-            int mod = plyr.attack_roll.modifier
-                + plyr.inventory.items[INVENT_WEAPON].add_mod;
-
+            // Clear the status bar by covering it with space characters.
             foreach( x; 0 .. MAP_X )
             {
                 put_char( 1 + MAP_Y, x, ' ' );
             }
     
-            put_line( 1 + MAP_Y, 0, "HP: %d    Attack: %ud %c %u",
-                hit_points, dice,
-                mod >= 0 ? '+' : '-', mod * ((-1) * mod < 0) );
+            write_status_bar( plyr );
         }
     } // class Curses_IO
 } // version( curses )

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2018-2021 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -563,28 +563,30 @@ version( sdl )
         // Refreshes the status bar
         void refresh_status_bar( Player* plyr )
         {
-            int hit_points = plyr.hit_points;
-            int dice = plyr.attack_roll.dice
-                       + plyr.inventory.items[INVENT_WEAPON].add_dice;
-            int mod = plyr.attack_roll.modifier
-                      + plyr.inventory.items[INVENT_WEAPON].add_mod;
+            // Clear the status bar by covering it with a black rectangle.
+            SDL_Rect rect;
+            rect.x = 0;
+            rect.y = (1 + MAP_Y) * tile_height;
+            rect.w = tile_width * MAP_X;
+            rect.h = tile_height;
+
+            SDL_SetRenderTarget( renderer, frame_buffer );
+
+            SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+
+            SDL_RenderFillRect( renderer, &rect );
 
             // Because the status bar is considered a "message," switch the
             // current tileset to the special `message_font`:
             cur_tileset = message_font;
 
-            foreach( x; 0 .. MAP_X )
-            {
-                put_char( 1 + MAP_Y, x, ' ' );
-            }
-
-            put_line( 1 + MAP_Y, 0, "HP: %d    Attack: %ud %c %u",
-                      hit_points, dice,
-                      mod >= 0 ? '+' : '-', mod * ((-1) * mod < 0) );
+            write_status_bar( plyr );
 
             // We're done displaying messages, so set the current tileset back
             // to the default `tileset`:
             cur_tileset = tileset;
         } // void refresh_status_bar( Player* )
+
     } // class SDL_Terminal_IO
+
 } // version( sdl )

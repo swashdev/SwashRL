@@ -707,6 +707,12 @@ discard_swap:
         put_colored_line( y, x, Colors.Default, args );
     }
 
+    final void write_status_bar( Player* plyr )
+    {
+        put_line( 1 + MAP_Y, 0, "HP: %d    Str: %d  End: %d",
+            plyr.hit_points, plyr.str, plyr.end );
+    }
+
     // The Help Screen ///////////////////////////////////////////////////////
 
     // Displays the "help" screen and waits for the player to clear it.

@@ -1166,9 +1166,9 @@ discard_swap:
             put_colored_line( 19, 61,
                       Colors.Holy,                "Holy"                );
             put_colored_line( 21, 61,
-                      Colors.Snow,                "Snow"                );
-            put_colored_line( 23, 61,
                       Colors.Snow_Tree,           "Snow_Tree"           );
+            put_colored_line( 23, 61,
+                      Colors.Dead_Snow_Tree,      "Dead_Snow_Tree"      );
 
             refresh_screen();
 

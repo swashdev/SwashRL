@@ -112,8 +112,8 @@ enum Colors
     Water,
     Lava,
     Acid,
-    Snow,
     Snow_Tree,
+    Dead_Snow_Tree,
     Copper,
     Silver,
     Gold,
@@ -289,7 +289,8 @@ void init_colors()
 
     // "Snow" is used for snowy environmnents.  "Snow_Tree" is used for
     // evergreen trees in snowy environments.
-    Clr[Colors.Snow] = new Color_Pair( C_WHITE, C_GRAY, -1, true, true );
     Clr[Colors.Snow_Tree] =
         new Color_Pair( C_WHITE, C_GREEN, -1, true, true );
+    Clr[Colors.Dead_Snow_Tree] =
+        new Color_Pair( C_WHITE, C_BROWN, -1, true, true );
 } // void init_colors()

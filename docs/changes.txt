@@ -1,5 +1,23 @@
 SwashRL official changelog
 
+VERSION 0.035
+
+  Changed:
+   - The color palette for the SDL terminal interface has been changed to a
+     variation on the Tango color palette to provide more visible and vibrant
+     colors.  The Money color pair still uses the old Green color, now
+     referred to in the `init_colors` function as C_MONEY.
+     See https://swash.link/images/v0.035-color-comparison.png
+     for a side-by-side.
+   - The deprecated Snow color pair has been removed and replaced with a
+     Dead_Snow_Tree color pair, to be used to represent dead trees in snowy
+     environments.
+   - The Error color pair on the curses interface is now Gray on Red, rather
+     than White on Red, to match the SDL terminal interface and avoid
+     confusion with the Festive_Player color pair.
+   - The Royal color pair is now Gold on Royal Purple, rather than Yellow on
+     Royal Purple.
+
 VERSION 0.034
 Finalized on 2021-01-28 22:30 CST
 

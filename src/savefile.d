@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2018-2021 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ import std.conv;
 // `LAST_COMPATIBLE_VERSION` is used to indicate the last version of the game
 // whose save files are compatible with the current version.  See global.d
 // for how version numbers are stored.
-enum LAST_COMPATIBLE_VERSION = 0.032;
+enum LAST_COMPATIBLE_VERSION = 0.035;
 
 // `PLACEHOLDER_MARKER` is used to indicate that an object which would
 // normally be written does not exist.
@@ -158,6 +158,8 @@ void save_Monst( Monst mon, File fil )
         // Next, write the Monst's special properties.
         fil.writeln( mon.name );
         fil.writeln( mon.hit_points );
+        fil.writeln( mon.str );
+        fil.writeln( mon.end );
         fil.writeln( mon.walk );
         fil.writeln( mon.x );
         fil.writeln( mon.y );
@@ -347,7 +349,11 @@ Monst load_Monst( char ascii, File fil )
 
     // Next, read in the Monst's special properties.
     string name = strip_line( fil );
+
     int hit_points = to!int( strip_line( fil ) );
+    int str = to!int( strip_line( fil ) );
+    int end = to!int( strip_line( fil ) );
+
     Locomotion walk = to!Locomotion( strip_line( fil ) );
     ubyte x = to!ubyte( strip_line( fil ) );
     ubyte y = to!ubyte( strip_line( fil ) );
@@ -360,7 +366,8 @@ Monst load_Monst( char ascii, File fil )
     Inven tory = init_inven();
 
     // Return the resulting Monst.
-    return Monst( sym, name, hit_points, walk, attack_roll, x, y, tory );
+    return Monst( sym, name, hit_points, str, end, walk, attack_roll, x, y,
+            tory );
 } // Monst load_Monst( char, File )
 
 // Get a saved level from a file.

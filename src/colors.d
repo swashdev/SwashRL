@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2020-2021 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -134,21 +134,21 @@ static Color_Pair[Colors.max + 1] Clr;
 void init_colors()
 {
     Color C_BLACK      = new Color( CURSES_BLACK,     0,   0,   0 );
-    Color C_RED        = new Color( CURSES_RED,     128,   0,   0 );
-    Color C_GREEN      = new Color( CURSES_GREEN,     0, 128,   0 );
-    Color C_BLUE       = new Color( CURSES_BLUE,      0,   0, 128 );
-    Color C_BROWN      = new Color( CURSES_BROWN,   150,  75,   0 );
-    Color C_MAGENTA    = new Color( CURSES_MAGENTA, 128,   0, 128 );
-    Color C_CYAN       = new Color( CURSES_CYAN,      0, 128, 128 );
-    Color C_GRAY       = new Color( CURSES_GRAY,    162, 162, 162 );
+    Color C_RED        = new Color( CURSES_RED,     204,   0,   0 );
+    Color C_GREEN      = new Color( CURSES_GREEN,    78, 154,   6 );
+    Color C_BLUE       = new Color( CURSES_BLUE,     52, 101, 164 );
+    Color C_BROWN      = new Color( CURSES_BROWN,   193, 125,  17 );
+    Color C_MAGENTA    = new Color( CURSES_MAGENTA, 117,  80, 123 );
+    Color C_CYAN       = new Color( CURSES_CYAN,      6, 152, 154 );
+    Color C_GRAY       = new Color( CURSES_GRAY,    186, 189, 182 );
 
-    Color C_DARK_GRAY  = new Color( CURSES_BLACK,    64,  64,  64 );
-    Color C_LITE_RED   = new Color( CURSES_RED,     255,   0,   0 );
-    Color C_LITE_GREEN = new Color( CURSES_GREEN,     0, 255,   0 );
-    Color C_LITE_BLUE  = new Color( CURSES_BLUE,      0,   0, 255 );
-    Color C_YELLOW     = new Color( CURSES_BROWN,   255, 255,   0 );
-    Color C_PINK       = new Color( CURSES_MAGENTA, 255,   0, 255 );
-    Color C_LITE_CYAN  = new Color( CURSES_CYAN,      0, 255, 255 );
+    Color C_DARK_GRAY  = new Color( CURSES_BLACK,    85,  87,  83 );
+    Color C_LITE_RED   = new Color( CURSES_RED,     239,  41,  41 );
+    Color C_LITE_GREEN = new Color( CURSES_GREEN,   138, 226,  52 );
+    Color C_LITE_BLUE  = new Color( CURSES_BLUE,    115, 159, 207 );
+    Color C_YELLOW     = new Color( CURSES_BROWN,   252, 233,  79 );
+    Color C_PINK       = new Color( CURSES_MAGENTA, 173, 127, 168 );
+    Color C_LITE_CYAN  = new Color( CURSES_CYAN,     52, 226, 226 );
     Color C_WHITE      = new Color( CURSES_GRAY,    255, 255, 255 );
 
     // The player's color, orange for SDL terminal interface but white for
@@ -167,6 +167,7 @@ void init_colors()
     Color C_SILVER     = new Color( CURSES_GRAY,    192, 192, 192 );
     Color C_GOLD       = new Color( CURSES_BROWN,   255, 215,   0 );
     Color C_ROENTGENIUM = new Color( CURSES_BLACK,   132, 132, 130 );
+    Color C_MONEY      = new Color( CURSES_GREEN,     0, 128,   0 );
 
     Clr[Colors.Default]   = new Color_Pair( C_GRAY, 0 ); // 0
     Clr[Colors.Black]     = new Color_Pair( C_BLACK   ); // 1
@@ -242,7 +243,7 @@ void init_colors()
 
     // CLR_ERROR is a special color pair used by the SDL terminal interface to
     // indicate that a character has been defined improperly.
-    Clr[Colors.Error] = new Color_Pair( C_GRAY, C_RED, -1, true, false );
+    Clr[Colors.Error] = new Color_Pair( C_GRAY, C_RED, -1, false, false );
 
     // The player is displayed in a unique orange color to make them stand
     // out.  On the curses interface, they are instead displayed in white.
@@ -275,11 +276,11 @@ void init_colors()
     Clr[Colors.Roentgenium] = new Color_Pair( C_ROENTGENIUM, 1, true, false );
 
     // The "Money" color is used for bank notes.
-    Clr[Colors.Money] = new Color_Pair( C_WHITE, C_GREEN, -1, true, false );
+    Clr[Colors.Money] = new Color_Pair( C_WHITE, C_MONEY, -1, true, false );
 
     // "Royal" colors are used to mark members of the nobility and may be used
     // for banners in royal courts.
-    Clr[Colors.Royal] = new Color_Pair( C_YELLOW, C_ROYAL, -1, true, false );
+    Clr[Colors.Royal] = new Color_Pair( C_GOLD, C_ROYAL, -1, true, false );
 
     // Lapis lazuli was a blue pigment so coveted in the ancient world that it
     // was only used for the most important artworks, which is why it was

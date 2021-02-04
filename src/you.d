@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2020 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2015-2021 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -73,6 +73,9 @@ Player init_player( ubyte y, ubyte x )
     player.attack_roll = Dicebag( 2, 0, 0, 1000 );
 
     player.walk = Locomotion.terrestrial;
+
+    player.str = roll( 3 );
+    player.end = roll( 3 );
 
     import std.datetime.systime;
     import std.datetime.date;

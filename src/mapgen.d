@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2019-2021 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -403,6 +403,12 @@ debug
                                 roll( 2 ) + 2, Locomotion.terrestrial,
                                 Dicebag( 2, 0, 2, 1000 ), 50, 10, init_inven()
                               );
+
+        int str = roll( 3 );
+        int end = roll( 3 );
+
+        goobling.str = str;
+        goobling.end = end;
 
         add_mon( &map, goobling );
 

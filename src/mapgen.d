@@ -400,15 +400,10 @@ debug
         // test Monsters
 
         Monst goobling = Monst( Symbol( 'g', Colors.Dark_Gray ), "goobling",
-                                roll( 2 ) + 2, Locomotion.terrestrial,
+                                roll( 2 ) + 2, roll( 3 ), roll( 3 ),
+                                Locomotion.terrestrial,
                                 Dicebag( 2, 0, 2, 1000 ), 50, 10, init_inven()
                               );
-
-        int str = roll( 3 );
-        int end = roll( 3 );
-
-        goobling.str = str;
-        goobling.end = end;
 
         add_mon( &map, goobling );
 

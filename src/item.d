@@ -47,6 +47,11 @@ struct Item
     // `str`, `end`, &c variables in the `Monst` struct for more info.
     int str = 0, end = 0;
 
+    // Modifiers directly to dice rolls (rather than stat bonuses, as above).
+    // `add_dice` will add (or subtract) dice, and `add_mod` will add to (or
+    // subtract from) modifiers on those dice rolls.
+    int add_dice = 0, add_mod = 0;
+
     // `stacks` determines whether or not this item will stack (useful for
     // coins, arrows, &c) and `count` determines how many items are in the
     // stack.

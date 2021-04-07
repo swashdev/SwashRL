@@ -43,9 +43,9 @@ struct Item
     Type type;
     Armor equip;
 
-    // modifiers to the player's dice rolls: `add_dice` adds dice, `add_mod`
-    // adds a modifier
-    int add_dice, add_mod;
+    // Modifiers to relevant stats for the monster using the item.  See the
+    // `str`, `end`, &c variables in the `Monst` struct for more info.
+    int str = 0, end = 0;
 
     // `stacks` determines whether or not this item will stack (useful for
     // coins, arrows, &c) and `count` determines how many items are in the

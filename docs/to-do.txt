@@ -1,3 +1,5 @@
+Implement appropriate character attributes (stats)
+ - Implement bonuses relevant to stats.
 Implement appropriate item stats (attack & defense modifiers, &c)
 Implement appropriate item behaviors (parrying, thrusting, &c)
 Implement stat generator

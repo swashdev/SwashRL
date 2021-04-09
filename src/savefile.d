@@ -313,7 +313,7 @@ Item load_Item( File fil )
     // Next, read in the Item's special properties.
     string name = strip_line( fil );
     Type type = to!Type( strip_line( fil ) );
-    Armor equip = to!Armor( strip_line( fil ) );
+    Slot equip = to!Slot( strip_line( fil ) );
 
     int str = to!int( strip_line( fil ) );
     int end = to!int( strip_line( fil ) );

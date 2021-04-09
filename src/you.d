@@ -83,7 +83,7 @@ Player init_player( ubyte y, ubyte x )
     if( Clock.currTime().month == Month.dec )
     {
         Item hat = Item( Symbol( ']', Colors.Red ), "festive hat",
-                         Type.armor, Armor.helmet, 0, 0 );
+                         Type.armor, Slot.helmet, 0, 0, 0, 0 );
         player.inventory.items[INVENT_HELMET] = hat;
     }
   

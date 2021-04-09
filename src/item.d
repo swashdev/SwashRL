@@ -41,7 +41,7 @@ struct Item
     // what `type` of item this is and, if applicable, what `equip`ment slot
     // it goes into
     Type type;
-    Armor equip;
+    Slot equip;
 
     // Modifiers to relevant stats for the monster using the item.  See the
     // `str`, `end`, &c variables in the `Monst` struct for more info.

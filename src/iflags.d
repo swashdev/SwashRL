@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2017-2021 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,22 +28,25 @@
 
 // iflags.d: Flags which define item properties & behavior
 
-// equip areas (for armor)
+// equipment slots
 
-enum Armor
+enum Slot
 {
-    none,
-    shield,
-    helmet,
-    cuirass,
-    pauldrons,
-    bracers,
-    ring,
-    neck,
-    greaves,
-    kilt,
-    feet,
-    tail
+    none = 0,
+    weapon_hand = 0x001,
+    off_hand = 0x002,
+    hands = 0x003, // `weapon_hand | off_hand`
+    helmet = 0x004,
+    armor = 0x008,
+    shield = 0x010,
+    boots = 0x020,
+    ring_left = 0x040,
+    ring_right = 0x080,
+    ring = 0x0c0, // `ring_left | ring_right`
+    necklace = 0x100,
+    clothes = 0x200,
+    tail = 0x400,
+    horse_armor = 0x800
 }
 
 // item type

@@ -434,57 +434,48 @@ debug
         // a test Item "old sword" which grants a +2 bonus to the player's
         // attack roll
         Item old_sword = Item( Symbol( '(', Colors.Gray ), "old sword",
-                               Type.weapon, Armor.none, 0, 2 );
+                               Type.weapon, Slot.none, 0, 0, 0, 2 );
         map.itms[10][5] = old_sword;
 
         Item shield = Item( Symbol( ']', Colors.Dark_Gray ),
-                            "crow-crested shield", Type.armor, Armor.shield,
-                            0, 5 );
+                            "crow-crested shield", Type.armor, Slot.shield,
+                            0, 0, 0, 5 );
         map.itms[11][5] = shield;
 
         Item ring = Item( Symbol( '*', Colors.Silver ), "silver ring",
-                          Type.jewelery, Armor.ring, 0, 0 );
+                          Type.jewelery, Slot.ring, 1, 0, 0, 0 );
         map.itms[10][2] = ring;
 
         ring.sym.color = Colors.Gold;  ring.name = "gold ring";
+        ring.str = 0; ring.end = 1;
         map.itms[10][1] = ring;
 
         Item helmet = Item( Symbol( ']', Colors.Brown ), "hat",
-                            Type.armor, Armor.helmet, 0, 0 );
+                            Type.armor, Slot.helmet, 0, 0, 0, 0 );
         map.itms[10][3] = helmet;
 
         Item scarf = Item( Symbol( ']', Colors.Green ), "fluffy scarf",
-                           Type.armor, Armor.neck, 0, 0 );
+                           Type.armor, Slot.necklace, 0, 0, 0, 0 );
         map.itms[11][3] = scarf;
 
+        Item armor = Item( Symbol( ']', Colors.Gray ), "steel cuirass",
+                           Type.armor, Slot.armor, 0, 0, 0, 0 );
+
         Item tunic = Item( Symbol( ']', Colors.Brown ), "tunic",
-                           Type.armor, Armor.cuirass, 0, 0 );
+                           Type.armor, Slot.clothes, 0, 0, 0, 0 );
         map.itms[12][3] = tunic;
 
-        Item gloves = Item( Symbol( ']', Colors.Brown ),
-                            "pair of leather gloves", Type.armor,
-                            Armor.bracers, 0, 1 );
-        map.itms[13][3] = gloves;
-
-        Item pants = Item( Symbol( ']', Colors.Brown ), "pair of trousers",
-                           Type.armor, Armor.greaves, 0, 0 );
-        map.itms[14][3] = pants;
-
-        Item kilt = Item( Symbol( ']', Colors.Green ), "plaid kilt",
-                          Type.armor, Armor.kilt, 0, 0 );
-        map.itms[15][3] = kilt;
-
         Item boots = Item( Symbol( ']', Colors.Brown ), "pair of shoes",
-                           Type.armor, Armor.feet, 0, 0 );
+                           Type.armor, Slot.boots, 0, 0, 0, 0 );
         map.itms[16][3] = boots;
 
         Item tailsheath = Item( Symbol( ']', Colors.Brown ),
-                                "leather tailsheath", Type.armor, Armor.tail,
-                                0, 1 );
+                                "leather tailsheath", Type.armor, Slot.tail,
+                                 0, 0, 0, 1 );
         map.itms[17][3] = tailsheath;
 
         Item gold = Item( Symbol( '$', Colors.Gold ),
-                "gold coin", Type.coin, Armor.none, 0, 0, true, 32 );
+                "gold coin", Type.coin, Slot.none, 0, 0, 0, 0, true, 32 );
         map.itms[9][3] = gold;
   
         return map;

@@ -18,6 +18,7 @@ Implement ranged combat
 Implement special monster attacks
 Implement & design special levels
 Implement a town level, shops, &c
+Implement an overworld, multiple dungeons, &c
 Implement quests
 Balance stats(, monsters, difficulty checks, &c)
 

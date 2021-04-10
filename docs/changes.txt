@@ -4,6 +4,9 @@ VERSION 0.035
 
   Version 0.035 breaks save file compatibility.
 
+  Fixed:
+   - Immobile monsters no longer move.
+
   Changed:
    - The color palette for the SDL terminal interface has been changed to a
      variation on the Tango color palette to provide more visible and vibrant

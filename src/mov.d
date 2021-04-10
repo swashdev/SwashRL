@@ -250,6 +250,13 @@ void mmove( Monst* mon, Map* map, byte idy, byte idx, Player* plyr )
 
     bool cardinal;
 
+    // Sessile monsters skip movement checks.
+    if( mon.walk == Locomotion.sessile )
+    {
+        obstacle = Collision.movement_impossible;
+        goto skip_movement;
+    }
+
 check_collision:
     obstacle = Collision.none;
     cardinal = dx == 0 || dy == 0;
@@ -291,7 +298,7 @@ check_collision:
         }
     }
   
-
+skip_movement:
     if( dx == plyr.x && dy == plyr.y )
     {
         mattack( mon, plyr );

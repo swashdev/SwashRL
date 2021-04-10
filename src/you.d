@@ -70,6 +70,8 @@ Player init_player( ubyte y, ubyte x )
 
     player.inventory = init_inven();
 
+    player.wallet = init_wallet();
+
     player.attack_roll = Dicebag( 2, 0, 0, 1000 );
 
     player.walk = Locomotion.terrestrial;
@@ -82,9 +84,12 @@ Player init_player( ubyte y, ubyte x )
     // if it is December, the player character starts with a "festive hat"
     if( Clock.currTime().month == Month.dec )
     {
-        Item hat = Item( Symbol( ']', Colors.Red ), "festive hat",
-                         Type.armor, Slot.helmet, 0, 0, 0, 0 );
-        player.inventory.items[INVENT_HELMET] = hat;
+        if( !item_in_slot( player, Slot.helmet ) )
+        {
+            Item hat = Item( Symbol( ']', Colors.Red ), "festive hat",
+                             Type.armor, Slot.helmet, 0, 0, 0, 0 );
+            player.equipment[Slot.helmet] = hat;
+        }
     }
   
     return player;

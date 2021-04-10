@@ -214,15 +214,15 @@ interface Swash_IO
             // an item.
             char last_i_sym = 'a';
       
-            foreach( size_t slot_temp; INVENT_BAG .. plyr.inventory.items.length )
+            foreach( size_t slot_temp; 0 .. plyr.inventory.length )
             {
                 last_i_sym++;
-                if( !Item_here( plyr.inventory.items[slot_temp] ) )
+                if( !Item_here( plyr.inventory[slot_temp] ) )
                 {
                     // If the _first_ inventory slot is empty, just exit the
                     // inventory screen and go back to the equipment screen;
                     // there's nothing left to be done here.
-                    if( slot_temp == INVENT_BAG )
+                    if( slot_temp == 0 )
                     {
                         display_equipment_screen( plyr, -1,
                                 "Your bag is empty." );
@@ -244,7 +244,7 @@ interface Swash_IO
 
             // Check the player's grasp; if they do not have an open hand,
             // they can not take any more items out of their inventory.
-            if( !check_grasp( plyr.inventory ) )
+            if( !has_free_grasp( *plyr ) )
             {
                 display_equipment_screen( plyr, -1,
                         "You do not have a free grasp." );
@@ -259,44 +259,44 @@ interface Swash_IO
             }
             else
             {
-                line = (grab - 'a') + INVENT_BAG;
+                line = (grab - 'a');
 
                 // Decide which hand to place the item in.  As with picking up
                 // items off the floor, weapons will prefer to go into the
                 // weapon-hand, but other objects will favor the off-hand,
                 // except when the favored hand is already taken.
-                int hand = 0;
+                Slot hand;
 
-                if( !Item_here( plyr.inventory.items[INVENT_WEAPON] )
-                    && (plyr.inventory.items[line].type == Type.weapon
-                        || Item_here( plyr.inventory.items[INVENT_OFFHAND] ))
+                if( !item_in_slot( *plyr, Slot.weapon_hand )
+                    && (plyr.inventory[line].type == Type.weapon
+                        || item_in_slot( *plyr, Slot.off_hand ))
                   )
                 {
-                    hand = INVENT_WEAPON;
+                    hand = Slot.weapon_hand;
                 }
                 else
                 {
-                    hand = INVENT_OFFHAND;
+                    hand = Slot.off_hand;
                 }
 
                 // Transfer the item to the hand...
-                plyr.inventory.items[hand] = plyr.inventory.items[line];
-                plyr.inventory.items[line] = No_item;
+                plyr.equipment[hand] = plyr.inventory[line];
+                plyr.inventory[line] = No_item;
 
                 // Now we shuffle all the items in the inventory up one to
                 // overwrite the item we've just removed from the bag.
                 int index;
-                for( index = line + 1; index <= 24 + INVENT_LAST_SLOT;
+                for( index = line + 1; index < plyr.inventory.length;
                      index++ )
                 {
-                    if( !Item_here( plyr.inventory.items[index] ) )
+                    if( !Item_here( plyr.inventory[index] ) )
                     {
                         break;
                     }
                     else
                     {
-                        plyr.inventory.items[index - 1] = plyr.inventory.items[index];
-                        plyr.inventory.items[index] = No_item;
+                        plyr.inventory[index - 1] = plyr.inventory[index];
+                        plyr.inventory[index] = No_item;
                     }
                 }
 
@@ -322,10 +322,14 @@ interface Swash_IO
 
         // the inventory slot letter the player has selected
         char grab = 0;
-        // the line corresponding to the `grab` slot letter
+        // the line corresponding to `grab`
         int line = -1;
+        // the slot corresponding to `grab`
+        Slot slot = Slot.none;
         // the line corresponding to an item that has been grabbed
         int grabbed_line = -1;
+        // the slot corresponding to an item that has been grabbed
+        Slot grabbed_slot = Slot.none;
         // an item that has been grabbed
         Item grabbed = No_item;
   
@@ -366,7 +370,7 @@ interface Swash_IO
                     display_equipment_screen( plyr, -1,
                             "You do not have a tail." );
                     refresh_screen();
-                    line = -1;
+                    slot = Slot.none;
                     break;
 
                 case 'd':
@@ -375,14 +379,15 @@ interface Swash_IO
                         display_equipment_screen( plyr, -1,
                                 "You don't have anything to drop." );
                         refresh_screen();
-                        line = -1;
+                        slot = Slot.none;
                     }
                     else
                     {
-                        grabbed = plyr.inventory.items[grabbed_line];
-                        plyr.inventory.items[grabbed_line] = No_item;
+                        grabbed = plyr.equipment[grabbed_slot];
+                        plyr.equipment[grabbed_slot] = No_item;
                         drop_item( map, grabbed, plyr.x, plyr.y, true );
-                        grabbed_line = line = -1;
+                        grabbed_line = -1;
+                        slot = Slot.none;
                         refresh_now = true;
                     }
                     break;
@@ -395,11 +400,11 @@ interface Swash_IO
                     {
                         // First we need to check if the bag is full.
                         bool bag_full = true;
-                        size_t index = 0;
-                        for( index = 0; index < 24; index++ )
+                        size_t index;
+                        for( index = 0; index < plyr.inventory.length;
+                             index++ )
                         {
-                            if( !Item_here(
-                                  plyr.inventory.items[INVENT_BAG + index] ) )
+                            if( !Item_here( plyr.inventory[index] ) )
                             {
                                 bag_full = false;
                                 break;
@@ -411,7 +416,7 @@ interface Swash_IO
                         if( bag_full )
                         {
                             grabbed_line = -1;
-                            line = -1;
+                            slot = Slot.none;
                             display_equipment_screen( plyr, -1,
                                     "Your bag can not contain any more items."
                                     );
@@ -426,10 +431,9 @@ interface Swash_IO
                         // it came from
                         else
                         {
-                            grabbed = plyr.inventory.items[grabbed_line];
-                            plyr.inventory.items[grabbed_line] = No_item;
-                            plyr.inventory.items[INVENT_BAG + index]
-                                = grabbed;
+                            grabbed = plyr.equipment[grabbed_slot];
+                            plyr.equipment[grabbed_slot] = No_item;
+                            plyr.inventory[index] = grabbed;
 
                             // Make a note to refresh the screen, discard all
                             // swaps, and go back to the start of the loop:
@@ -446,7 +450,7 @@ interface Swash_IO
                     {
                         // If the player does not have a free grasp, let them
                         // know.
-                        if( !check_grasp( plyr.inventory ) )
+                        if( !has_free_grasp( *plyr ) )
                         {
                             display_equipment_screen( plyr, grabbed_line,
                                     "You do not have a free grasp to reach into your bag." );
@@ -481,7 +485,7 @@ interface Swash_IO
 
                             // Go back to the start of the loop
                             continue;
-                        } // else from if( !check_grasp( plyr.inventory ) )
+                        } // else from if( !has_free_grasp( *plyr.inventory ) )
                     } // else from if( grabbed_line != -1 )
 
                     // end of case 'i'; there's no `break` statement here
@@ -491,54 +495,52 @@ interface Swash_IO
 
                 case 'w':
                     line =  0;
+                    slot = Slot.weapon_hand;
                     break;
 
                 case 'o':
                     line =  1;
-                    break;
-
-                case 'q':
-                    line =  2;
+                    slot = Slot.off_hand;
                     break;
 
                 case 'h':
+                    line =  2;
+                    slot = Slot.helmet;
+                    break;
+
+                case 'a':
                     line =  3;
+                    slot = Slot.armor;
                     break;
 
-                case 'c':
+                case 's':
                     line =  4;
-                    break;
-
-                case 'p':
-                    line =  5;
+                    slot = Slot.shield;
                     break;
 
                 case 'b':
-                    line =  6;
+                    line =  5;
+                    slot = Slot.boots;
                     break;
 
                 case 'l':
-                    line =  7;
+                    line =  6;
+                    slot = Slot.ring_left;
                     break;
 
                 case 'r':
-                    line =  8;
+                    line =  7;
+                    slot = Slot.ring_right;
                     break;
 
                 case 'n':
+                    line =  8;
+                    slot = Slot.necklace;
+                    break;
+
+                case 'c':
                     line =  9;
-                    break;
-
-                case 'g':
-                    line = 10;
-                    break;
-
-                case 'k':
-                    line = 11;
-                    break;
-
-                case 'f':
-                    line = 12;
+                    slot = Slot.clothes;
                     break;
 
                 default:
@@ -555,7 +557,7 @@ interface Swash_IO
                 if( !Item_here( grabbed ) )
                 {
                     // ...confirm the slot is not empty...
-                    if( !Item_here( plyr.inventory.items[line] ) )
+                    if( !item_in_slot( *plyr, slot ) )
                     {
                         display_equipment_screen( plyr, -1,
                                 "There is no item there." );
@@ -564,12 +566,13 @@ interface Swash_IO
                     else
                     {
                         // ...grab the item...
-                        grabbed = plyr.inventory.items[line];
+                        grabbed = plyr.equipment[slot];
                         display_equipment_screen( plyr, line );
 
                         // ...and save that line so we can swap the items
                         // later.
                         grabbed_line = line;
+                        grabbed_slot = slot;
                     }
                 } // if( !Item_here( grabbed ) )
         
@@ -580,9 +583,9 @@ interface Swash_IO
 
                     // ...check to see if the player can equip the item in
                     // this slot
-                    switch( line )
+                    switch( slot )
                     {
-                        case INVENT_HELMET:
+                        case Slot.armor:
                             if( grabbed.type == Type.weapon )
                             {
                                 // Don't use `display_equipment_screen` here
@@ -590,27 +593,12 @@ interface Swash_IO
                                 // message and we're going to end up quitting
                                 // the equipment screen immediately anyway.
                                 put_line( 21, 1,
-                                        "You stab yourself in the head with a %s and die instantly.",
+                                        "You slice into your gut with a %s and commit seppuku.",
                                         grabbed.name );
-seppuku:
                                 refresh_screen();
                                 get_key();
                                 plyr.hit_points = 0;
                                 return 0;
-                            }
-
-                            goto case INVENT_CUIRASS;
-                            // fall through to next case
-                        case INVENT_CUIRASS:
-                            if( grabbed.type == Type.weapon )
-                            {
-                                // See above comment at `case INVENT_HELMET`
-                                // for why we're not using
-                                // `display_equipment_screen`
-                                put_line( 21, 1,
-                                        "You slice into your gut with a %s and commit seppuku.",
-                                        grabbed.name );
-                                goto seppuku;
                             }
 
                             goto default;
@@ -618,7 +606,7 @@ seppuku:
                         default:
                             // confirm the player can swap this item to this
                             // slot
-                            confirm_swap = check_equip( grabbed, line );
+                            confirm_swap = can_equip_in_slot( grabbed, slot );
                             break;
                     } // switch( line )
   
@@ -639,29 +627,28 @@ discard_swap:
                     else
                     {
                         // check again in the opposite direction
-                        if( !check_equip( plyr.inventory.items[line],
-                                    grabbed_line ) )
+                        if( !can_equip_in_slot( plyr.equipment[slot],
+                                    grabbed_slot ) )
                         {
                             display_equipment_screen( plyr, -1,
                                     format( "You can not swap the %s and the %s.",
-                                        plyr.inventory.items[line].name,
+                                        plyr.equipment[slot].name,
                                     grabbed.name ) );
                             goto discard_swap;
                         }
                     }
 
-                    // ...swap the inventory items...
-                    plyr.inventory.items[grabbed_line]
-                        = plyr.inventory.items[line];
+                    // ...swap the equipped items...
+                    plyr.equipment[grabbed_slot] = plyr.equipment[slot];
 
                     // if the new slot is not empty, the player expends a turn
                     // moving that item
-                    if( Item_here( plyr.inventory.items[line] ) )
+                    if( Item_here( plyr.equipment[slot] ) )
                     {
                         turns += 1;
                     }
 
-                    plyr.inventory.items[line] = grabbed;
+                    plyr.equipment[slot] = grabbed;
 
                     // ...remove the grabbed item...
                     grabbed.count = 0;
@@ -753,17 +740,17 @@ discard_swap:
     // Uses `display` to draw the player.
     final void display_player( Player plyr )
     {
+        Symbol sym = plyr.sym;
+
         // if the player is wearing a "festive hat," display them in a special
         // color
-        if( plyr.inventory.items[INVENT_HELMET].name == "festive hat" )
+        Item hat = plyr.equipment.require( Slot.helmet, No_item );
+        if( hat.name == "festive hat" )
         {
-            display( plyr.y + 1, plyr.x,
-                     Symbol( plyr.sym.ascii, Colors.Festive_Player ), true );
+            sym.color = Colors.Festive_Player;
         }
-        else
-        {
-            display( plyr.y + 1, plyr.x, plyr.sym, true );
-        }
+
+        display( plyr.y + 1, plyr.x, sym, true );
     }
 
     // Uses `display` to draw the given monster.
@@ -904,85 +891,73 @@ discard_swap:
 
         string slot_nam; // the name of the slot
         char   slot_let; // the letter that represents the slot
+        Slot[10] slots = [ Slot.weapon_hand, Slot.off_hand, Slot.helmet,
+            Slot.armor, Slot.shield, Slot.boots, Slot.ring_left,
+            Slot.ring_right, Slot.necklace, Slot.clothes ];
 
-        foreach( count; 0 .. INVENT_LAST_SLOT )
+        foreach( uint count, Slot slot; slots )
         {
             // This switch statement of doom sets up the name and selection
             // button for each inventory slot
-            switch( count )
+            switch( slot )
             {
                 default:
                     slot_nam = "none";
                     slot_let = '\0';
                     break;
   
-                case INVENT_WEAPON:
+                case Slot.weapon_hand:
                     slot_nam = "Weapon-hand";
                     slot_let = 'w';
                     break;
         
-                case INVENT_OFFHAND:
+                case Slot.off_hand:
                     slot_nam = "Off-hand";
                     slot_let = 'o';
                     break;
 
-                case INVENT_QUIVER:
-                    slot_nam = "Quiver";
-                    slot_let = 'q';
-                    break;
-
-                case INVENT_HELMET:
+                case Slot.helmet:
                     slot_nam = "Helmet";
                     slot_let = 'h';
                     break;
 
-                case INVENT_CUIRASS:
-                    slot_nam = "Cuirass";
-                    slot_let = 'c';
+                case Slot.armor:
+                    slot_nam = "Armor";
+                    slot_let = 'a';
                     break;
 
-                case INVENT_PAULDRONS:
-                    slot_nam = "Pauldrons";
-                    slot_let = 'p';
+                case Slot.shield:
+                    slot_nam = "Shield";
+                    slot_let = 's';
                     break;
-        
-                case INVENT_BRACERS:
-                    slot_nam = "Bracers/gloves";
+
+                case Slot.boots:
+                    slot_nam = "Boots";
                     slot_let = 'b';
                     break;
 
-                case INVENT_RINGL:
+                case Slot.ring_left:
                     slot_nam = "Left ring";
                     slot_let = 'l';
                     break;
         
-                case INVENT_RINGR:
+                case Slot.ring_right:
                     slot_nam = "Right ring";
                     slot_let = 'r';
                     break;
         
-                case INVENT_NECKLACE:
+                case Slot.necklace:
                     slot_nam = "Necklace";
                     slot_let = 'n';
                     break;
         
-                case INVENT_GREAVES:
-                    slot_nam = "Greaves";
-                    slot_let = 'g';
+                case Slot.clothes:
+                    slot_nam = "Clothes";
+                    slot_let = 'c';
                     break;
         
-                case INVENT_KILT:
-                    slot_nam = "Kilt/skirt";
-                    slot_let = 'k';
-                    break;
-        
-                case INVENT_FEET:
-                    slot_nam = "Feet";
-                    slot_let = 'f';
-                    break;
-        
-                case INVENT_TAIL:
-                    slot_nam = "Tailsheath";
+                case Slot.tail:
+                    slot_nam = "Tailwear";
                     slot_let = 't';
                     break;
             } // switch( count )
@@ -997,11 +972,11 @@ discard_swap:
                     "%c) %s:%s", slot_let, slot_nam,
                     count == grabbed ? "            " : "" );
 
-            if( Item_here( plyr.inventory.items[count] ) )
+            if( Item_here( plyr.equipment.require( slot, No_item ) ) )
             {
                 put_colored_line( 1 + count, 20,
                         count == grabbed ? Colors.Inverted_White : Colors.Gray,
-                        count_items( plyr.inventory.items[count] ) );
+                        count_items( plyr.equipment[slot] ) );
             }
             else
             {
@@ -1046,14 +1021,13 @@ discard_swap:
         // The symbol of the current item
         char slot_char = 'a';
 
-        foreach( slot_index; 0 .. 24 )
+        foreach( slot_index; 0 .. plyr.inventory.length )
         {
             // Inform the player of each item, up to 24 (one per line)
-            if( Item_here( plyr.inventory.items[INVENT_BAG + slot_index] ) )
+            if( Item_here( plyr.inventory[slot_index] ) )
             {
-                put_line( slot_index, 0, "%c) %s", slot_char,
-                    count_items( plyr.inventory.items[INVENT_BAG + slot_index]
-                    ) );
+                put_line( cast(uint)slot_index, 0, "%c) %s", slot_char,
+                    count_items( plyr.inventory[slot_index] ) );
                 slot_char++;
             }
             else

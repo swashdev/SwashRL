@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2017-2021 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,119 +32,88 @@
 import global;
 
 // SECTION 1: ////////////////////////////////////////////////////////////////
-// The Inventory Structure                                                  //
-//////////////////////////////////////////////////////////////////////////////
-
-// A simple struct which defines an `Inven`tory.
-struct Inven
-{
-  // all `Items' carried in this inventory; 14 "equipment slots" for the
-  // various body parts, plus 26 "inventory slots" for the "bag"
-  Item[40] items; 
-  Item[5] wallet;
-}
-
-// Indexes of Equipment Slots ////////////////////////////////////////////////
-
-// Special array indeces in the `items' array which correspond to the
-// equipment slots seen on the equipment screen
-// TODO: Mark these appropriately as equipment slots rather than inventory
-// slots (maybe we should separate the equipment screen code from the
-// inventory screen code?)
-enum INVENT_WEAPON    =  0;
-enum INVENT_OFFHAND   =  1;
-enum INVENT_QUIVER    =  2;
-enum INVENT_HELMET    =  3;
-enum INVENT_CUIRASS   =  4;
-enum INVENT_PAULDRONS =  5;
-enum INVENT_BRACERS   =  6;
-enum INVENT_RINGL     =  7;
-enum INVENT_RINGR     =  8;
-enum INVENT_NECKLACE  =  9;
-enum INVENT_GREAVES   = 10;
-enum INVENT_KILT      = 11;
-enum INVENT_FEET      = 12;
-enum INVENT_TAIL      = 13;
-
-// Marks the last equipment slot:
-enum INVENT_LAST_SLOT = INVENT_TAIL;
-
-// Marks the first slot of the "bag":
-enum INVENT_BAG = INVENT_LAST_SLOT + 1;
-
-// SECTION 2: ////////////////////////////////////////////////////////////////
 // Inventory Management Functions                                           //
 //////////////////////////////////////////////////////////////////////////////
 
 // Initializes an empty inventory
-Inven init_inven()
+Item[] init_inven( size_t size = 24 )
 {
-    Item[40] items;
-    foreach( count; 0 .. items.length )
+    Item[] items;
+    items.length = size;
+    foreach( count; 0 .. size )
     {
         items[count] = No_item;
     }
 
+    return items;
+}
+
+// Initializes an empty wallet.
+Item[5] init_wallet()
+{
     Item[5] wallet;
     foreach( count; 0 .. wallet.length )
     {
         wallet[count] = No_item;
     }
 
-    return Inven( items, wallet );
+    return wallet;
+}
+
+// Checks if the monster has an item in the given equipment slot.
+bool item_in_slot( Monst mon, Slot slot )
+{
+    if( slot in mon.equipment )
+    {
+        return Item_here( mon.equipment[slot] );
+    }
+
+    return false;
+}
+
+// Returns an item from the given equipment slot in a monster's inventory.
+Item get_equipment( Monst mon, Slot slot )
+{
+    if( item_in_slot( mon, slot ) )
+    {
+        return mon.equipment[slot];
+    }
+
+    return No_item;
 }
 
 // Checks if the player or other monster has a free grasp.
-// Note that this function doesn't require a monster, just its inventory.
-bool check_grasp( Inven tory )
+bool has_free_grasp( Monst mon )
 {
-    return !Item_here( tory.items[INVENT_WEAPON] )
-        || !Item_here( tory.items[INVENT_OFFHAND] );
+    return !item_in_slot( mon, Slot.weapon_hand )
+        || !item_in_slot( mon, Slot.off_hand );
 }
 
 // Checks if a given item fits into the given equipment slot (see iflags.d)
-// TODO: See if you can move this to a more appropriate file like item.d
-bool check_equip( Item i, uint s )
+bool can_equip_in_slot( Item itm, Slot slot )
 {
     // an empty item can go in any slot (obviously)
-    if( i.sym.ascii == '\0' )
+    if( !Item_here( itm ) )
     {
         return true;
     }
+
     // the player can hold any item in their hands
-    if( s == INVENT_WEAPON || s == INVENT_OFFHAND )
+    if( Slot.hands & slot )
     {
         return true;
     }
-
-    // everything else goes into the switch statement
-    switch( s )
+    // the hands are also the only slot which can hold an item with no
+    // equipment slot flag
+    else if( itm.equip == Slot.none )
     {
-      case INVENT_HELMET:
-        return i.equip == Slot.helmet;
-
-      case INVENT_CUIRASS:
-        // the "cuirass" item slot can accept either cuirasses or shields (the
-        // player straps a shield to their back)
-        return i.equip == Slot.armor || i.equip == Slot.shield || i.equip == Slot.clothes;
-
-      case INVENT_RINGL:
-        // rings are obviously ambidexterous
-      case INVENT_RINGR:
-        return i.equip == Slot.ring;
-
-      case INVENT_NECKLACE:
-        return i.equip == Slot.necklace;
-
-      case INVENT_FEET:
-        return i.equip == Slot.boots;
-
-      case INVENT_TAIL:
-        return i.equip == Slot.tail;
-
-      default:
         return false;
-    } // switch( s )
-} // bool check_equip( Item, uint )
+    }
+
+    // As of version 0.035, the flags used to define item equipment slots are
+    // analogous to the flags used to specify equipment slots in the
+    // inventory, so we can verify the equip using this simple formula:
+    return 0 != (itm.equip & slot);
+} // bool check_equip( Item, Slot )
 
 void get_inv_slot_name( string* nam, char* ch, ubyte slot );

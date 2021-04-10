@@ -384,9 +384,9 @@ void map_move_all_monsters( Map* map, Player* plyr )
 void mattack( Monst* off, Monst* def )
 {
     int dic = off.attack_roll.dice
-              + off.inventory.items[INVENT_WEAPON].add_dice;
+              + get_equipment( *off, Slot.weapon_hand ).add_dice;
     int mod = off.attack_roll.modifier
-              + off.inventory.items[INVENT_WEAPON].add_mod;
+              + get_equipment( *off, Slot.weapon_hand ).add_mod;
     int atk = roll_within( off.attack_roll.floor, off.attack_roll.ceiling,
                            dic, 6, mod );
 
@@ -535,13 +535,13 @@ bool pickup( Monst* mon, Item itm )
 
     // Items are picked up in the weapon-hand if the weapon-hand is
     // empty, AND the item is a weapon OR the off-hand is NOT empty
-    if( !Item_here( mon.inventory.items[INVENT_WEAPON] )
+    if( !item_in_slot( *mon, Slot.weapon_hand )
         && (itm.type == Type.weapon
-           || Item_here( mon.inventory.items[INVENT_OFFHAND] ))
+           || item_in_slot( *mon, Slot.off_hand ))
       )
     {
 
-        mon.inventory.items[INVENT_WEAPON] = itm;
+        mon.equipment[Slot.weapon_hand] = itm;
 
         if( is_you( *mon ) )
         {
@@ -556,9 +556,9 @@ bool pickup( Monst* mon, Item itm )
     }
     // Items go in the off-hand if the off-hand is empty, AND the item is not
     // a weapon OR the weapon-hand is NOT empty
-    else if( !Item_here( mon.inventory.items[INVENT_OFFHAND] ) )
+    else if( !item_in_slot( *mon, Slot.off_hand ) )
     {
-        mon.inventory.items[INVENT_OFFHAND] = itm;
+        mon.equipment[Slot.off_hand] = itm;
 
         if( is_you( *mon ) )
         {
@@ -600,8 +600,8 @@ Item m_drop_item( Monst* mon, int index )
     }
 
     // Otherwise, we simply remove that item and return it:
-    ret = mon.inventory.items[index];
-    mon.inventory.items[index] = No_item;
+    ret = mon.inventory[index];
+    mon.inventory[index] = No_item;
   
     return ret;
 }

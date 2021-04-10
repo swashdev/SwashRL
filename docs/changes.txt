@@ -19,6 +19,34 @@ VERSION 0.035
      confusion with the Festive_Player color pair.
    - The Royal color pair is now Gold on Royal Purple, rather than Yellow on
      Royal Purple.
+   - Monsters now have two character attributes: Strength and Endurance.
+   - Items now have variables for Strength and Endurance bonuses, to be
+     implemented at a later time.
+   - The number of equipment slots for the player has been reduced to the
+     following list:
+      * Weapon-hand
+      * Off-hand
+      * Helmet
+      * Armor
+      * Shield
+      * Boots
+      * Left ring
+      * Right ring
+      * Necklace
+      * Clothes
+      * Tail
+   - A monster's equipment slots are now in an associative array separate
+     from the inventory.
+   - A monster's wallet and inventory are now separate arrays not stored in
+     a struct.
+   - A monster's inventory is now a dynamic array.  In a future version of the
+     software, the number of inventory slots a monster gets will be determined
+     based on their species.
+   - The flags used to determine an item's equipment slot and to determine the
+     equipment slot on the equipment screen are now analogous and both belong
+     to the `Slot` enum.
+   - The player no longer gets a free festive hat if they already have an item
+     equipped in the "Helmet" slot.
 
 VERSION 0.034
 Finalized on 2021-01-28 22:30 CST

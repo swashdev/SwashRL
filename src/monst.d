@@ -65,7 +65,20 @@ struct Monst
     Locomotion walk;
     Dicebag attack_roll;
     ubyte x, y;
-    Inven inventory;
+
+    // The monster's open inventory.  By default all monsters get 24 stacks of
+    // items, but in future versions this may vary.
+    Item[] inventory;
+
+    // The monster's wallet.  This is used to hold coins in various
+    // denominations.
+    Item[5] wallet;
+
+    // The monster's equipped items.  This is a dynamic associative array
+    // that uses the `Slot` enum to label items that the monster has equipped.
+    // In future versions of the software, what slots are available to a
+    // monster will depend on what body parts they have.
+    Item[Slot] equipment;
 }
 
 // SECTION 3: ////////////////////////////////////////////////////////////////

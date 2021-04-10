@@ -368,13 +368,9 @@ Monst load_Monst( char ascii, File fil )
     // Read in the Monst's Dicebag next.
     Dicebag attack_roll = load_Dicebag( fil );
 
-    // Generate an empty inventory, because inventory saving has not yet been
-    // implemented (TODO)
-    Inven tory = init_inven();
-
     // Return the resulting Monst.
     return Monst( sym, name, hit_points, str, end, walk, attack_roll, x, y,
-            tory );
+            init_inven( 1 ), init_wallet() );
 } // Monst load_Monst( char, File )
 
 // Get a saved level from a file.

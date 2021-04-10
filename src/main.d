@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2020 Philip Pavlick.  See '3rdparty.txt' for other
+ * Copyright (c) 2015-2021 Philip Pavlick.  See '3rdparty.txt' for other
  * licenses.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -546,8 +546,8 @@ Try compiling with dub build -b debug" );
 
             // drop an item
             case Move.drop:
-                bool weapon = Item_here( plyr.inventory.items[INVENT_WEAPON] ),
-                     off    = Item_here( plyr.inventory.items[INVENT_OFFHAND] );
+                bool weapon = item_in_slot( plyr, Slot.weapon_hand ),
+                     off    = item_in_slot( plyr, Slot.off_hand );
 
                 Item dropme = No_item;
 
@@ -560,14 +560,14 @@ Try compiling with dub build -b debug" );
                 else if( weapon && !off )
                 {
 drop_weapon:
-                    dropme = plyr.inventory.items[INVENT_WEAPON];
-                    plyr.inventory.items[INVENT_WEAPON] = No_item;
+                    dropme = plyr.equipment[Slot.weapon_hand];
+                    plyr.equipment[Slot.weapon_hand] = No_item;
                 }
                 else if( !weapon && off )
                 {
 drop_offhand:
-                    dropme = plyr.inventory.items[INVENT_OFFHAND];
-                    plyr.inventory.items[INVENT_OFFHAND] = No_item;
+                    dropme = plyr.equipment[Slot.off_hand];
+                    plyr.equipment[Slot.off_hand] = No_item;
                 }
                 else
                 {
@@ -594,7 +594,7 @@ drop_offhand:
             // display the inventory screen
             case Move.inventory:
                 // If the player's inventory is empty, don't waste their time.
-                if( !Item_here( plyr.inventory.items[INVENT_BAG] ) )
+                if( !Item_here( plyr.inventory[0] ) )
                 {
                     message( "You don't have anything in your bag at the moment." );
                     break;

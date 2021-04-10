@@ -402,7 +402,8 @@ debug
         Monst goobling = Monst( Symbol( 'g', Colors.Dark_Gray ), "goobling",
                                 roll( 2 ) + 2, roll( 3 ), roll( 3 ),
                                 Locomotion.terrestrial,
-                                Dicebag( 2, 0, 2, 1000 ), 50, 10, init_inven()
+                                Dicebag( 2, 0, 2, 1000 ), 50, 10,
+                                init_inven( 1 ), init_wallet()
                               );
 
         add_mon( &map, goobling );
@@ -410,20 +411,26 @@ debug
         static if( MORE_TEST_MONSTERS )
         {
             goobling = Monst( Symbol( 'b', Colors.Dark_Gray ), "crow",
-                              roll() + 2, Locomotion.aerial,
-                              Dicebag( 1, 2, 3, 1000 ), 50, 20, init_inven()
+                              roll() + 2, roll( 1 ), roll( 2 ),
+                              Locomotion.aerial,
+                              Dicebag( 1, 2, 3, 1000 ), 50, 20,
+                              init_inven( 1 ), init_wallet()
                             );
             add_mon( &map, goobling );
 
             goobling = Monst( Symbol( '8', Colors.Cyan ), "carp",
-                              roll(), Locomotion.aquatic,
-                              Dicebag( 1, 3, 4, 1000 ), 50, 12, init_inven()
+                              roll(), roll( 1 ), roll( 1 ) + 2,
+                              Locomotion.aquatic,
+                              Dicebag( 1, 3, 4, 1000 ), 50, 12,
+                              init_inven( 1 ), init_wallet()
                             );
             add_mon( &map, goobling );
 
             goobling = Monst( Symbol( '%', Colors.Brown ), "slime mold",
-                              3, Locomotion.sessile,
-                              Dicebag( 0, 2, 2, 2 ), 78, 2, init_inven()
+                              3, roll( 1 ), roll( 3 ),
+                              Locomotion.sessile,
+                              Dicebag( 0, 2, 2, 2 ), 78, 2,
+                              init_inven( 1 ), init_wallet()
                             );
             add_mon( &map, goobling );
 
@@ -437,42 +444,43 @@ debug
                                Type.weapon, Slot.none, 0, 0, 0, 2 );
         map.itms[10][5] = old_sword;
 
-        Item shield = Item( Symbol( ']', Colors.Dark_Gray ),
-                            "crow-crested shield", Type.armor, Slot.shield,
-                            0, 0, 0, 5 );
-        map.itms[11][5] = shield;
-
-        Item ring = Item( Symbol( '*', Colors.Silver ), "silver ring",
-                          Type.jewelery, Slot.ring, 1, 0, 0, 0 );
-        map.itms[10][2] = ring;
-
-        ring.sym.color = Colors.Gold;  ring.name = "gold ring";
-        ring.str = 0; ring.end = 1;
-        map.itms[10][1] = ring;
-
         Item helmet = Item( Symbol( ']', Colors.Brown ), "hat",
                             Type.armor, Slot.helmet, 0, 0, 0, 0 );
         map.itms[10][3] = helmet;
 
-        Item scarf = Item( Symbol( ']', Colors.Green ), "fluffy scarf",
-                           Type.armor, Slot.necklace, 0, 0, 0, 0 );
-        map.itms[11][3] = scarf;
-
         Item armor = Item( Symbol( ']', Colors.Gray ), "steel cuirass",
                            Type.armor, Slot.armor, 0, 0, 0, 0 );
+        map.itms[11][3] = armor;
 
-        Item tunic = Item( Symbol( ']', Colors.Brown ), "tunic",
-                           Type.armor, Slot.clothes, 0, 0, 0, 0 );
-        map.itms[12][3] = tunic;
+        Item shield = Item( Symbol( ']', Colors.Dark_Gray ),
+                            "crow-crested shield", Type.armor, Slot.shield,
+                            0, 0, 0, 5 );
+        map.itms[12][3] = shield;
 
         Item boots = Item( Symbol( ']', Colors.Brown ), "pair of shoes",
                            Type.armor, Slot.boots, 0, 0, 0, 0 );
-        map.itms[16][3] = boots;
+        map.itms[13][3] = boots;
+
+        Item ring = Item( Symbol( '*', Colors.Silver ), "silver ring",
+                          Type.jewelery, Slot.ring, 1, 0, 0, 0 );
+        map.itms[14][3] = ring;
+
+        ring.sym.color = Colors.Gold;  ring.name = "gold ring";
+        ring.str = 0; ring.end = 1;
+        map.itms[15][3] = ring;
+
+        Item scarf = Item( Symbol( ']', Colors.Blue ), "fluffy scarf",
+                           Type.armor, Slot.necklace, 0, 0, 0, 0 );
+        map.itms[16][3] = scarf;
+
+        Item kilt = Item( Symbol( ']', Colors.Green ), "plaid kilt",
+                           Type.armor, Slot.clothes, 0, 0, 0, 0 );
+        map.itms[17][3] = kilt;
 
         Item tailsheath = Item( Symbol( ']', Colors.Brown ),
                                 "leather tailsheath", Type.armor, Slot.tail,
                                  0, 0, 0, 1 );
-        map.itms[17][3] = tailsheath;
+        map.itms[18][3] = tailsheath;
 
         Item gold = Item( Symbol( '$', Colors.Gold ),
                 "gold coin", Type.coin, Slot.none, 0, 0, 0, 0, true, 32 );

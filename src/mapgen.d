@@ -406,6 +406,13 @@ debug
                                 init_inven( 1 ), init_wallet()
                               );
 
+        // We'll have the goobling hold a stack of coins to test inventories
+        // in save files.
+        Item gold = Item( Symbol( '$', Colors.Gold ),
+                "gold coin", Type.coin, Slot.none, 0, 0, 0, 0, true, 32 );
+
+        goobling.inventory[0] = gold;
+
         add_mon( &map, goobling );
 
         static if( MORE_TEST_MONSTERS )
@@ -481,10 +488,6 @@ debug
                                 "leather tailsheath", Type.armor, Slot.tail,
                                  0, 0, 0, 1 );
         map.itms[18][3] = tailsheath;
-
-        Item gold = Item( Symbol( '$', Colors.Gold ),
-                "gold coin", Type.coin, Slot.none, 0, 0, 0, 0, true, 32 );
-        map.itms[9][3] = gold;
   
         return map;
     } // Map test_map()

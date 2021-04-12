@@ -148,6 +148,70 @@ void save_Dicebag( Dicebag dice, File fil )
     fil.writeln( dice.ceiling);
 }
 
+// Saves an inventory to a file.
+void save_inventory( Item[] inventory, File fil )
+{
+    // First acquire & save the length of the inventory so we know how many
+    // items to save.
+    size_t len = inventory.length;
+    fil.writeln( len );
+
+    // Save all of the items sequentially.
+    foreach( count; 0 .. len )
+    {
+        save_Item( inventory[count], fil );
+        // If the inventory isn't full, abort after writing the first
+        // placeholder marker so we don't waste time and space.
+        if( !Item_here( inventory[count] ) )
+        {
+            break;
+        }
+    }
+}
+
+// Saves a wallet to a file.
+void save_wallet( Item[5] wallet, File fil )
+{
+    // Wallets always have five items in them, even if they're empty stacks,
+    // so this one is ezpz.
+    foreach( count; 0 .. 5 )
+    {
+        save_Item( wallet[count], fil );
+    }
+}
+
+// Saves an equipment list to a file.
+void save_equipment( Item[Slot] equipment, File fil )
+{
+    Slot[] keys = equipment.keys;
+    Item[] values = equipment.values;
+
+    // Basically what we're doing here is we're saving the key and then its
+    // value for each slot in the equipment list.  Skip all empty entries.
+    foreach( count; 0 .. equipment.length )
+    {
+        if( keys[count] != Slot.none && Item_here( values[count] ) )
+        {
+            fil.writeln( keys[count] );
+            save_Item( values[count], fil );
+        }
+    }
+
+    // Save a placeholder to indicate we're at the end of the equipment
+    // list.  This is necessary because associative arrays may have any number
+    // of elements and because we're skipping some in the above loop we won't
+    // know for sure how many there actually are.
+    fil.writeln( Slot.none );
+} // save_equipment( Item[Slot], File )
+
+// Saves a Monst's inventory to a file.
+void save_Monst_inventory( Monst mon, File fil )
+{
+    save_inventory( mon.inventory, fil );
+    save_wallet( mon.wallet, fil );
+    save_equipment( mon.equipment, fil );
+}
+
 // Saves a Monst to a file.
 void save_Monst( Monst mon, File fil )
 {
@@ -169,9 +233,12 @@ void save_Monst( Monst mon, File fil )
         // Each Monst has a Dicebag.  Write this next.
         save_Dicebag( mon.attack_roll, fil );
 
-        // Saving of the Monst's Inven has not yet been implemented (TODO)
+        // Save the monster's inventory, wallet, and equipped items.
+        save_inventory( mon.inventory, fil );
+        save_wallet( mon.wallet, fil );
+        save_equipment( mon.equipment, fil );
     }
-}
+} // save_Monst( Monst, File )
 
 // Saves a level to a file.
 void save_level( T... )( Map map, Player plyr, T args )
@@ -343,6 +410,89 @@ Dicebag load_Dicebag( File fil )
     return Dicebag( dice, modifier, floor, ceiling );
 }
 
+// Loads a dynamic array, representing an inventory, from a file.
+Item[] load_inventory( File fil )
+{
+    Item[] inventory;
+
+    // First acquire the length of the inventory so we know how many items to
+    // load.
+    size_t len = to!size_t( strip_line( fil ) );
+    inventory.length = len;
+
+    // Load all of the items sequentially.  Once we encounter an empty item,
+    // we have to stop loading and fill the rest in ourselves.
+    bool do_filler = false;
+    foreach( count; 0 .. len )
+    {
+        // If we haven't encountered a placeholder yet...
+        if( !do_filler )
+        {
+            // load in an item...
+            inventory[count] = load_Item( fil );
+            // and check to see if it's a placeholder.
+            if( !Item_here( inventory[count] ) )
+            {
+                // if it is, mark the rest of the inventory as filler.
+                do_filler = true;
+            }
+        }
+        else
+        {
+            inventory[count] = No_item;
+        }
+    }
+
+    // Return the resulting inventory.
+    return inventory;
+} // Item[] load_inventory( File )
+
+// Loads a 5-item array representing a wallet.
+Item[5] load_wallet( File fil )
+{
+    Item[5] wallet;
+
+    // Wallets always have five items in them, even if they're empty stacks,
+    // so this one is ezpz.
+    foreach( count; 0 .. 5 )
+    {
+        wallet[count] = load_Item( fil );
+    }
+
+    return wallet;
+}
+
+// Loads an equipment list from a file.
+Item[Slot] load_equipment( File fil )
+{
+    Item[Slot] equipment;
+
+    // Basically what we're doing here is we're loading the key and then its
+    // value for each slot in the equipment list.  If we encounter a
+    // placeholder, abort loading and return the list.
+    bool keep_loading = true;
+    do
+    {
+        // First load an equipment slot key.
+        Slot key = to!Slot( strip_line( fil ) );
+
+        // Check if this is a placeholder.
+        if( key == Slot.none )
+        {
+            // If it is, abort loading.  We're done.
+            keep_loading = false;
+        }
+        else
+        {
+            // Otherwise, assign the slot to an item.
+            equipment[key] = load_Item( fil );
+        }
+    } while( keep_loading );
+
+    // Return the resulting equipment list.
+    return equipment;
+} // Item[Slot] load_equipment( File )
+
 // Loads in a Monst from a file.
 Monst load_Monst( char ascii, File fil )
 {
@@ -368,9 +518,14 @@ Monst load_Monst( char ascii, File fil )
     // Read in the Monst's Dicebag next.
     Dicebag attack_roll = load_Dicebag( fil );
 
+    // Now we read in the Monst's inventory, wallet, and equipment list.
+    Item[] inventory = load_inventory( fil );
+    Item[5] wallet = load_wallet( fil );
+    Item[Slot] equipment = load_equipment( fil );
+
     // Return the resulting Monst.
     return Monst( sym, name, hit_points, str, end, walk, attack_roll, x, y,
-            init_inven( 1 ), init_wallet() );
+            inventory, wallet, equipment );
 } // Monst load_Monst( char, File )
 
 // Get a saved level from a file.

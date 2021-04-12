@@ -74,10 +74,17 @@ enum TEXT_EFFECTS = true;
 
 // SDL-specific options //////////////////////////////////////////////////////
 
-// Set this to `true` to use a bolder font for the message line & status bar
-// in the SDL terminal interface.  This may be a bit more readable than the
-// standard font for these purposes.
-enum BOLD_MESSAGE_FONT = true;
+// These configuration settings will define the font used by the SDL terminal
+// interface.  `FONT` must be either a blank string "" or a string
+// representing a path to a TTF font file.  `FONT_HEIGHT` and `FONT_WIDTH`
+// represent the height and width of tiles created by the font, respectively.
+// If `FONT` is an empty "" string, the game will use the font defined in
+// bd_font.d and ignore the other two constants.
+enum FONT = ""
+
+//enum FONT = "assets/fonts/DejaVuSansMono.ttf";
+//enum FONT_HEIGHT = 16
+//enum FONT_WIDTH = 8
 
 // SECTION 2: ////////////////////////////////////////////////////////////////
 // SwashRL configuration                                                    //

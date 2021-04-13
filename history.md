@@ -482,6 +482,8 @@ dependencies.
 
 2017-12-05 22:30 EST
 
+[Download](https://github.com/swashdev/SwashRL/releases/tag/v0.023)
+
 An update to [0.022] which actually compiles this time.
 
 SwashRL
@@ -502,6 +504,8 @@ myself and humanity.
 ### 0.024
 
 2018-08-05 02:23 EST
+
+[Download](https://github.com/swashdev/SwashRL/releases/tag/v0.024)
 
 First version with SDL support.  The program can be compiled with or without
 SDL, ncurses, or PDCurses depending on what configuration is requested of dub.
@@ -571,6 +575,8 @@ dynamic.
 
 ### 0.028
 
+[Download](https://github.com/swashdev/SwashRL/releases/tag/v0.028)
+
 2018-11-27 19:58 EST
 
 Largely a bugfix version.
@@ -598,7 +604,7 @@ bug if an error is reported.
 
 ### 0.029
 
-2019-01-28 17:54 CST
+2019-01-28 17:54 CST **(This version is no longer available)**
 
 Numerous idiosyncratic changes to the inventory code, including giving the
 user more clear instructions on how to interact with the equipment screen.
@@ -613,6 +619,8 @@ the amount of spaghetti code in the program.
 ### 0.029-1
 
 2019-01-29 13:10 CST
+
+[Download](https://github.com/swashdev/SwashRL/releases/tag/v0.029-1)
 
 A minor release correcting small errors in the documentation from version
 [0.029] and moving some of the code around in `iomain.d` for consistency.
@@ -634,6 +642,8 @@ third-party code included with SwashRL.
 [Back to top]
 
 ### 0.030-1
+
+[Download](https://github.com/swashdev/SwashRL/releases/tag/v0.030-1)
 
 2019-09-01 16:53 CST
 
@@ -688,6 +698,8 @@ referred to in the repository as `v0.031-christmas-update`
 
 2020-09-11 17:28 CDT
 
+[Download](https://github.com/swashdev/SwashRL/releases/tag/v0.032)
+
 Following yet another substantial delay, Revision 0.032 represents significant
 changes to the way that SwashRL handles colors in order to make them
 substantially easier to store but also much more compatible between the curses
@@ -739,6 +751,8 @@ before someone else dies :-p
 
 2021-01-27 18:26 CST
 
+[Download](https://github.com/swashdev/SwashRL/releases/tag/v0.033)
+
 Version 0.033's original goal was to implement the ability to drop an item
 that the player is holding.  This was surprisingly difficult to do, and
 resulted indirectly in a massive list of changes to the source code,
@@ -779,6 +793,10 @@ other projects but it's still tons of fun to work on.
 
 ### 0.034
 
+2021-01-28 22:30 CST
+
+[Download](https://github.com/swashdev/SwashRL/releases/tag/v0.034)
+
 This is a minor release largely to correct some mistakes I made while
 documenting version [0.033], namely correcting the year in the license notice
 and having deleted the wrong screenshot in the readme file.
@@ -792,7 +810,9 @@ be able to find a better way to implement it.
 
 ### 0.035
 
-[Download](https://github.com/swashdev/SwashRL/releases/tag/v0.035)
+2021-04-13 17:59 CDT
+
+[Discission & Downloads](https://github.com/swashdev/SwashRL/releases/tag/v0.035)
 
 Version 0.035 features a number of small fixes and additions but primarily
 focuses on refining the inventory system.

@@ -812,7 +812,7 @@ be able to find a better way to implement it.
 
 2021-04-13 17:59 CDT
 
-[Discission & Downloads](https://github.com/swashdev/SwashRL/releases/tag/v0.035)
+[Discussion & Downloads](https://github.com/swashdev/SwashRL/releases/tag/v0.035)
 
 Version 0.035 features a number of small fixes and additions but primarily
 focuses on refining the inventory system.

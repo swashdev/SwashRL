@@ -147,6 +147,10 @@ version( sdl )
                     renderer = SDL_CreateRenderer( window, -1,
                             SDL_RENDERER_ACCELERATED );
 
+                    // Set the renderer's blend mode.
+                    SDL_SetRenderDrawBlendMode( renderer,
+                            SDL_BLENDMODE_BLEND );
+
                     // If no font file has been specified, or the specified
                     // font doesn't exist, use bd-font.
                     if( use_bd_font )
@@ -239,6 +243,10 @@ version( sdl )
                 }
 
                 SDL_UnlockTexture( tileset[character] );
+
+                // Set the texture blend mode.
+                SDL_SetTextureBlendMode( tileset[character],
+                        SDL_BLENDMODE_BLEND );
             } // foreach( ushort character; 0 .. 256 )
         } // private void setup_bd_font()
 

@@ -249,11 +249,6 @@ version( sdl )
                         {
                             pixels[(row * 8) + (8 - col)] = 0xffffffff;
                         }
-                        // Otherwise, draw a fully transparent pixel.
-                        else
-                        {
-                            pixels[(row * 8) + (8 - col)] = 0x00000000;
-                        }
                     }
                 } // foreach( int row; 0 .. 8 )
 

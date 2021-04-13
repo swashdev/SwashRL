@@ -78,8 +78,8 @@ enum TEXT_EFFECTS = true;
 // interface.  `FONT` must be either a blank string "" or a string
 // representing a path to a TTF font file.  `FONT_HEIGHT` and `FONT_WIDTH`
 // represent the height and width of tiles created by the font, respectively.
-// If `FONT` is an empty "" string, the game will use the font defined in
-// bd_font.d and ignore the other two constants.
+// If the specified font doesn't exist, SwashRL will use the built-in font
+// bd-font as a fallback.
 enum FONT = "";
 enum FONT_HEIGHT = 8;
 enum FONT_WIDTH = 8;
@@ -87,6 +87,11 @@ enum FONT_WIDTH = 8;
 //enum FONT = "assets/fonts/DejaVuSansMono.ttf";
 //enum FONT_HEIGHT = 16;
 //enum FONT_WIDTH = 8;
+
+// `STRETCH_FONT` will stretch bd-font to 16x8 rather than 8x8.  Might be
+// more readable for some users.  Has no effect if a TTF font is specified
+// above.
+enum STRETCH_FONT = true;
 
 // SECTION 2: ////////////////////////////////////////////////////////////////
 // SwashRL configuration                                                    //

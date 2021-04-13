@@ -105,7 +105,8 @@ version( sdl )
             // Set tile height & width.
             if( use_bd_font )
             {
-                tile_height = tile_width = 8;
+                tile_height = STRETCH_FONT ? 16 : 8;
+                tile_width = 8;
             }
             else
             {
@@ -220,7 +221,7 @@ version( sdl )
                 // Initialize an 8x8 texture for each texture in the tileset.
                 tileset[character] = SDL_CreateTexture( renderer,
                         SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
-                        8, 8 );
+                        tile_width, tile_height );
 
                 // A pointer to the array of `pixels` in a given texture.
                 // `pitch` is essentially a junk variable for our purposes.
@@ -231,11 +232,33 @@ version( sdl )
                 SDL_LockTexture( tileset[character], null,
                         cast(void**)&pixels, &pitch );
 
+                int row_max = STRETCH_FONT ? 16 : 8;
+
                 // Go through each row for the character in the `Font` array.
-                foreach( int row; 0 .. 8 )
+                foreach( int row; 0 .. row_max )
                 {
+                    int row_byte;
+
                     // Save the byte stored in this `row`.
-                    int row_byte = Font[character][row];
+                    static if( !STRETCH_FONT )
+                    {
+                        row_byte = Font[character][row];
+                    }
+                    else
+                    {
+                        int real_row;
+
+                        if( row & 1 )
+                        {
+                            real_row = (row - 1) / 2;
+                        }
+                        else
+                        {
+                            real_row = row / 2;
+                        }
+
+                        row_byte = Font[character][real_row];
+                    }
 
                     // Now we go through each possible bit in the row's byte.
                     // Each bit represents a column in the character.

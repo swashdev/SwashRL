@@ -80,7 +80,7 @@ enum TEXT_EFFECTS = true;
 // represent the height and width of tiles created by the font, respectively.
 // If `FONT` is an empty "" string, the game will use the font defined in
 // bd_font.d and ignore the other two constants.
-enum FONT = "chicken.ttf";
+enum FONT = "";
 enum FONT_HEIGHT = 8;
 enum FONT_WIDTH = 8;
 

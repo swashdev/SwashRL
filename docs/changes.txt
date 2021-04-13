@@ -14,6 +14,8 @@ VERSION 0.035
      This font will be used if the user specifies a font which doesn't exist.
      For now, DejaVu Sans Mono will continue to be included with SwashRL as
      the honest-to-god default font.
+   - A new command-line argument -d, --seed, or --dungeon can now be used to
+     set the seed for the random map generation functions.
 
   Changed:
    - The color palette for the SDL terminal interface has been changed to a
@@ -58,6 +60,9 @@ VERSION 0.035
      to the `Slot` enum.
    - The player no longer gets a free festive hat if they already have an item
      equipped in the "Helmet" slot.
+   - Mapgen functions now use a separate random number generator than other
+     RNG elements of the game, to allow players to define a certain level
+     geometry without influencing other aspects of the game.
 
 VERSION 0.034
 Finalized on 2021-01-28 22:30 CST

@@ -43,6 +43,8 @@ import std.file;
 
 import std.datetime.systime;
 import std.datetime : Month;
+import std.random;
+import core.stdc.time;
 
 // Global Values & Configuration /////////////////////////////////////////////
 
@@ -146,6 +148,8 @@ int main( string[] args )
     uint moved = 0;
     Move mov = Move.wait;
 
+    uint mapgen_seed = 0;
+
     // Command-Line Arguments ////////////////////////////////////////////////
 
     // Get the name of the executable:
@@ -169,6 +173,8 @@ int main( string[] args )
         // the "mapgen" mode generates a sample map, displays it, and then
         // exits without starting a game
         "mapgen",       &gen_map,
+        // this seed will be used for map generation
+        "d|seed|dungeon", &mapgen_seed,
         // Cheat modes (keep these a secret):
         "dqd", &Degreelessness,
         "esm", &Infinite_weapon,
@@ -192,6 +198,8 @@ int main( string[] args )
                       without SDL or curses, this option may have no effect.
     --mapgen          Displays a sample map and then exits without starting a
                       game.
+    -d, --seed        Sets the seed for map generation algorithms.  If this is
+                      set to 0 (the default), a random number will be used.
     --test-map        Debug builds only: Starts the game on a test map.  Will
                       have no effect if -s or --save was used.
     --test-colors     Debug builds only: Displays a color test screen and then
@@ -323,6 +331,14 @@ Try compiling with dub build -b debug" );
     // Initialize Random Number Generator ////////////////////////////////////
 
     seed();
+
+    // If the user did not define a mapgen seed, generate a random one.
+    if( mapgen_seed == 0 )
+    {
+        mapgen_seed = cast(uint)core.stdc.time.time(null);
+    }
+
+    Mapgen = Random( mapgen_seed );
 
     // Initialize Standard Terrain Elements //////////////////////////////////
 

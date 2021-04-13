@@ -77,7 +77,7 @@ Map gen_simple_roguelike( bool mold = true )
             // Randomly decide whether or not to put an "actual room" in this
             // sector.  If we choose not to put a room here, use a placeholder
             // "zero-size" room
-            if( 0 == d10() )
+            if( 0 == uniform( 0, 10, Mapgen) )
             {
                 rooms[sector] = Room( 0, 0, 0, 0 );
                 continue;
@@ -87,8 +87,8 @@ Map gen_simple_roguelike( bool mold = true )
         Room room;
 
         // Get the coordinates for the upper-left corner of the room:
-        room.x1 = uniform!"[]"( SECTORS[sector][0], SECTORS[sector][1] - MIN_ROOM_X, Lucky );
-        room.y1 = uniform!"[]"( SECTORS[sector][2], SECTORS[sector][3] - MIN_ROOM_Y, Lucky );
+        room.x1 = uniform!"[]"( SECTORS[sector][0], SECTORS[sector][1] - MIN_ROOM_X, Mapgen );
+        room.y1 = uniform!"[]"( SECTORS[sector][2], SECTORS[sector][3] - MIN_ROOM_Y, Mapgen );
 
         // Adjust x1 & y1 to ensure they are odd numbers:
         if( room.x1 % 2 == 0 )
@@ -101,8 +101,8 @@ Map gen_simple_roguelike( bool mold = true )
         }
 
         // Next, decide on a height and width:
-        int w = uniform!"[]"( MIN_ROOM_X, MAX_ROOM_X, Lucky );
-        int h = uniform!"[]"( MIN_ROOM_Y, MAX_ROOM_Y, Lucky );
+        int w = uniform!"[]"( MIN_ROOM_X, MAX_ROOM_X, Mapgen );
+        int h = uniform!"[]"( MIN_ROOM_Y, MAX_ROOM_Y, Mapgen );
 
         // Assign x2 & y2 accordingly:
         room.x2 = room.x1 + w;
@@ -136,10 +136,10 @@ Map gen_simple_roguelike( bool mold = true )
     map.rooms = rooms;
 
     // Add the player to a random location in a random room on the map:
-    Room player_room = rooms[uniform( 0, 8, Lucky )];
+    Room player_room = rooms[uniform( 0, 8, Mapgen )];
 
-    ubyte px = cast(ubyte)uniform!"[]"( player_room.x1, player_room.x2, Lucky );
-    ubyte py = cast(ubyte)uniform!"[]"( player_room.y1, player_room.y2, Lucky );
+    ubyte px = cast(ubyte)uniform!"[]"( player_room.x1, player_room.x2, Mapgen );
+    ubyte py = cast(ubyte)uniform!"[]"( player_room.y1, player_room.y2, Mapgen );
 
     map.player_start = [py, px];
 
@@ -158,7 +158,7 @@ Map gen_simple_roguelike( bool mold = true )
     // This shuffled list of numbers will represent indexes for both the
     // sectors of the map and the rooms we just generated contained within
     // each sector.
-    int[8] sectors = [0, 1, 2, 3, 4, 5, 6, 7].randomShuffle( Lucky );
+    int[8] sectors = [0, 1, 2, 3, 4, 5, 6, 7].randomShuffle( Mapgen );
 
     // For each pair of sectors adjacent to each other in the shuffled array,
     // we'll connect them with a corridor.
@@ -174,12 +174,12 @@ Map gen_simple_roguelike( bool mold = true )
 
         int index1 = sectors[counter], index2 = sectors[counter2];
   
-        int start_x = uniform!"[]"( rooms[index1].x1, rooms[index1].x2, Lucky );
-        int start_y = uniform!"[]"( rooms[index1].y1, rooms[index1].y2, Lucky );
+        int start_x = uniform!"[]"( rooms[index1].x1, rooms[index1].x2, Mapgen );
+        int start_y = uniform!"[]"( rooms[index1].y1, rooms[index1].y2, Mapgen );
         int mid_x   = uniform!"[]"( SECTORS[index2][0], SECTORS[index2][1],
-                                    Lucky );
+                                    Mapgen );
         int mid_y   = uniform!"[]"( SECTORS[index2][2], SECTORS[index2][3],
-                                    Lucky );
+                                    Mapgen );
 
         // Ensure the generated numbers are always odd
         if( start_x % 2 == 0 )
@@ -210,8 +210,8 @@ Map gen_simple_roguelike( bool mold = true )
             continue;
         }
 
-        int end_x = uniform!"[]"( rooms[index2].x1, rooms[index2].x2, Lucky );
-        int end_y = uniform!"[]"( rooms[index2].y1, rooms[index2].y2, Lucky );
+        int end_x = uniform!"[]"( rooms[index2].x1, rooms[index2].x2, Mapgen );
+        int end_y = uniform!"[]"( rooms[index2].y1, rooms[index2].y2, Mapgen );
 
         // Again. make sure our coordinates are odd:
         if( end_x % 2 == 0 )
@@ -367,8 +367,8 @@ did_not_get_adjacent_wall:
     // `valid`.
     do
     {
-        x = cast(byte)uniform( 1, MAP_X, Lucky );
-        y = cast(byte)uniform( 1, MAP_Y, Lucky );
+        x = cast(byte)uniform( 1, MAP_X, Mapgen );
+        y = cast(byte)uniform( 1, MAP_Y, Mapgen );
     } while( valid[x][y] == false );
 } // void select_random_adjacent_wall( Map, byte*, byte* )
 

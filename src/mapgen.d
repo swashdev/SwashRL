@@ -29,9 +29,22 @@
 // mapgen.d: variables & functions related to map generation
 // (see also mapalgo.d)
 
+import global;
+
 import std.random;
 
-import global;
+// SECTION 0: ////////////////////////////////////////////////////////////////
+// Random Number Generation                                                 //
+//////////////////////////////////////////////////////////////////////////////
+
+// Mapgen is the random number generator used by the mapgen algorithms.
+static Random Mapgen;
+
+// A version of `flip` for mapgen.
+bool mflip()
+{
+    return 1 == uniform( 0, 2, Mapgen );
+}
 
 // SECTION 1: ////////////////////////////////////////////////////////////////
 // Configuration Variables                                                  //
@@ -68,12 +81,12 @@ Room random_Room()
 {
     Room room;
 
-    int room_width  = uniform!"[]"( MIN_ROOM_X, MAX_ROOM_X, Lucky );
-    int room_height = uniform!"[]"( MIN_ROOM_Y, MAX_ROOM_Y, Lucky );
+    int room_width  = uniform!"[]"( MIN_ROOM_X, MAX_ROOM_X, Mapgen );
+    int room_height = uniform!"[]"( MIN_ROOM_Y, MAX_ROOM_Y, Mapgen );
 
-    room.x1 = uniform( 1, (80 - MAX_ROOM_X), Lucky );
+    room.x1 = uniform( 1, (80 - MAX_ROOM_X), Mapgen );
     room.x2 = room.x1 + room_width;
-    room.y1 = uniform( 1, (22 - MAX_ROOM_Y), Lucky );
+    room.y1 = uniform( 1, (22 - MAX_ROOM_Y), Mapgen );
     room.y2 = room.y1 + room_height;
 
     return room;
@@ -84,7 +97,7 @@ Room random_Room()
 void add_corridor( Map* map, int start_x, int start_y, int end_x, int end_y )
 {
     // Randomly decide whether to do y-coordinate or x-coordinate first
-    if( flip() )
+    if( mflip() )
     {
         add_corridor_x( start_y, start_x, end_x, map );
         add_corridor_y( end_x,   start_y, end_y, map );
@@ -229,7 +242,7 @@ static if( FOLIAGE )
         import std.random;
 
         // This is the number of seeds we're going to have for mold growths:
-        int num_molds = d10();
+        int num_molds = uniform( 0, 10, Mapgen );
 
         if( num_molds > 0 )
         {
@@ -237,11 +250,11 @@ static if( FOLIAGE )
             {
                 // This is the maximum number of Tiles this mold growth will
                 // affect:
-                int mold_len = d100();
+                int mold_len = uniform( 1, 101, Mapgen );
 
                 // Choose coordinates where our mold growth will start:
-                int x = uniform( 0, MAP_X, Lucky );
-                int y = uniform( 0, MAP_Y, Lucky );
+                int x = uniform( 0, MAP_X, Mapgen );
+                int y = uniform( 0, MAP_Y, Mapgen );
 
                 // Now we begin growing mold:
                 foreach( count2; 1 .. mold_len )
@@ -250,7 +263,7 @@ static if( FOLIAGE )
                     map.tils[y][x].hazard |= SPECIAL_MOLD;
 
                     // Now decide a random direction to move in:
-                    final switch( uniform( 0, 10, Lucky ) )
+                    final switch( uniform( 0, 10, Mapgen ) )
                     {
                         // You may notice that values which modify x are
                         // slightly more common; this is to encourage the mold
@@ -293,7 +306,7 @@ static if( FOLIAGE )
                             x++;
                             y++;
                             break;
-                    } // final switch( uniform( 0, 10, Lucky ) )
+                    } // final switch( uniform( 0, 10, Mapgen ) )
 
                     // Terminate growing mold if we hit the edge of the Map
                     if( x >= MAP_X || x < 0 )
@@ -317,15 +330,15 @@ static if( FOLIAGE )
                 if( map.tils[y][x].hazard & HAZARD_WATER )
                 {
                     // 1 in 4 chance the Tile will have mold growing near it
-                    if( d( 4 ) == 1 )
+                    if( uniform( 1, 5, Mapgen ) == 1 )
                     {
                         // Grow mold in a random Tile near the water
                         int trux, truy;
 
                         do
                         {
-                            trux = flip() ? x : flip() ? x + 1 : x - 1;
-                            truy = flip() ? y : flip() ? y + 1 : y - 1;
+                            trux = mflip() ? x : mflip() ? x + 1 : x - 1;
+                            truy = mflip() ? y : mflip() ? y + 1 : y - 1;
                         } while( trux == x && truy == y );
 
                         // Cancel here if x or y are out of bounds

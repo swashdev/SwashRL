@@ -34,6 +34,7 @@ version( sdl )
 
     import global;
 
+    import std.file;
     import std.string : fromStringz;
     import std.string : toStringz;
     import std.format;
@@ -74,12 +75,6 @@ version( sdl )
 
         // The default tileset for drawing the map &c.
         SDL_Texture*[] tileset;
-        // The special tileset for drawing the message line, status bar, and
-        // other "messages".
-        SDL_Texture*[] message_font;
-
-        // Which of the above two tilesets we are currently using.
-        SDL_Texture*[] cur_tileset;
 
         // This texture is used as a backup of the frame buffer, to prevent
         // errors when SDL's "back" and "front" frame buffers are swapped by
@@ -97,24 +92,25 @@ version( sdl )
             // Load SDL:
             DerelictSDL2.load();
             DerelictSDL2ttf.load();
+            
+            // Determine whether to use the user-configured font or the built-
+            // in bd-font.
+            bool use_bd_font = FONT.length > 0;
+
+            if( !exists( FONT ) || !isFile( FONT ) )
+            {
+                use_bd_font = true;
+            }
 
             // Set tile height & width.
-            if( FONT.tile_height > MESSAGE_FONT.tile_height )
+            if( use_bd_font )
             {
-                tile_height = FONT.tile_height;
+                tile_height = tile_width = 8;
             }
             else
             {
-                tile_height = MESSAGE_FONT.tile_height;
-            }
-
-            if( FONT.tile_width > MESSAGE_FONT.tile_width )
-            {
-                tile_width = FONT.tile_width;
-            }
-            else
-            {
-                tile_width = MESSAGE_FONT.tile_width;
+                tile_height = FONT_HEIGHT;
+                tile_width = FONT_WIDTH;
             }
 
             if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
@@ -151,22 +147,20 @@ version( sdl )
                     renderer = SDL_CreateRenderer( window, -1,
                             SDL_RENDERER_ACCELERATED );
 
-                    // Load the default font
-                    if( !loadfont( FONT.filepath, tile_height, tileset ) )
+                    // If no font file has been specified, or the specified
+                    // font doesn't exist, use bd-font.
+                    if( use_bd_font )
                     {
-                        sdl_error( "Could not import " ~ FONT.filepath );
+                        setup_bd_font();
                     }
-
-                    // Load the message font
-                    if( !loadfont( MESSAGE_FONT.filepath, tile_height,
-                                   message_font ) )
+                    // If a font file has been specified, load that font.
+                    else
                     {
-                        sdl_error( "Could not import "
-                                   ~ MESSAGE_FONT.filepath );
+                        if( !loadfont( FONT, tile_height, tileset ) )
+                        {
+                            sdl_error( "Could not import " ~ FONT );
+                        }
                     }
-
-                    // Set the current font to default
-                    cur_tileset = tileset;
 
                     // (end cannibalized code)
 
@@ -207,6 +201,47 @@ version( sdl )
 // SDL Utility Functions                                                    //
 //////////////////////////////////////////////////////////////////////////////
 
+        // Setup the default texture as bd-font, from the arrays stored in
+        // bd_font.d
+        private void setup_bd_font()
+        {
+            import bd_font: Font;
+
+            tileset = new SDL_Texture*[256];
+
+            foreach( ubyte character; 0 .. 256 )
+            {
+                tileset[character] = SDL_CreateTexture( renderer,
+                        SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
+                        8, 8 );
+
+                uint* pixels;
+                int pitch;
+
+                SDL_LockTexture( tileset[character], null,
+                        cast(void**)&pixels, &pitch );
+
+                foreach( int row; 0 .. 8 )
+                {
+                    int row_byte = Font[character][row];
+                    foreach( int col; 0 .. 8 )
+                    {
+                        int col_bit = 1 << col;
+                        if( row_byte & col_bit )
+                        {
+                            pixels[(row * 8) + (8 - col)] = 0xffffffff;
+                        }
+                        else
+                        {
+                            pixels[(row * 8) + (8 - col)] = 0x00000000;
+                        }
+                    }
+                }
+
+                SDL_UnlockTexture( tileset[character] );
+            } // foreach( ushort character; 0 .. 256 )
+        } // private void setup_bd_font()
+
         // The following code was cannibalized from Elronnd's SmugglerRL
         // project:
 
@@ -235,11 +270,11 @@ version( sdl )
 
             ushort[2] text;
 
-            target = new SDL_Texture*[65536];
+            target = new SDL_Texture*[256];
 
             // For each glyph provided by the font, render it onto `surface`
             // and then convert it into a `SDL_Texture` stored in `target`
-            foreach( ushort character; 0 .. 65536 )
+            foreach( ushort character; 0 .. 256 )
             {
                 if( TTF_GlyphIsProvided( font, character ) )
                 {
@@ -344,9 +379,7 @@ version( sdl )
 
             output ~= ']';
 
-            cur_tileset = message_font;
             put_line( 0, 0, output );
-            cur_tileset = tileset;
             refresh_screen();
 
             char answer = '\0';
@@ -422,14 +455,14 @@ version( sdl )
             Color_Pair color_pair = Clr[color];
 
             // null means there's no glyph, so fall back on a backup character
-            if( cur_tileset[letter] is null )
+            if( tileset[letter] is null )
             {
-                renderedchar = cur_tileset['?'];
+                renderedchar = tileset['?'];
                 color_pair = Clr[Colors.Error];
             }
             else
             {
-                renderedchar = cur_tileset[letter];
+                renderedchar = tileset[letter];
             }
 
             // Draw a square with the background color (this will erase any
@@ -502,10 +535,6 @@ version( sdl )
         // Reads the player all of their messages one at a time
         void read_messages()
         {
-            // Because we're writing to the message line, set the current
-            // tileset to the special `message_font`:
-            cur_tileset = message_font;
-
             while( !Messages.empty() )
             {
                 clear_message_line();
@@ -518,20 +547,12 @@ version( sdl )
                     get_key();
                 }
             }
-
-            // We're done displaying messages, so set the current tileset back
-            // to the default `tileset`:
-            cur_tileset = tileset;
         }
 
         // Gives the player a menu containing their message history.
         void read_message_history()
         {
             clear_screen();
-
-            // Because we're outputting a message, set the current tileset to
-            // the special `message_font`:
-            cur_tileset = message_font;
 
             uint line = 0;
             foreach( count; 0 .. Message_history.length )
@@ -552,10 +573,6 @@ version( sdl )
             refresh_screen();
             get_key();
             clear_message_line();
-
-            // We're done displaying messages, so set the current tileset back
-            // to the default `tileset`:
-            cur_tileset = tileset;
         } // read_message_history()
 
         // The Status Bar ////////////////////////////////////////////////////
@@ -576,15 +593,7 @@ version( sdl )
 
             SDL_RenderFillRect( renderer, &rect );
 
-            // Because the status bar is considered a "message," switch the
-            // current tileset to the special `message_font`:
-            cur_tileset = message_font;
-
             write_status_bar( plyr );
-
-            // We're done displaying messages, so set the current tileset back
-            // to the default `tileset`:
-            cur_tileset = tileset;
         } // void refresh_status_bar( Player* )
 
     } // class SDL_Terminal_IO

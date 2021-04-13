@@ -95,7 +95,7 @@ version( sdl )
             
             // Determine whether to use the user-configured font or the built-
             // in bd-font.
-            bool use_bd_font = FONT.length > 0;
+            bool use_bd_font = FONT.length == 0;
 
             if( !exists( FONT ) || !isFile( FONT ) )
             {

@@ -10,6 +10,10 @@ VERSION 0.035
   Added:
    - Monsters' inventories are now saved when the level is saved and will be
      loaded when a level is loaded.
+   - A new default font, bd-font, has been implemented into the source code.
+     This font will be used if the user specifies a font which doesn't exist.
+     For now, DejaVu Sans Mono will continue to be included with SwashRL as
+     the honest-to-god default font.
 
   Changed:
    - The color palette for the SDL terminal interface has been changed to a

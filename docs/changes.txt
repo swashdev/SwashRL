@@ -7,6 +7,10 @@ VERSION 0.035
   Fixed:
    - Immobile monsters no longer move.
 
+  Added:
+   - Monsters' inventories are now saved when the level is saved and will be
+     loaded when a level is loaded.
+
   Changed:
    - The color palette for the SDL terminal interface has been changed to a
      variation on the Tango color palette to provide more visible and vibrant

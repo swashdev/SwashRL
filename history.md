@@ -17,7 +17,7 @@ Table of Contents
 * [SwashRL]
   * [SDL Support]
 
-[Jump to the current version](#0034)
+[Jump to the current version](#0035)
 
 [Back to top]: #table-of-contents
 
@@ -82,6 +82,7 @@ Table of Contents
 [0.032]: #0032
 [0.033]: #0033
 [0.034]: #0034
+[0.035]: #0035
 
 Prehistory
 ----------
@@ -786,5 +787,65 @@ This version does represent the official deprecation of the OpenDyslexic Mono
 font and the settings used to activate it, however.  It was a good idea, but
 in the end it just didn't work very well.  Hopefully in a future version I'll
 be able to find a better way to implement it.
+
+[Back to top]
+
+### 0.035
+
+[Download](https://github.com/swashdev/SwashRL/releases/tag/v0.035)
+
+Version 0.035 features a number of small fixes and additions but primarily
+focuses on refining the inventory system.
+
+Monsters, including the player, now have two character attributes, Strength
+and Endurance, which are randomly generated when the monster is spawned (the
+player gets 3d6 in both).  Items now also have variables which allow them to
+impart modifiers on these attributes.  These features haven't been fully
+implemented yet.
+
+The number of equipment slots available to the player has been simplified down
+to this list:
+- Weapon-hand
+- Off-hand
+- Helmet
+- Armor
+- Shield
+- Boots
+- Left ring
+- Right ring
+- Necklace
+- Clothes
+
+A monster's equipment list is no longer stored in the same array as their open
+inventory.  Instead, the equipment list is an associative array that's ordered
+by the equipment slots from the above list.  The inventory is a dynamic array
+(different monsters may now have different numbers of inventory slots) and the
+wallet is a non-dynamic array (containing stacks of coins in 5 denominations).
+
+Monster inventories will now be saved when the level is saved, and loaded when
+the level is loaded.  This also goes for their wallet and equipment.
+
+The color palette for the SDL terminal interface has been changed to a
+variation on the Tango color palette, so the colors are less garish and stand
+out more against the black background.  Several colors have been adjusted or
+removed.
+
+![An image showing the differences in color palettes between versions 0.034 and 0.035](images/v0.035-color-comparison.png)
+
+SwashRL now incorporates a default font,
+[bd-font from Bad Diode](https://git.badd10de.dev/bd-font/about/),
+which is used if it doesn't find a valid TTF font file.
+
+![An image showing version 0.035 in its default bd-font](images/v0.035-bd-font.png)
+
+The player can now specify a random seed for the map generator, and the map
+generation functions now use a separate random number generator from the rest
+of the game to allow players to share level gens they think are particularly
+interesting.
+
+Other minor fixes include preventing the player from getting a free festive
+hat if they are already wearing a hat (thus keeping the festive hat from
+overwriting any armor they might be wearing) and fixing sessile monsters so
+that they can no longer move.
 
 [Back to top]

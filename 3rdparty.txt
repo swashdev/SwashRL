@@ -1,6 +1,18 @@
 The version of SwashRL which you have received uses the following third-party
 resources to function:
 
+ -- bd-font -----------------------------------------------------------------
+
+``src/bd_font.d'' is a source file which defines the bd-font font.  This font
+is implemented in SDL versions of SwashRL as the default font, used in the
+event that the user specifies a font file which doesn't exist.
+
+bd-font and the C code from which my version is derived are dual-licensed so
+that they can be released under either the Unlicense or the MIT license.  As
+a show of thanks, my version is also dual-licensed in this way.
+
+The bd-fonts license can be found in ``docs/license/bd-font.txt''
+
  -- DejaVu Fonts ------------------------------------------------------------
 
 DejaVuSansMono, a freeware / open-source font, is included in the

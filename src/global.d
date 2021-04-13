@@ -118,10 +118,6 @@ version( sdl )
     enum SDL_ENABLED = true;
 
     public import derelict.sdl2.sdl, derelict.sdl2.ttf;
-    public import fonts;
-
-    enum FONT = TileSet.standard;
-    enum MESSAGE_FONT = BOLD_MESSAGE_FONT ? TileSet.bold : TileSet.standard;
 }
 else
 {

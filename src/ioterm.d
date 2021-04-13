@@ -209,39 +209,55 @@ version( sdl )
         // bd_font.d
         private void setup_bd_font()
         {
+            // Get the `Font` array from bd_font.d
             import bd_font: Font;
 
+            // Initialize the tileset with 256 possible characters (ANSI set)
             tileset = new SDL_Texture*[256];
 
             foreach( ubyte character; 0 .. 256 )
             {
+                // Initialize an 8x8 texture for each texture in the tileset.
                 tileset[character] = SDL_CreateTexture( renderer,
                         SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
                         8, 8 );
 
+                // A pointer to the array of `pixels` in a given texture.
+                // `pitch` is essentially a junk variable for our purposes.
                 uint* pixels;
                 int pitch;
 
+                // Lock the texture so we can get access to its pixels.
                 SDL_LockTexture( tileset[character], null,
                         cast(void**)&pixels, &pitch );
 
+                // Go through each row for the character in the `Font` array.
                 foreach( int row; 0 .. 8 )
                 {
+                    // Save the byte stored in this `row`.
                     int row_byte = Font[character][row];
+
+                    // Now we go through each possible bit in the row's byte.
+                    // Each bit represents a column in the character.
                     foreach( int col; 0 .. 8 )
                     {
                         int col_bit = 1 << col;
+
+                        // If our test bit exists in the row byte, draw a
+                        // white pixel at this location.
                         if( row_byte & col_bit )
                         {
                             pixels[(row * 8) + (8 - col)] = 0xffffffff;
                         }
+                        // Otherwise, draw a fully transparent pixel.
                         else
                         {
                             pixels[(row * 8) + (8 - col)] = 0x00000000;
                         }
                     }
-                }
+                } // foreach( int row; 0 .. 8 )
 
+                // Unlock the texture so SDL can use it later.
                 SDL_UnlockTexture( tileset[character] );
 
                 // Set the texture blend mode.

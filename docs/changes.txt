@@ -1,6 +1,7 @@
 SwashRL official changelog
 
 VERSION 0.035
+Finalized on 2021-04-13 17:59 CDT
 
   Version 0.035 breaks save file compatibility.
 

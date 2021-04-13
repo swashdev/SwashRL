@@ -1,13 +1,12 @@
 SwashRL
 =======
 
-Readme file, last updated 2021-03-30 19:28 CDT  
+Readme file, last updated 2021-04-13 17:58 CDT  
 Contact the maintainer: <swashdev@pm.me>
 
 ---
 
 ![A typical game of SwashRL in progress](docs/images/screenshot.png)  
-_version 0.034-e7620ed on a typical map, partially explored_
 
 SwashRL is a Roguelike game currently in the early development phases.  The
 actual "game" part is not yet functional, as it's still in need of a few

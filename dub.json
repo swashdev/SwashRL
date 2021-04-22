@@ -44,7 +44,7 @@
       "versions": ["pdcurses", "curses", "sdl"]
     },
     {
-      "name": "ncurses-nosdl",
+      "name": "ncurses-only",
       "dependencies":
       {
         "ncurses": "~master"
@@ -52,7 +52,7 @@
       "versions": ["ncurses", "curses"]
     },
     {
-      "name": "pdcurses-nosdl",
+      "name": "pdcurses-only",
       "dependencies":
       {
         "pdcurses-d": "~>1.0.0"

@@ -1,7 +1,7 @@
 SwashRL
 =======
 
-Readme file, last updated 2021-04-13 17:58 CDT  
+Readme file, last updated 2021-04-21 21:05 CDT  
 Contact the maintainer: <swashdev@pm.me>
 
 ---
@@ -92,13 +92,13 @@ with ncurses by using dub's `--config` flag, and even compile with _only_
 ncurses, by using one of the following commands:
 
 > `dub build --config ncurses`  
-> `dub build --config ncurses-nosdl`  
+> `dub build --config ncurses-only`  
 
 You can also compile with PDCurses, which is compatible with Windows, using
 one of the following commands:
 
 > `dub build --config pdcurses`  
-> `dub build --config pdcurses-nosdl`
+> `dub build --config pdcurses-only`
 
 If you're compiling from a git repository, your compiled SwashRL will include
 the current commit ID when asked for its version number.  If you are _not_

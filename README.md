@@ -1,7 +1,7 @@
 SwashRL
 =======
 
-Readme file, last updated 2021-04-21 21:05 CDT  
+Readme file, last updated 2021-05-09 16:16 CDT  
 Contact the maintainer: <swashdev@pm.me>
 
 ---
@@ -47,13 +47,14 @@ document can be found at the bottom.
 
 ## License Agreement
 
-SwashRL is released under [the BSD 3-clause "New" or "Revised" License], a
-simple open-source license which allows for free use in exchange for retaining
-the original license with all source distributions and not misrepresenting the
-authors as endorsing the software.
+SwashRL is released under [the BSD 3-clause "New" or "Revised"
+License][LICENSE], a simple open-source license which allows for free use in
+exchange for retaining the original license with all source distributions and
+not misrepresenting the authors as endorsing the software.
 
 SwashRL uses some third-party resources to function.  For details, see
-[the acknowledgement file] and the third-party licenses referenced therein.
+[the acknowledgement file][3rdparty] and the third-party licenses referenced
+therein.
 
 ## Supported Systems
 
@@ -64,25 +65,25 @@ Windows computer, and I can not support the game on systems which I do not
 have access to.
 
 If you'd like to become a volunteer maintainer for SwashRL on your system,
-[contact me] and I might be able to add you to the GitHub repository as a
-collaborator.
+[contact me][contact] and I might be able to add you to the GitHub repository
+as a collaborator.
 
 ## Compiling
 
 Starting with version 0.022, SwashRL has been programmed in D.  This means
-you'll need [DmD] or some other D compiler, but if you also get [dub], the D
-package manager, it will do a lot of your work for you including downloading
-dependencies.
+you'll need [DmD][DmD] or some other D compiler, but if you also get
+[dub][dub], the D package manager, it will do a lot of your work for you
+including downloading dependencies.
 
 You can make some changes to how SwashRL is configured by editing the file
-[config.d].  This file has a lot of comment blocks which explain how to
-configure SwashRL.  These configuration settings will be interpreted in
-[global.d].
+[config.d][config].  This file has a lot of comment blocks which explain how
+to configure SwashRL.  These configuration settings will be interpreted in
+[global.d][global].
 
 To compile, navigate to the root folder (the same folder this readme file is
 in) and type:
 
-> `dub build`
+```dub build```
 
 You'll need to be connected to the Internet the first time you compile so that
 dub can download the packages that it needs.
@@ -91,31 +92,31 @@ By default, SwashRL will compile with SDL.  However, you can also compile
 with ncurses by using dub's `--config` flag, and even compile with _only_
 ncurses, by using one of the following commands:
 
-> `dub build --config ncurses`  
-> `dub build --config ncurses-only`  
+```dub build --config ncurses```
+```dub build --config ncurses-only```
 
 You can also compile with PDCurses, which is compatible with Windows, using
 one of the following commands:
 
-> `dub build --config pdcurses`  
-> `dub build --config pdcurses-only`
+```dub build --config pdcurses```
+```dub build --config pdcurses-only```
 
 If you're compiling from a git repository, your compiled SwashRL will include
 the current commit ID when asked for its version number.  If you are _not_
-compiling from a git repository, you'll have to edit [config.d] and set the
-`INCLUDE_COMMIT` flag to `false`, otherwise it will not compile.
+compiling from a git repository, you'll have to edit [config.d][config] and
+set the `INCLUDE_COMMIT` flag to `false`, otherwise it will not compile.
 
 If you're not sure whether or not your source code is in a git repository,
 check and see if there's a `.git` directory in this folder.  If there isn't,
 you can get the up-to-date source repository from
-[our GitHub page].
+[our GitHub page][github].
 
-For more information about git, check out [the git website].
+For more information about git, check out [the git website][git].
 
 ### Compiling for Derivatives
 
 There are a few things to note if you want to use the SwashRL source code to
-make your own game.  First of all, [the BSD 3-clause License] is very
+make your own game.  First of all, [the BSD 3-clause License][LICENSE] is very
 permissive, and unlike the GNU GPL and other copyleft licenses you absolutely
 can commercially exploit SwashRL without having to release your source code.
 This is not an oversight; I have intentionally licensed SwashRL to allow you
@@ -125,37 +126,37 @@ notices, etcetera.
 Secondly, you'll have to change the name of the program.  I've made this very
 easy to do.  It only requires two steps:
 
-1. Edit the file [dub.json] so that the "name" field has been changed to the
-   name of your executable file (i.e., instead of saying `"name": "swashrl",`
-   it will say `"name": "yourname",`; do not include the `.exe`)
+1. Edit the file [dub.json][json] so that the "name" field has been changed to
+   the name of your executable file (i.e., instead of saying `"name":
+   "swashrl",` it will say `"name": "yourname",`; do not include the `.exe`)
 
    1. You should also modify the "authors" and "copyright" fields to reflect
       your copyright information, and the "license" field if you choose to
       relicense it.  For more information about the dub.json file, see
-      [the Dlang JSON file documentation].
+      [the Dlang JSON file documentation][json documentation].
 
-2. Edit the file [global.d] so that the "NAME" enum will be the
+2. Edit the file [global.d][global] so that the "NAME" enum will be the
    name of your program (i.e. instead of saying `enum NAME = "SwashRL";` it
    will say `enum NAME = "Your Game's Name";`)
 
 Third and finally, be aware that SwashRL is not the only licensed product you
 will be interacting with, and there are a few other licenses that you'll have
-to comply with, as noted in [the acknowledgement file].
+to comply with, as noted in [the acknowledgement file][3rdparty].
 
 ## Change Logs
 
-For all of your change logging needs, see [changes.txt].  For those
+For all of your change logging needs, see [changes.txt][changelog].  For those
 interested, there's also a more in-depth history of the project being recorded
-[on the website].
+[on the website][history].
 
 ## Contributing
 
 If you're thinking of making a contribution to the SwashRL project, first of
-all thank you very much!  We now have [contribution guidelines] to help you
-get started.
+all thank you very much!  We now have [contribution guidelines][contributing]
+to help you get started.
 
-The best way to contribute to SwashRL is via [our GitHub page], where you can
-follow the conversation and see where we need help.
+The best way to contribute to SwashRL is via [our GitHub page][github], where
+you can follow the conversation and see where we need help.
 
 ## Careware
 
@@ -190,21 +191,17 @@ THIS LETTER.
 * <http://www.foregen.org/>
 * <https://www.doctorsopposingcircumcision.org/>
 
-[our GitHub page]: https://github.com/swashdev/SwashRL
-[the BSD 3-clause "New" or "Revised" License]: LICENSE.txt
-[the BSD 3-clause License]: LICENSE.txt
-[the third-party file]: 3rdparty.txt
-[the acknowledgement file]: 3rdparty.txt
-[an issue]: https://github.com/swashdev/SwashRL/issues/2
-[contact me]: mailto:swashdev@pm.me
-[contribution guidelines]: docs/CONTRIBUTING.md
-[config.d]: src/config.d
-[global.d]: src/global.d
-[OpenDyslexic]: https://opendyslexic.org/
-[dub.json]: dub.json
-[changes.txt]: docs/changes.txt
-[on the website]: https://swash.link/history/
+[github]: https://github.com/swashdev/SwashRL
+[LICENSE]: LICENSE.txt
+[3rdparty]: 3rdparty.txt
+[contact]: mailto:swashdev@pm.me
+[contributing]: docs/CONTRIBUTING.md
+[config]: src/config.d
+[global]: src/global.d
+[json]: dub.json
+[changelog]: docs/changes.txt
+[history]: https://swash.link/history/
 [DmD]: https://dlang.org/download.html
 [dub]: https://code.dlang.org/download
-[the git website]: https://git-scm.com/
-[the Dlang JSON file documentation]: https://code.dlang.org/package-format?lang=json
+[git]: https://git-scm.com/
+[json documentation]: https://code.dlang.org/package-format?lang=json

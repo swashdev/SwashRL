@@ -1,7 +1,7 @@
 SwashRL Guidelines for Contributors
 ===================================
 
-Version 1.0.5.  Last updated 2020-10-03 19:37 CDT
+Version 1.0.5.  Last updated 2021-05-09 16:22 CDT
 
 ---
 
@@ -33,53 +33,55 @@ document can be found at the bottom.
 ## Where to Get Started
 
 If you'd like to contribute, but you don't know where to get started, check
-the [Readme] and the [docs folder].  In the docs folder you'll find a
-[to-do list] which lists all of the things that we're currently working on in
-order from highest priority to lowest priority, as well as a [list of known
-bugs].
+the [Readme][README] and the [docs folder][docs].  In the docs folder you'll
+find a [to-do list][todo] which lists all of the things that we're currently
+working on in order from highest priority to lowest priority, as well as a
+[list of known bugs][bugs].
 
-You should also check the [Issues page] on [our GitHub], where you will find
-open Issues that you can take a stab at fixing yourself, and the
-[Projects page], where you can find things that we're currently working on.
+You should also check the [Issues page][issues] on [our GitHub][github], where
+you will find open Issues that you can take a stab at fixing yourself, and the
+[Projects page][projects], where you can find things that we're currently
+working on.
 
 ## Before Submitting
 
-**Be aware of [the SwashRL license] before submitting anything that's been
-licensed**.  If you're submitting anything that contains content you haven't
-written yourself, triple-check that it hasn't been released under a license
-that is incompatible with our license.  We take licenses for third-party
-content very seriously and carefully consider including anything that might
-conflict with our license.  **If you submit something to us, and we learn
-later that you do not have permission to license it to us under the terms of
-the SwashRL license, your contributions will be scrubbed from the project and
-you will be permanently banned from ever contributing again.**
+**Be aware of [the SwashRL license][LICENSE] before submitting anything that's
+been licensed**.  If you're submitting anything that contains content you
+haven't written yourself, triple-check that it hasn't been released under a
+license that is incompatible with our license.  We take licenses for
+third-party content very seriously and carefully consider including anything
+that might conflict with our license.  **If you submit something to us, and we
+learn later that you do not have permission to license it to us under the
+terms of the SwashRL license, your contributions will be scrubbed from the
+project and you will be permanently banned from ever contributing again.**
 
 If anything that you submit is licensed, please be courteous and copy the
-license into the [docs/license] directory with a filename like "project.txt"
-and add a notice to [the third-party licenses file].  You should have one file
-and one attribution notice for each license individually.
+license into the [docs/license][licenses] directory with a filename like
+"project.txt" and add a notice to [the third-party licenses file][3rdparty].
+You should have one file and one attribution notice for each license
+individually.
 
 If you've written everything in your submission yourself, and you don't place
 it under any particular license, we will take your submission as permission to
-release your changes under [the SwashRL license] in exchange for attribution
-(usually in the form of a comment line in the source code and a mention in
-[thanks.txt]).  _If you don't want to be attributed for your changes in the
-distributed source code or documentation, please let us know in your commit
-message or Pull Request._
+release your changes under [the SwashRL license][LICENSE] in exchange for
+attribution (usually in the form of a comment line in the source code and a
+mention in [thanks.txt][thanks]).  _If you don't want to be attributed for
+your changes in the distributed source code or documentation, please let us
+know in your commit message or Pull Request._
 
 ## Compiling Your Changes
 
-You can find instructions for compiling SwashRL in the [Readme].
+You can find instructions for compiling SwashRL in the [Readme][README].
 
 ## Submitting Changes
 
 The best way to contribute to the SwashRL project is to submit a
-[Pull Request] on [our GitHub].  We have a Pull Request Template available
-that you can use to let us know what you've changed and why, to make things
-extra convenient.
+[Pull Request][pull request] on [our GitHub][github].  We have a Pull Request
+Template available that you can use to let us know what you've changed and
+why, to make things extra convenient.
 
 If you don't know how to use git or have no experience with the GitHub
-website, you can get started with [the guide on their website].
+website, you can get started with [the guide on their website][git help].
 
 _Do not e-mail any of the contributors with your changes, as your e-mail will
 be discarded._
@@ -93,7 +95,7 @@ As a professional courtesy, we ask that you acknowledge anyone else that
 helped you with your changes, unless they asked to be anonymous.  As such, if
 your git branch doesn't already attribute other contributors automatically, we
 ask that your commit message do so.  If you don't know how to do this,
-[GitHub offers a helpful guide].
+[GitHub offers a helpful guide][git attribution help].
 
 ### Professionalism
 
@@ -108,7 +110,8 @@ on us, and on you, as a result.
 
 SwashRL's code is written to be readable by the average user.  This means
 ample use of whitespace and clear naming conventions.  In general, the style
-guide should match [The D Style], but there are some notable exceptions:
+guide should match [The D Style][d style], but there are some notable
+exceptions:
 
 * **White space**: Add a space after opening parenthesis `(` and before
   closing parenthesis `)` in function calls and conditional statements (`if`,
@@ -117,7 +120,7 @@ guide should match [The D Style], but there are some notable exceptions:
 * **Line width**: In general, code lines should _prefer_ to be no longer than
   78 characters, to make code and diff files readable on a standard 80x24
   terminal.  A _hard limit_ of 120 characters is imposed in accordance with
-  [The D Style].
+  [The D Style][d style].
 
 * **Block length**: The end of any code block exceeding 22 lines in length
   should have a comment on the same line as the end-bracket `}` which
@@ -141,7 +144,7 @@ guide should match [The D Style], but there are some notable exceptions:
   * Enums should use Initial\_Caps like classes, while their members should
     use all_lowercase like normal variables; this is, in my opinion, the
     generally least confusing compromise between my code style and
-    [The D Style].
+    [The D Style][d style].
 
 * **Comment lines**: Three different conventions are used for comment lines:
 
@@ -161,18 +164,18 @@ die specifications from RPGs (e.g. `d( 4 )` is a d4) and the `IO` object in
 the mainloop, whose name I left as-is because it's about as descriptive as it
 needs to be.
 
-[the SwashRL license]: ../LICENSE.txt
-[the third-party licenses file]: ../3rdparty.txt
-[Readme]: ../README.md
-[docs folder]: ../docs
-[to-do list]: ../docs/to-do.txt
-[list of known bugs]: ../docs/bugs.txt
-[docs/license]: ../docs/license
-[thanks.txt]: ../thanks.txt
-[our GitHub]: https://github.com/swashdev/SwashRL
-[Issues page]: https://github.com/swashdev/SwashRL/issues
-[Projects page]: https://github.com/swashdev/SwashRL/projects
-[Pull Request]: https://github.com/swashdev/SwashRL/pulls
-[the guide on their website]: https://guides.github.com/activities/hello-world/
-[GitHub offers a helpful guide]: https://help.github.com/articles/creating-a-commit-with-multiple-authors/
-[The D Style]: https://dlang.org/dstyle.html
+[LICENSE]: ../LICENSE.txt
+[3rdparty]: ../3rdparty.txt
+[README]: ../README.md
+[docs]: ../docs
+[todo]: ../docs/to-do.txt
+[bugs]: ../docs/bugs.txt
+[licenses]: ../docs/license
+[thanks]: ../thanks.txt
+[github]: https://github.com/swashdev/SwashRL
+[issues]: https://github.com/swashdev/SwashRL/issues
+[projects]: https://github.com/swashdev/SwashRL/projects
+[pull request]: https://github.com/swashdev/SwashRL/pulls
+[git help]: https://guides.github.com/activities/hello-world/
+[git attribution help]: https://help.github.com/articles/creating-a-commit-with-multiple-authors/
+[d style]: https://dlang.org/dstyle.html

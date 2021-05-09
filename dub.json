@@ -1,7 +1,7 @@
 {
   "name": "swashrl",
   "authors": [ "Philip Pavlick <swashdev@pm.me>" ],
-  "copyright": "Copyright (c) 2015-2020, Philip Pavlick",
+  "copyright": "Copyright (c) 2015-2021, Philip Pavlick",
   "license": "BSD 3-clause",
 
   "description": "Another open-source Roguelike",
